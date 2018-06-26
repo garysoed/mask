@@ -1,0 +1,165 @@
+/*************
+ * Applied CSS
+ *************/
+
+html {
+  font-family: var(--mkFontFamilyNormal);
+  font-size: 12px;
+}
+
+a, .gs-action {
+  color: var(--mkThemeActionFG);
+  font-weight: var(--gsFontWeightBold);
+  text-decoration: none;
+}
+
+a:hover, a:focus, .gs-action:hover {
+  color: var(--mkThemeActionFocusFG);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: none;
+}
+
+a[disabled], .gs-action[disabled] {
+  color: var(--mkThemeActionDisabledFG);
+  cursor: default;
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 4.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h1, h2, h3 {
+  color: var(--mkThemePassiveFG);
+  font-family: var(--mkFontFamilyHeader);
+  font-weight: var(--mkFontWeightBold);
+  margin: 1rem 0;
+}
+
+code {
+  background-color: var(--mkThemeActiveBG);
+  border-radius: .4rem;
+  color: var(--mkThemeActiveFG);
+  font-family: var(--mkFontFamilyMono);
+  padding: .2rem;
+}
+
+fieldset {
+  border: 2px solid var(--mkThemeActionFG);
+  padding: 1rem 1rem 2rem 1rem;
+}
+
+fieldset:hover, fieldset:focus {
+  border-color: var(--mkThemeActionFocusFG);
+}
+
+legend {
+  color: var(--mkThemeActionFG);
+}
+
+fieldset:hover > legend, fieldset:focus > legend {
+  color: var(--mkThemeActionFocusFG);
+}
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  font-size: var(--gsFontSizeRoot);
+}
+
+table tr:nth-child(2n) {
+  background-color: var(--mkThemePassiveBG);
+}
+
+td {
+  border: 1px solid var(--mkThemePassiveFG);
+  padding: .5rem;
+}
+
+/* Layouts */
+[layout] {
+  display: flex;
+}
+
+[layout="row"] {
+  flex-direction: row;
+}
+
+[layout="column"] {
+  flex-direction: column;
+}
+
+[flex] {
+  flex: 1;
+}
+
+[flex-wrap] {
+  flex-wrap: wrap;
+}
+
+[flex-justify="flex-start"] {
+  justify-content: flex-start;
+}
+
+[flex-justify="flex-end"] {
+  justify-content: flex-end;
+}
+
+[flex-justify="center"] {
+  justify-content: center;
+}
+
+[flex-justify="space-between"] {
+  justify-content: space-between;
+}
+
+[flex-justify="space-around"] {
+  justify-content: space-around;
+}
+
+[flex-align="flex-start"] {
+  align-items: flex-start;
+}
+
+[flex-align="flex-end"] {
+  align-items: flex-end;
+}
+
+[flex-align="center"] {
+  align-items: center;
+}
+
+[flex-align="stretch"] {
+  align-items: stretch;
+}
+
+[flex-align="baseline"] {
+  align-items: baseline;
+}
+
+[fill-parent] {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+[hidden] {
+  display: none;
+}
+
+

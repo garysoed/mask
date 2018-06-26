@@ -1,7 +1,7 @@
 import { ImmutableMap, ImmutableSet } from 'gs-tools/export/collect';
 import { Color, Colors, HslColor, RgbColor } from 'gs-tools/export/color';
-import { assertUnreachable } from '../../node_modules/gs-tools/src/typescript/assert-unreachable';
-import * as colorCssTemplate from './color.css';
+import { assertUnreachable } from 'gs-tools/src/typescript/assert-unreachable';
+import * as variablesCssTemplate from './variables.css';
 
 interface ColorWithAlpha {
   alpha: number;
@@ -267,7 +267,7 @@ export class Theme {
         baseColorMap,
         contrastShade,
         highlightColor);
-    const cssContent = colorCssTemplate
+    const cssContent = variablesCssTemplate
         .replace('/*{themeLight}*/', generateColorCss_(lightColorMap))
         .replace('/*{themeDark}*/', generateColorCss_(darkColorMap))
         .replace('/*{themeHighlight}*/', generateColorCss_(highlightColorMap));

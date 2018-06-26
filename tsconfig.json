@@ -21,6 +21,7 @@
   "include": [
     "demo/*",
     "src/**/*.ts",
+    "typings/*.d.ts",
     "node_modules/grapevine/export/*",
     "node_modules/gs-testing/export/*",
     "node_modules/gs-tools/export/*",
