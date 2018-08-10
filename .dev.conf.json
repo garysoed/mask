@@ -3,6 +3,10 @@
     {
       "command": "link",
       "actions": ["npm link gs-tools gs-testing gs-types grapevine dev persona"]
+    },
+    {
+      "command": "demo",
+      "actions": ["simpleserver demo/static.conf.json"]
     }
   ]
 }
