@@ -162,7 +162,7 @@ export class Theme {
       return [shade, createColor_(shade, this.baseColor_)] as [Shade, Color];
     });
     const baseColorMap = ImmutableMap.of(baseColorPairs);
-    const highlightColor = createColor_(Shade.B010, this.highlightColor_);
+    const highlightColor = createColor_(Shade.A100, this.highlightColor_);
 
     const contrastShade = getContrastForegroundShade_(baseColorMap, highlightColor);
     const lightColorMap = generateColorMap_(

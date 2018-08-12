@@ -3,7 +3,7 @@ import { HslColor } from 'gs-tools/export/color';
 import { InstanceofType } from 'gs-types/export';
 import { element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
-import { TextButton } from '../src/component/text-button';
+import { start as startMask, TextButton } from '../export';
 import * as generalCss from '../src/theme/general.css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
@@ -30,11 +30,10 @@ class DemoCtrl extends CustomElementCtrl {
   }
 }
 
-builder.register([DemoCtrl, TextButton], vineApp.builder);
+builder.register([DemoCtrl], vineApp.builder);
 builder.build(window.customElements, vineApp.builder.run());
-const theme = new Theme(HslColor.newInstance(45, 0.75, 0.5), HslColor.newInstance(90, 0.75, 0.5));
+
 window.addEventListener('load', () => {
-  theme.injectCss(document);
 
   const globalStyle = document.getElementById('globalStyle');
   if (!globalStyle) {
@@ -43,3 +42,6 @@ window.addEventListener('load', () => {
 
   globalStyle.innerHTML = generalCss;
 });
+
+const theme = new Theme(HslColor.newInstance(45, 0.75, 0.5), HslColor.newInstance(90, 0.75, 0.5));
+startMask([TextButton], theme);
