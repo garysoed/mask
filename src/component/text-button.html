@@ -42,18 +42,18 @@
   }
 
   /* Primary button */
-  :host([primary]) {
+  :host([mk-primary]) {
     --mkButtonFG: var(--mkThemeActionPrimaryFG);
     --mkButtonBG: var(--mkThemeActionPrimaryBG);
   }
 
-  :host([primary][disabled]) {
+  :host([mk-primary][disabled]) {
     --mkButtonFG: var(--mkThemeActionPrimaryDisabledFG);
     --mkButtonBG: var(--mkThemeActionPrimaryDisabledBG);
   }
 
-  :host([primary]:not([disabled]):hover),
-  :host([primary]:not([disabled]):focus) {
+  :host([mk-primary]:not([disabled]):hover),
+  :host([mk-primary]:not([disabled]):focus) {
     --mkButtonFG: var(--mkThemeActionPrimaryFocusFG);
     --mkButtonBG: var(--mkThemeActionPrimaryFocusBG);
   }
