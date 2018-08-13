@@ -3,7 +3,7 @@ import { HslColor } from 'gs-tools/export/color';
 import { InstanceofType } from 'gs-types/export';
 import { element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
-import { start as startMask, TextButton } from '../export';
+import { Palette, start as startMask, TextButton } from '../export';
 import * as generalCss from '../src/theme/general.css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
@@ -43,5 +43,5 @@ window.addEventListener('load', () => {
   globalStyle.innerHTML = generalCss;
 });
 
-const theme = new Theme(HslColor.newInstance(45, 0.75, 0.5), HslColor.newInstance(90, 0.75, 0.5));
+const theme = new Theme(Palette.ORANGE, Palette.GREEN);
 startMask([TextButton], theme);
