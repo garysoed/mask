@@ -106,4 +106,28 @@ describe('component.TextButton', () => {
       }).to.equal(newLabel);
     });
   });
+
+  describe('renderRole_', () => {
+    should(`render the correct role`, async () => {
+      await retryUntil(() => {
+        return el.getAttribute('role');
+      }).to.equal('button');
+    });
+  });
+
+  describe('renderTabIndex_', () => {
+    should(`render 0 if host is not disabled`, async () => {
+      el.setAttribute('disabled', 'false');
+      await retryUntil(() => {
+        return el.getAttribute('tabindex');
+      }).to.equal('0');
+    });
+
+    should(`return -1 if host is disabled`, async () => {
+      el.setAttribute('disabled', 'true');
+      await retryUntil(() => {
+        return el.getAttribute('tabindex');
+      }).to.equal('-1');
+    });
+  });
 });
