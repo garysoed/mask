@@ -1,9 +1,8 @@
 import { getOrRegisterApp as getOrRegisterVineApp, VineImpl } from 'grapevine/export/main';
-import { HslColor } from 'gs-tools/export/color';
 import { InstanceofType } from 'gs-types/export';
 import { element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
-import { Palette, start as startMask, TextButton } from '../export';
+import { Palette, start as startMask, textButton } from '../export';
 import * as generalCss from '../src/theme/general.css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
@@ -44,4 +43,4 @@ window.addEventListener('load', () => {
 });
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
-startMask([TextButton], theme);
+startMask([textButton()], theme);

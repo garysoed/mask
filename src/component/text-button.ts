@@ -8,13 +8,13 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
-import { BooleanParser, StringParser } from 'gs-tools/export/parse';
-import { IntegerParser } from 'gs-tools/export/parse';
+import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vineApp_ } from '../app/app';
+import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import textButtonTemplate from './text-button.html';
 
@@ -110,4 +110,8 @@ export class TextButton extends CustomElementCtrl {
       @vineApp_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): number {
     return hostDisabled ? -1 : 0;
   }
+}
+
+export function textButton(): Config {
+  return {ctor: TextButton};
 }
