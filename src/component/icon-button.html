@@ -1,0 +1,64 @@
+<style>
+  #root {
+    background-color: var(--mkButtonBG);
+    color: var(--mkButtonFG);
+    font-weight: var(--mkFontWeightBold);
+    line-height: var(--mkLineHeight);
+    padding: var(--mkSizePadding);
+    text-align: center;
+    user-select: none;
+    width: 2rem;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+  }
+
+  slot::slotted(*) {
+    color: var(--mkButtonFG);
+  }
+
+  :host {
+    --mkButtonFG: var(--mkThemeActionFG);
+    --mkButtonBG: var(--mkThemeActionBG);
+    cursor: pointer;
+  }
+
+  :host([disabled]) {
+    --mkButtonFG: var(--mkThemeActionDisabledFG);
+    cursor: default;
+  }
+
+  :host(:hover),
+  :host(:focus) {
+    outline: none;
+  }
+
+  :host(:not([disabled]):hover),
+  :host(:not([disabled]):focus) {
+    --mkButtonFG: var(--mkThemeActionFocusFG);
+  }
+
+  :host([disabled]:focus) {
+    --mkButtonFG: var(--mkThemeActionDisabledFG);
+  }
+
+  /* Primary button */
+  :host([mk-primary]) {
+    --mkButtonFG: var(--mkThemeActionPrimaryFG);
+    --mkButtonBG: var(--mkThemeActionPrimaryBG);
+  }
+
+  :host([mk-primary][disabled]) {
+    --mkButtonFG: var(--mkThemeActionPrimaryDisabledFG);
+    --mkButtonBG: var(--mkThemeActionPrimaryDisabledBG);
+  }
+
+  :host([mk-primary]:not([disabled]):hover),
+  :host([mk-primary]:not([disabled]):focus) {
+    --mkButtonFG: var(--mkThemeActionPrimaryFocusFG);
+    --mkButtonBG: var(--mkThemeActionPrimaryFocusBG);
+  }
+</style>
+<div id="root">
+  <mk-icon id="icon"><slot></slot></mk-icon>
+</div>
