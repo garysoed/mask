@@ -1,20 +1,21 @@
 import { match, retryUntil, should } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
-import { persona_, vineApp_ } from '../app/app';
+import { FakeCustomElementRegistry } from 'persona/export/testing';
+import { persona_, vine_ } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 import { simulateKeypress } from '../testing/util';
-import { TextButton } from './text-button';
+import { textButton } from './text-button';
+
+const {ctor} = textButton();
 
 describe('component.TextButton', () => {
+  let customElementRegistry: FakeCustomElementRegistry;
   let el: HTMLElement;
 
-  beforeAll(() => {
-    persona_.builder.register([TextButton], vineApp_.builder);
-    persona_.builder.build(window.customElements, vineApp_.builder.run(), 'open');
-  });
-
   beforeEach(() => {
-    el = document.createElement('mk-text-button');
+    customElementRegistry = new FakeCustomElementRegistry();
+    persona_.builder.build([ctor], customElementRegistry, vine_.builder.run());
+    el = customElementRegistry.create('mk-text-button', document.body);
     document.body.appendChild(el);
   });
 

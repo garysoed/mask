@@ -1,8 +1,9 @@
 import { getOrRegisterApp as getOrRegisterVineApp, VineImpl } from 'grapevine/export/main';
+import { ImmutableMap } from 'gs-tools/src/immutable';
 import { InstanceofType } from 'gs-types/export';
 import { element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
-import { Palette, start as startMask, textButton } from '../export';
+import { icon, Palette, start as startMask, textButton } from '../export';
 import * as generalCss from '../src/theme/general.css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
@@ -29,11 +30,10 @@ class DemoCtrl extends CustomElementCtrl {
   }
 }
 
-builder.register([DemoCtrl], vineApp.builder);
-builder.build(window.customElements, vineApp.builder.run());
+const vine = vineApp.builder.run();
+builder.build([DemoCtrl], window.customElements, vine);
 
 window.addEventListener('load', () => {
-
   const globalStyle = document.getElementById('globalStyle');
   if (!globalStyle) {
     throw new Error('Missing global style element');
@@ -43,4 +43,13 @@ window.addEventListener('load', () => {
 });
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
-startMask([textButton()], theme);
+const registeredFonts = ImmutableMap.of([
+      [
+        'material',
+        {
+          iconClass: 'material-icons',
+          url: new URL('https://fonts.googleapis.com/icon?family=Material+Icons'),
+        },
+      ],
+    ]);
+startMask([icon('material', registeredFonts), textButton()], theme);

@@ -13,7 +13,7 @@ import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/ex
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
-import { persona_, vineApp_ } from '../app/app';
+import { persona_, vine_ } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import textButtonTemplate from './text-button.html';
@@ -80,23 +80,22 @@ export class TextButton extends CustomElementCtrl {
     this.activate_(vine);
   }
 
-  // TODO: is this needed?
   @persona_.render($.host.ariaDisabled)
   renderHostAriaDisabled_(
-      @vineApp_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): boolean {
+      @vine_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): boolean {
     return hostDisabled;
   }
 
   @persona_.render($.host.ariaLabel)
   renderHostAriaLabel_(
-      @vineApp_.vineIn($.host.ariaLabel.getReadingId()) hostAriaLabel: string,
-      @vineApp_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
+      @vine_.vineIn($.host.ariaLabel.getReadingId()) hostAriaLabel: string,
+      @vine_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
     return hostAriaLabel || hostLabel;
   }
 
   @persona_.render($.root.text)
   renderLabel_(
-      @vineApp_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
+      @vine_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
     return hostLabel;
   }
 
@@ -107,7 +106,7 @@ export class TextButton extends CustomElementCtrl {
 
   @persona_.render($.host.tabindex)
   renderTabIndex_(
-      @vineApp_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): number {
+      @vine_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): number {
     return hostDisabled ? -1 : 0;
   }
 }

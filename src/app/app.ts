@@ -3,8 +3,8 @@ import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from '
 import { Theme } from '../theme/theme';
 import { Config } from './config';
 
-export const vineApp_ = getOrRegisterGrapevineApp('maskBase');
-export const persona_ = getOrRegisterPersonaApp('maskBase', vineApp_);
+export const vine_ = getOrRegisterGrapevineApp('maskBase');
+export const persona_ = getOrRegisterPersonaApp('maskBase', vine_);
 export function start(
     configs: Config[],
     theme: Theme,
@@ -17,6 +17,12 @@ export function start(
     ctors.push(ctor);
   }
 
-  persona_.builder.register(ctors, vineApp_.builder);
-  persona_.builder.build(customElementRegistry, vineApp_.builder.run());
+  const vine = vine_.builder.run();
+  persona_.builder.build(ctors, customElementRegistry, vine);
+
+  for (const {configure} of configs) {
+    if (configure) {
+      configure(vine);
+    }
+  }
 }
