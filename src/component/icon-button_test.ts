@@ -1,7 +1,7 @@
 import { fshould, match, retryUntil, should } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
-import { FakeCustomElementRegistry } from 'persona/export/testing';
+import { FakeCustomElementRegistry, PersonaTesterFactory } from 'persona/export/testing';
 import { persona_, vine_ } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 import { simulateKeypress } from '../testing/util';
@@ -18,18 +18,15 @@ const {configure, ctor} = iconButton(
   ]));
 // tslint:disable-next-line:no-non-null-assertion
 const configureIcon = configure;
+const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
 
 describe('component.IconButton', () => {
-  let customElementRegistry: FakeCustomElementRegistry;
   let el: HTMLElement;
 
   beforeEach(() => {
-    customElementRegistry = new FakeCustomElementRegistry();
-    const vine = vine_.builder.run();
-    persona_.builder.build([ctor], customElementRegistry, vine);
-    configureIcon(vine);
-    el = customElementRegistry.create('mk-icon-button', document.body);
-    document.body.appendChild(el);
+    const tester = testerFactory.build([ctor]);
+    configureIcon(tester.vine);
+    el = tester.createElement('mk-icon-button', document.body);
   });
 
   describe('constructor', () => {

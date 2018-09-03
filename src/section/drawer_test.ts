@@ -9,13 +9,10 @@ const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
 
 describe('display.Drawer', () => {
   let el: HTMLElement;
-  let vine: VineImpl;
 
   beforeEach(() => {
     const tester = testerFactory.build([ctor]);
-    vine = tester.vine;
-    el = tester.createElement('mk-drawer');
-    document.body.appendChild(el);
+    el = tester.createElement('mk-drawer', document.body);
   });
 
   describe('renderStyleHeight_', () => {

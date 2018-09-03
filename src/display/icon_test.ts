@@ -1,7 +1,7 @@
 import { VineImpl } from 'grapevine/export/main';
 import { match, retryUntil, should } from 'gs-testing/export/main';
 import { ImmutableMap } from 'gs-tools/src/immutable';
-import { FakeCustomElementRegistry } from 'persona/export/testing';
+import { FakeCustomElementRegistry, PersonaTesterFactory } from 'persona/export/testing';
 import { persona_, vine_ } from '../app/app';
 import { icon } from './icon';
 import { $defaultIconFont } from './registered-font';
@@ -21,20 +21,18 @@ const {configure, ctor} = icon(
     [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
   ]));
 const configureIcon = configure;
+const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
 
 describe('display.Icon', () => {
-  let customElementRegistry: FakeCustomElementRegistry;
   let el: HTMLElement;
   let vine: VineImpl;
 
   beforeEach(() => {
-    customElementRegistry = new FakeCustomElementRegistry();
-    vine = vine_.builder.run();
-    persona_.builder.build([ctor], customElementRegistry, vine);
+    const tester = testerFactory.build([ctor]);
+    vine = tester.vine;
     configureIcon(vine);
 
-    el = customElementRegistry.create('mk-icon', document.body);
-    document.body.appendChild(el);
+    el = tester.createElement('mk-icon', document.body);
   });
 
   describe('providesFontConfig_', () => {
