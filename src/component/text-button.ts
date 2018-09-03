@@ -48,6 +48,8 @@ const $ = resolveLocators({
   ],
 })
 export class TextButton extends CustomElementCtrl {
+  @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
+
   private async activate_(vine: VineImpl): Promise<void> {
     const [disabled, dispatch] = await Promise.all([
       vine.getLatest($.host.disabled.getReadingId(), this),
@@ -97,11 +99,6 @@ export class TextButton extends CustomElementCtrl {
   renderLabel_(
       @vine_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
     return hostLabel;
-  }
-
-  @persona_.render($.host.role)
-  renderRole_(): AriaRole {
-    return AriaRole.BUTTON;
   }
 
   @persona_.render($.host.tabindex)

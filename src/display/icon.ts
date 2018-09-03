@@ -54,6 +54,9 @@ const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType))
   ],
 })
 export class Icon extends CustomElementCtrl {
+  @persona_.render($.host.ariaHidden) ariaHidden_: boolean = true;
+  @persona_.render($.host.role)role_: AriaRole = AriaRole.PRESENTATION;
+
   init(vine: VineImpl): void {
     // Noop
   }
@@ -67,11 +70,6 @@ export class Icon extends CustomElementCtrl {
     return registeredFonts.get(iconFamily) || registeredFonts.get(defaultIconFont) || null;
   }
 
-  @persona_.render($.host.ariaHidden)
-  renderAriaHidden_(): boolean {
-    return true;
-  }
-
   @persona_.render($.link.href)
   renderLinkHref_(
       @vine_.vineIn($fontConfig) fontConfig: FontConfig|null): string {
@@ -80,11 +78,6 @@ export class Icon extends CustomElementCtrl {
     }
 
     return fontConfig.url.toString();
-  }
-
-  @persona_.render($.host.role)
-  renderRole_(): AriaRole {
-    return AriaRole.PRESENTATION;
   }
 
   @persona_.render($.root.classList)
