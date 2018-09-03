@@ -162,4 +162,9 @@ td {
   display: none;
 }
 
-
+/* Themes */
+[mk-theme="highlight"],
+[mk-theme="light"],
+[mk-theme="dark"] {
+  background: var(--mkThemePassiveBG);
+}

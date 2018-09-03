@@ -23,7 +23,6 @@ const {configure, ctor} = icon(
 const configureIcon = configure;
 
 describe('display.Icon', () => {
-
   let customElementRegistry: FakeCustomElementRegistry;
   let el: HTMLElement;
   let vine: VineImpl;

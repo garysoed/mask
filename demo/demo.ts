@@ -5,6 +5,7 @@ import { element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
 import { icon, Palette, start as startMask, textButton } from '../export';
 import { iconButton } from '../src/component/icon-button';
+import { drawer } from '../src/section/drawer';
 import * as generalCss from '../src/theme/general.css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
@@ -54,6 +55,7 @@ const registeredFonts = ImmutableMap.of([
       ],
     ]);
 startMask([
+  drawer(),
   icon('material', registeredFonts),
   iconButton('material', registeredFonts),
   textButton(),
