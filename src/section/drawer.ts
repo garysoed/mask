@@ -15,7 +15,6 @@ import { BooleanType, EnumType, StringType } from 'gs-types/export';
 import { attribute, resolveLocators, shadowHost, style } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
-import { Config } from '../app/config';
 import drawerTemplate from './drawer.html';
 
 export enum Mode {

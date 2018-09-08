@@ -1,4 +1,14 @@
 <style id="theme"></style>
-<section mk-theme="light">
-  <slot></slot>
+<section layout="row" mk-theme="light" fill-parent>
+  <mk-drawer
+      id="option"
+      max-size="10rem"
+      min-size="4rem"
+      mk-theme="highlight"
+      mode="vertical">
+    <mk-text-button label="Palette"></mk-text-button>
+  </mk-drawer>
+  <section flex style="position: relative;">
+    <slot></slot>
+  </section>
 </section>
