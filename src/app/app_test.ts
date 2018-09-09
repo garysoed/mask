@@ -80,8 +80,8 @@ describe('app.App', () => {
       const mockConfigure = createSpy<void, [VineImpl]>('Configure');
       const personaBuilderBuildSpy = spy(persona_.builder, 'build');
 
-      const vine = Mocks.object<VineImpl>('vine');
-      fake(spy(vine_.builder, 'run')).always().return(vine);
+      const mockVineImpl = createSpyInstance('VineImpl', VineImpl.prototype);
+      fake(spy(vine_.builder, 'run')).always().return(mockVineImpl);
 
       const mockTheme = createSpyInstance('Theme', Theme.prototype);
 
@@ -91,12 +91,12 @@ describe('app.App', () => {
 
       start([config1, config2, config3], mockTheme, window.customElements, window.document);
 
-      assert(mockConfigure).to.haveBeenCalledWith(vine);
+      assert(mockConfigure).to.haveBeenCalledWith(mockVineImpl);
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
           match.anyIterableThat<typeof CustomElementCtrl, (typeof CustomElementCtrl)[]>()
               .haveElements([TestClass1, TestClass2, TestClass3]),
           window.customElements,
-          vine);
+          mockVineImpl);
       assert(mockTheme);
     });
   });

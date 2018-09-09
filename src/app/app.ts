@@ -1,12 +1,20 @@
-import { getOrRegisterApp as getOrRegisterGrapevineApp } from 'grapevine/export/main';
+import { staticSourceId } from 'grapevine/export/component';
+import { getOrRegisterApp as getOrRegisterGrapevineApp, VineImpl } from 'grapevine/export/main';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/src/error';
+import { InstanceofType } from 'gs-types/export';
+import { ResolvedWatchableLocator } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
+import * as generalCss from '../theme/general.css';
+import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 import { Config } from './config';
 
 export const vine_ = getOrRegisterGrapevineApp('maskBase');
 export const persona_ = getOrRegisterPersonaApp('maskBase', vine_);
+
+export const $theme = staticSourceId('theme', InstanceofType(Theme));
+vine_.builder.source($theme, new Theme(Palette.ORANGE, Palette.GREEN));
 
 export function addToMapConfig_(map: Map<typeof CustomElementCtrl, Config>, config: Config): void {
   const existingConfig = map.get(config.ctor);
@@ -48,6 +56,7 @@ export function start(
   }
 
   const vine = vine_.builder.run();
+  vine.setValue($theme, theme);
   persona_.builder.build(ctors, customElementRegistry, vine);
 
   for (const [, {configure}] of flattenedConfigs) {

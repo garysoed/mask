@@ -7,8 +7,10 @@ import { attribute, element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
 import { icon, Palette, start as startMask, textButton } from '../export';
 import { iconButton } from '../src/component/icon-button';
+import { textIconButton } from '../src/component/text-icon-button';
 import { drawer } from '../src/section/drawer';
 import * as generalCss from '../src/theme/general.css';
+import { injectGeneralCss } from '../src/theme/inject-general-css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
 
@@ -37,10 +39,7 @@ vineBuilder.source($isOnOption, false);
 })
 class DemoCtrl extends CustomElementCtrl {
   init(vine: VineImpl): void {
-    vine.listen(
-        el => el.innerHTML = generalCss,
-        this,
-        $.themeStyle.getReadingId());
+    injectGeneralCss(vine, this, $.themeStyle);
   }
 
   @onDom($.option.el, 'mouseout')
@@ -91,4 +90,5 @@ startMask([
   iconConfig,
   iconButton(iconConfig),
   textButton(),
+  textIconButton(iconConfig),
 ], theme);
