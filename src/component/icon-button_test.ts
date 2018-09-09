@@ -1,8 +1,9 @@
 import { fshould, match, retryUntil, should } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
-import { FakeCustomElementRegistry, PersonaTesterFactory } from 'persona/export/testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 import { persona_, vine_ } from '../app/app';
+import { icon } from '../display/icon';
 import { ActionEvent } from '../event/action-event';
 import { simulateKeypress } from '../testing/util';
 import { iconButton } from './icon-button';
@@ -11,13 +12,13 @@ const ICON_CLASS = 'iconClass';
 const ICON_FONT = 'iconFont';
 const FONT_URL = new URL('http://fontUrl');
 
-const {configure, ctor} = iconButton(
-  '',
-  ImmutableMap.of([
-    [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
-  ]));
+const iconConfig = icon(
+    '',
+    ImmutableMap.of([
+      [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
+    ]));
+const {ctor} = iconButton(iconConfig);
 // tslint:disable-next-line:no-non-null-assertion
-const configureIcon = configure;
 const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
 
 describe('component.IconButton', () => {
@@ -25,7 +26,6 @@ describe('component.IconButton', () => {
 
   beforeEach(() => {
     const tester = testerFactory.build([ctor]);
-    configureIcon(tester.vine);
     el = tester.createElement('mk-icon-button', document.body);
   });
 

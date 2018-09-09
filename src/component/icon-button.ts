@@ -3,8 +3,11 @@
  * A basic text button.
  *
  * @attr {<boolean} disabled True iff the button should be disabled.
- * @attr {<string} label Label on the button.
  * @attr {<string} ariaLabel A11y label on the button. Defaults to label if not specified.
+ * @attr {<string} iconFamily Family of icons to use. This should correspond to the one registered
+ *     in $registeredFonts.
+ * @attr {<string} label Label on the button.
+ * @slot The glyph of the icon to display.
  */
 
 import { VineImpl } from 'grapevine/export/main';
@@ -16,9 +19,11 @@ import { attribute, dispatcher, element, resolveLocators, shadowHost } from 'per
 import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
 import { icon } from '../display/icon';
+import { IconConfig } from '../display/icon-config';
 import { FontConfig } from '../display/registered-font';
 import { ActionEvent } from '../event/action-event';
 import iconButtonTemplate from './icon-button.html';
+import { IconButtonConfig } from './icon-button-config';
 
 const $ = resolveLocators({
   host: {
@@ -105,14 +110,9 @@ export class IconButton extends CustomElementCtrl {
   }
 }
 
-export function iconButton(
-    defaultIconFont: string,
-    registeredFonts: ImmutableMap<string, FontConfig>):
-    {ctor: typeof IconButton; configure(vine: VineImpl): void} {
+export function iconButton(iconConfig: IconConfig): IconButtonConfig {
   return {
     ctor: IconButton,
-    configure(vine: VineImpl): void {
-      icon(defaultIconFont, registeredFonts).configure(vine);
-    },
+    dependencies: [iconConfig],
   };
 }

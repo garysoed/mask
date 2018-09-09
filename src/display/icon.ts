@@ -16,6 +16,7 @@ import { AriaRole } from 'persona/export/a11y';
 import { attribute, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
+import { IconConfig } from './icon-config';
 import iconTemplate from './icon.html';
 import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-font';
 
@@ -96,7 +97,7 @@ export class Icon extends CustomElementCtrl {
 export function icon(
     defaultIconFont: string,
     registeredFonts: ImmutableMap<string, FontConfig>):
-    {ctor: typeof Icon; configure(vine: VineImpl): void} {
+    IconConfig {
   return {
     ctor: Icon,
     configure(vine: VineImpl): void {

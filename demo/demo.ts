@@ -84,9 +84,11 @@ const registeredFonts = ImmutableMap.of([
         },
       ],
     ]);
+
+const iconConfig = icon('material', registeredFonts);
 startMask([
   drawer(),
-  icon('material', registeredFonts),
-  iconButton('material', registeredFonts),
+  iconConfig,
+  iconButton(iconConfig),
   textButton(),
 ], theme);
