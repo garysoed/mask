@@ -64,7 +64,7 @@ export class Icon extends CustomElementCtrl {
   @vine_.vineOut($fontConfig)
   providesFontConfig_(
       @vine_.vineIn($defaultIconFont) defaultIconFont: string,
-      @vine_.vineIn($.host.iconFamily.getReadingId()) iconFamily: string,
+      @persona_.input($.host.iconFamily) iconFamily: string,
       @vine_.vineIn($registeredFonts)
           registeredFonts: ImmutableMap<string, FontConfig>): FontConfig|null {
     return registeredFonts.get(iconFamily) || registeredFonts.get(defaultIconFont) || null;
@@ -83,7 +83,7 @@ export class Icon extends CustomElementCtrl {
   @persona_.render($.root.classList)
   renderRootClassList_(
       @vine_.vineIn($fontConfig) fontConfig: FontConfig|null,
-      @vine_.vineIn($.root.classList.getReadingId()) existingClasses: ImmutableSet<string>):
+      @persona_.input($.root.classList) existingClasses: ImmutableSet<string>):
       ImmutableSet<string> {
     if (!fontConfig) {
       return ImmutableSet.of();

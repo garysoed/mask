@@ -85,26 +85,22 @@ export class IconButton extends CustomElementCtrl {
   }
 
   @persona_.render($.host.ariaDisabled)
-  renderHostAriaDisabled_(
-      @vine_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): boolean {
+  renderHostAriaDisabled_(@persona_.input($.host.disabled) hostDisabled: boolean): boolean {
     return hostDisabled;
   }
 
   @persona_.render($.host.ariaLabel)
-  renderHostAriaLabel_(
-      @vine_.vineIn($.host.ariaLabel.getReadingId()) hostAriaLabel: string): string {
+  renderHostAriaLabel_(@persona_.input($.host.ariaLabel) hostAriaLabel: string): string {
     return hostAriaLabel;
   }
 
   @persona_.render($.icon.iconFamily)
-  renderIconFamily(
-      @vine_.vineIn($.host.iconFamily.getReadingId()) iconFamily: string): string {
+  renderIconFamily(@persona_.input($.host.iconFamily) iconFamily: string): string {
     return iconFamily;
   }
 
   @persona_.render($.host.tabindex)
-  renderTabIndex_(
-      @vine_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): number {
+  renderTabIndex_(@persona_.input($.host.disabled) hostDisabled: boolean): number {
     return hostDisabled ? -1 : 0;
   }
 }

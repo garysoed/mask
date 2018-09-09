@@ -83,27 +83,24 @@ export class TextButton extends CustomElementCtrl {
   }
 
   @persona_.render($.host.ariaDisabled)
-  renderHostAriaDisabled_(
-      @vine_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): boolean {
+  renderHostAriaDisabled_(@persona_.input($.host.disabled) hostDisabled: boolean): boolean {
     return hostDisabled;
   }
 
   @persona_.render($.host.ariaLabel)
   renderHostAriaLabel_(
-      @vine_.vineIn($.host.ariaLabel.getReadingId()) hostAriaLabel: string,
-      @vine_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
+      @persona_.input($.host.ariaLabel) hostAriaLabel: string,
+      @persona_.input($.host.label) hostLabel: string): string {
     return hostAriaLabel || hostLabel;
   }
 
   @persona_.render($.root.text)
-  renderLabel_(
-      @vine_.vineIn($.host.label.getReadingId()) hostLabel: string): string {
+  renderLabel_(@persona_.input($.host.label) hostLabel: string): string {
     return hostLabel;
   }
 
   @persona_.render($.host.tabindex)
-  renderTabIndex_(
-      @vine_.vineIn($.host.disabled.getReadingId()) hostDisabled: boolean): number {
+  renderTabIndex_(@persona_.input($.host.disabled) hostDisabled: boolean): number {
     return hostDisabled ? -1 : 0;
   }
 }
