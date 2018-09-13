@@ -1,6 +1,5 @@
 import { VineImpl } from 'grapevine/export/main';
 import { assert, match, should } from 'gs-testing/export/main';
-import { Mocks } from 'gs-testing/export/mock';
 import { createSpy, createSpyInstance, fake, spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
 import { Theme } from '../theme/theme';

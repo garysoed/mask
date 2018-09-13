@@ -32,7 +32,6 @@ describe('component.IconButton', () => {
   describe('constructor', () => {
     should(`set the default attributes correctly`, async () => {
       await retryUntil(() => el.getAttribute('aria-disabled')).to.equal('false');
-      await retryUntil(() => el.getAttribute('aria-label')).to.equal('');
     });
   });
 

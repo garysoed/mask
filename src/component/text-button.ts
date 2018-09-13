@@ -47,6 +47,8 @@ const $ = resolveLocators({
     shadowHost,
   ],
 })
+@persona_.render($.host.ariaDisabled).withForwarding($.host.disabled)
+@persona_.render($.root.text).withForwarding($.host.label)
 export class TextButton extends CustomElementCtrl {
   @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
 
@@ -82,21 +84,11 @@ export class TextButton extends CustomElementCtrl {
     this.activate_(vine);
   }
 
-  @persona_.render($.host.ariaDisabled)
-  renderHostAriaDisabled_(@persona_.input($.host.disabled) hostDisabled: boolean): boolean {
-    return hostDisabled;
-  }
-
   @persona_.render($.host.ariaLabel)
   renderHostAriaLabel_(
       @persona_.input($.host.ariaLabel) hostAriaLabel: string,
       @persona_.input($.host.label) hostLabel: string): string {
     return hostAriaLabel || hostLabel;
-  }
-
-  @persona_.render($.root.text)
-  renderLabel_(@persona_.input($.host.label) hostLabel: string): string {
-    return hostLabel;
   }
 
   @persona_.render($.host.tabindex)

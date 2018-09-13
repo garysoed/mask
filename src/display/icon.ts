@@ -56,7 +56,7 @@ const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType))
 })
 export class Icon extends CustomElementCtrl {
   @persona_.render($.host.ariaHidden) ariaHidden_: boolean = true;
-  @persona_.render($.host.role)role_: AriaRole = AriaRole.PRESENTATION;
+  @persona_.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
 
   init(vine: VineImpl): void {
     // Noop
