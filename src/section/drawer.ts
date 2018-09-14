@@ -11,11 +11,12 @@
 
 import { VineImpl } from 'grapevine/export/main';
 import { BooleanParser, EnumParser, StringParser } from 'gs-tools/export/parse';
-import { BooleanType, EnumType, StringType } from 'gs-types/export';
-import { attribute, resolveLocators, shadowHost, style } from 'persona/export/locator';
+import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
+import { attribute, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
 import { Config } from '../app/config';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import drawerTemplate from './drawer.html';
 
 export enum Mode {
@@ -36,6 +37,9 @@ const $ = resolveLocators({
       width: style(shadowHost, 'width'),
     },
   },
+  theme: {
+    el: element('#theme', InstanceofType(HTMLStyleElement)),
+  },
 });
 
 @persona_.customElement({
@@ -46,13 +50,14 @@ const $ = resolveLocators({
     $.host.maxSize,
     $.host.minSize,
     $.host.mode,
+    $.theme.el,
   ],
 })
-export class Drawer extends CustomElementCtrl {
+export class Drawer extends ThemedCustomElementCtrl {
   @persona_.render($.host.style.overflow) readonly overflow_: string = 'hidden';
 
-  init(vine: VineImpl): void {
-    // Noop
+  constructor() {
+    super($.theme.el);
   }
 
   @persona_.render($.host.style.height)

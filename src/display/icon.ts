@@ -14,8 +14,8 @@ import { ImmutableMap, ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
-import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { IconConfig } from './icon-config';
 import iconTemplate from './icon.html';
 import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-font';
@@ -35,6 +35,9 @@ const $ = resolveLocators({
     classList: classlist(element('root.el')),
     el: element('#root', InstanceofType(HTMLSpanElement)),
   },
+  theme: {
+    el: element('#theme', InstanceofType(HTMLStyleElement)),
+  },
 });
 
 const FontConfigType = HasPropertiesType<FontConfig>({
@@ -52,14 +55,15 @@ const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType))
     $.link.href,
     $.root.classList,
     $.root.el,
+    $.theme.el,
   ],
 })
-export class Icon extends CustomElementCtrl {
+export class Icon extends ThemedCustomElementCtrl {
   @persona_.render($.host.ariaHidden) ariaHidden_: boolean = true;
   @persona_.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
 
-  init(vine: VineImpl): void {
-    // Noop
+  constructor() {
+    super($.theme.el);
   }
 
   @vine_.vineOut($fontConfig)

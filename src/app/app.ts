@@ -3,10 +3,7 @@ import { getOrRegisterApp as getOrRegisterGrapevineApp, VineImpl } from 'grapevi
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/src/error';
 import { InstanceofType } from 'gs-types/export';
-import { ResolvedWatchableLocator } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
-import * as generalCss from '../theme/general.css';
-import { injectGeneralCss } from '../theme/inject-general-css';
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 import { Config } from './config';

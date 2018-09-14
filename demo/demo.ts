@@ -4,18 +4,19 @@ import { BooleanParser } from 'gs-tools/export/parse';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { BooleanType, ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { attribute, element, resolveLocators } from 'persona/export/locator';
-import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
+import { getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
 import { icon, Palette, start as startMask, textButton } from '../export';
 import { $theme } from '../src/app/app';
 import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
 import { drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
+import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import demoTemplate from './demo.html';
 
 const vineApp = getOrRegisterVineApp('demo');
 const {builder, customElement, onDom, render} = getOrRegisterPersonaApp('demo', vineApp);
-const {builder: vineBuilder, vineIn} = vineApp;
+const {builder: vineBuilder} = vineApp;
 
 const $ = resolveLocators({
   option: {
@@ -37,9 +38,9 @@ vineBuilder.source($isOnOption, false);
   ],
 })
 @render($.option.expanded).withForwarding($isOnOption)
-class DemoCtrl extends CustomElementCtrl {
-  init(vine: VineImpl): void {
-    vine.listen((theme, el) => theme.injectCss(el), this, $theme, $.themeStyle.getReadingId());
+class DemoCtrl extends ThemedCustomElementCtrl {
+  constructor() {
+    super($.themeStyle);
   }
 
   @onDom($.option.el, 'mouseout')

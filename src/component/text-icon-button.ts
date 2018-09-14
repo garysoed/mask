@@ -12,11 +12,10 @@ import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/pars
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
-import { CustomElementCtrl } from 'persona/export/main';
-import { persona_, vine_ } from '../app/app';
+import { persona_ } from '../app/app';
 import { IconConfig } from '../display/icon-config';
 import { ActionEvent } from '../event/action-event';
-import { injectGeneralCss } from '../theme/inject-general-css';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { TextIconButtonConfig } from './text-icon-button-config';
 import textButtonTemplate from './text-icon-button.html';
 
@@ -63,8 +62,12 @@ const $ = resolveLocators({
 @persona_.render($.host.ariaDisabled).withForwarding($.host.disabled)
 @persona_.render($.text.text).withForwarding($.host.label)
 @persona_.render($.icon.iconFamily).withForwarding($.host.iconFamily)
-export class TextIconButton extends CustomElementCtrl {
+export class TextIconButton extends ThemedCustomElementCtrl {
   @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
+
+  constructor() {
+    super($.style.el);
+  }
 
   private async activate_(vine: VineImpl): Promise<void> {
     const [disabled, dispatch] = await Promise.all([
@@ -81,10 +84,6 @@ export class TextIconButton extends CustomElementCtrl {
     }
 
     dispatch(new ActionEvent());
-  }
-
-  init(vine: VineImpl): void {
-    injectGeneralCss(vine, $.style.el.getReadingId(), this);
   }
 
   @persona_.onKeydown($.host.el, 'Enter')

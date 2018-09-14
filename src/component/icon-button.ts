@@ -15,10 +15,10 @@ import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/pars
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
-import { CustomElementCtrl } from 'persona/export/main';
 import { persona_ } from '../app/app';
 import { IconConfig } from '../display/icon-config';
 import { ActionEvent } from '../event/action-event';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { IconButtonConfig } from './icon-button-config';
 import iconButtonTemplate from './icon-button.html';
 
@@ -36,6 +36,9 @@ const $ = resolveLocators({
     el: element('#icon', InstanceofType(HTMLElement)),
     iconFamily: attribute(element('icon.el'), 'icon-family', StringParser, StringType, ''),
   },
+  theme: {
+    el: element('#theme', InstanceofType(HTMLStyleElement)),
+  },
 });
 
 @persona_.customElement({
@@ -46,13 +49,18 @@ const $ = resolveLocators({
     $.host.dispatch,
     $.host.iconFamily,
     $.icon.el,
+    $.theme.el,
     shadowHost,
   ],
 })
 @persona_.render($.icon.iconFamily).withForwarding($.host.iconFamily)
 @persona_.render($.host.ariaDisabled).withForwarding($.host.disabled)
-export class IconButton extends CustomElementCtrl {
+export class IconButton extends ThemedCustomElementCtrl {
   @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
+
+  constructor() {
+    super($.theme.el);
+  }
 
   private async activate_(vine: VineImpl): Promise<void> {
     const [disabled, dispatch] = await Promise.all([

@@ -16,6 +16,7 @@ import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import textButtonTemplate from './text-button.html';
 
 const $ = resolveLocators({
@@ -33,6 +34,9 @@ const $ = resolveLocators({
     el: element('#root', InstanceofType(HTMLDivElement)),
     text: textContent(element('root.el')),
   },
+  theme: {
+    el: element('#theme', InstanceofType(HTMLStyleElement)),
+  },
 });
 
 @persona_.customElement({
@@ -44,13 +48,18 @@ const $ = resolveLocators({
     $.host.dispatch,
     $.host.label,
     $.root.el,
+    $.theme.el,
     shadowHost,
   ],
 })
 @persona_.render($.host.ariaDisabled).withForwarding($.host.disabled)
 @persona_.render($.root.text).withForwarding($.host.label)
-export class TextButton extends CustomElementCtrl {
+export class TextButton extends ThemedCustomElementCtrl {
   @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
+
+  constructor() {
+    super($.theme.el);
+  }
 
   private async activate_(vine: VineImpl): Promise<void> {
     const [disabled, dispatch] = await Promise.all([
@@ -67,10 +76,6 @@ export class TextButton extends CustomElementCtrl {
     }
 
     dispatch(new ActionEvent());
-  }
-
-  init(): void {
-    // Noop
   }
 
   @persona_.onKeydown($.host.el, 'Enter')
