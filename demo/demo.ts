@@ -6,11 +6,10 @@ import { BooleanType, ElementWithTagType, InstanceofType } from 'gs-types/export
 import { attribute, element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
 import { icon, Palette, start as startMask, textButton } from '../export';
+import { $theme } from '../src/app/app';
 import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
 import { drawer } from '../src/section/drawer';
-import * as generalCss from '../src/theme/general.css';
-import { injectGeneralCss } from '../src/theme/inject-general-css';
 import { Theme } from '../src/theme/theme';
 import demoTemplate from './demo.html';
 
@@ -37,9 +36,10 @@ vineBuilder.source($isOnOption, false);
     $.themeStyle,
   ],
 })
+@render($.option.expanded).withForwarding($isOnOption)
 class DemoCtrl extends CustomElementCtrl {
   init(vine: VineImpl): void {
-    injectGeneralCss(vine, this, $.themeStyle);
+    vine.listen((theme, el) => theme.injectCss(el), this, $theme, $.themeStyle.getReadingId());
   }
 
   @onDom($.option.el, 'mouseout')
@@ -51,29 +51,13 @@ class DemoCtrl extends CustomElementCtrl {
   onMouseOverOption_(_: unknown, vine: VineImpl): void {
     vine.setValue($isOnOption, true, this);
   }
-
-  // TODO: Simplify this.
-  @render($.option.expanded)
-  renderOptionExpanded_(@vineIn($isOnOption) isOnOption: boolean): boolean {
-    return isOnOption;
-  }
 }
 
-
+const theme = new Theme(Palette.ORANGE, Palette.GREEN);
+vineApp.builder.source($theme, theme);
 const vine = vineApp.builder.run();
 builder.build([DemoCtrl], window.customElements, vine);
 
-// TODO: This needs to be simplified.
-window.addEventListener('load', () => {
-  const globalStyle = document.getElementById('globalStyle');
-  if (!globalStyle) {
-    throw new Error('Missing global style element');
-  }
-
-  globalStyle.innerHTML = generalCss;
-});
-
-const theme = new Theme(Palette.ORANGE, Palette.GREEN);
 const registeredFonts = ImmutableMap.of([
       [
         'material',
@@ -85,10 +69,13 @@ const registeredFonts = ImmutableMap.of([
     ]);
 
 const iconConfig = icon('material', registeredFonts);
-startMask([
-  drawer(),
-  iconConfig,
-  iconButton(iconConfig),
-  textButton(),
-  textIconButton(iconConfig),
-], theme);
+
+window.addEventListener('load', () => {
+  const {vine: maskVine} = startMask([
+    drawer(),
+    iconConfig,
+    iconButton(iconConfig),
+    textButton(),
+    textIconButton(iconConfig),
+  ], theme, document.getElementById('globalStyle') as HTMLStyleElement);
+});

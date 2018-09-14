@@ -1,9 +1,6 @@
-import { VineImpl } from 'grapevine/export/main';
-import { ImmutableMap, ImmutableSet } from 'gs-tools/export/collect';
+import { ImmutableMap } from 'gs-tools/export/collect';
 import { Color, Colors, HslColor, RgbColor } from 'gs-tools/export/color';
 import { assertUnreachable } from 'gs-tools/src/typescript/assert-unreachable';
-import { CustomElementCtrl } from 'persona/export/main';
-import { ResolvedWatchableLocator } from 'persona/src/locator/resolved-locator';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import * as generalCss from './general.css';
@@ -160,7 +157,7 @@ export class Theme {
       private readonly baseColor_: Color,
       private readonly highlightColor_: Color) { }
 
-  injectCss(document: Document): void {
+  injectCss(styleEl: HTMLStyleElement): void {
     const baseColorPairs = SHADES.mapItem(shade => {
       return [shade, createColor_(shade, this.baseColor_)] as [Shade, Color];
     });
@@ -188,8 +185,6 @@ export class Theme {
         .replace('/*{themeDark}*/', generateColorCss_(darkColorMap))
         .replace('/*{themeHighlight}*/', generateColorCss_(highlightColorMap));
 
-    const styleEl = document.createElement('style');
-    styleEl.innerHTML = cssContent;
-    document.head.appendChild(styleEl);
+    styleEl.innerHTML = `${cssContent}\n${generalCss}`;
   }
 }

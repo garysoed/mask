@@ -158,8 +158,27 @@ td {
   top: 0;
 }
 
-[hidden] {
-  display: none;
+[shadow="up"] {
+  box-shadow: 0 1px 8px 0 rgba(0,0,0,.2),
+      0 3px 4px 0 rgba(0,0,0,.14),
+      0 3px 3px -2px rgba(0,0,0,.12);
+}
+[shadow="down"] {
+  position: relative;
+}
+[shadow="down"]::before {
+  content: '';
+
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+
+  box-shadow: inset 4px 1px 8px 0 rgba(0,0,0,.2),
+      inset 0 3px 4px 0 rgba(0,0,0,.14),
+      inset 1.5px 3px 3px -2px rgba(0,0,0,.12);
+  pointer-events: none;
 }
 
 /* Themes */

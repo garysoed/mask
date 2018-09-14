@@ -1,9 +1,10 @@
+import { NodeId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { assert, match, should } from 'gs-testing/export/main';
-import { createSpy, createSpyInstance, fake, spy } from 'gs-testing/export/spy';
+import { createSpy, createSpyInstance, fake, spy, Spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
 import { Theme } from '../theme/theme';
-import { addToMapConfig_, flattenConfigs_, persona_, start, vine_ } from './app';
+import { $theme, addToMapConfig_, flattenConfigs_, persona_, start, vine_ } from './app';
 
 /**
  * @test
@@ -76,6 +77,7 @@ describe('app.App', () => {
 
   describe('start', () => {
     should(`build all the constructors and configure all the configs`, () => {
+      const styleEl = document.createElement('style');
       const mockConfigure = createSpy<void, [VineImpl]>('Configure');
       const personaBuilderBuildSpy = spy(persona_.builder, 'build');
 
@@ -88,7 +90,7 @@ describe('app.App', () => {
       const config2 = {ctor: TestClass2, dependencies: [config1]};
       const config3 = {ctor: TestClass3, configure: mockConfigure};
 
-      start([config1, config2, config3], mockTheme, window.customElements, window.document);
+      start([config1, config2, config3], mockTheme, styleEl, window.customElements);
 
       assert(mockConfigure).to.haveBeenCalledWith(mockVineImpl);
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
@@ -97,6 +99,13 @@ describe('app.App', () => {
           window.customElements,
           mockVineImpl);
       assert(mockTheme);
+
+      const listenFnMatch = match.anyObjectThat<(theme: Theme) => void>()
+          .beAnInstanceOf(Function as any);
+
+      type ListenFnSpy = Spy<() => void, [(v: Theme) => void, NodeId<Theme>]>;
+      assert(mockVineImpl.listen as any as ListenFnSpy)
+          .to.haveBeenCalledWith(listenFnMatch, $theme);
     });
   });
 });

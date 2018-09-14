@@ -84,7 +84,7 @@ export class TextIconButton extends CustomElementCtrl {
   }
 
   init(vine: VineImpl): void {
-    injectGeneralCss(vine, this, $.style.el);
+    injectGeneralCss(vine, $.style.el.getReadingId(), this);
   }
 
   @persona_.onKeydown($.host.el, 'Enter')

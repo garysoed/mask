@@ -6,6 +6,7 @@ import { InstanceofType } from 'gs-types/export';
 import { ResolvedWatchableLocator } from 'persona/export/locator';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
 import * as generalCss from '../theme/general.css';
+import { injectGeneralCss } from '../theme/inject-general-css';
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 import { Config } from './config';
@@ -44,10 +45,8 @@ export function flattenConfigs_(configs: Config[]): ImmutableMap<typeof CustomEl
 export function start(
     configs: Config[],
     theme: Theme,
-    customElementRegistry: CustomElementRegistry = window.customElements,
-    document: Document = window.document): void {
-  theme.injectCss(document);
-
+    styleEl: HTMLStyleElement,
+    customElementRegistry: CustomElementRegistry = window.customElements): {vine: VineImpl} {
   const flattenedConfigs = flattenConfigs_(configs);
 
   const ctors = [];
@@ -64,4 +63,8 @@ export function start(
       configure(vine);
     }
   }
+
+  vine.listen(theme => theme.injectCss(styleEl), $theme);
+
+  return {vine};
 }

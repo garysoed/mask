@@ -1,16 +1,26 @@
+import { InstanceSourceId, InstanceStreamId, NodeId, StaticSourceId, StaticStreamId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
-import { ResolvedWatchableLocator } from 'persona/export/locator';
+import { Errors } from 'gs-tools/src/error';
 import { CustomElementCtrl } from 'persona/export/main';
-import * as generalCss from './general.css';
+import { $theme } from '../app/app';
 
 export function injectGeneralCss(
     vine: VineImpl,
-    ctrl: CustomElementCtrl,
-    styleElLocator: ResolvedWatchableLocator<HTMLStyleElement>): void {
-  vine.listen(
-      el => {
-        el.innerHTML = generalCss;
-      },
-      ctrl,
-      styleElLocator.getReadingId());
+    styleElId: StaticSourceId<HTMLStyleElement>|StaticStreamId<HTMLStyleElement>): void;
+export function injectGeneralCss(
+    vine: VineImpl,
+    styleElId: InstanceSourceId<HTMLStyleElement>|InstanceStreamId<HTMLStyleElement>,
+    context: CustomElementCtrl): void;
+export function injectGeneralCss(
+    vine: VineImpl,
+    styleElId: NodeId<HTMLStyleElement>,
+    context?: CustomElementCtrl): void {
+  if (styleElId instanceof StaticSourceId || styleElId instanceof StaticStreamId) {
+    vine.listen((el, theme) => theme.injectCss(el), styleElId, $theme);
+  } else {
+    if (!context) {
+      throw Errors.assert('context').shouldExist().butNot();
+    }
+    vine.listen((el, theme) => theme.injectCss(el), context, styleElId, $theme);
+  }
 }

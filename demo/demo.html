@@ -1,14 +1,22 @@
 <style id="theme"></style>
+<style>
+  #container {
+    padding-left: 1rem;
+    position: relative;
+  }
+</style>
+<style id="globalStyle"></style>
 <section layout="row" mk-theme="light" fill-parent>
   <mk-drawer
       id="option"
       max-size="10rem"
       min-size="4rem"
       mk-theme="highlight"
-      mode="vertical">
-    <mk-text-button label="Palette"></mk-text-button>
+      mode="vertical"
+      shadow="down">
+    <mk-text-icon-button label="Palette">palette</mk-text-button>
   </mk-drawer>
-  <section flex style="position: relative;">
+  <section flex id="container">
     <slot></slot>
   </section>
 </section>
