@@ -154,15 +154,15 @@ function getMixAmount_(shade: Shade): number {
 
 export class Theme {
   constructor(
-      private readonly baseColor_: Color,
-      private readonly highlightColor_: Color) { }
+      readonly baseColor: Color,
+      readonly highlightColor: Color) { }
 
   injectCss(styleEl: HTMLStyleElement): void {
     const baseColorPairs = SHADES.mapItem(shade => {
-      return [shade, createColor_(shade, this.baseColor_)] as [Shade, Color];
+      return [shade, createColor_(shade, this.baseColor)] as [Shade, Color];
     });
     const baseColorMap = ImmutableMap.of(baseColorPairs);
-    const highlightColor = createColor_(Shade.A100, this.highlightColor_);
+    const highlightColor = createColor_(Shade.A100, this.highlightColor);
 
     const contrastShade = getContrastForegroundShade_(baseColorMap, highlightColor);
     const lightColorMap = generateColorMap_(

@@ -10,9 +10,15 @@
   }
 
   .palette {
+    cursor: pointer;
     display: inline-block;
     height: 4rem;
     width: 4rem;
+  }
+
+  .palette.selected {
+    outline: black solid 4px;
+    outline-offset: -4px;
   }
 </style>
 <style id="globalStyle"></style>
@@ -28,6 +34,10 @@
       <mk-text-icon-button label="Base Palette">palette</mk-text-icon-button>
       <div id="basePalette">
         <!-- basePalette -->
+      </div>
+      <mk-text-icon-button label="Accent Palette">colorize</mk-text-icon-button>
+      <div id="accentPalette">
+        <!-- accentPalette -->
       </div>
     </div>
   </mk-drawer>
