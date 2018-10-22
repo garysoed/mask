@@ -4,17 +4,32 @@
     padding-left: 1rem;
     position: relative;
   }
+
+  #drawerRoot {
+    width: 16rem;
+  }
+
+  .palette {
+    display: inline-block;
+    height: 4rem;
+    width: 4rem;
+  }
 </style>
 <style id="globalStyle"></style>
 <section layout="row" mk-theme="light" fill-parent>
   <mk-drawer
       id="option"
-      max-size="10rem"
+      max-size="16rem"
       min-size="4rem"
       mk-theme="highlight"
       mode="vertical"
       shadow="down">
-    <mk-text-icon-button label="Palette">palette</mk-text-button>
+    <div id="drawerRoot">
+      <mk-text-icon-button label="Base Palette">palette</mk-text-icon-button>
+      <div id="basePalette">
+        <!-- basePalette -->
+      </div>
+    </div>
   </mk-drawer>
   <section flex id="container">
     <slot></slot>
