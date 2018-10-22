@@ -16,6 +16,7 @@ import demoTemplate from './demo.html';
 interface PaletteData {
   [__renderId]: string;
   class: string;
+  color: string;
   style: string;
 }
 
@@ -25,6 +26,7 @@ const paletteElementListRenderer = new ElementListRenderer<PaletteData>(
       {
         [__renderId]: StringParser,
         class: StringParser,
+        color: StringParser,
         style: StringParser,
       },
   ),
@@ -34,6 +36,7 @@ const paletteDataType = IterableOfType<PaletteData, ImmutableList<PaletteData>>(
   HasPropertiesType({
     [__renderId]: StringType,
     class: StringType,
+    color: StringType,
     style: StringType,
   }),
 );
@@ -84,22 +87,21 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     super($.themeStyle);
   }
 
-  private getPaletteData_(selectedColor: Color): ImmutableList<PaletteData> {
-    return ImmutableList.of(ORDERED_PALETTES)
-        .mapItem(color => {
-          const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
+  @demoApp.persona.onDom($.basePalette.el, 'click')
+  async onBasePaletteClick_(event: MouseEvent, vine: VineImpl): Promise<void> {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
 
-          const classes = ['palette'];
-          if (selectedColor === color) {
-            classes.push('selected');
-          }
+    const colorName = target.getAttribute('color');
+    if (!colorName) {
+      return;
+    }
 
-          return {
-            [__renderId]: colorCss,
-            class: classes.join(' '),
-            style: `background-color: ${colorCss};`,
-          };
-        });
+    const color = (Palette as any)[colorName];
+    const theme = await vine.getLatest($theme);
+    vine.setValue($theme, new Theme(color, theme.highlightColor));
   }
 
   @demoApp.persona.onDom($.option.el, 'mouseout')
@@ -115,31 +117,50 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
   @demoApp.persona.render($.accentPalette.slot)
   renderAccentPalette(
       @demoApp.vine.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
-    return this.getPaletteData_(theme.highlightColor);
+    return getPaletteData_(theme.highlightColor);
   }
 
   @demoApp.persona.render($.basePalette.slot)
   renderBasePalette(
       @demoApp.vine.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
-    return this.getPaletteData_(theme.baseColor);
+    return getPaletteData_(theme.baseColor);
   }
 }
 
-const ORDERED_PALETTES = [
-  Palette.RED,
-  Palette.ORANGE,
-  Palette.AMBER,
-  Palette.YELLOW,
-  Palette.LIME,
-  Palette.GREEN,
-  Palette.SPRING,
-  Palette.CYAN,
-  Palette.SKY,
-  Palette.AZURE,
-  Palette.BLUE,
-  Palette.VIOLET,
-  Palette.PURPLE,
-  Palette.MAGENTA,
-  Palette.PINK,
-  Palette.GREY,
+const ORDERED_PALETTES: [string, Color][] = [
+  ['RED', Palette.RED],
+  ['ORANGE', Palette.ORANGE],
+  ['AMBER', Palette.AMBER],
+  ['YELLOW', Palette.YELLOW],
+  ['LIME', Palette.LIME],
+  ['GREEN', Palette.GREEN],
+  ['SPRING', Palette.SPRING],
+  ['CYAN', Palette.CYAN],
+  ['SKY', Palette.SKY],
+  ['AZURE', Palette.AZURE],
+  ['BLUE', Palette.BLUE],
+  ['VIOLET', Palette.VIOLET],
+  ['PURPLE', Palette.PURPLE],
+  ['MAGENTA', Palette.MAGENTA],
+  ['PINK', Palette.PINK],
+  ['GREY', Palette.GREY],
 ];
+
+function getPaletteData_(selectedColor: Color): ImmutableList<PaletteData> {
+  return ImmutableList.of(ORDERED_PALETTES)
+      .mapItem(([colorName, color]) => {
+        const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
+
+        const classes = ['palette'];
+        if (selectedColor === color) {
+          classes.push('selected');
+        }
+
+        return {
+          [__renderId]: colorName,
+          class: classes.join(' '),
+          color: colorName,
+          style: `background-color: ${colorCss};`,
+        };
+      });
+}
