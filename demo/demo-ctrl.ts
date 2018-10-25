@@ -44,7 +44,7 @@ const paletteDataType = IterableOfType<PaletteData, ImmutableList<PaletteData>>(
 const $ = resolveLocators({
   accentPalette: {
     el: element<HTMLDivElement>('#accentPalette', InstanceofType(HTMLDivElement)),
-    slot: slot<ImmutableList<PaletteData>>(
+    slot: slot(
         element('accentPalette.el'),
         'accentPalette',
         paletteElementListRenderer,
@@ -53,7 +53,7 @@ const $ = resolveLocators({
   },
   basePalette: {
     el: element<HTMLDivElement>('#basePalette', InstanceofType(HTMLDivElement)),
-    slot: slot<ImmutableList<PaletteData>>(
+    slot: slot(
         element('basePalette.el'),
         'basePalette',
         paletteElementListRenderer,
@@ -87,21 +87,25 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     super($.themeStyle);
   }
 
+  @demoApp.persona.onDom($.accentPalette.el, 'click')
+  async onAccentPaletteClick_(event: MouseEvent, vine: VineImpl): Promise<void> {
+    const color = getColor(event);
+    if (!color) {
+      return;
+    }
+
+    const theme = await vine.getLatest($theme);
+    vine.setValue($theme, theme.setHighlightColor(color));
+  }
+
   @demoApp.persona.onDom($.basePalette.el, 'click')
   async onBasePaletteClick_(event: MouseEvent, vine: VineImpl): Promise<void> {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) {
+    const color = getColor(event);
+    if (!color) {
       return;
     }
-
-    const colorName = target.getAttribute('color');
-    if (!colorName) {
-      return;
-    }
-
-    const color = (Palette as any)[colorName];
     const theme = await vine.getLatest($theme);
-    vine.setValue($theme, new Theme(color, theme.highlightColor));
+    vine.setValue($theme, theme.setBaseColor(color));
   }
 
   @demoApp.persona.onDom($.option.el, 'mouseout')
@@ -125,6 +129,20 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
       @demoApp.vine.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
     return getPaletteData_(theme.baseColor);
   }
+}
+
+function getColor(event: MouseEvent): Color|null {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) {
+    return null;
+  }
+
+  const colorName = target.getAttribute('color');
+  if (!colorName) {
+    return null;
+  }
+
+  return (Palette as any)[colorName] || null;
 }
 
 const ORDERED_PALETTES: [string, Color][] = [

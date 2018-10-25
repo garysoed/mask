@@ -1,4 +1,4 @@
-import { fshould, match, retryUntil, should } from 'gs-testing/export/main';
+import { match, retryUntil, should } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTesterFactory } from 'persona/export/testing';

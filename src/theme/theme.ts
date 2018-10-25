@@ -164,7 +164,11 @@ export class Theme {
     const baseColorMap = ImmutableMap.of(baseColorPairs);
     const highlightColor = createColor_(Shade.A100, this.highlightColor);
 
-    const contrastShade = getContrastForegroundShade_(baseColorMap, highlightColor);
+    const b100 = baseColorMap.get(Shade.B100);
+    if (!b100) {
+      throw new Error(`Base color does not exist`);
+    }
+    const contrastShade = getContrastForegroundShade_(baseColorMap, b100);
     const lightColorMap = generateColorMap_(
         LIGHT_SHADING,
         baseColorMap,
@@ -186,5 +190,13 @@ export class Theme {
         .replace('/*{themeHighlight}*/', generateColorCss_(highlightColorMap));
 
     styleEl.innerHTML = `${cssContent}\n${generalCss}`;
+  }
+
+  setBaseColor(color: Color): Theme {
+    return new Theme(color, this.highlightColor);
+  }
+
+  setHighlightColor(color: Color): Theme {
+    return new Theme(this.baseColor, color);
   }
 }

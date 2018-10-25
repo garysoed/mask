@@ -12,8 +12,7 @@ import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/pars
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
-import { CustomElementCtrl } from 'persona/export/main';
-import { persona_, vine_ } from '../app/app';
+import { persona_ } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
