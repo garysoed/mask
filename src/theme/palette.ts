@@ -1,26 +1,27 @@
-import { HslColor } from 'gs-tools/export/color';
+import { RgbColor } from 'gs-tools/export/color';
 
-const GREY = HslColor.newInstance(0, 0, 0.5);
-const RED = HslColor.newInstance(14, 0.75, 0.5);
-const ORANGE = HslColor.newInstance(28, 0.75, 0.5);
-const AMBER = HslColor.newInstance(42, 0.75, 0.5);
-const YELLOW = HslColor.newInstance(56, 0.75, 0.5);
-const LIME = HslColor.newInstance(76, 0.75, 0.5);
-const GREEN = HslColor.newInstance(106, 0.75, 0.5);
-const SPRING = HslColor.newInstance(158, 0.75, 0.5);
-const CYAN = HslColor.newInstance(184, 0.75, 0.5);
-const SKY = HslColor.newInstance(191, 0.75, 0.5);
-const AZURE = HslColor.newInstance(212, 0.75, 0.5);
-const BLUE = HslColor.newInstance(226, 0.75, 0.5);
-const VIOLET = HslColor.newInstance(257, 0.75, 0.5);
-const PURPLE = HslColor.newInstance(268, 0.75, 0.5);
-const MAGENTA = HslColor.newInstance(288, 0.75, 0.5);
-const PINK = HslColor.newInstance(325, 0.75, 0.5);
+const GREY = RgbColor.newInstance(128, 128, 128);
+const RED = RgbColor.newInstance(224, 56, 32);
+const ORANGE = RgbColor.newInstance(224, 122, 32);
+const AMBER = RgbColor.newInstance(224, 177, 32);
+const YELLOW = RgbColor.newInstance(224, 221, 32);
+const LIME = RgbColor.newInstance(126, 224, 32);
+const CYAN = RgbColor.newInstance(32, 222, 224);
+const AZURE = RgbColor.newInstance(32, 154, 224);
+const BLUE = RgbColor.newInstance(32, 77, 224);
+const VIOLET = RgbColor.newInstance(86, 32, 224);
+const PURPLE = RgbColor.newInstance(122, 32, 224);
+const MAGENTA = RgbColor.newInstance(186, 32, 224);
+const PINK = RgbColor.newInstance(224, 32, 144);
+const BROWN = RgbColor.newInstance(158, 86, 22);
+const GREEN = RgbColor.newInstance(23, 169, 40);
+const TEAL = RgbColor.newInstance(24, 166, 168);
 
 export const Palette = {
   AMBER,
   AZURE,
   BLUE,
+  BROWN,
   CYAN,
   GREEN,
   GREY,
@@ -30,8 +31,7 @@ export const Palette = {
   PINK,
   PURPLE,
   RED,
-  SKY,
-  SPRING,
+  TEAL,
   VIOLET,
   YELLOW,
 };
