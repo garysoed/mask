@@ -12,7 +12,13 @@ const WHITE = RgbColor.newInstance(255, 255, 255);
 
 function createColor_(shade: Shade, base: Color): Color {
   if (shade === Shade.A100) {
-    return HslColor.newInstance(base.getHue(), (base.getSaturation() + 1) / 2, base.getLightness());
+    const lightness = base.getLightness();
+    const neon = Colors.neonize(base, 0.75);
+
+    return HslColor.newInstance(
+        neon.getHue(),
+        (neon.getSaturation() + 1) / 2,
+        (1 - lightness) * 0.5 + lightness);
   }
 
   const mixAmount = getMixAmount_(shade);

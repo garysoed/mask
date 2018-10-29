@@ -9,6 +9,22 @@
     width: 16rem;
   }
 
+  #accentPalette, #basePalette {
+    overflow: hidden;
+  }
+
+  #option[expanded="false"] #accentPalette,
+  #option[expanded="false"] #basePalette {
+    height: 0;
+    transition: height var(--mkAnimationTime);
+  }
+
+  #option[expanded="true"] #accentPalette,
+  #option[expanded="true"] #basePalette {
+    height: 16rem;
+    transition: height var(--mkAnimationTime);
+  }
+
   .palette {
     cursor: pointer;
     display: inline-block;
@@ -32,11 +48,11 @@
       shadow="down">
     <div id="drawerRoot">
       <mk-text-icon-button label="Base Palette">palette</mk-text-icon-button>
-      <div id="basePalette">
+      <div id="basePalette" shadow="down">
         <!-- basePalette -->
       </div>
       <mk-text-icon-button label="Accent Palette">colorize</mk-text-icon-button>
-      <div id="accentPalette">
+      <div id="accentPalette" shadow="down">
         <!-- accentPalette -->
       </div>
     </div>
