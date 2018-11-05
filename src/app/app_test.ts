@@ -81,10 +81,10 @@ describe('app.App', () => {
       const mockConfigure = createSpy<void, [VineImpl]>('Configure');
       const personaBuilderBuildSpy = spy(persona_.builder, 'build');
 
-      const mockVineImpl = createSpyInstance('VineImpl', VineImpl.prototype);
+      const mockVineImpl = createSpyInstance(VineImpl);
       fake(spy(vine_.builder, 'run')).always().return(mockVineImpl);
 
-      const mockTheme = createSpyInstance('Theme', Theme.prototype);
+      const mockTheme = createSpyInstance(Theme);
 
       const config1 = {ctor: TestClass1};
       const config2 = {ctor: TestClass2, dependencies: [config1]};

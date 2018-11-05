@@ -6,6 +6,7 @@ import { BooleanParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, IterableOfType, NullableType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
+import { take } from 'rxjs/operators';
 import { $theme } from '../src/app/app';
 import { Palette } from '../src/theme/palette';
 import { Theme } from '../src/theme/theme';
@@ -88,24 +89,27 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
   }
 
   @demoApp.persona.onDom($.accentPalette.el, 'click')
-  async onAccentPaletteClick_(event: MouseEvent, vine: VineImpl): Promise<void> {
+  onAccentPaletteClick_(event: MouseEvent, vine: VineImpl): void {
     const color = getColor(event);
     if (!color) {
       return;
     }
 
-    const theme = await vine.getLatest($theme);
-    vine.setValue($theme, theme.setHighlightColor(color));
+    vine.getObservable($theme)
+        .pipe(take(1))
+        .subscribe(theme => vine.setValue($theme, theme.setHighlightColor(color)));
   }
 
   @demoApp.persona.onDom($.basePalette.el, 'click')
-  async onBasePaletteClick_(event: MouseEvent, vine: VineImpl): Promise<void> {
+  onBasePaletteClick_(event: MouseEvent, vine: VineImpl): void {
     const color = getColor(event);
     if (!color) {
       return;
     }
-    const theme = await vine.getLatest($theme);
-    vine.setValue($theme, theme.setBaseColor(color));
+
+    vine.getObservable($theme)
+        .pipe(take(1))
+        .subscribe(theme => vine.setValue($theme, theme.setHighlightColor(color)));
   }
 
   @demoApp.persona.onDom($.option.el, 'mouseout')

@@ -12,6 +12,8 @@ import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/pars
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { persona_ } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
@@ -60,32 +62,26 @@ export class TextButton extends ThemedCustomElementCtrl {
     super($.theme.el);
   }
 
-  private async activate_(vine: VineImpl): Promise<void> {
-    const [disabled, dispatch] = await Promise.all([
-      vine.getLatest($.host.disabled.getReadingId(), this),
-      vine.getLatest($.host.dispatch.getReadingId(), this),
-    ]);
-
-    if (!dispatch) {
-      return;
-    }
-
-    if (disabled) {
-      return;
-    }
-
-    dispatch(new ActionEvent());
-  }
-
   @persona_.onKeydown($.host.el, 'Enter')
   @persona_.onKeydown($.host.el, ' ')
-  onAction_(_: KeyboardEvent, vine: VineImpl): void {
-    this.activate_(vine);
-  }
-
   @persona_.onDom($.host.el, 'click')
-  onClick_(_: MouseEvent, vine: VineImpl): void {
-    this.activate_(vine);
+  onAction_(_: Event, vine: VineImpl): void {
+    combineLatest(
+        vine.getObservable($.host.disabled.getReadingId(), this),
+        vine.getObservable($.host.dispatch.getReadingId(), this),
+        )
+        .pipe(take(1))
+        .subscribe(([disabled, dispatch]) => {
+          if (!dispatch) {
+            return;
+          }
+
+          if (disabled) {
+            return;
+          }
+
+          dispatch(new ActionEvent());
+        });
   }
 
   @persona_.render($.host.ariaLabel)
