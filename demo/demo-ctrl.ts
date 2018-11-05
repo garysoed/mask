@@ -109,7 +109,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 
     vine.getObservable($theme)
         .pipe(take(1))
-        .subscribe(theme => vine.setValue($theme, theme.setHighlightColor(color)));
+        .subscribe(theme => vine.setValue($theme, theme.setBaseColor(color)));
   }
 
   @demoApp.persona.onDom($.option.el, 'mouseout')

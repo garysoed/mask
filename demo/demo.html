@@ -13,8 +13,8 @@
     overflow: hidden;
   }
 
-  #option[expanded="false"] #accentPalette,
-  #option[expanded="false"] #basePalette {
+  #accentPalette,
+  #basePalette {
     height: 0;
     transition: height var(--mkAnimationTime);
   }
@@ -36,6 +36,11 @@
     outline: black solid 4px;
     outline-offset: -4px;
   }
+
+  h3 mk-icon {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
 </style>
 <style id="globalStyle"></style>
 <section layout="row" mk-theme="light" fill-parent>
@@ -47,13 +52,25 @@
       mode="vertical"
       shadow="down">
     <div id="drawerRoot">
-      <mk-text-icon-button label="Base Palette">palette</mk-text-icon-button>
-      <div id="basePalette" shadow="down">
-        <!-- basePalette -->
+      <div id="basePaletteSection">
+        <h3 layout="row">
+          <mk-icon>palette</mk-icon>
+          <div>Base Palette</div>
+        </h3>
+        <div id="basePalette" shadow="down">
+          <!-- basePalette -->
+        </div>
       </div>
-      <mk-text-icon-button label="Accent Palette">colorize</mk-text-icon-button>
-      <div id="accentPalette" shadow="down">
-        <!-- accentPalette -->
+
+
+      <div id="accentPaletteSection">
+        <h3 layout="row">
+          <mk-icon>colorize</mk-icon>
+          <div>Accent Palette</div>
+        </h3>
+        <div id="accentPalette" shadow="down">
+          <!-- accentPalette -->
+        </div>
       </div>
     </div>
   </mk-drawer>

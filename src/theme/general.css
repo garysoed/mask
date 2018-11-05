@@ -31,22 +31,28 @@ a[disabled], .gs-action[disabled] {
 h1 {
   font-size: 3rem;
   line-height: 4.5rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
 }
 
 h2 {
   font-size: 2rem;
   line-height: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 h3 {
   font-size: 1.5rem;
+  line-height: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 h1, h2, h3 {
   color: var(--mkThemePassiveFG);
   font-family: var(--mkFontFamilyHeader);
   font-weight: var(--mkFontWeightBold);
-  margin: 1rem 0;
 }
 
 code {
