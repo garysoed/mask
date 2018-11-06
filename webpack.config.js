@@ -1,6 +1,7 @@
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const glob = require("glob");
 const path = require("path");
+var DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -16,8 +17,16 @@ module.exports = {
   devtool: "source-map",
 
   resolve: {
+    // Used to resolve duplicate packages. Make sure that we always use the ones in the root.
+    alias: {
+      'grapevine': path.resolve('./node_modules/grapevine'),
+      'gs-tools': path.resolve('./node_modules/gs-tools'),
+      'rxjs': path.resolve('./node_modules/rxjs'),
+      'tslib': path.resolve('./node_modules/tslib'),
+    },
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css"]
+    extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css"],
+    symlinks: false,
   },
 
   module: {
@@ -61,5 +70,6 @@ module.exports = {
     //   },
     //   sourceMap: true,
     // }),
+    new DuplicatePackageCheckerPlugin(),
   ]
 };

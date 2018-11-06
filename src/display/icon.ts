@@ -112,21 +112,25 @@ export function icon(
 }
 
 vine_.builder.onRun(vine => {
-  vine.listen(registeredFonts => {
-    for (const [key, config] of registeredFonts) {
-      const linkId = `mkIconFamily_${key}`;
-      const el = (document.head.querySelector(`${linkId}`) as HTMLLinkElement|null)
-          || createLinkEl(linkId);
-      el.href = config.url.toString();
-    }
-  }, $registeredFonts);
+  vine.listen(
+      registeredFonts => {
+        for (const [key, config] of registeredFonts) {
+          const linkId = `mkIconFamily_${key}`;
+          // tslint:disable-next-line:no-non-null-assertion
+          const el = (document.head!.querySelector(`${linkId}`) as HTMLLinkElement|null)
+              || createLinkEl(linkId);
+          el.href = config.url.toString();
+        }
+      },
+      $registeredFonts);
 });
 
 function createLinkEl(id: string): HTMLLinkElement {
   const el = document.createElement('link');
   el.id = id;
   el.rel = 'stylesheet';
-  document.head.appendChild(el);
+  // tslint:disable-next-line:no-non-null-assertion
+  document.head!.appendChild(el);
 
   return el;
 }

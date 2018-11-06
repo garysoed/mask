@@ -3,6 +3,7 @@ import { icon, Palette, start as startMask, textButton } from '../export';
 import { $theme } from '../src/app/app';
 import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
+import { croppedLine } from '../src/display/cropped-line';
 import { drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
 import { demoApp } from './demo-app';
@@ -26,13 +27,17 @@ const registeredFonts = ImmutableMap.of([
 const iconConfig = icon('material', registeredFonts);
 
 window.addEventListener('load', () => {
-  const {vine: maskVine} = startMask([
-    drawer(),
-    iconConfig,
-    iconButton(iconConfig),
-    textButton(),
-    textIconButton(iconConfig),
-  ], theme, document.getElementById('globalStyle') as HTMLStyleElement);
+  const {vine: maskVine} = startMask(
+      [
+        croppedLine(),
+        drawer(),
+        iconConfig,
+        iconButton(iconConfig),
+        textButton(),
+        textIconButton(iconConfig),
+      ],
+      theme,
+      document.getElementById('globalStyle') as HTMLStyleElement);
 
   vine.listen(theme => maskVine.setValue($theme, theme), $theme);
 });
