@@ -1,9 +1,10 @@
 import { VineImpl } from 'grapevine/export/main';
 import { match, retryUntil, should } from 'gs-testing/export/main';
+import { assert } from 'gs-testing/export/main';
 import { ImmutableMap } from 'gs-tools/src/immutable';
-import { FakeCustomElementRegistry, PersonaTesterFactory } from 'persona/export/testing';
+import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { persona_, vine_ } from '../app/app';
-import { icon } from './icon';
+import { $, icon } from './icon';
 import { $defaultIconFont } from './registered-font';
 
 const DEFAULT_ICON_CLASS = 'defaultIconClass';
@@ -26,9 +27,10 @@ const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
 describe('display.Icon', () => {
   let el: HTMLElement;
   let vine: VineImpl;
+  let tester: PersonaTester;
 
   beforeEach(() => {
-    const tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([ctor]);
     vine = tester.vine;
     configureIcon(vine);
 
@@ -37,79 +39,56 @@ describe('display.Icon', () => {
 
   describe('providesFontConfig_', () => {
     should(`use the specified font config`, async () => {
-      el.setAttribute('icon-family', ICON_FONT);
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#link') as HTMLLinkElement).href;
-      }).to.equal(FONT_URL.toString());
+      await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
+
+      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(FONT_URL.toString());
     });
 
     should(`use the default font config if the specified font doesn't exist`, async () => {
-      el.setAttribute('icon-family', 'nonexistent');
+      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
       vine.setValue($defaultIconFont, DEFAULT_ICON_FONT);
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#link') as HTMLLinkElement).href;
-      }).to.equal(DEFAULT_FONT_URL.toString());
+      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(DEFAULT_FONT_URL.toString());
     });
 
     should(`return null if the default icon font has no config`, async () => {
-      el.setAttribute('icon-family', 'nonexistent');
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#link') as HTMLLinkElement).href;
-      }).to.equal(window.location.href);
+      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
+      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(window.location.href);
     });
   });
 
   describe('renderLinkHref_', () => {
     should(`render the correct HREF`, async () => {
-      el.setAttribute('icon-family', ICON_FONT);
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#link') as HTMLLinkElement).href;
-      }).to.equal(FONT_URL.toString());
+      await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
+      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(FONT_URL.toString());
     });
 
     should(`render empty string if there are no font configs`, async () => {
-      el.setAttribute('icon-family', 'nonexistent');
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#link') as HTMLLinkElement).href;
-      }).to.equal(window.location.href);
+      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
+      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(window.location.href);
     });
   });
 
   describe('renderRootClassList_', () => {
     should(`render the correct icon class`, async () => {
-      el.setAttribute('icon-family', ICON_FONT);
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#root') as HTMLLinkElement).classList
-            .contains(ICON_CLASS);
-      }).to.equal(match.anyBooleanThat().beTrue());
+      await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
+      assert(tester.getProperty(el, $.root.el, 'classList').contains(ICON_CLASS)).to.beTrue();
     });
 
     should(`render empty class if there are no font configs`, async () => {
-      el.setAttribute('icon-family', 'nonexistent');
-      await retryUntil(() => {
-        // tslint:disable-next-line:no-non-null-assertion
-        return (el.shadowRoot!.querySelector('#root') as HTMLLinkElement).classList.length;
-      }).to.equal(0);
+      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
+      assert(tester.getProperty(el, $.root.el, 'classList').length).to.equal(0);
     });
   });
 
   describe('onRun', () => {
-    should(`create the correct link elements`, async () => {
-      await retryUntil(() => {
-        return (document.head.querySelector(`link#mkIconFamily_${DEFAULT_ICON_FONT}`) as
-            HTMLLinkElement).href;
-      }).to.equal(DEFAULT_FONT_URL.toString());
+    should(`create the correct link elements`, () => {
+      // tslint:disable-next-line:no-non-null-assertion
+      assert((document.head!.querySelector(`link#mkIconFamily_${DEFAULT_ICON_FONT}`) as
+            HTMLLinkElement).href).to.equal(DEFAULT_FONT_URL.toString());
 
-      await retryUntil(() => {
-        return (document.head.querySelector(`link#mkIconFamily_${ICON_FONT}`) as
-            HTMLLinkElement).href;
-      }).to.equal(FONT_URL.toString());
+      // tslint:disable-next-line:no-non-null-assertion
+      assert((document.head!.querySelector(`link#mkIconFamily_${ICON_FONT}`) as
+            HTMLLinkElement).href).to.equal(FONT_URL.toString());
     });
   });
 });

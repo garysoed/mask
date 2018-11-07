@@ -9,11 +9,9 @@
  * @slot The content of the drawer.
  */
 
-import { VineImpl } from 'grapevine/export/main';
 import { BooleanParser, EnumParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
-import { CustomElementCtrl } from 'persona/export/main';
 import { persona_, vine_ } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -24,13 +22,13 @@ export enum Mode {
   VERTICAL,
 }
 
-const $ = resolveLocators({
+export const $ = resolveLocators({
   host: {
     el: shadowHost,
     expanded: attribute(shadowHost, 'expanded', BooleanParser, BooleanType, false),
     maxSize: attribute(shadowHost, 'max-size', StringParser, StringType, ''),
     minSize: attribute(shadowHost, 'min-size', StringParser, StringType, '0'),
-    mode: attribute(shadowHost, 'mode', EnumParser(Mode), EnumType(Mode), Mode.VERTICAL),
+    mode: attribute(shadowHost, 'mode', EnumParser<Mode>(Mode), EnumType(Mode), Mode.VERTICAL),
     style: {
       height: style(shadowHost, 'height'),
       overflow: style(shadowHost, 'overflow'),

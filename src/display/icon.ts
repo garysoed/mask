@@ -20,7 +20,7 @@ import { IconConfig } from './icon-config';
 import iconTemplate from './icon.html';
 import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-font';
 
-const $ = resolveLocators({
+export const $ = resolveLocators({
   host: {
     ariaHidden: attribute(shadowHost, 'aria-hidden', BooleanParser, BooleanType, true),
     el: shadowHost,

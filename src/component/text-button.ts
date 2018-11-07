@@ -20,7 +20,7 @@ import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import textButtonTemplate from './text-button.html';
 
-const $ = resolveLocators({
+export const $ = resolveLocators({
   host: {
     ariaDisabled: attribute(shadowHost, 'aria-disabled', BooleanParser, BooleanType, false),
     ariaLabel: attribute(shadowHost, 'aria-label', StringParser, StringType, ''),

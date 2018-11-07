@@ -24,7 +24,7 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { IconButtonConfig } from './icon-button-config';
 import iconButtonTemplate from './icon-button.html';
 
-const $ = resolveLocators({
+export const $ = resolveLocators({
   host: {
     ariaDisabled: attribute(shadowHost, 'aria-disabled', BooleanParser, BooleanType, false),
     disabled: attribute(shadowHost, 'disabled', BooleanParser, BooleanType, false),
