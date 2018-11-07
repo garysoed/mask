@@ -1,7 +1,7 @@
 import { staticSourceId, StaticSourceId } from 'grapevine/export/component';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { InstanceofType, StringType } from 'gs-types/export';
-import { vine_ } from '../app/app';
+import { _v } from '../app/app';
 
 export interface FontConfig {
   iconClass: string;
@@ -9,9 +9,9 @@ export interface FontConfig {
 }
 
 export const $defaultIconFont = staticSourceId('display.defaultIconFont', StringType);
-vine_.builder.source($defaultIconFont, '');
+_v.builder.source($defaultIconFont, '');
 
 export const $registeredFonts = staticSourceId(
     'display.registeredFont',
     InstanceofType<ImmutableMap<string, FontConfig>>(ImmutableMap));
-vine_.builder.source($registeredFonts, ImmutableMap.of());
+_v.builder.source($registeredFonts, ImmutableMap.of());

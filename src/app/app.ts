@@ -8,11 +8,11 @@ import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 import { Config } from './config';
 
-export const vine_ = getOrRegisterGrapevineApp('maskBase');
-export const persona_ = getOrRegisterPersonaApp('maskBase', vine_);
+export const _v = getOrRegisterGrapevineApp('maskBase');
+export const _p = getOrRegisterPersonaApp('maskBase', _v);
 
 export const $theme = staticSourceId('theme', InstanceofType(Theme));
-vine_.builder.source($theme, new Theme(Palette.ORANGE, Palette.GREEN));
+_v.builder.source($theme, new Theme(Palette.ORANGE, Palette.GREEN));
 
 export function addToMapConfig_(map: Map<typeof CustomElementCtrl, Config>, config: Config): void {
   const existingConfig = map.get(config.ctor);
@@ -51,9 +51,9 @@ export function start(
     ctors.push(ctor);
   }
 
-  const vine = vine_.builder.run();
+  const vine = _v.builder.run();
   vine.setValue($theme, theme);
-  persona_.builder.build(ctors, customElementRegistry, vine);
+  _p.builder.build(ctors, customElementRegistry, vine);
 
   for (const [, {configure}] of flattenedConfigs) {
     if (configure) {

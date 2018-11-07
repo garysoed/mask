@@ -3,11 +3,11 @@ import { createSpyInstance, spy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { $, $postfixBoundary, croppedLine } from './cropped-line';
 
 const {ctor} = croppedLine();
-const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
+const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('display.CroppedLine', () => {
   let tester: PersonaTester;

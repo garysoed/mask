@@ -1,10 +1,10 @@
 import { assert, should } from 'gs-testing/export/main';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { $, drawer, Mode } from './drawer';
 
 const {ctor} = drawer();
-const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
+const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('display.Drawer', () => {
   let el: HTMLElement;

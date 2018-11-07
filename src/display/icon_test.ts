@@ -3,7 +3,7 @@ import { match, retryUntil, should } from 'gs-testing/export/main';
 import { assert } from 'gs-testing/export/main';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { $, icon } from './icon';
 import { $defaultIconFont } from './registered-font';
 
@@ -22,7 +22,7 @@ const {configure, ctor} = icon(
     [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
   ]));
 const configureIcon = configure;
-const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
+const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('display.Icon', () => {
   let el: HTMLElement;

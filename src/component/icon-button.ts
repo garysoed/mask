@@ -17,7 +17,7 @@ import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { persona_ } from '../app/app';
+import { _p } from '../app/app';
 import { IconConfig } from '../display/icon-config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -43,7 +43,7 @@ export const $ = resolveLocators({
   },
 });
 
-@persona_.customElement({
+@_p.customElement({
   tag: 'mk-icon-button',
   template: iconButtonTemplate,
   watch: [
@@ -55,10 +55,10 @@ export const $ = resolveLocators({
     shadowHost,
   ],
 })
-@persona_.render($.icon.iconFamily).withForwarding($.host.iconFamily)
-@persona_.render($.host.ariaDisabled).withForwarding($.host.disabled)
+@_p.render($.icon.iconFamily).withForwarding($.host.iconFamily)
+@_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
 export class IconButton extends ThemedCustomElementCtrl {
-  @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
+  @_p.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
 
   constructor() {
     super($.theme.el);
@@ -68,9 +68,9 @@ export class IconButton extends ThemedCustomElementCtrl {
     // Noop
   }
 
-  @persona_.onKeydown($.host.el, 'Enter')
-  @persona_.onKeydown($.host.el, ' ')
-  @persona_.onDom($.host.el, 'click')
+  @_p.onKeydown($.host.el, 'Enter')
+  @_p.onKeydown($.host.el, ' ')
+  @_p.onDom($.host.el, 'click')
   onAction_(_: Event, vine: VineImpl): void {
     combineLatest(
         vine.getObservable($.host.disabled.getReadingId(), this),
@@ -90,8 +90,8 @@ export class IconButton extends ThemedCustomElementCtrl {
         });
   }
 
-  @persona_.render($.host.tabindex)
-  renderTabIndex_(@persona_.input($.host.disabled) hostDisabled: boolean): number {
+  @_p.render($.host.tabindex)
+  renderTabIndex_(@_p.input($.host.disabled) hostDisabled: boolean): number {
     return hostDisabled ? -1 : 0;
   }
 }

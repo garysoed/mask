@@ -11,7 +11,7 @@ import { StringParser } from 'gs-tools/export/parse';
 import { InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { take } from 'rxjs/operators';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import croppedLineTemplate from './cropped-line.html';
@@ -47,7 +47,7 @@ export const $postfixBoundary = instanceStreamId('postfixBoundary', NumberType);
 
 const MAX_POSTFIX_LENGTH = 3;
 
-@persona_.customElement({
+@_p.customElement({
   tag: 'mk-cropped-line',
   template: croppedLineTemplate,
   watch: [
@@ -63,7 +63,7 @@ class CroppedLine extends ThemedCustomElementCtrl {
     super($.theme.el);
   }
 
-  @persona_.onDom($.container.el, 'copy')
+  @_p.onDom($.container.el, 'copy')
   onContainerCopy_(event: ClipboardEvent, vine: VineImpl): void {
     vine.getObservable($.host.text.getReadingId(), this)
         .pipe(take(1))
@@ -74,23 +74,23 @@ class CroppedLine extends ThemedCustomElementCtrl {
     event.stopPropagation();
   }
 
-  @vine_.vineOut($postfixBoundary)
+  @_v.vineOut($postfixBoundary)
   providesPostfixBoundary_(
-      @vine_.vineIn($.host.text.getReadingId()) text: string): number {
+      @_v.vineIn($.host.text.getReadingId()) text: string): number {
     return Math.max(text.length - MAX_POSTFIX_LENGTH, 0);
   }
 
-  @persona_.render($.postfix.textContent)
+  @_p.render($.postfix.textContent)
   renderPostfixTextContent_(
-      @persona_.input($.host.text) text: string,
-      @vine_.vineIn($postfixBoundary) postfixBoundary: number): string {
+      @_p.input($.host.text) text: string,
+      @_v.vineIn($postfixBoundary) postfixBoundary: number): string {
     return text.substring(postfixBoundary);
   }
 
-  @persona_.render($.prefix.textContent)
+  @_p.render($.prefix.textContent)
   renderPrefixTextContent_(
-      @persona_.input($.host.text) text: string,
-      @vine_.vineIn($postfixBoundary) postfixBoundary: number): string {
+      @_p.input($.host.text) text: string,
+      @_v.vineIn($postfixBoundary) postfixBoundary: number): string {
     return text.substring(0, postfixBoundary);
   }
 }

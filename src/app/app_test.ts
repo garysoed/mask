@@ -4,7 +4,7 @@ import { assert, match, should } from 'gs-testing/export/main';
 import { createSpy, createSpyInstance, fake, spy, Spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
 import { Theme } from '../theme/theme';
-import { $theme, addToMapConfig_, flattenConfigs_, persona_, start, vine_ } from './app';
+import { $theme, addToMapConfig_, flattenConfigs_, _p, start, _v } from './app';
 
 /**
  * @test
@@ -79,10 +79,10 @@ describe('app.App', () => {
     should(`build all the constructors and configure all the configs`, () => {
       const styleEl = document.createElement('style');
       const mockConfigure = createSpy<void, [VineImpl]>('Configure');
-      const personaBuilderBuildSpy = spy(persona_.builder, 'build');
+      const personaBuilderBuildSpy = spy(_p.builder, 'build');
 
       const mockVineImpl = createSpyInstance(VineImpl);
-      fake(spy(vine_.builder, 'run')).always().return(mockVineImpl);
+      fake(spy(_v.builder, 'run')).always().return(mockVineImpl);
 
       const mockTheme = createSpyInstance(Theme);
 

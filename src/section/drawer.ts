@@ -12,7 +12,7 @@
 import { BooleanParser, EnumParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import drawerTemplate from './drawer.html';
@@ -40,7 +40,7 @@ export const $ = resolveLocators({
   },
 });
 
-@persona_.customElement({
+@_p.customElement({
   tag: 'mk-drawer',
   template: drawerTemplate,
   watch: [
@@ -52,18 +52,19 @@ export const $ = resolveLocators({
   ],
 })
 export class Drawer extends ThemedCustomElementCtrl {
-  @persona_.render($.host.style.overflow) readonly overflow_: string = 'hidden';
+  @_p.render($.host.style.overflow) readonly overflow_: string = 'hidden';
 
   constructor() {
     super($.theme.el);
   }
 
-  @persona_.render($.host.style.height)
+  @_p.render($.host.style.height)
   renderStyleHeight_(
-      @vine_.vineIn($.host.expanded.getReadingId()) expanded: boolean,
-      @vine_.vineIn($.host.maxSize.getReadingId()) maxSize: string,
-      @vine_.vineIn($.host.minSize.getReadingId()) minSize: string,
-      @vine_.vineIn($.host.mode.getReadingId()) mode: Mode): string {
+      @_v.vineIn($.host.expanded.getReadingId()) expanded: boolean,
+      @_v.vineIn($.host.maxSize.getReadingId()) maxSize: string,
+      @_v.vineIn($.host.minSize.getReadingId()) minSize: string,
+      @_v.vineIn($.host.mode.getReadingId()) mode: Mode,
+  ): string {
     if (mode === Mode.VERTICAL) {
       return '';
     }
@@ -71,12 +72,13 @@ export class Drawer extends ThemedCustomElementCtrl {
     return expanded ? maxSize : minSize;
   }
 
-  @persona_.render($.host.style.width)
+  @_p.render($.host.style.width)
   renderStyleWidth_(
-      @vine_.vineIn($.host.expanded.getReadingId()) expanded: boolean,
-      @vine_.vineIn($.host.maxSize.getReadingId()) maxSize: string,
-      @vine_.vineIn($.host.minSize.getReadingId()) minSize: string,
-      @vine_.vineIn($.host.mode.getReadingId()) mode: Mode): string {
+      @_v.vineIn($.host.expanded.getReadingId()) expanded: boolean,
+      @_v.vineIn($.host.maxSize.getReadingId()) maxSize: string,
+      @_v.vineIn($.host.minSize.getReadingId()) minSize: string,
+      @_v.vineIn($.host.mode.getReadingId()) mode: Mode,
+  ): string {
     if (mode === Mode.HORIZONTAL) {
       return '';
     }

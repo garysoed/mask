@@ -2,7 +2,7 @@ import { assert, match, retryUntil, should } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { icon } from '../display/icon';
 import { ActionEvent } from '../event/action-event';
 import { $, iconButton } from './icon-button';
@@ -18,7 +18,7 @@ const iconConfig = icon(
     ]));
 const {ctor} = iconButton(iconConfig);
 // tslint:disable-next-line:no-non-null-assertion
-const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
+const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('component.IconButton', () => {
   let el: HTMLElement;

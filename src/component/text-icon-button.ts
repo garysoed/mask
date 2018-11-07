@@ -14,7 +14,7 @@ import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { persona_ } from '../app/app';
+import { _p } from '../app/app';
 import { IconConfig } from '../display/icon-config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -46,7 +46,7 @@ export const $ = resolveLocators({
   },
 });
 
-@persona_.customElement({
+@_p.customElement({
   tag: 'mk-text-icon-button',
   template: textButtonTemplate,
   watch: [
@@ -61,19 +61,19 @@ export const $ = resolveLocators({
     shadowHost,
   ],
 })
-@persona_.render($.host.ariaDisabled).withForwarding($.host.disabled)
-@persona_.render($.text.text).withForwarding($.host.label)
-@persona_.render($.icon.iconFamily).withForwarding($.host.iconFamily)
+@_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
+@_p.render($.text.text).withForwarding($.host.label)
+@_p.render($.icon.iconFamily).withForwarding($.host.iconFamily)
 export class TextIconButton extends ThemedCustomElementCtrl {
-  @persona_.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
+  @_p.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
 
   constructor() {
     super($.style.el);
   }
 
-  @persona_.onKeydown($.host.el, 'Enter')
-  @persona_.onKeydown($.host.el, ' ')
-  @persona_.onDom($.host.el, 'click')
+  @_p.onKeydown($.host.el, 'Enter')
+  @_p.onKeydown($.host.el, ' ')
+  @_p.onDom($.host.el, 'click')
   onAction_(_: Event, vine: VineImpl): void {
     combineLatest(
         vine.getObservable($.host.disabled.getReadingId(), this),
@@ -93,15 +93,15 @@ export class TextIconButton extends ThemedCustomElementCtrl {
         });
   }
 
-  @persona_.render($.host.ariaLabel)
+  @_p.render($.host.ariaLabel)
   renderHostAriaLabel_(
-      @persona_.input($.host.ariaLabel) hostAriaLabel: string,
-      @persona_.input($.host.label) hostLabel: string): string {
+      @_p.input($.host.ariaLabel) hostAriaLabel: string,
+      @_p.input($.host.label) hostLabel: string): string {
     return hostAriaLabel || hostLabel;
   }
 
-  @persona_.render($.host.tabindex)
-  renderTabIndex_(@persona_.input($.host.disabled) hostDisabled: boolean): number {
+  @_p.render($.host.tabindex)
+  renderTabIndex_(@_p.input($.host.disabled) hostDisabled: boolean): number {
     return hostDisabled ? -1 : 0;
   }
 }

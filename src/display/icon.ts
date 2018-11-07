@@ -14,7 +14,7 @@ import { ImmutableMap, ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { IconConfig } from './icon-config';
 import iconTemplate from './icon.html';
@@ -46,7 +46,7 @@ const FontConfigType = HasPropertiesType<FontConfig>({
 });
 const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType));
 
-@persona_.customElement({
+@_p.customElement({
   tag: 'mk-icon',
   template: iconTemplate,
   watch: [
@@ -59,25 +59,25 @@ const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType))
   ],
 })
 export class Icon extends ThemedCustomElementCtrl {
-  @persona_.render($.host.ariaHidden) ariaHidden_: boolean = true;
-  @persona_.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
+  @_p.render($.host.ariaHidden) ariaHidden_: boolean = true;
+  @_p.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
 
   constructor() {
     super($.theme.el);
   }
 
-  @vine_.vineOut($fontConfig)
+  @_v.vineOut($fontConfig)
   providesFontConfig_(
-      @vine_.vineIn($defaultIconFont) defaultIconFont: string,
-      @persona_.input($.host.iconFamily) iconFamily: string,
-      @vine_.vineIn($registeredFonts)
+      @_v.vineIn($defaultIconFont) defaultIconFont: string,
+      @_p.input($.host.iconFamily) iconFamily: string,
+      @_v.vineIn($registeredFonts)
           registeredFonts: ImmutableMap<string, FontConfig>): FontConfig|null {
     return registeredFonts.get(iconFamily) || registeredFonts.get(defaultIconFont) || null;
   }
 
-  @persona_.render($.link.href)
+  @_p.render($.link.href)
   renderLinkHref_(
-      @vine_.vineIn($fontConfig) fontConfig: FontConfig|null): string {
+      @_v.vineIn($fontConfig) fontConfig: FontConfig|null): string {
     if (!fontConfig) {
       return '';
     }
@@ -85,10 +85,10 @@ export class Icon extends ThemedCustomElementCtrl {
     return fontConfig.url.toString();
   }
 
-  @persona_.render($.root.classList)
+  @_p.render($.root.classList)
   renderRootClassList_(
-      @vine_.vineIn($fontConfig) fontConfig: FontConfig|null,
-      @persona_.input($.root.classList) existingClasses: ImmutableSet<string>):
+      @_v.vineIn($fontConfig) fontConfig: FontConfig|null,
+      @_p.input($.root.classList) existingClasses: ImmutableSet<string>):
       ImmutableSet<string> {
     if (!fontConfig) {
       return ImmutableSet.of();
@@ -111,7 +111,7 @@ export function icon(
   };
 }
 
-vine_.builder.onRun(vine => {
+_v.builder.onRun(vine => {
   vine.listen(
       registeredFonts => {
         for (const [key, config] of registeredFonts) {

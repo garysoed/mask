@@ -2,7 +2,7 @@ import { assert, match, should } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
-import { persona_, vine_ } from '../app/app';
+import { _p, _v } from '../app/app';
 import { icon } from '../display/icon';
 import { ActionEvent } from '../event/action-event';
 import { $, textIconButton } from './text-icon-button';
@@ -17,7 +17,7 @@ const iconConfig = icon(
       [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
     ]));
 const {ctor} = textIconButton(iconConfig);
-const testerFactory = new PersonaTesterFactory(vine_.builder, persona_.builder);
+const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('component.TextIconButton', () => {
   let el: HTMLElement;
