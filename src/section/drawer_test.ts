@@ -6,7 +6,7 @@ import { $, drawer, Mode } from './drawer';
 const {ctor} = drawer();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('display.Drawer', () => {
+describe('section.Drawer', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -39,7 +39,7 @@ describe('display.Drawer', () => {
       await tester.setAttribute(el, $.host.minSize, '123px');
       await tester.setAttribute(el, $.host.expanded, true);
 
-      assert(tester.getStyle(el, $.host.style.height)).to.equal('size');
+      assert(tester.getStyle(el, $.host.style.height)).to.equal('');
     });
   });
 
@@ -68,7 +68,7 @@ describe('display.Drawer', () => {
       await tester.setAttribute(el, $.host.minSize, '123px');
       await tester.setAttribute(el, $.host.expanded, true);
 
-      assert(tester.getStyle(el, $.host.style.width)).to.equal('size');
+      assert(tester.getStyle(el, $.host.style.width)).to.equal('');
     });
   });
 });

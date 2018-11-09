@@ -3,6 +3,7 @@ import { icon, Palette, start as startMask, textButton } from '../export';
 import { $theme } from '../src/app/app';
 import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
+import { breadcrumb } from '../src/display/breadcrumb';
 import { croppedLine } from '../src/display/cropped-line';
 import { drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
@@ -29,6 +30,7 @@ const iconConfig = icon('material', registeredFonts);
 window.addEventListener('load', () => {
   const {vine: maskVine} = startMask(
       [
+        breadcrumb(),
         croppedLine(),
         drawer(),
         iconConfig,

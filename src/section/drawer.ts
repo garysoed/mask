@@ -51,7 +51,7 @@ export const $ = resolveLocators({
     $.theme.el,
   ],
 })
-export class Drawer extends ThemedCustomElementCtrl {
+class Drawer extends ThemedCustomElementCtrl {
   @_p.render($.host.style.overflow) readonly overflow_: string = 'hidden';
 
   constructor() {
