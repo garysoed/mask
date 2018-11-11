@@ -1,0 +1,55 @@
+<style id="theme"></style>
+<style>
+  :host {
+    --mkCrumbBorderLeftColor: transparent;
+    --mkCrumbTextLeftPadding: 1rem;
+  }
+
+  :host(:first-child) {
+    --mkCrumbBorderLeftColor: var(--mkThemeActionPrimaryBG);
+    --mkCrumbTextLeftPadding: 0;
+  }
+
+  #text {
+    background-color: var(--mkThemeActionPrimaryBG);
+    color: var(--mkThemeActionPrimaryFG);
+    line-height: 2rem;
+    padding: 1rem .5rem 1rem var(--mkCrumbTextLeftPadding);
+  }
+
+  #backTriangle {
+    margin-left: -1rem;
+  }
+
+  #backTriangleBottom,
+  #backTriangleTop {
+    height: 0;
+    width: 0;
+  }
+
+  #backTriangleBottom {
+    border-bottom: 2rem solid var(--mkThemeActionPrimaryBG);
+    border-left: 2rem solid var(--mkCrumbBorderLeftColor);
+  }
+
+  #backTriangleTop {
+    border-top: 2rem solid var(--mkThemeActionPrimaryBG);
+    border-left: 2rem solid var(--mkCrumbBorderLeftColor);
+  }
+
+  #triangle {
+    width: 0;
+    height: 0;
+    border-top: 2rem solid transparent;
+    border-left: 2rem solid var(--mkThemeActionPrimaryBG);
+    border-bottom: 2rem solid transparent;
+  }
+</style>
+<div id="root" layout="row">
+  <div id="backTriangle" layout="column">
+    <div id="backTriangleTop"></div>
+    <div id="backTriangleBottom"></div>
+  </div>
+  <div id="text"></div>
+  <div id="triangle"></div>
+</div>

@@ -7,6 +7,7 @@ import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import breadcrumbTemplate from './breadcrumb.html';
+import { crumb } from './crumb';
 
 interface CrumbData {
   display: string;
@@ -92,5 +93,8 @@ class Breadcrumb extends ThemedCustomElementCtrl {
 }
 
 export function breadcrumb(): Config {
-  return {ctor: Breadcrumb};
+  return {
+    ctor: Breadcrumb,
+    dependencies: [crumb()],
+  };
 }
