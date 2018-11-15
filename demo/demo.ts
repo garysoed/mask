@@ -41,5 +41,5 @@ window.addEventListener('load', () => {
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);
 
-  vine.listen(theme => maskVine.setValue($theme, theme), $theme);
+  vine.getObservable($theme).subscribe(theme => maskVine.setValue($theme, theme));
 });

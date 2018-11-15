@@ -26,7 +26,6 @@ export const $ = resolveLocators({
   tag: 'mk-crumb',
   template: crumbTemplate,
   watch: [
-    $.host.display,
     $.host.el,
     $.text.el,
     $.theme.el,

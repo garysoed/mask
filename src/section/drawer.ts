@@ -30,9 +30,9 @@ export const $ = resolveLocators({
     minSize: attribute(shadowHost, 'min-size', StringParser, StringType, '0'),
     mode: attribute(shadowHost, 'mode', EnumParser<Mode>(Mode), EnumType(Mode), Mode.VERTICAL),
     style: {
-      height: style(shadowHost, 'height'),
-      overflow: style(shadowHost, 'overflow'),
-      width: style(shadowHost, 'width'),
+      height: style(element('host.el'), 'height'),
+      overflow: style(element('host.el'), 'overflow'),
+      width: style(element('host.el'), 'width'),
     },
   },
   theme: {

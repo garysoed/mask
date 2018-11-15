@@ -62,7 +62,7 @@ const $ = resolveLocators({
     ),
   },
   option: {
-    el: element<HTMLElement|null>('#option', ElementWithTagType('mk-drawer')),
+    el: element<HTMLElement>('#option', ElementWithTagType('mk-drawer')),
     expanded: attribute(element('option.el'), 'expanded', BooleanParser, BooleanType, false),
   },
 

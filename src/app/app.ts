@@ -61,7 +61,7 @@ export function start(
     }
   }
 
-  vine.listen(theme => theme.injectCss(styleEl), $theme);
+  vine.getObservable($theme).subscribe(theme => theme.injectCss(styleEl));
 
   return {vine};
 }

@@ -3,8 +3,9 @@ import { VineImpl } from 'grapevine/export/main';
 import { assert, match, should } from 'gs-testing/export/main';
 import { createSpy, createSpyInstance, fake, spy, Spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
+import {of as observableOf } from 'rxjs';
 import { Theme } from '../theme/theme';
-import { $theme, addToMapConfig_, flattenConfigs_, _p, start, _v } from './app';
+import { $theme, _p, _v, addToMapConfig_, flattenConfigs_, start } from './app';
 
 /**
  * @test
@@ -81,10 +82,11 @@ describe('app.App', () => {
       const mockConfigure = createSpy<void, [VineImpl]>('Configure');
       const personaBuilderBuildSpy = spy(_p.builder, 'build');
 
-      const mockVineImpl = createSpyInstance(VineImpl);
-      fake(spy(_v.builder, 'run')).always().return(mockVineImpl);
-
       const mockTheme = createSpyInstance(Theme);
+
+      const mockVineImpl = createSpyInstance(VineImpl);
+      fake(mockVineImpl.getObservable).always().return(observableOf(mockTheme));
+      fake(spy(_v.builder, 'run')).always().return(mockVineImpl);
 
       const config1 = {ctor: TestClass1};
       const config2 = {ctor: TestClass2, dependencies: [config1]};
@@ -98,14 +100,7 @@ describe('app.App', () => {
               .haveElements([TestClass1, TestClass2, TestClass3]),
           window.customElements,
           mockVineImpl);
-      assert(mockTheme);
-
-      const listenFnMatch = match.anyObjectThat<(theme: Theme) => void>()
-          .beAnInstanceOf(Function as any);
-
-      type ListenFnSpy = Spy<() => void, [(v: Theme) => void, NodeId<Theme>]>;
-      assert(mockVineImpl.listen as any as ListenFnSpy)
-          .to.haveBeenCalledWith(listenFnMatch, $theme);
+      assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);
     });
   });
 });
