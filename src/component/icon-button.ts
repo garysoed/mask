@@ -47,12 +47,9 @@ export const $ = resolveLocators({
   tag: 'mk-icon-button',
   template: iconButtonTemplate,
   watch: [
-    $.host.disabled,
     $.host.dispatch,
-    $.host.iconFamily,
     $.icon.el,
     $.theme.el,
-    shadowHost,
   ],
 })
 @_p.render($.icon.iconFamily).withForwarding($.host.iconFamily)

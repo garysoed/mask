@@ -50,11 +50,7 @@ export const $ = resolveLocators({
   tag: 'mk-text-icon-button',
   template: textButtonTemplate,
   watch: [
-    $.host.ariaLabel,
-    $.host.disabled,
     $.host.dispatch,
-    $.host.iconFamily,
-    $.host.label,
     $.icon.el,
     $.style.el,
     $.text.el,

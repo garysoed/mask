@@ -52,7 +52,6 @@ const MAX_POSTFIX_LENGTH = 3;
   template: croppedLineTemplate,
   watch: [
     $.container.el,
-    $.host.text,
     $.postfix.el,
     $.prefix.el,
     $.theme.el,
@@ -76,7 +75,7 @@ class CroppedLine extends ThemedCustomElementCtrl {
 
   @_v.vineOut($postfixBoundary)
   providesPostfixBoundary_(
-      @_v.vineIn($.host.text.getReadingId()) text: string): number {
+      @_p.input($.host.text) text: string): number {
     return Math.max(text.length - MAX_POSTFIX_LENGTH, 0);
   }
 

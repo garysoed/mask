@@ -69,8 +69,6 @@ export const $ = resolveLocators({
   tag: 'mk-breadcrumb',
   template: breadcrumbTemplate,
   watch: [
-    $.host.el,
-    $.host.path,
     $.row.el,
     $.theme.el,
   ],

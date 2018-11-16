@@ -30,9 +30,9 @@ export const $ = resolveLocators({
     minSize: attribute(shadowHost, 'min-size', StringParser, StringType, '0'),
     mode: attribute(shadowHost, 'mode', EnumParser<Mode>(Mode), EnumType(Mode), Mode.VERTICAL),
     style: {
-      height: style(element('host.el'), 'height'),
-      overflow: style(element('host.el'), 'overflow'),
-      width: style(element('host.el'), 'width'),
+      height: style(shadowHost, 'height'),
+      overflow: style(shadowHost, 'overflow'),
+      width: style(shadowHost, 'width'),
     },
   },
   theme: {
@@ -44,10 +44,6 @@ export const $ = resolveLocators({
   tag: 'mk-drawer',
   template: drawerTemplate,
   watch: [
-    $.host.expanded,
-    $.host.maxSize,
-    $.host.minSize,
-    $.host.mode,
     $.theme.el,
   ],
 })
@@ -60,10 +56,10 @@ class Drawer extends ThemedCustomElementCtrl {
 
   @_p.render($.host.style.height)
   renderStyleHeight_(
-      @_v.vineIn($.host.expanded.getReadingId()) expanded: boolean,
-      @_v.vineIn($.host.maxSize.getReadingId()) maxSize: string,
-      @_v.vineIn($.host.minSize.getReadingId()) minSize: string,
-      @_v.vineIn($.host.mode.getReadingId()) mode: Mode,
+      @_p.input($.host.expanded) expanded: boolean,
+      @_p.input($.host.maxSize) maxSize: string,
+      @_p.input($.host.minSize) minSize: string,
+      @_p.input($.host.mode) mode: Mode,
   ): string {
     if (mode === Mode.VERTICAL) {
       return '';
@@ -74,10 +70,10 @@ class Drawer extends ThemedCustomElementCtrl {
 
   @_p.render($.host.style.width)
   renderStyleWidth_(
-      @_v.vineIn($.host.expanded.getReadingId()) expanded: boolean,
-      @_v.vineIn($.host.maxSize.getReadingId()) maxSize: string,
-      @_v.vineIn($.host.minSize.getReadingId()) minSize: string,
-      @_v.vineIn($.host.mode.getReadingId()) mode: Mode,
+      @_p.input($.host.expanded) expanded: boolean,
+      @_p.input($.host.maxSize) maxSize: string,
+      @_p.input($.host.minSize) minSize: string,
+      @_p.input($.host.mode) mode: Mode,
   ): string {
     if (mode === Mode.HORIZONTAL) {
       return '';

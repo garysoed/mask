@@ -44,13 +44,9 @@ export const $ = resolveLocators({
   tag: 'mk-text-button',
   template: textButtonTemplate,
   watch: [
-    $.host.ariaLabel,
-    $.host.disabled,
     $.host.dispatch,
-    $.host.label,
     $.root.el,
     $.theme.el,
-    shadowHost,
   ],
 })
 @_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
