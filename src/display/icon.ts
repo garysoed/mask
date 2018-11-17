@@ -14,7 +14,6 @@ import { ImmutableMap, ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
-import { take, tap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { IconConfig } from './icon-config';
@@ -51,8 +50,6 @@ const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType))
   tag: 'mk-icon',
   template: iconTemplate,
   watch: [
-    $.link.el,
-    $.root.el,
     $.theme.el,
   ],
 })

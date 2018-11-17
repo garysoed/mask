@@ -52,8 +52,6 @@ const MAX_POSTFIX_LENGTH = 3;
   template: croppedLineTemplate,
   watch: [
     $.container.el,
-    $.postfix.el,
-    $.prefix.el,
     $.theme.el,
   ],
 })

@@ -51,10 +51,7 @@ export const $ = resolveLocators({
   template: textButtonTemplate,
   watch: [
     $.host.dispatch,
-    $.icon.el,
     $.style.el,
-    $.text.el,
-    shadowHost,
   ],
 })
 @_p.render($.host.ariaDisabled).withForwarding($.host.disabled)

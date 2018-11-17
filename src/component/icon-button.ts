@@ -48,7 +48,6 @@ export const $ = resolveLocators({
   template: iconButtonTemplate,
   watch: [
     $.host.dispatch,
-    $.icon.el,
     $.theme.el,
   ],
 })

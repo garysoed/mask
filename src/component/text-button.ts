@@ -45,7 +45,6 @@ export const $ = resolveLocators({
   template: textButtonTemplate,
   watch: [
     $.host.dispatch,
-    $.root.el,
     $.theme.el,
   ],
 })
