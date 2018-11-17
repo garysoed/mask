@@ -94,7 +94,7 @@ export class IconButton extends ThemedCustomElementCtrl {
 
 export function iconButton(iconConfig: IconConfig): IconButtonConfig {
   return {
-    ctor: IconButton,
     dependencies: [iconConfig],
+    tag: 'mk-icon-button',
   };
 }

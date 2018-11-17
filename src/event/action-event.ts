@@ -1,5 +1,10 @@
-export class ActionEvent extends CustomEvent<null> {
+export const ACTION_EVENT = 'mk-action';
+
+export class ActionEvent extends Event {
+  /**
+   * @param key Key identifying the target.
+   */
   constructor() {
-    super('mk-action');
+    super(ACTION_EVENT, {bubbles: true});
   }
 }

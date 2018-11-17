@@ -1,6 +1,5 @@
 import { VineImpl } from 'grapevine/export/main';
-import { match, retryUntil, should } from 'gs-testing/export/main';
-import { assert } from 'gs-testing/export/main';
+import { assert, should } from 'gs-testing/export/main';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
@@ -15,7 +14,7 @@ const ICON_CLASS = 'iconClass';
 const ICON_FONT = 'iconFont';
 const FONT_URL = new URL('http://fontUrl');
 
-const {configure, ctor} = icon(
+const {configure, tag} = icon(
   '',
   ImmutableMap.of([
     [DEFAULT_ICON_FONT, {iconClass: DEFAULT_ICON_CLASS, url: DEFAULT_FONT_URL}],
@@ -30,7 +29,7 @@ describe('display.Icon', () => {
   let tester: PersonaTester;
 
   beforeEach(() => {
-    tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([tag]);
     vine = tester.vine;
     configureIcon(vine);
 

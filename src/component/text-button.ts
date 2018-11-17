@@ -93,5 +93,5 @@ export class TextButton extends ThemedCustomElementCtrl {
 }
 
 export function textButton(): Config {
-  return {ctor: TextButton};
+  return {tag: 'mk-text-button'};
 }

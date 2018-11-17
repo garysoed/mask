@@ -1,11 +1,10 @@
-import { NodeId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { assert, match, should } from 'gs-testing/export/main';
 import { createSpy, createSpyInstance, fake, spy, Spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
 import {of as observableOf } from 'rxjs';
 import { Theme } from '../theme/theme';
-import { $theme, _p, _v, addToMapConfig_, flattenConfigs_, start } from './app';
+import { _p, _v, addToMapConfig_, flattenConfigs_, start } from './app';
 
 /**
  * @test
@@ -38,23 +37,23 @@ describe('app.App', () => {
   describe('addToMapConfig_', () => {
     should(`add to map if the config doesn't exist yet`, () => {
       const map = new Map();
-      const config = {ctor: TestClass1};
+      const config = {tag: 'TestClass1'};
       addToMapConfig_(map, config);
 
-      assert(map).to.haveElements([[TestClass1, config]]);
+      assert(map).to.haveElements([['TestClass1', config]]);
     });
 
     should(`add to map if the config exists, but exactly the same`, () => {
-      const config = {ctor: TestClass1};
-      const map = new Map([[TestClass1, config]]);
+      const config = {tag: 'TestClass1'};
+      const map = new Map([['TestClass1', config]]);
       addToMapConfig_(map, config);
 
-      assert(map).to.haveElements([[TestClass1, config]]);
+      assert(map).to.haveElements([['TestClass1', config]]);
     });
 
     should(`throw error if the config exists with a different config`, () => {
-      const config = {ctor: TestClass1};
-      const map = new Map([[TestClass1, {ctor: TestClass1}]]);
+      const config = {tag: 'TestClass1'};
+      const map = new Map([['TestClass1', {tag: 'TestClass1'}]]);
 
       assert(() => {
         addToMapConfig_(map, config);
@@ -64,14 +63,14 @@ describe('app.App', () => {
 
   describe('flattenConfigs_', () => {
     should(`grab all the dependencies correctly`, () => {
-      const config1 = {ctor: TestClass1};
-      const config2 = {ctor: TestClass2, dependencies: [config1]};
-      const config3 = {ctor: TestClass3};
+      const config1 = {tag: 'TestClass1'};
+      const config2 = {tag: 'TestClass2', dependencies: [config1]};
+      const config3 = {tag: 'TestClass3'};
 
       assert(flattenConfigs_([config1, config2, config3])).to.haveElements([
-        [TestClass1, config1],
-        [TestClass2, config2],
-        [TestClass3, config3],
+        ['TestClass1', config1],
+        ['TestClass2', config2],
+        ['TestClass3', config3],
       ]);
     });
   });
@@ -88,16 +87,16 @@ describe('app.App', () => {
       fake(mockVineImpl.getObservable).always().return(observableOf(mockTheme));
       fake(spy(_v.builder, 'run')).always().return(mockVineImpl);
 
-      const config1 = {ctor: TestClass1};
-      const config2 = {ctor: TestClass2, dependencies: [config1]};
-      const config3 = {ctor: TestClass3, configure: mockConfigure};
+      const config1 = {tag: 'TestClass1'};
+      const config2 = {tag: 'TestClass2', dependencies: [config1]};
+      const config3 = {tag: 'TestClass3', configure: mockConfigure};
 
       start([config1, config2, config3], mockTheme, styleEl, window.customElements);
 
       assert(mockConfigure).to.haveBeenCalledWith(mockVineImpl);
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
           match.anyIterableThat<typeof CustomElementCtrl, (typeof CustomElementCtrl)[]>()
-              .haveElements([TestClass1, TestClass2, TestClass3]),
+              .haveElements([]),
           window.customElements,
           mockVineImpl);
       assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);

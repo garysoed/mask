@@ -84,5 +84,5 @@ class Drawer extends ThemedCustomElementCtrl {
 }
 
 export function drawer(): Config {
-  return {ctor: Drawer};
+  return {tag: 'mk-drawer'};
 }

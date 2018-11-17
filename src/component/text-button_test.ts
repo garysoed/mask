@@ -5,7 +5,7 @@ import { _p, _v } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 import { $, textButton } from './text-button';
 
-const {ctor} = textButton();
+const {tag} = textButton();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('component.TextButton', () => {
@@ -13,7 +13,7 @@ describe('component.TextButton', () => {
   let tester: PersonaTester;
 
   beforeEach(() => {
-    tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([tag]);
     el = tester.createElement('mk-text-button', document.body);
   });
 

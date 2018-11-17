@@ -1,13 +1,18 @@
+import { VineImpl } from 'grapevine/export/main';
+import { Errors } from 'gs-tools/export/error';
 import { ListParser, ObjectParser, StringParser } from 'gs-tools/export/parse';
 import { ImmutableList } from 'gs-tools/src/immutable';
 import { HasPropertiesType, InstanceofType, IntersectType, IterableOfType, StringType } from 'gs-types/export';
-import { attribute, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
+import { attribute, dispatcher, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
+import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
+import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
-import { crumb } from './crumb';
+import { crumb, CrumbConfig } from './crumb';
 
 interface CrumbData {
   display: string;
@@ -28,6 +33,7 @@ const renderedCrumbDataType = IntersectType<RenderedCrumbData>([
 
 export const $ = resolveLocators({
   host: {
+    dispatch: dispatcher(shadowHost),
     el: shadowHost,
     path: attribute<ImmutableList<CrumbData>>(
         shadowHost,
@@ -43,7 +49,7 @@ export const $ = resolveLocators({
     ),
   },
   row: {
-    crumbs: slot(
+    crumbsSlot: slot(
         element('row.el'),
         'crumbs',
         new ElementListRenderer<RenderedCrumbData>(
@@ -69,6 +75,7 @@ export const $ = resolveLocators({
   tag: 'mk-breadcrumb',
   template: breadcrumbTemplate,
   watch: [
+    $.host.dispatch,
     $.theme.el,
   ],
 })
@@ -77,7 +84,28 @@ class Breadcrumb extends ThemedCustomElementCtrl {
     super($.theme.el);
   }
 
-  @_p.render($.row.crumbs)
+  @_p.onDom($.row.el, ACTION_EVENT)
+  onRowAction_(event: ActionEvent, vine: VineImpl): void {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      throw Errors.assert(`target for ${ACTION_EVENT}`)
+          .shouldBeAnInstanceOf(Element)
+          .butWas(target);
+    }
+
+    const key = target.getAttribute('key');
+    if (!key) {
+      throw Errors.assert(`key for ${target}`).shouldExist().butNot();
+    }
+
+    vine.getObservable($.host.dispatch.getReadingId(), this)
+        .pipe(take(1))
+        .subscribe(dispatcher => {
+          dispatcher(new BreadcrumbClickEvent(key));
+        });
+  }
+
+  @_p.render($.row.crumbsSlot)
   renderCrumbs_(
       @_p.input($.host.path) path: ImmutableList<CrumbData>,
   ): ImmutableList<RenderedCrumbData> {
@@ -89,9 +117,13 @@ class Breadcrumb extends ThemedCustomElementCtrl {
   }
 }
 
-export function breadcrumb(): Config {
+interface BreadcrumbConfig extends Config {
+  dependencies: [CrumbConfig];
+}
+
+export function breadcrumb(): BreadcrumbConfig {
   return {
-    ctor: Breadcrumb,
     dependencies: [crumb()],
+    tag: 'mk-breadcrumb',
   };
 }

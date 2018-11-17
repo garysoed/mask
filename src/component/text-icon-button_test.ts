@@ -16,7 +16,7 @@ const iconConfig = icon(
     ImmutableMap.of([
       [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
     ]));
-const {ctor} = textIconButton(iconConfig);
+const {tag} = textIconButton(iconConfig);
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('component.TextIconButton', () => {
@@ -24,7 +24,7 @@ describe('component.TextIconButton', () => {
   let tester: PersonaTester;
 
   beforeEach(() => {
-    tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([tag]);
     el = tester.createElement('mk-text-icon-button', document.body);
   });
 

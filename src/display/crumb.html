@@ -1,18 +1,29 @@
 <style id="theme"></style>
 <style>
   :host {
-    --mkCrumbBorderLeftColor: transparent;
+    --mkCrumbInnerArrowColor: transparent;
     --mkCrumbTextLeftPadding: 1rem;
+    --mkCrumbBackgroundColor: var(--mkThemeActionPrimaryBG);
+    --mkCrumbForegroundColor: var(--mkThemeActionPrimaryFG);
   }
 
   :host(:first-child) {
-    --mkCrumbBorderLeftColor: var(--mkThemeActionPrimaryBG);
+    --mkCrumbInnerArrowColor: var(--mkCrumbBackgroundColor);
     --mkCrumbTextLeftPadding: 0;
   }
 
+  :host(:hover) {
+    --mkCrumbBackgroundColor: var(--mkThemeActionPrimaryFocusBG);
+    --mkCrumbForegroundColor: var(--mkThemeActionPrimaryFocusFG);
+  }
+
+  #root {
+    cursor: pointer;
+  }
+
   #text {
-    background-color: var(--mkThemeActionPrimaryBG);
-    color: var(--mkThemeActionPrimaryFG);
+    background-color: var(--mkCrumbBackgroundColor);
+    color: var(--mkCrumbForegroundColor);
     line-height: 2rem;
     padding: 1rem .5rem 1rem var(--mkCrumbTextLeftPadding);
   }
@@ -28,20 +39,20 @@
   }
 
   #backTriangleBottom {
-    border-bottom: 2rem solid var(--mkThemeActionPrimaryBG);
-    border-left: 2rem solid var(--mkCrumbBorderLeftColor);
+    border-bottom: 2rem solid var(--mkCrumbBackgroundColor);
+    border-left: 2rem solid var(--mkCrumbInnerArrowColor);
   }
 
   #backTriangleTop {
-    border-top: 2rem solid var(--mkThemeActionPrimaryBG);
-    border-left: 2rem solid var(--mkCrumbBorderLeftColor);
+    border-top: 2rem solid var(--mkCrumbBackgroundColor);
+    border-left: 2rem solid var(--mkCrumbInnerArrowColor);
   }
 
   #triangle {
     width: 0;
     height: 0;
     border-top: 2rem solid transparent;
-    border-left: 2rem solid var(--mkThemeActionPrimaryBG);
+    border-left: 2rem solid var(--mkCrumbBackgroundColor);
     border-bottom: 2rem solid transparent;
   }
 </style>

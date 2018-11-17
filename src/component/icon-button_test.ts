@@ -16,7 +16,7 @@ const iconConfig = icon(
     ImmutableMap.of([
       [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
     ]));
-const {ctor} = iconButton(iconConfig);
+const {tag} = iconButton(iconConfig);
 // tslint:disable-next-line:no-non-null-assertion
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
@@ -25,7 +25,7 @@ describe('component.IconButton', () => {
   let tester: PersonaTester;
 
   beforeEach(() => {
-    tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([tag]);
     el = tester.createElement('mk-icon-button', document.body);
   });
 

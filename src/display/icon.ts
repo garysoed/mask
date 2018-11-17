@@ -98,11 +98,11 @@ export function icon(
     registeredFonts: ImmutableMap<string, FontConfig>):
     IconConfig {
   return {
-    ctor: Icon,
     configure(vine: VineImpl): void {
       vine.setValue($registeredFonts, registeredFonts);
       vine.setValue($defaultIconFont, defaultIconFont);
     },
+    tag: 'mk-icon',
   };
 }
 

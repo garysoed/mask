@@ -3,7 +3,7 @@ import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
 import { $, drawer, Mode } from './drawer';
 
-const {ctor} = drawer();
+const config = drawer();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('section.Drawer', () => {
@@ -11,7 +11,7 @@ describe('section.Drawer', () => {
   let tester: PersonaTester;
 
   beforeEach(() => {
-    tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([config.tag]);
     el = tester.createElement('mk-drawer', document.body);
   });
 

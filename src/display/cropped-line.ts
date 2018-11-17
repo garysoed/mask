@@ -93,5 +93,5 @@ class CroppedLine extends ThemedCustomElementCtrl {
 }
 
 export function croppedLine(): Config {
-  return {ctor: CroppedLine};
+  return {tag: 'mk-cropped-line'};
 }

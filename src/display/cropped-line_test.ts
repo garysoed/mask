@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, $postfixBoundary, croppedLine } from './cropped-line';
 
-const {ctor} = croppedLine();
+const {tag} = croppedLine();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 describe('display.CroppedLine', () => {
@@ -14,7 +14,7 @@ describe('display.CroppedLine', () => {
   let el: HTMLElement;
 
   beforeEach(() => {
-    tester = testerFactory.build([ctor]);
+    tester = testerFactory.build([tag]);
     el = tester.createElement('mk-cropped-line', document.body);
   });
 

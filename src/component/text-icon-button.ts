@@ -100,5 +100,5 @@ export class TextIconButton extends ThemedCustomElementCtrl {
 }
 
 export function textIconButton(iconConfig: IconConfig): TextIconButtonConfig {
-  return {ctor: TextIconButton, dependencies: [iconConfig]};
+  return {dependencies: [iconConfig], tag: 'mk-text-icon-button'};
 }
