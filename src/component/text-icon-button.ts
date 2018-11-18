@@ -37,9 +37,6 @@ export const $ = resolveLocators({
     el: element('#icon', InstanceofType(HTMLElement)),
     iconFamily: attribute(element('icon.el'), 'icon-family', StringParser, StringType, ''),
   },
-  style: {
-    el: element(`#style`, InstanceofType(HTMLStyleElement)),
-  },
   text: {
     el: element('#text', InstanceofType(HTMLDivElement)),
     text: textContent(element('text.el')),
@@ -51,7 +48,6 @@ export const $ = resolveLocators({
   template: textButtonTemplate,
   watch: [
     $.host.dispatch,
-    $.style.el,
   ],
 })
 @_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
@@ -59,10 +55,6 @@ export const $ = resolveLocators({
 @_p.render($.icon.iconFamily).withForwarding($.host.iconFamily)
 export class TextIconButton extends ThemedCustomElementCtrl {
   @_p.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
-
-  constructor() {
-    super($.style.el);
-  }
 
   @_p.onKeydown($.host.el, 'Enter')
   @_p.onKeydown($.host.el, ' ')

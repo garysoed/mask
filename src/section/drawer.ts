@@ -43,16 +43,9 @@ export const $ = resolveLocators({
 @_p.customElement({
   tag: 'mk-drawer',
   template: drawerTemplate,
-  watch: [
-    $.theme.el,
-  ],
 })
 class Drawer extends ThemedCustomElementCtrl {
   @_p.render($.host.style.overflow) readonly overflow_: string = 'hidden';
-
-  constructor() {
-    super($.theme.el);
-  }
 
   @_p.render($.host.style.height)
   renderStyleHeight_(

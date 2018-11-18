@@ -35,9 +35,6 @@ export const $ = resolveLocators({
     classList: classlist(element('root.el')),
     el: element('#root', InstanceofType(HTMLSpanElement)),
   },
-  theme: {
-    el: element('#theme', InstanceofType(HTMLStyleElement)),
-  },
 });
 
 const FontConfigType = HasPropertiesType<FontConfig>({
@@ -49,17 +46,10 @@ const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType))
 @_p.customElement({
   tag: 'mk-icon',
   template: iconTemplate,
-  watch: [
-    $.theme.el,
-  ],
 })
 export class Icon extends ThemedCustomElementCtrl {
   @_p.render($.host.ariaHidden) ariaHidden_: boolean = true;
   @_p.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
-
-  constructor() {
-    super($.theme.el);
-  }
 
   @_v.vineOut($fontConfig)
   providesFontConfig_(

@@ -31,15 +31,10 @@ export const $ = resolveLocators({
   template: crumbTemplate,
   watch: [
     $.host.dispatch,
-    $.theme.el,
   ],
 })
 @_p.render($.text.text).withForwarding($.host.display)
 class Crumb extends ThemedCustomElementCtrl {
-  constructor() {
-    super($.theme.el);
-  }
-
   @_p.onDom($.host.el, 'click')
   onHostClick_(_: Event, vine: VineImpl): void {
     combineLatest(

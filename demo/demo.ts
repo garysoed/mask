@@ -1,19 +1,15 @@
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { icon, Palette, start as startMask, textButton } from '../export';
-import { $theme } from '../src/app/app';
+import { $theme, _v } from '../src/app/app';
 import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
 import { breadcrumb } from '../src/display/breadcrumb';
 import { croppedLine } from '../src/display/cropped-line';
 import { drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
-import { demoApp } from './demo-app';
-import { DemoCtrl } from './demo-ctrl';
+import { demoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
-demoApp.vine.builder.source($theme, theme);
-const vine = demoApp.vine.builder.run();
-demoApp.persona.builder.build([DemoCtrl], window.customElements, vine);
 
 const registeredFonts = ImmutableMap.of([
       [
@@ -33,6 +29,7 @@ window.addEventListener('load', () => {
         breadcrumb(),
         croppedLine(),
         drawer(),
+        demoCtrl(),
         iconConfig,
         iconButton(iconConfig),
         textButton(),
@@ -41,5 +38,5 @@ window.addEventListener('load', () => {
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);
 
-  vine.getObservable($theme).subscribe(theme => maskVine.setValue($theme, theme));
+  maskVine.getObservable($theme).subscribe(theme => maskVine.setValue($theme, theme));
 });

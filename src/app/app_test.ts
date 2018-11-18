@@ -95,8 +95,7 @@ describe('app.App', () => {
 
       assert(mockConfigure).to.haveBeenCalledWith(mockVineImpl);
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
-          match.anyIterableThat<typeof CustomElementCtrl, (typeof CustomElementCtrl)[]>()
-              .haveElements([]),
+          match.anyIterableThat<string, string[]>().haveElements([]),
           window.customElements,
           mockVineImpl);
       assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);

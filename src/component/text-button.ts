@@ -45,17 +45,13 @@ export const $ = resolveLocators({
   template: textButtonTemplate,
   watch: [
     $.host.dispatch,
-    $.theme.el,
+    $.host.el,
   ],
 })
 @_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
 @_p.render($.root.text).withForwarding($.host.label)
 export class TextButton extends ThemedCustomElementCtrl {
   @_p.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
-
-  constructor() {
-    super($.theme.el);
-  }
 
   @_p.onKeydown($.host.el, 'Enter')
   @_p.onKeydown($.host.el, ' ')

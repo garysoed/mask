@@ -7,11 +7,11 @@ import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, Ite
 import { attribute, element, resolveLocators, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { take } from 'rxjs/operators';
-import { $theme } from '../src/app/app';
+import { $theme, _p, _v } from '../src/app/app';
+import { Config } from '../src/app/config';
 import { Palette } from '../src/theme/palette';
 import { Theme } from '../src/theme/theme';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
-import { demoApp } from './demo-app';
 import demoTemplate from './demo.html';
 
 interface PaletteData {
@@ -65,30 +65,25 @@ const $ = resolveLocators({
     el: element<HTMLElement>('#option', ElementWithTagType('mk-drawer')),
     expanded: attribute(element('option.el'), 'expanded', BooleanParser, BooleanType, false),
   },
-
-  themeStyle: element('#theme', InstanceofType(HTMLStyleElement)),
 });
 
-const $isOnOption = instanceSourceId('isOnOption', BooleanType);
-demoApp.vine.builder.source($isOnOption, false);
+export const TAG = 'mk-demo';
 
-@demoApp.persona.customElement({
-  tag: 'mk-demo',
+const $isOnOption = instanceSourceId('isOnOption', BooleanType);
+_v.builder.source($isOnOption, false);
+
+@_p.customElement({
+  tag: TAG,
   template: demoTemplate,
   watch: [
     $.accentPalette.el,
     $.basePalette.el,
     $.option.el,
-    $.themeStyle,
   ],
 })
-@demoApp.persona.render($.option.expanded).withForwarding($isOnOption)
+@_p.render($.option.expanded).withForwarding($isOnOption)
 export class DemoCtrl extends ThemedCustomElementCtrl {
-  constructor() {
-    super($.themeStyle);
-  }
-
-  @demoApp.persona.onDom($.accentPalette.el, 'click')
+  @_p.onDom($.accentPalette.el, 'click')
   onAccentPaletteClick_(event: MouseEvent, vine: VineImpl): void {
     const color = getColor(event);
     if (!color) {
@@ -100,7 +95,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         .subscribe(theme => vine.setValue($theme, theme.setHighlightColor(color)));
   }
 
-  @demoApp.persona.onDom($.basePalette.el, 'click')
+  @_p.onDom($.basePalette.el, 'click')
   onBasePaletteClick_(event: MouseEvent, vine: VineImpl): void {
     const color = getColor(event);
     if (!color) {
@@ -112,25 +107,25 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         .subscribe(theme => vine.setValue($theme, theme.setBaseColor(color)));
   }
 
-  @demoApp.persona.onDom($.option.el, 'mouseout')
+  @_p.onDom($.option.el, 'mouseout')
   onMouseOutOption_(_: unknown, vine: VineImpl): void {
     vine.setValue($isOnOption, false, this);
   }
 
-  @demoApp.persona.onDom($.option.el, 'mouseover')
+  @_p.onDom($.option.el, 'mouseover')
   onMouseOverOption_(_: unknown, vine: VineImpl): void {
     vine.setValue($isOnOption, true, this);
   }
 
-  @demoApp.persona.render($.accentPalette.slot)
+  @_p.render($.accentPalette.slot)
   renderAccentPalette(
-      @demoApp.vine.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
+      @_v.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
     return getPaletteData_(theme.highlightColor);
   }
 
-  @demoApp.persona.render($.basePalette.slot)
+  @_p.render($.basePalette.slot)
   renderBasePalette(
-      @demoApp.vine.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
+      @_v.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
     return getPaletteData_(theme.baseColor);
   }
 }
@@ -149,7 +144,7 @@ function getColor(event: MouseEvent): Color|null {
   return (Palette as any)[colorName] || null;
 }
 
-const ORDERED_PALETTES: [string, Color][] = [
+const ORDERED_PALETTES: Array<[string, Color]> = [
   ['RED', Palette.RED],
   ['ORANGE', Palette.ORANGE],
   ['AMBER', Palette.AMBER],
@@ -185,4 +180,10 @@ function getPaletteData_(selectedColor: Color): ImmutableList<PaletteData> {
           style: `background-color: ${colorCss};`,
         };
       });
+}
+
+export function demoCtrl(): Config {
+  return {
+    tag: TAG,
+  };
 }

@@ -1,22 +1,27 @@
 import { VineImpl } from 'grapevine/export/main';
-import { ResolvedRenderableWatchableLocator, ResolvedWatchableLocator } from 'persona/export/locator';
+import { InstanceofType } from 'gs-types/export';
+import { element, ResolvedRenderableWatchableLocator, ResolvedWatchableLocator, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
 import { combineLatest } from 'rxjs';
-import { $theme } from '../app/app';
+import { $theme, _p } from '../app/app';
 
 type StyleElLocator = ResolvedRenderableWatchableLocator<HTMLStyleElement>|
     ResolvedWatchableLocator<HTMLStyleElement>;
 
-export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
-  constructor(private readonly styleElLocator_: StyleElLocator) {
-    super();
-  }
+const $ = resolveLocators({
+  theme: {
+    el: element('#theme', InstanceofType(HTMLStyleElement)),
+  },
+});
 
+@_p.baseCustomElement({
+  watch: [$.theme.el],
+})
+export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   init(vine: VineImpl): void {
-    const styleElId = this.styleElLocator_.getReadingId();
     this.addSubscription(
         combineLatest(
-            vine.getObservable(styleElId, this),
+            vine.getObservable($.theme.el.getReadingId(), this),
             vine.getObservable($theme),
         )
         .subscribe(([el, theme]) => theme.injectCss(el)),

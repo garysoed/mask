@@ -76,14 +76,9 @@ export const $ = resolveLocators({
   template: breadcrumbTemplate,
   watch: [
     $.host.dispatch,
-    $.theme.el,
   ],
 })
 class Breadcrumb extends ThemedCustomElementCtrl {
-  constructor() {
-    super($.theme.el);
-  }
-
   @_p.onDom($.row.el, ACTION_EVENT)
   onRowAction_(event: ActionEvent, vine: VineImpl): void {
     const target = event.target;

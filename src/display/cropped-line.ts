@@ -22,13 +22,7 @@ export const $ = resolveLocators({
   },
   host: {
     el: shadowHost,
-    text: attribute(
-        shadowHost,
-        'text',
-        StringParser,
-        StringType,
-        '',
-    ),
+    text: attribute(shadowHost, 'text', StringParser, StringType, ''),
   },
   postfix: {
     el: element('#postfix', InstanceofType(HTMLElement)),
@@ -52,14 +46,10 @@ const MAX_POSTFIX_LENGTH = 3;
   template: croppedLineTemplate,
   watch: [
     $.container.el,
-    $.theme.el,
+    $.host.text,
   ],
 })
 class CroppedLine extends ThemedCustomElementCtrl {
-  constructor() {
-    super($.theme.el);
-  }
-
   @_p.onDom($.container.el, 'copy')
   onContainerCopy_(event: ClipboardEvent, vine: VineImpl): void {
     vine.getObservable($.host.text.getReadingId(), this)

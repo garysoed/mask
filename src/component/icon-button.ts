@@ -48,21 +48,12 @@ export const $ = resolveLocators({
   template: iconButtonTemplate,
   watch: [
     $.host.dispatch,
-    $.theme.el,
   ],
 })
 @_p.render($.icon.iconFamily).withForwarding($.host.iconFamily)
 @_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
 export class IconButton extends ThemedCustomElementCtrl {
   @_p.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
-
-  constructor() {
-    super($.theme.el);
-  }
-
-  init(): void {
-    // Noop
-  }
 
   @_p.onKeydown($.host.el, 'Enter')
   @_p.onKeydown($.host.el, ' ')
