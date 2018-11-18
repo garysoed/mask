@@ -1,9 +1,33 @@
-import { ImmutableMap, ImmutableSet } from 'gs-tools/export/collect';
-import { Alpha } from './alpha';
-import { ColorSection } from './color-section';
+import { ImmutableSet } from 'gs-tools/export/collect';
+import { Color, Colors, HslColor, RgbColor } from 'gs-tools/export/color';
 
-export enum Shade {
-  A100,
+export interface BaseShade {
+  isDarkBG: boolean;
+  /**
+   * Ratio of the base color when mixing. 1 means to use the base color completely.
+   */
+  mixRatio: number;
+  neonize?: boolean;
+}
+
+export interface AccentShade extends BaseShade {
+  neonize: boolean;
+}
+
+export type Shade = BaseShade|AccentShade;
+
+export const B000 = {isDarkBG: true,  mixRatio: 0   };
+export const B010 = {isDarkBG: true,  mixRatio: 0.1 };
+export const B025 = {isDarkBG: true,  mixRatio: 0.25};
+export const B050 = {isDarkBG: true,  mixRatio: 0.5 };
+export const B100 = {isDarkBG: true,  mixRatio: 1   };
+export const B125 = {isDarkBG: false, mixRatio: 0.75};
+export const B150 = {isDarkBG: false, mixRatio: 0.5 };
+export const B175 = {isDarkBG: false, mixRatio: 0.25};
+export const B190 = {isDarkBG: false, mixRatio: 0.1 };
+export const B200 = {isDarkBG: false, mixRatio: 0   };
+
+export const BASE_SHADES = ImmutableSet.of([
   B000,
   B010,
   B025,
@@ -14,56 +38,41 @@ export enum Shade {
   B175,
   B190,
   B200,
+]);
+
+export const A050 = {isDarkBG: true,  mixRatio: 0.5 , neonize: true};
+export const A100 = {isDarkBG: true,  mixRatio: 1,    neonize: true};
+export const A175 = {isDarkBG: false, mixRatio: 0.25, neonize: true};
+
+export const ACCENT_SHADES = ImmutableSet.of([
+  A050,
+  A100,
+  A175,
+]);
+
+const BLACK = RgbColor.newInstance(0, 0, 0);
+const WHITE = RgbColor.newInstance(255, 255, 255);
+
+export function createColor(shade: Shade, base: Color): Color {
+  let foregroundColor = base;
+  if (shade.neonize) {
+    const lightness = base.getLightness();
+    const saturation = base.getSaturation();
+
+    if (saturation === 0) {
+      foregroundColor = base;
+    } else {
+      const neon = Colors.neonize(base, 0.75);
+
+      foregroundColor = HslColor.newInstance(
+          neon.getHue(),
+          (neon.getSaturation() + 1) / 2,
+          (1 - lightness) * 0.5 + lightness);
+    }
+  }
+
+  const mixAmount = shade.mixRatio;
+  const backgroundColor = shade.isDarkBG ? BLACK : WHITE;
+
+  return Colors.mix(foregroundColor, backgroundColor, mixAmount);
 }
-
-export const SHADES: ImmutableSet<Shade> = ImmutableSet.of([
-  Shade.B000,
-  Shade.B010,
-  Shade.B025,
-  Shade.B050,
-  Shade.B100,
-  Shade.B125,
-  Shade.B150,
-  Shade.B175,
-  Shade.B190,
-  Shade.B200,
-]);
-
-export interface ShadingSpec {
-  alpha: Alpha;
-  bg: Shade;
-  fg: Shade|'contrast';
-}
-
-export const LIGHT_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
-  [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: Shade.B200, fg: Shade.B010}],
-  [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: Shade.B200, fg: Shade.B010}],
-  [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: Shade.B200, fg: Shade.B050}],
-  [ColorSection.ACTION_FOCUS,            {alpha: Alpha.HIGH,   bg: Shade.B200, fg: Shade.A100}],
-  [ColorSection.ACTION_DISABLED,         {alpha: Alpha.LOW,    bg: Shade.B200, fg: Shade.B010}],
-  [ColorSection.ACTIVE,                  {alpha: Alpha.HIGH,   bg: Shade.B175, fg: Shade.B050}],
-  [ColorSection.ACTION_PRIMARY,          {alpha: Alpha.HIGH,   bg: Shade.B125, fg: 'contrast'}],
-  [ColorSection.ACTION_PRIMARY_FOCUS,    {alpha: Alpha.HIGH,   bg: Shade.A100, fg: 'contrast'}],
-  [ColorSection.ACTION_PRIMARY_DISABLED, {alpha: Alpha.LOW,    bg: Shade.B200, fg: Shade.B010}],
-]);
-
-export const DARK_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
-  [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: Shade.B025, fg: Shade.B200}],
-  [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: Shade.B025, fg: Shade.B200}],
-  [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: Shade.B025, fg: Shade.B150}],
-  [ColorSection.ACTION_FOCUS,            {alpha: Alpha.HIGH,   bg: Shade.B025, fg: Shade.A100}],
-  [ColorSection.ACTION_DISABLED,         {alpha: Alpha.LOW,    bg: Shade.B025, fg: Shade.B200}],
-  [ColorSection.ACTIVE,                  {alpha: Alpha.HIGH,   bg: Shade.B175, fg: Shade.B050}],
-  [ColorSection.ACTION_PRIMARY,          {alpha: Alpha.HIGH,   bg: Shade.B125, fg: 'contrast'}],
-  [ColorSection.ACTION_PRIMARY_FOCUS,    {alpha: Alpha.HIGH,   bg: Shade.A100, fg: 'contrast'}],
-  [ColorSection.ACTION_PRIMARY_DISABLED, {alpha: Alpha.LOW,    bg: Shade.B025, fg: Shade.B200}],
-]);
-
-export const HIGHLIGHT_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
-  [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: Shade.B100, fg: 'contrast'}],
-  [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: Shade.B100, fg: 'contrast'}],
-  [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: Shade.B100, fg: 'contrast'}],
-  [ColorSection.ACTION_FOCUS,            {alpha: Alpha.HIGH,   bg: Shade.B100, fg: Shade.A100}],
-  [ColorSection.ACTION_DISABLED,         {alpha: Alpha.LOW,    bg: Shade.B100, fg: 'contrast'}],
-  [ColorSection.ACTIVE,                  {alpha: Alpha.HIGH,   bg: Shade.B175, fg: Shade.B050}],
-]);
