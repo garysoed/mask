@@ -1,4 +1,4 @@
-import { assert, should } from 'gs-testing/export/main';
+import { assert, should, test } from 'gs-testing/export/main';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
 import { $, drawer, Mode } from './drawer';
@@ -6,7 +6,7 @@ import { $, drawer, Mode } from './drawer';
 const config = drawer();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('section.Drawer', () => {
+test('section.Drawer', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -15,7 +15,7 @@ describe('section.Drawer', () => {
     el = tester.createElement('mk-drawer', document.body);
   });
 
-  describe('renderStyleHeight_', () => {
+  test('renderStyleHeight_', () => {
     should(`render the max size if horizontal and expanded`, async () => {
       const size = '123px';
       await tester.setAttribute(el, $.host.mode, Mode.HORIZONTAL);
@@ -43,7 +43,7 @@ describe('section.Drawer', () => {
     });
   });
 
-  describe('renderStyleWidth_', () => {
+  test('renderStyleWidth_', () => {
     should(`render the max size if vertical and expanded`, async () => {
       const size = '123px';
       await tester.setAttribute(el, $.host.mode, Mode.VERTICAL);

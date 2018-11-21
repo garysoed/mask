@@ -1,4 +1,4 @@
-import { assert, should } from 'gs-testing/export/main';
+import { assert, should, test } from 'gs-testing/export/main';
 import { createSpyInstance, spy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { BehaviorSubject } from 'rxjs';
@@ -9,7 +9,7 @@ import { $, $postfixBoundary, croppedLine } from './cropped-line';
 const {tag} = croppedLine();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('display.CroppedLine', () => {
+test('display.CroppedLine', () => {
   let tester: PersonaTester;
   let el: HTMLElement;
 
@@ -18,7 +18,7 @@ describe('display.CroppedLine', () => {
     el = tester.createElement('mk-cropped-line', document.body);
   });
 
-  describe('onContainerCopy', () => {
+  test('onContainerCopy', () => {
     should(`set the clipboard data correctly`, async () => {
       const value = 'value';
 
@@ -39,7 +39,7 @@ describe('display.CroppedLine', () => {
     });
   });
 
-  describe('providesPostfixBoundary_', () => {
+  test('providesPostfixBoundary_', () => {
     should(`return the correct index for short texts`, async () => {
       await tester.setAttribute(el, $.host.text, 'ab');
 
@@ -59,7 +59,7 @@ describe('display.CroppedLine', () => {
     });
   });
 
-  describe('providesPostfixTextContent_', () => {
+  test('providesPostfixTextContent_', () => {
     should(`set the postfix text correctly`, async () => {
       await tester.setAttribute(el, $.host.text, 'abcde');
 
@@ -67,7 +67,7 @@ describe('display.CroppedLine', () => {
     });
   });
 
-  describe('providesPrefixTextContent_', () => {
+  test('providesPrefixTextContent_', () => {
     should(`set the prefix text correctly`, async () => {
       await tester.setAttribute(el, $.host.text, 'abcde');
 

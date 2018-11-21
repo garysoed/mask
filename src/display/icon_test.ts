@@ -1,5 +1,5 @@
 import { VineImpl } from 'grapevine/export/main';
-import { assert, should } from 'gs-testing/export/main';
+import { assert, should, test } from 'gs-testing/export/main';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
@@ -23,7 +23,7 @@ const {configure, tag} = icon(
 const configureIcon = configure;
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('display.Icon', () => {
+test('display.Icon', () => {
   let el: HTMLElement;
   let vine: VineImpl;
   let tester: PersonaTester;
@@ -36,7 +36,7 @@ describe('display.Icon', () => {
     el = tester.createElement('mk-icon', document.body);
   });
 
-  describe('providesFontConfig_', () => {
+  test('providesFontConfig_', () => {
     should(`use the specified font config`, async () => {
       await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
 
@@ -55,7 +55,7 @@ describe('display.Icon', () => {
     });
   });
 
-  describe('renderLinkHref_', () => {
+  test('renderLinkHref_', () => {
     should(`render the correct HREF`, async () => {
       await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
       assert(tester.getProperty(el, $.link.el, 'href')).to.equal(FONT_URL.toString());
@@ -67,7 +67,7 @@ describe('display.Icon', () => {
     });
   });
 
-  describe('renderRootClassList_', () => {
+  test('renderRootClassList_', () => {
     should(`render the correct icon class`, async () => {
       await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
       assert(tester.getProperty(el, $.root.el, 'classList').contains(ICON_CLASS)).to.beTrue();
@@ -79,7 +79,7 @@ describe('display.Icon', () => {
     });
   });
 
-  describe('onRun', () => {
+  test('onRun', () => {
     should(`create the correct link elements`, () => {
       // tslint:disable-next-line:no-non-null-assertion
       assert((document.head!.querySelector(`link#mkIconFamily_${DEFAULT_ICON_FONT}`) as

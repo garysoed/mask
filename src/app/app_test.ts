@@ -1,5 +1,5 @@
 import { VineImpl } from 'grapevine/export/main';
-import { assert, match, should } from 'gs-testing/export/main';
+import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy, createSpyInstance, fake, spy, Spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
 import {of as observableOf } from 'rxjs';
@@ -33,8 +33,8 @@ class TestClass3 extends CustomElementCtrl {
   }
 }
 
-describe('app.App', () => {
-  describe('addToMapConfig_', () => {
+test('app.App', () => {
+  test('addToMapConfig_', () => {
     should(`add to map if the config doesn't exist yet`, () => {
       const map = new Map();
       const config = {tag: 'TestClass1'};
@@ -61,7 +61,7 @@ describe('app.App', () => {
     });
   });
 
-  describe('flattenConfigs_', () => {
+  test('flattenConfigs_', () => {
     should(`grab all the dependencies correctly`, () => {
       const config1 = {tag: 'TestClass1'};
       const config2 = {tag: 'TestClass2', dependencies: [config1]};
@@ -75,7 +75,7 @@ describe('app.App', () => {
     });
   });
 
-  describe('start', () => {
+  test('start', () => {
     should(`build all the constructors and configure all the configs`, () => {
       const styleEl = document.createElement('style');
       const mockConfigure = createSpy<void, [VineImpl]>('Configure');

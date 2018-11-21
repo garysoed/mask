@@ -1,4 +1,4 @@
-import { assert, match, should } from 'gs-testing/export/main';
+import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
@@ -8,7 +8,7 @@ import { crumb } from './crumb';
 const {tag} = crumb();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('display.crumb', () => {
+test('display.crumb', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -17,7 +17,7 @@ describe('display.crumb', () => {
     el = tester.createElement('mk-crumb', document.body);
   });
 
-  describe('onHostClick_', () => {
+  test('onHostClick_', () => {
     should(`emit correct event if clicked`, async () => {
       const handler = createSpy('handler');
       el.addEventListener(ACTION_EVENT, handler);

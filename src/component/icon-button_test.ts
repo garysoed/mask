@@ -1,4 +1,4 @@
-import { assert, match, should } from 'gs-testing/export/main';
+import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
@@ -20,7 +20,7 @@ const {tag} = iconButton(iconConfig);
 // tslint:disable-next-line:no-non-null-assertion
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('component.IconButton', () => {
+test('component.IconButton', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -29,13 +29,13 @@ describe('component.IconButton', () => {
     el = tester.createElement('mk-icon-button', document.body);
   });
 
-  describe('constructor', () => {
+  test('constructor', () => {
     should(`set the default attributes correctly`, () => {
       assert(tester.getAttribute(el, $.host.ariaDisabled)).to.equal(false);
     });
   });
 
-  describe('activate_', () => {
+  test('activate_', () => {
     should(`fire the action event if clicked`, () => {
       const mockListener = createSpy('Listener');
 
@@ -73,7 +73,7 @@ describe('component.IconButton', () => {
     });
   });
 
-  describe('renderIconFamily_', () => {
+  test('renderIconFamily_', () => {
     should(`render the icon family correctly`, async () => {
       const iconFamily = 'iconFamily';
       await tester.setAttribute(el, $.host.iconFamily, iconFamily);
@@ -82,13 +82,13 @@ describe('component.IconButton', () => {
     });
   });
 
-  describe('renderRole_', () => {
+  test('renderRole_', () => {
     should(`render the correct role`, () => {
       assert(tester.getAttribute(el, $.host.role)).to.equal('button');
     });
   });
 
-  describe('renderTabIndex_', () => {
+  test('renderTabIndex_', () => {
     should(`render 0 if host is not disabled`, async () => {
       await tester.setAttribute(el, $.host.disabled, false);
       assert(tester.getAttribute(el, $.host.tabindex)).to.equal(0);

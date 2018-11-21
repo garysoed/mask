@@ -1,4 +1,4 @@
-import { assert, match, should } from 'gs-testing/export/main';
+import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
@@ -9,7 +9,7 @@ import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event
 const config = breadcrumb();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('display.Breadcrumb', () => {
+test('display.Breadcrumb', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -21,7 +21,7 @@ describe('display.Breadcrumb', () => {
     el = tester.createElement('mk-breadcrumb', document.body);
   });
 
-  describe('onRowAction_', () => {
+  test('onRowAction_', () => {
     should(`dispatch the correct event`, async () => {
       const data = ImmutableList.of([
         {
@@ -53,7 +53,7 @@ describe('display.Breadcrumb', () => {
     });
   });
 
-  describe('renderCrumbs_', () => {
+  test('renderCrumbs_', () => {
     should(`render the crumbs correctly`, async () => {
       const data = ImmutableList.of([
         {

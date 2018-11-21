@@ -1,4 +1,4 @@
-import { assert, match, retryUntil, should } from 'gs-testing/export/main';
+import { assert, match, retryUntil, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
@@ -8,7 +8,7 @@ import { $, textButton } from './text-button';
 const {tag} = textButton();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-describe('component.TextButton', () => {
+test('component.TextButton', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -17,14 +17,14 @@ describe('component.TextButton', () => {
     el = tester.createElement('mk-text-button', document.body);
   });
 
-  describe('constructor', () => {
+  test('constructor', () => {
     should(`set the default attributes correctly`, () => {
       assert(tester.getAttribute(el, $.host.ariaDisabled)).to.equal(false);
       assert(tester.getAttribute(el, $.host.ariaLabel)).to.equal('');
     });
   });
 
-  describe('activate_', () => {
+  test('activate_', () => {
     should(`fire the action event if clicked`, () => {
       const mockListener = createSpy('Listener');
 
@@ -61,7 +61,7 @@ describe('component.TextButton', () => {
     });
   });
 
-  describe('renderLabel_', () => {
+  test('renderLabel_', () => {
     should(`render the label correctly`, async () => {
       const newLabel = 'newLabel';
       await tester.setAttribute(el, $.host.label, newLabel);
@@ -70,7 +70,7 @@ describe('component.TextButton', () => {
     });
   });
 
-  describe('renderHostAriaLabel_', () => {
+  test('renderHostAriaLabel_', () => {
     should(`render the aria label if given`, async () => {
       const newLabel = 'newLabel';
       await tester.setAttribute(el, $.host.ariaLabel, newLabel);
@@ -86,13 +86,13 @@ describe('component.TextButton', () => {
     });
   });
 
-  describe('renderRole_', () => {
+  test('renderRole_', () => {
     should(`render the correct role`, () => {
       assert(tester.getAttribute(el, $.host.role)).to.equal('button');
     });
   });
 
-  describe('renderTabIndex_', () => {
+  test('renderTabIndex_', () => {
     should(`render 0 if host is not disabled`, async () => {
       await tester.setAttribute(el, $.host.disabled, false);
 
