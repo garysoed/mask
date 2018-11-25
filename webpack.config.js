@@ -1,9 +1,10 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const glob = require("glob");
 const path = require("path");
 var DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
 
-module.exports = {
+module.exports = smp.wrap({
   entry: {
     "demo": "./demo/demo.ts",
     "test": glob.sync("./src/**/*_test.ts")
@@ -72,4 +73,4 @@ module.exports = {
     // }),
     new DuplicatePackageCheckerPlugin(),
   ]
-};
+});
