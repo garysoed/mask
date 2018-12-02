@@ -16,7 +16,7 @@ module.exports = function(config) {
       require("dev/karma-reporter"),
     ],
     port: 8888,
-    reporters: ["dots"],
+    reporters: ["gs"],
     browsers: ['ChromeHeadless'],
     singleRun: false
   });
