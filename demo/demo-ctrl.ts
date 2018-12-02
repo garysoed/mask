@@ -6,12 +6,12 @@ import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, Ite
 import { attribute, element, resolveLocators, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { take } from 'rxjs/operators';
-import { booleanParser, stringParser } from 'src/util/parsers';
 import { $theme, _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
 import { Palette } from '../src/theme/palette';
 import { Theme } from '../src/theme/theme';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
+import { booleanParser, stringParser } from '../src/util/parsers';
 import demoTemplate from './demo.html';
 
 interface PaletteData {

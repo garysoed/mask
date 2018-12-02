@@ -55,6 +55,14 @@ h1, h2, h3 {
   font-weight: var(--mkFontWeightBold);
 }
 
+header {
+  font-family: var(--mkFontFamilyHeader);
+  font-weight: var(--mkFontWeightBold);
+  line-height: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
 code {
   background-color: var(--mkThemeActiveBG);
   border-radius: .4rem;
@@ -192,4 +200,5 @@ td {
 [mk-theme="light"],
 [mk-theme="dark"] {
   background: var(--mkThemePassiveBG);
+  color: var(--mkThemePassiveFG);
 }

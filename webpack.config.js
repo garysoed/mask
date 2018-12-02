@@ -7,7 +7,7 @@ const smp = new SpeedMeasurePlugin();
 module.exports = smp.wrap({
   entry: {
     "demo": "./demo/demo.ts",
-    "test": glob.sync("./src/**/*_test.ts")
+    "test": glob.sync("./src/**/*.test.ts")
   },
   output: {
     filename: "bundle-[name].js",

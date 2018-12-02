@@ -19,8 +19,8 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #option[expanded="true"] #accentPalette,
-  #option[expanded="true"] #basePalette {
+  #option[expanded="T"] #accentPalette,
+  #option[expanded="T"] #basePalette {
     height: 16rem;
     transition: height var(--mkAnimationTime);
   }
@@ -37,7 +37,7 @@
     outline-offset: -4px;
   }
 
-  h3 mk-icon {
+  header mk-icon {
     margin-left: 1rem;
     margin-right: 1rem;
   }
@@ -53,10 +53,10 @@
       shadow="down">
     <div id="drawerRoot">
       <div id="basePaletteSection">
-        <h3 layout="row">
+        <header layout="row">
           <mk-icon>palette</mk-icon>
           <div>Base Palette</div>
-        </h3>
+        </header>
         <div id="basePalette" shadow="down">
           <!-- basePalette -->
         </div>
@@ -64,10 +64,10 @@
 
 
       <div id="accentPaletteSection">
-        <h3 layout="row">
+        <header layout="row">
           <mk-icon>colorize</mk-icon>
           <div>Accent Palette</div>
-        </h3>
+        </header>
         <div id="accentPalette" shadow="down">
           <!-- accentPalette -->
         </div>
