@@ -1,8 +1,10 @@
 import { VineImpl } from 'grapevine/export/main';
+import { ImmutableList } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
-import { ListParser, ObjectParser, StringParser } from 'gs-tools/export/parse';
-import { ImmutableList } from 'gs-tools/src/immutable';
+import { listConverter, objectConverter } from 'gs-tools/export/serializer';
 import { HasPropertiesType, InstanceofType, IntersectType, IterableOfType, StringType } from 'gs-types/export';
+import { human } from 'nabu/export/grammar';
+import { compose, identity } from 'nabu/export/util';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { take } from 'rxjs/operators';
@@ -10,6 +12,7 @@ import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { listParser, stringParser } from '../util/parsers';
 import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
 import { crumb, CrumbConfig } from './crumb';
@@ -38,10 +41,10 @@ export const $ = resolveLocators({
     path: attribute<ImmutableList<CrumbData>>(
         shadowHost,
         'path',
-        ListParser(
-            ObjectParser({
-              display: StringParser,
-              key: StringParser,
+        listParser(
+            objectConverter<CrumbData>({
+              display: stringParser(),
+              key: stringParser(),
             }),
         ),
         IterableOfType<CrumbData, ImmutableList<CrumbData>>(crumbDataType),
@@ -56,9 +59,9 @@ export const $ = resolveLocators({
             new SimpleElementRenderer<RenderedCrumbData>(
               'mk-crumb',
               {
-                [__renderId]: StringParser,
-                display: StringParser,
-                key: StringParser,
+                [__renderId]: stringParser(),
+                display: stringParser(),
+                key: stringParser(),
               },
             ),
         ),

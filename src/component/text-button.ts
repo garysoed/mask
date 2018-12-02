@@ -8,7 +8,6 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
-import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
@@ -18,18 +17,19 @@ import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { booleanParser, integerParser, stringParser } from '../util/parsers';
 import textButtonTemplate from './text-button.html';
 
 export const $ = resolveLocators({
   host: {
-    ariaDisabled: attribute(shadowHost, 'aria-disabled', BooleanParser, BooleanType, false),
-    ariaLabel: attribute(shadowHost, 'aria-label', StringParser, StringType, ''),
-    disabled: attribute(shadowHost, 'disabled', BooleanParser, BooleanType, false),
+    ariaDisabled: attribute(shadowHost, 'aria-disabled', booleanParser(), BooleanType, false),
+    ariaLabel: attribute(shadowHost, 'aria-label', stringParser(), StringType, ''),
+    disabled: attribute(shadowHost, 'disabled', booleanParser(), BooleanType, false),
     dispatch: dispatcher(shadowHost),
     el: shadowHost,
-    label: attribute(shadowHost, 'label', StringParser, StringType, ''),
-    role: attribute(shadowHost, 'role', StringParser, StringType, AriaRole.BUTTON),
-    tabindex: attribute(shadowHost, 'tabindex', IntegerParser, NumberType, 0),
+    label: attribute(shadowHost, 'label', stringParser(), StringType, ''),
+    role: attribute(shadowHost, 'role', stringParser(), StringType, AriaRole.BUTTON),
+    tabindex: attribute(shadowHost, 'tabindex', integerParser(), NumberType, 0),
   },
   root: {
     el: element('#root', InstanceofType(HTMLDivElement)),

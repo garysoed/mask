@@ -9,27 +9,27 @@
 
 import { instanceStreamId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
-import { BooleanParser, StringParser } from 'gs-tools/export/parse';
 import { ImmutableMap, ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { booleanParser, stringParser } from '../util/parsers';
 import { IconConfig } from './icon-config';
 import iconTemplate from './icon.html';
 import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-font';
 
 export const $ = resolveLocators({
   host: {
-    ariaHidden: attribute(shadowHost, 'aria-hidden', BooleanParser, BooleanType, true),
+    ariaHidden: attribute(shadowHost, 'aria-hidden', booleanParser(), BooleanType, true),
     el: shadowHost,
-    iconFamily: attribute(shadowHost, 'icon-family', StringParser, StringType, ''),
-    role: attribute(shadowHost, 'role', StringParser, StringType, AriaRole.PRESENTATION),
+    iconFamily: attribute(shadowHost, 'icon-family', stringParser(), StringType, ''),
+    role: attribute(shadowHost, 'role', stringParser(), StringType, AriaRole.PRESENTATION),
   },
   link: {
     el: element('#link', InstanceofType(HTMLLinkElement)),
-    href: attribute(element('link.el'), 'href', StringParser, StringType, ''),
+    href: attribute(element('link.el'), 'href', stringParser(), StringType, ''),
   },
   root: {
     classList: classlist(element('root.el')),

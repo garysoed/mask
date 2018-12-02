@@ -11,7 +11,6 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
-import { BooleanParser, IntegerParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attribute, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
@@ -21,22 +20,23 @@ import { _p } from '../app/app';
 import { IconConfig } from '../display/icon-config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { booleanParser, integerParser, stringParser } from '../util/parsers';
 import { IconButtonConfig } from './icon-button-config';
 import iconButtonTemplate from './icon-button.html';
 
 export const $ = resolveLocators({
   host: {
-    ariaDisabled: attribute(shadowHost, 'aria-disabled', BooleanParser, BooleanType, false),
-    disabled: attribute(shadowHost, 'disabled', BooleanParser, BooleanType, false),
+    ariaDisabled: attribute(shadowHost, 'aria-disabled', booleanParser(), BooleanType, false),
+    disabled: attribute(shadowHost, 'disabled', booleanParser(), BooleanType, false),
     dispatch: dispatcher(shadowHost),
     el: shadowHost,
-    iconFamily: attribute(shadowHost, 'icon-family', StringParser, StringType, ''),
-    role: attribute(shadowHost, 'role', StringParser, StringType, AriaRole.BUTTON),
-    tabindex: attribute(shadowHost, 'tabindex', IntegerParser, NumberType, 0),
+    iconFamily: attribute(shadowHost, 'icon-family', stringParser(), StringType, ''),
+    role: attribute(shadowHost, 'role', stringParser(), StringType, AriaRole.BUTTON),
+    tabindex: attribute(shadowHost, 'tabindex', integerParser(), NumberType, 0),
   },
   icon: {
     el: element('#icon', InstanceofType(HTMLElement)),
-    iconFamily: attribute(element('icon.el'), 'icon-family', StringParser, StringType, ''),
+    iconFamily: attribute(element('icon.el'), 'icon-family', stringParser(), StringType, ''),
   },
   theme: {
     el: element('#theme', InstanceofType(HTMLStyleElement)),

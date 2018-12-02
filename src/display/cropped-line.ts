@@ -7,13 +7,13 @@
 
 import { instanceStreamId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
-import { StringParser } from 'gs-tools/export/parse';
 import { InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { stringParser } from '../util/parsers';
 import croppedLineTemplate from './cropped-line.html';
 
 export const $ = resolveLocators({
@@ -22,7 +22,7 @@ export const $ = resolveLocators({
   },
   host: {
     el: shadowHost,
-    text: attribute(shadowHost, 'text', StringParser, StringType, ''),
+    text: attribute(shadowHost, 'text', stringParser(), StringType, ''),
   },
   postfix: {
     el: element('#postfix', InstanceofType(HTMLElement)),

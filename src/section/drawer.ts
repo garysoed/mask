@@ -9,26 +9,40 @@
  * @slot The content of the drawer.
  */
 
-import { BooleanParser, EnumParser, StringParser } from 'gs-tools/export/parse';
+import { stringMatchConverter } from 'gs-tools/export/serializer';
+import { ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { booleanParser, stringParser } from '../util/parsers';
 import drawerTemplate from './drawer.html';
 
 export enum Mode {
-  HORIZONTAL,
-  VERTICAL,
+  HORIZONTAL = 'horizontal',
+  VERTICAL = 'vertical',
 }
 
 export const $ = resolveLocators({
   host: {
     el: shadowHost,
-    expanded: attribute(shadowHost, 'expanded', BooleanParser, BooleanType, false),
-    maxSize: attribute(shadowHost, 'max-size', StringParser, StringType, ''),
-    minSize: attribute(shadowHost, 'min-size', StringParser, StringType, '0'),
-    mode: attribute(shadowHost, 'mode', EnumParser<Mode>(Mode), EnumType(Mode), Mode.VERTICAL),
+    expanded: attribute(
+        shadowHost,
+        'expanded',
+        booleanParser(),
+        BooleanType,
+        false,
+    ),
+    maxSize: attribute(shadowHost, 'max-size', stringParser(), StringType, ''),
+    minSize: attribute(shadowHost, 'min-size', stringParser(), StringType, '0'),
+    mode: attribute(
+        shadowHost,
+        'mode',
+        stringMatchConverter(ImmutableSet.of([Mode.HORIZONTAL, Mode.VERTICAL])),
+        EnumType(Mode),
+        Mode.VERTICAL,
+    ),
     style: {
       height: style(shadowHost, 'height'),
       overflow: style(shadowHost, 'overflow'),

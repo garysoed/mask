@@ -1,5 +1,4 @@
 import { VineImpl } from 'grapevine/export/main';
-import { StringParser } from 'gs-tools/export/parse';
 import { InstanceofType } from 'gs-tools/node_modules/gs-types/export';
 import { StringType } from 'gs-types/export';
 import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
@@ -9,12 +8,13 @@ import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { stringParser } from '../util/parsers';
 import crumbTemplate from './crumb.html';
 
 export const $ = resolveLocators({
   host: {
     dispatch: dispatcher(shadowHost),
-    display: attribute(shadowHost, 'display', StringParser, StringType, ''),
+    display: attribute(shadowHost, 'display', stringParser(), StringType, ''),
     el: shadowHost,
   },
   text: {

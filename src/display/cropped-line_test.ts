@@ -2,7 +2,6 @@ import { assert, should, test } from 'gs-testing/export/main';
 import { createSpyInstance, spy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, $postfixBoundary, croppedLine } from './cropped-line';
 

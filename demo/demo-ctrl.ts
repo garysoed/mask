@@ -2,11 +2,11 @@ import { instanceSourceId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
-import { BooleanParser, StringParser } from 'gs-tools/export/parse';
 import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, IterableOfType, NullableType, StringType } from 'gs-types/export';
 import { attribute, element, resolveLocators, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { take } from 'rxjs/operators';
+import { booleanParser, stringParser } from 'src/util/parsers';
 import { $theme, _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
 import { Palette } from '../src/theme/palette';
@@ -25,10 +25,10 @@ const paletteElementListRenderer = new ElementListRenderer<PaletteData>(
   new SimpleElementRenderer<PaletteData>(
       'div',
       {
-        [__renderId]: StringParser,
-        class: StringParser,
-        color: StringParser,
-        style: StringParser,
+        [__renderId]: stringParser(),
+        class: stringParser(),
+        color: stringParser(),
+        style: stringParser(),
       },
   ),
 );
@@ -63,7 +63,7 @@ const $ = resolveLocators({
   },
   option: {
     el: element<HTMLElement>('#option', ElementWithTagType('mk-drawer')),
-    expanded: attribute(element('option.el'), 'expanded', BooleanParser, BooleanType, false),
+    expanded: attribute(element('option.el'), 'expanded', booleanParser(), BooleanType, false),
   },
 });
 
