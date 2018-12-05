@@ -1,10 +1,11 @@
 /**
- * @webcomponent mk-text-button
- * A basic text button.
+ * @webcomponent mk-text-icon-button
+ * A basic text button with an icon
  *
  * @attr {<boolean} disabled True iff the button should be disabled.
  * @attr {<string} label Label on the button.
- * @attr {<string} ariaLabel A11y label on the button. Defaults to label if not specified.
+ * @attr {<string} aria-label A11y label on the button. Defaults to label if not specified.
+ * @attr {<string} icon-family
  */
 
 import { VineImpl } from 'grapevine/export/main';
