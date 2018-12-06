@@ -1,5 +1,5 @@
 import { VineImpl } from 'grapevine/export/main';
-import { assert, should, test } from 'gs-testing/export/main';
+import { assert, setup, should, test } from 'gs-testing/export/main';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
@@ -28,7 +28,7 @@ test('display.Icon', () => {
   let vine: VineImpl;
   let tester: PersonaTester;
 
-  beforeEach(() => {
+  setup(() => {
     tester = testerFactory.build([tag]);
     vine = tester.vine;
     configureIcon(vine);

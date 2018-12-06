@@ -5,6 +5,7 @@ import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
 import { breadcrumb } from '../src/display/breadcrumb';
 import { croppedLine } from '../src/display/cropped-line';
+import { iconWithText } from '../src/display/icon-with-text';
 import { drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
 import { demoCtrl } from './demo-ctrl';
@@ -32,6 +33,7 @@ window.addEventListener('load', () => {
         demoCtrl(),
         iconConfig,
         iconButton(iconConfig),
+        iconWithText(iconConfig),
         textButton(),
         textIconButton(iconConfig),
       ],
