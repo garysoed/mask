@@ -1,7 +1,6 @@
 import { ImmutableMap } from 'gs-tools/src/immutable';
-import { icon, Palette, start as startMask, textButton } from '../export';
+import { icon, Palette, start as startMask } from '../export';
 import { $theme, _v } from '../src/app/app';
-import { iconButton } from '../src/component/icon-button';
 import { textIconButton } from '../src/component/text-icon-button';
 import { breadcrumb } from '../src/display/breadcrumb';
 import { croppedLine } from '../src/display/cropped-line';
@@ -32,9 +31,7 @@ window.addEventListener('load', () => {
         drawer(),
         demoCtrl(),
         iconConfig,
-        iconButton(iconConfig),
         iconWithText(iconConfig),
-        textButton(),
         textIconButton(iconConfig),
       ],
       theme,

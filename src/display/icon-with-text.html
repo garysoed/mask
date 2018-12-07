@@ -1,0 +1,36 @@
+<style id="theme"></style>
+<style>
+    #root {
+      padding: var(--mkSizePadding);
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #icon {
+      display: none;
+    }
+
+    #icon.hasIcon {
+      display: block;
+    }
+
+    #text {
+      display: none;
+      font-weight: var(--mkFontWeightBold);
+      line-height: 2rem;
+    }
+
+    #icon.hasIcon + #text.hasText {
+      margin-left: 1rem;
+    }
+
+    #text.hasText {
+      display: block;
+    }
+  </style>
+  <div id="root" layout="row">
+    <mk-icon id="icon"></mk-icon>
+    <div flex id="text"></div>
+  </div>
