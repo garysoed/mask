@@ -1,6 +1,6 @@
 import { Config } from '../app/config';
-import { IconConfig } from '../display/icon-config';
+import { IconWithTextConfig } from '../display/icon-with-text';
 
 export interface TextIconButtonConfig extends Config {
-  dependencies: [IconConfig];
+  dependencies: [IconWithTextConfig];
 }

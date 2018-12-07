@@ -68,7 +68,11 @@ export class IconWithText extends ThemedCustomElementCtrl {
   }
 }
 
-export function iconWithText(iconConfig: IconConfig): Config {
+export interface IconWithTextConfig extends Config {
+  tag: 'mk-icon-with-text';
+}
+
+export function iconWithText(iconConfig: IconConfig): IconWithTextConfig {
   return {
     dependencies: [iconConfig],
     tag: 'mk-icon-with-text',

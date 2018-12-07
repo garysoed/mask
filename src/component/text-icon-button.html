@@ -3,21 +3,10 @@
   #root {
     background-color: var(--mkButtonBG);
     color: var(--mkButtonFG);
-    padding: var(--mkSizePadding);
     user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
-  }
-
-  #text {
-    font-weight: var(--mkFontWeightBold);
-    line-height: 2rem;
-    margin-left: 1rem;
-  }
-
-  slot::slotted(*) {
-    color: var(--mkButtonFG);
   }
 
   :host {
@@ -63,8 +52,5 @@
   }
 </style>
 <div id="root" layout="row">
-  <mk-icon id="icon">
-    <slot></slot>
-  </mk-icon>
-  <div flex id="text"></div>
+  <mk-icon-with-text id="iconWithText"></mk-icon-with-text>
 </div>

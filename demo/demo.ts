@@ -22,6 +22,7 @@ const registeredFonts = ImmutableMap.of([
     ]);
 
 const iconConfig = icon('material', registeredFonts);
+const iconWithTextConfig = iconWithText(iconConfig);
 
 window.addEventListener('load', () => {
   const {vine: maskVine} = startMask(
@@ -31,8 +32,8 @@ window.addEventListener('load', () => {
         drawer(),
         demoCtrl(),
         iconConfig,
-        iconWithText(iconConfig),
-        textIconButton(iconConfig),
+        iconWithTextConfig,
+        textIconButton(iconWithTextConfig),
       ],
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);
