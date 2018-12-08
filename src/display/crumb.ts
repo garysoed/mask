@@ -1,7 +1,7 @@
 import { VineImpl } from 'grapevine/export/main';
 import { InstanceofType } from 'gs-tools/node_modules/gs-types/export';
 import { StringType } from 'gs-types/export';
-import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { attributeIn, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p } from '../app/app';
@@ -14,7 +14,7 @@ import crumbTemplate from './crumb.html';
 export const $ = resolveLocators({
   host: {
     dispatch: dispatcher(shadowHost),
-    display: attribute(shadowHost, 'display', stringParser(), StringType, ''),
+    display: attributeIn(shadowHost, 'display', stringParser(), StringType, ''),
     el: shadowHost,
   },
   text: {

@@ -1,11 +1,9 @@
 import { VineImpl } from 'grapevine/export/main';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
-import { listConverter, objectConverter } from 'gs-tools/export/serializer';
+import { objectConverter } from 'gs-tools/export/serializer';
 import { HasPropertiesType, InstanceofType, IntersectType, IterableOfType, StringType } from 'gs-types/export';
-import { human } from 'nabu/export/grammar';
-import { compose, identity } from 'nabu/export/util';
-import { attribute, dispatcher, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
+import { attributeIn, dispatcher, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -38,7 +36,7 @@ export const $ = resolveLocators({
   host: {
     dispatch: dispatcher(shadowHost),
     el: shadowHost,
-    path: attribute<ImmutableList<CrumbData>>(
+    path: attributeIn<ImmutableList<CrumbData>>(
         shadowHost,
         'path',
         listParser(

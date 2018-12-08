@@ -11,7 +11,7 @@
 
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export';
-import { attribute, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { attributeIn, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -22,9 +22,9 @@ import iconWithTextTemplate from './icon-with-text.html';
 export const $ = resolveLocators({
   host: {
     el: shadowHost,
-    icon: attribute(shadowHost, 'icon', stringParser(), StringType, ''),
-    iconFamily: attribute(shadowHost, 'icon-family', stringParser(), StringType, ''),
-    label: attribute(shadowHost, 'label', stringParser(), StringType),
+    icon: attributeIn(shadowHost, 'icon', stringParser(), StringType, ''),
+    iconFamily: attributeIn(shadowHost, 'icon-family', stringParser(), StringType, ''),
+    label: attributeIn(shadowHost, 'label', stringParser(), StringType, ''),
   },
   icon: {
     classes: classlist(element('icon.el')),

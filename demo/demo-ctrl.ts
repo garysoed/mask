@@ -3,7 +3,7 @@ import { VineImpl } from 'grapevine/export/main';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
 import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, IterableOfType, NullableType, StringType } from 'gs-types/export';
-import { attribute, element, resolveLocators, slot } from 'persona/export/locator';
+import { attributeOut, element, resolveLocators, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { take } from 'rxjs/operators';
 import { $theme, _p, _v } from '../src/app/app';
@@ -63,7 +63,7 @@ const $ = resolveLocators({
   },
   option: {
     el: element<HTMLElement>('#option', ElementWithTagType('mk-drawer')),
-    expanded: attribute(element('option.el'), 'expanded', booleanParser(), BooleanType, false),
+    expanded: attributeOut(element('option.el'), 'expanded', booleanParser(), BooleanType),
   },
 });
 

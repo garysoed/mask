@@ -32,7 +32,7 @@ test('component.TextIconButton', () => {
   test('constructor', () => {
     should(`set the default attributes correctly`, () => {
       assert(tester.getAttribute(el, $.host.ariaDisabled)).to.equal(false);
-      assert(tester.getAttribute(el, $.host.ariaLabel)).to.equal('');
+      assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal('');
     });
   });
 
@@ -74,14 +74,14 @@ test('component.TextIconButton', () => {
   test('renderHostAriaLabel_', () => {
     should(`render the aria label if given`, async () => {
       const newLabel = 'newLabel';
-      await tester.setAttribute(el, $.host.ariaLabel, newLabel);
-      assert(tester.getAttribute(el, $.host.ariaLabel)).to.equal(newLabel);
+      await tester.setAttribute(el, $.host.ariaLabelOut, newLabel);
+      assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal(newLabel);
     });
 
     should(`render the label if aria-label is not given`, async () => {
       const newLabel = 'newLabel';
       await tester.setAttribute(el, $.host.label, newLabel);
-      assert(tester.getAttribute(el, $.host.ariaLabel)).to.equal(newLabel);
+      assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal(newLabel);
     });
   });
 

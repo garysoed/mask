@@ -12,7 +12,7 @@ import { VineImpl } from 'grapevine/export/main';
 import { ImmutableMap, ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
-import { attribute, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
+import { attributeIn, attributeOut, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
@@ -22,14 +22,14 @@ import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-fon
 
 export const $ = resolveLocators({
   host: {
-    ariaHidden: attribute(shadowHost, 'aria-hidden', booleanParser(), BooleanType, true),
+    ariaHidden: attributeOut(shadowHost, 'aria-hidden', booleanParser(), BooleanType),
     el: shadowHost,
-    iconFamily: attribute(shadowHost, 'icon-family', stringParser(), StringType, ''),
-    role: attribute(shadowHost, 'role', stringParser(), StringType, AriaRole.PRESENTATION),
+    iconFamily: attributeIn(shadowHost, 'icon-family', stringParser(), StringType, ''),
+    role: attributeOut(shadowHost, 'role', stringParser(), StringType),
   },
   link: {
     el: element('#link', InstanceofType(HTMLLinkElement)),
-    href: attribute(element('link.el'), 'href', stringParser(), StringType, ''),
+    href: attributeOut(element('link.el'), 'href', stringParser(), StringType),
   },
   root: {
     classList: classlist(element('root.el')),
@@ -71,15 +71,12 @@ export class Icon extends ThemedCustomElementCtrl {
   }
 
   @_p.render($.root.classList)
-  renderRootClassList_(
-      @_v.vineIn($fontConfig) fontConfig: FontConfig|null,
-      @_p.input($.root.classList) existingClasses: ImmutableSet<string>):
-      ImmutableSet<string> {
+  renderRootClassList_(@_v.vineIn($fontConfig) fontConfig: FontConfig|null): ImmutableSet<string> {
     if (!fontConfig) {
       return ImmutableSet.of();
     }
 
-    return existingClasses.add(fontConfig.iconClass);
+    return ImmutableSet.of([fontConfig.iconClass]);
   }
 }
 

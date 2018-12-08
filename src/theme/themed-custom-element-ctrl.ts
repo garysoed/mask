@@ -1,12 +1,9 @@
 import { VineImpl } from 'grapevine/export/main';
 import { InstanceofType } from 'gs-types/export';
-import { element, ResolvedRenderableWatchableLocator, ResolvedWatchableLocator, resolveLocators } from 'persona/export/locator';
+import { element, resolveLocators } from 'persona/export/locator';
 import { CustomElementCtrl } from 'persona/export/main';
 import { combineLatest } from 'rxjs';
 import { $theme, _p } from '../app/app';
-
-type StyleElLocator = ResolvedRenderableWatchableLocator<HTMLStyleElement>|
-    ResolvedWatchableLocator<HTMLStyleElement>;
 
 const $ = resolveLocators({
   theme: {

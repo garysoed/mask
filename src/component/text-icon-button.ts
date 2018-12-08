@@ -10,9 +10,9 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
-import { BooleanType, ElementWithTagType, InstanceofType, NumberType, StringType } from 'gs-types/export';
+import { BooleanType, ElementWithTagType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
-import { attribute, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { attributeIn, attributeOut, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p } from '../app/app';
@@ -25,22 +25,23 @@ import textButtonTemplate from './text-icon-button.html';
 
 export const $ = resolveLocators({
   host: {
-    ariaDisabled: attribute(shadowHost, 'aria-disabled', booleanParser(), BooleanType, false),
-    ariaLabel: attribute(shadowHost, 'aria-label', stringParser(), StringType, ''),
-    disabled: attribute(shadowHost, 'disabled', booleanParser(), BooleanType, false),
+    ariaDisabled: attributeOut(shadowHost, 'aria-disabled', booleanParser(), BooleanType),
+    ariaLabelIn: attributeIn(shadowHost, 'aria-label', stringParser(), StringType, ''),
+    ariaLabelOut: attributeOut(shadowHost, 'aria-label', stringParser(), StringType),
+    disabled: attributeIn(shadowHost, 'disabled', booleanParser(), BooleanType, false),
     dispatch: dispatcher(shadowHost),
     el: shadowHost,
-    icon: attribute(shadowHost, 'icon', stringParser(), StringType, ''),
-    iconFamily: attribute(shadowHost, 'icon-family', stringParser(), StringType, ''),
-    label: attribute(shadowHost, 'label', stringParser(), StringType, ''),
-    role: attribute(shadowHost, 'role', stringParser(), StringType, AriaRole.BUTTON),
-    tabindex: attribute(shadowHost, 'tabindex', integerParser(), NumberType, 0),
+    icon: attributeIn(shadowHost, 'icon', stringParser(), StringType, ''),
+    iconFamily: attributeIn(shadowHost, 'icon-family', stringParser(), StringType, ''),
+    label: attributeIn(shadowHost, 'label', stringParser(), StringType, ''),
+    role: attributeOut(shadowHost, 'role', stringParser(), StringType),
+    tabindex: attributeOut(shadowHost, 'tabindex', integerParser(), NumberType),
   },
   iconWithText: {
     el: element('#iconWithText', ElementWithTagType('mk-icon-with-text')),
-    icon: attribute(element('iconWithText.el'), 'icon', stringParser(), StringType),
-    iconFamily: attribute(element('iconWithText.el'), 'icon-family', stringParser(), StringType),
-    label: attribute(element('iconWithText.el'), 'label', stringParser(), StringType),
+    icon: attributeOut(element('iconWithText.el'), 'icon', stringParser(), StringType),
+    iconFamily: attributeOut(element('iconWithText.el'), 'icon-family', stringParser(), StringType),
+    label: attributeOut(element('iconWithText.el'), 'label', stringParser(), StringType),
   },
 });
 
@@ -80,9 +81,9 @@ export class TextIconButton extends ThemedCustomElementCtrl {
         });
   }
 
-  @_p.render($.host.ariaLabel)
+  @_p.render($.host.ariaLabelOut)
   renderHostAriaLabel_(
-      @_p.input($.host.ariaLabel) hostAriaLabel: string,
+      @_p.input($.host.ariaLabelIn) hostAriaLabel: string,
       @_p.input($.host.label) hostLabel: string): string {
     return hostAriaLabel || hostLabel;
   }

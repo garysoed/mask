@@ -8,7 +8,7 @@
 import { instanceStreamId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { InstanceofType, NumberType, StringType } from 'gs-types/export';
-import { attribute, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { attributeIn, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
@@ -22,7 +22,7 @@ export const $ = resolveLocators({
   },
   host: {
     el: shadowHost,
-    text: attribute(shadowHost, 'text', stringParser(), StringType, ''),
+    text: attributeIn(shadowHost, 'text', stringParser(), StringType, ''),
   },
   postfix: {
     el: element('#postfix', InstanceofType(HTMLElement)),

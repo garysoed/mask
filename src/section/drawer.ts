@@ -12,7 +12,7 @@
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
-import { attribute, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
+import { attributeIn, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -27,16 +27,10 @@ export enum Mode {
 export const $ = resolveLocators({
   host: {
     el: shadowHost,
-    expanded: attribute(
-        shadowHost,
-        'expanded',
-        booleanParser(),
-        BooleanType,
-        false,
-    ),
-    maxSize: attribute(shadowHost, 'max-size', stringParser(), StringType, ''),
-    minSize: attribute(shadowHost, 'min-size', stringParser(), StringType, '0'),
-    mode: attribute(
+    expanded: attributeIn(shadowHost, 'expanded', booleanParser(), BooleanType, false),
+    maxSize: attributeIn(shadowHost, 'max-size', stringParser(), StringType, ''),
+    minSize: attributeIn(shadowHost, 'min-size', stringParser(), StringType, '0'),
+    mode: attributeIn(
         shadowHost,
         'mode',
         stringMatchConverter(ImmutableSet.of([Mode.HORIZONTAL, Mode.VERTICAL])),
