@@ -1,0 +1,19 @@
+<style id="theme"></style>
+<style>
+  #root {
+    background-color: red;
+    width: 0%;
+    transition: all var(--mkAnimationTime);
+  }
+
+  #root.isVisible {
+    width: 100%;
+    transition: all var(--mkAnimationTime);
+  }
+</style>
+<div fill-parent id="root" layout="row">
+  <div id="buttonsContainer"></div>
+  <div id="content">
+    <!-- #content -->
+  </div>
+</div>

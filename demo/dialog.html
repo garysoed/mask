@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script src="/bin/bundle-demo.js"></script>
+    <style id="globalStyle"></style>
+  </head>
+  <body>
+    <section>
+      <mk-demo mk-theme="light">
+        <mk-dialog id="dialog"></mk-dialog>
+        <mk-text-icon-button id="dialogLaunchButton" label="Click here"></mk-text-icon-button>
+      </mk-demo>
+    </section>
+
+    <script>
+      const dialogLaunchButton = document.getElementById('dialogLaunchButton');
+      dialogLaunchButton.addEventListener('mk-action', () => {
+        const el = document.createElement('div');
+        el.textContent = 'Dialog Content';
+        demo.dialogService.open(el);
+      });
+    </script>
+  </body>
+</html>
