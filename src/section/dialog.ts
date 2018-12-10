@@ -1,13 +1,25 @@
+import { VineImpl } from 'grapevine/export/main';
 import { ImmutableSet } from 'gs-tools/export/collect';
-import { InstanceofType } from 'gs-types/export';
+import { ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { classlist, element, resolveLocators } from 'persona/export/locator';
+import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
+import { textIconButton } from '../component/text-icon-button';
+import { IconWithTextConfig } from '../display/icon-with-text';
+import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { $dialogState, DialogState } from './dialog-service';
 import dialogTemplate from './dialog.html';
 
 export const $ = resolveLocators({
+  cancelButton: {
+    classlist: classlist(element('cancelButton.el')),
+    el: element('#cancelButton', ElementWithTagType('mk-text-icon-button')),
+  },
+  okButton: {
+    el: element('#okButton', ElementWithTagType('mk-text-icon-button')),
+  },
   root: {
     classlist: classlist(element('root.el')),
     el: element('#root', InstanceofType(HTMLDivElement)),
@@ -17,8 +29,46 @@ export const $ = resolveLocators({
 @_p.customElement({
   tag: 'mk-dialog',
   template: dialogTemplate,
+  watch: [
+    $.okButton.el,
+  ],
 })
 class Dialog extends ThemedCustomElementCtrl {
+  private closeDialog_(vine: VineImpl, isCanceled: boolean): void {
+    this.addSubscription(
+        vine.getObservable($dialogState)
+            .pipe(take(1))
+            .subscribe(state => {
+              if (!state.isOpen) {
+                return;
+              }
+
+              state.closeFn(isCanceled);
+            }),
+    );
+  }
+
+  @_p.onDom($.cancelButton.el, ACTION_EVENT)
+  onCancelButtonAction_(event: Event, vine: VineImpl): void {
+    this.closeDialog_(vine, true);
+  }
+
+  @_p.onDom($.okButton.el, ACTION_EVENT)
+  onOkButtonAction_(event: Event, vine: VineImpl): void {
+    this.closeDialog_(vine, false);
+  }
+
+  @_p.render($.cancelButton.classlist)
+  renderCancelButtonClasses_(
+      @_v.vineIn($dialogState) dialogState: DialogState,
+  ): ImmutableSet<string> {
+    if (!dialogState.isOpen || !dialogState.cancelable) {
+      return ImmutableSet.of([]);
+    }
+
+    return ImmutableSet.of(['isVisible']);
+  }
+
   @_p.render($.root.classlist)
   renderRootClasses_(@_v.vineIn($dialogState) dialogState: DialogState): ImmutableSet<string> {
     if (dialogState.isOpen) {
@@ -29,6 +79,9 @@ class Dialog extends ThemedCustomElementCtrl {
   }
 }
 
-export function dialog(): Config {
-  return {tag: 'mk-dialog'};
+export function dialog(iconWithTextConfig: IconWithTextConfig): Config {
+  return {
+    dependencies: [textIconButton(iconWithTextConfig)],
+    tag: 'mk-dialog',
+  };
 }

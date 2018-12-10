@@ -2,6 +2,7 @@
 <style>
   #root {
     background-color: red;
+    overflow: hidden;
     width: 0%;
     transition: all var(--mkAnimationTime);
   }
@@ -10,10 +11,21 @@
     width: 100%;
     transition: all var(--mkAnimationTime);
   }
+
+  #cancelButton {
+    display: none;
+  }
+
+  #cancelButton.isVisible {
+    display: block;
+  }
 </style>
 <div fill-parent id="root" layout="row">
-  <div id="buttonsContainer"></div>
-  <div id="content">
+  <div id="buttonsContainer" layout="column" flex-justify="flex-end">
+    <mk-text-icon-button id="cancelButton" icon="close"></mk-text-icon-button>
+    <mk-text-icon-button id="okButton" icon="check"></mk-text-icon-button>
+  </div>
+  <div flex id="content">
     <!-- #content -->
   </div>
 </div>

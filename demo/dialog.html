@@ -16,7 +16,11 @@
       dialogLaunchButton.addEventListener('mk-action', () => {
         const el = document.createElement('div');
         el.textContent = 'Dialog Content';
-        demo.dialogService.open(el);
+        demo.dialogService.open({
+          cancelable: true,
+          elementProvider: () => el,
+          onClose: canceled => window.alert(`Canceled: ${canceled}`),
+        });
       });
     </script>
   </body>

@@ -1,12 +1,17 @@
 import { assert, setup, should, test } from 'gs-testing/export/main';
-import { NumberType } from 'gs-types/export';
+import { createSpy } from 'gs-testing/export/spy';
+import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import { icon } from '../display/icon';
+import { iconWithText } from '../display/icon-with-text';
+import { ActionEvent } from '../event/action-event';
 import { $, dialog } from './dialog';
-import { $dialogService, DialogService } from './dialog-service';
+import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
-const config = dialog();
+const config = dialog(iconWithText(icon('test', ImmutableMap.of())));
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('section.Dialog', () => {
@@ -19,15 +24,97 @@ test('section.Dialog', () => {
     tester.vine.setValue($dialogService, new DialogService());
   });
 
+  test('onCancelButtonAction_', () => {
+    should(`close the dialog correctly`, () => {
+      const mockOnClose = createSpy('OnClose');
+      tester.vine.getObservable($dialogService)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open<number>({
+              cancelable: true,
+              elementProvider: () => document.createElement('div'),
+              onClose: mockOnClose,
+            });
+          });
+
+      const stateSubject = new BehaviorSubject<DialogState|null>(null);
+      tester.vine.getObservable($dialogState).subscribe(stateSubject);
+
+      tester.simulateEvent(el, new ActionEvent(), $.cancelButton.el);
+
+      assert(mockOnClose).to.haveBeenCalledWith(true);
+
+      // tslint:disable-next-line:no-non-null-assertion
+      assert(stateSubject.getValue()!.isOpen).to.beFalse();
+    });
+  });
+
+  test('onOkButtonAction_', () => {
+    should(`close the dialog correctly`, () => {
+      const mockOnClose = createSpy('OnClose');
+      tester.vine.getObservable($dialogService)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open<number>({
+              cancelable: true,
+              elementProvider: () => document.createElement('div'),
+              onClose: mockOnClose,
+            });
+          });
+
+      const stateSubject = new BehaviorSubject<DialogState|null>(null);
+      tester.vine.getObservable($dialogState).subscribe(stateSubject);
+
+      tester.simulateEvent(el, new ActionEvent(), $.okButton.el);
+
+      assert(mockOnClose).to.haveBeenCalledWith(false);
+
+      // tslint:disable-next-line:no-non-null-assertion
+      assert(stateSubject.getValue()!.isOpen).to.beFalse();
+    });
+  });
+
+  test('renderCancelButtonClasses_', () => {
+    should(`display the cancel button if cancelable`, () => {
+      const mockOnClose = createSpy('OnClose');
+      tester.vine.getObservable($dialogService)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open<number>({
+              cancelable: true,
+              elementProvider: () => document.createElement('div'),
+              onClose: mockOnClose,
+            });
+          });
+
+      assert(tester.getClassList(el, $.cancelButton.classlist)).to.haveElements(['isVisible']);
+    });
+
+    should(`not display the cancel button if not cancelable`, () => {
+      const mockOnClose = createSpy('OnClose');
+      tester.vine.getObservable($dialogService)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open<number>({
+              cancelable: false,
+              elementProvider: () => document.createElement('div'),
+              onClose: mockOnClose,
+            });
+          });
+
+      assert(tester.getClassList(el, $.cancelButton.classlist)).to.beEmpty();
+    });
+  });
+
   test('renderRootClass_', () => {
     should(`render correctly when dialog is displayed`, () => {
       tester.vine.getObservable($dialogService)
           .pipe(take(1))
           .subscribe(dialogService => {
             dialogService.open<number>({
-              closeHandler: () => 123,
+              cancelable: false,
               elementProvider: () => document.createElement('div'),
-              type: NumberType,
+              onClose: () => undefined,
             });
           });
 

@@ -1,26 +1,26 @@
 import { staticSourceId, staticStreamId } from 'grapevine/export/component';
 import { Errors } from 'gs-tools/export/error';
-import { EqualType, HasPropertiesType, InstanceofType, Type, UnionType } from 'gs-types/export';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BooleanType, EqualType, HasPropertiesType, InstanceofType, UnionType } from 'gs-types/export';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { _v } from '../app/app';
 
-export interface OpenState<T> {
+export interface OpenState {
+  cancelable: boolean;
   isOpen: true;
-  spec: DialogSpec<T>;
-  closeFn(value: T): void;
+  closeFn(canceled: boolean): void;
+  elementProvider(): HTMLElement;
 }
 
 interface CloseState {
   isOpen: false;
 }
 
-export type DialogState = OpenState<unknown>|CloseState;
+export type DialogState = OpenState|CloseState;
 
-interface DialogSpec<T> {
-  type: Type<T>;
-  cancelHandler?(): T;
-  closeHandler(): T;
+interface DialogSpec {
+  cancelable: boolean;
   elementProvider(): HTMLElement;
+  onClose(canceled: boolean): void;
 }
 
 export class DialogService {
@@ -35,27 +35,22 @@ export class DialogService {
     return this.stateObs_;
   }
 
-  open<T>(spec: DialogSpec<T>): Observable<T> {
+  open<T>(spec: DialogSpec): void {
     const latestState = this.stateObs_.getValue();
     if (latestState.isOpen) {
       throw Errors.assert('State of dialog service').shouldBe('closed').butWas('opened');
     }
 
-    const resultSubject = new Subject<T>();
     this.stateObs_.next({
-      closeFn: (value: unknown) => {
-        if (!spec.type.check(value)) {
-          throw Errors.assert(`Type of ${value}`).shouldBeA(spec.type).butWas(value);
-        }
+      cancelable: spec.cancelable,
+      closeFn: (canceled: boolean) => {
         this.close_();
 
-        resultSubject.next(value);
+        spec.onClose(canceled);
       },
+      elementProvider: spec.elementProvider,
       isOpen: true,
-      spec,
     });
-
-    return resultSubject;
   }
 }
 export const $dialogService = staticSourceId('dialogService', InstanceofType(DialogService));
@@ -65,10 +60,11 @@ export const $dialogState = staticStreamId(
     'dialogSource',
     UnionType<DialogState>([
       HasPropertiesType<CloseState>({isOpen: EqualType<false>(false)}),
-      HasPropertiesType<OpenState<unknown>>({
+      HasPropertiesType<OpenState>({
+        cancelable: BooleanType,
         closeFn: InstanceofType<(value: unknown) => void>(Function),
+        elementProvider: InstanceofType<() => HTMLElement>(Function),
         isOpen: EqualType<true>(true),
-        spec: InstanceofType<DialogSpec<unknown>>(Object),
       }),
     ]),
 );

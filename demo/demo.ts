@@ -33,7 +33,7 @@ window.addEventListener('load', () => {
         breadcrumb(),
         croppedLine(),
         demoCtrl(),
-        dialog(),
+        dialog(iconWithTextConfig),
         drawer(),
         iconConfig,
         iconWithTextConfig,
