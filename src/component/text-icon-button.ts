@@ -16,11 +16,11 @@ import { attributeIn, attributeOut, dispatcher, element, resolveLocators, shadow
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p } from '../app/app';
+import { TextIconButtonConfig } from '../configs/text-icon-button-config';
 import { IconWithTextConfig } from '../display/icon-with-text';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
-import { TextIconButtonConfig } from './text-icon-button-config';
 import textButtonTemplate from './text-icon-button.html';
 
 export const $ = resolveLocators({

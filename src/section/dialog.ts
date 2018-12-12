@@ -1,12 +1,12 @@
 import { VineImpl } from 'grapevine/export/main';
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
-import { classlist, element, resolveLocators } from 'persona/export/locator';
+import { classlist, element, resolveLocators, textContent } from 'persona/export/locator';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
-import { textIconButton } from '../component/text-icon-button';
-import { IconWithTextConfig } from '../display/icon-with-text';
+import { BackdropConfig } from '../configs/backdrop-config';
+import { TextIconButtonConfig } from '../configs/text-icon-button-config';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { $dialogState, DialogState } from './dialog-service';
@@ -23,6 +23,10 @@ export const $ = resolveLocators({
   root: {
     classlist: classlist(element('root.el')),
     el: element('#root', InstanceofType(HTMLDivElement)),
+  },
+  title: {
+    el: element('#title', ElementWithTagType('h2')),
+    text: textContent(element('title.el')),
   },
 });
 
@@ -77,11 +81,26 @@ class Dialog extends ThemedCustomElementCtrl {
       return ImmutableSet.of();
     }
   }
+
+  @_p.render($.title.text)
+  renderTitle_(@_v.vineIn($dialogState) dialogState: DialogState): string {
+    if (dialogState.isOpen) {
+      return dialogState.title;
+    } else {
+      return '';
+    }
+  }
 }
 
-export function dialog(iconWithTextConfig: IconWithTextConfig): Config {
+export function dialog(
+    backdropConfig: BackdropConfig,
+    textIconButtonConfig: TextIconButtonConfig,
+): Config {
   return {
-    dependencies: [textIconButton(iconWithTextConfig)],
+    dependencies: [
+      backdropConfig,
+      textIconButtonConfig,
+    ],
     tag: 'mk-dialog',
   };
 }

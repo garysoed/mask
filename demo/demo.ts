@@ -6,6 +6,7 @@ import { textIconButton } from '../src/component/text-icon-button';
 import { breadcrumb } from '../src/display/breadcrumb';
 import { croppedLine } from '../src/display/cropped-line';
 import { iconWithText } from '../src/display/icon-with-text';
+import { backdrop } from '../src/section/backdrop';
 import { dialog } from '../src/section/dialog';
 import { $dialogService } from '../src/section/dialog-service';
 import { drawer } from '../src/section/drawer';
@@ -26,6 +27,7 @@ const registeredFonts = ImmutableMap.of([
 
 const iconConfig = icon('material', registeredFonts);
 const iconWithTextConfig = iconWithText(iconConfig);
+const textIconButtonConfig = textIconButton(iconWithTextConfig);
 
 window.addEventListener('load', () => {
   const {vine: maskVine} = startMask(
@@ -33,11 +35,11 @@ window.addEventListener('load', () => {
         breadcrumb(),
         croppedLine(),
         demoCtrl(),
-        dialog(iconWithTextConfig),
+        dialog(backdrop(), textIconButtonConfig),
         drawer(),
         iconConfig,
         iconWithTextConfig,
-        textIconButton(iconWithTextConfig),
+        textIconButtonConfig,
       ],
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);

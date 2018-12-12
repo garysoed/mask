@@ -21,6 +21,7 @@ test('section.DialogService', () => {
         cancelable: true,
         elementProvider: () => document.createElement('div'),
         onClose: mockCloseHandler,
+        title: 'title',
       });
 
       const newState = stateSubject.getValue() as OpenState;
@@ -43,6 +44,7 @@ test('section.DialogService', () => {
         cancelable: true,
         elementProvider: () => document.createElement('div'),
         onClose: mockCloseHandler,
+        title: 'title',
       };
       service.open(spec);
 

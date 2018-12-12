@@ -1,12 +1,13 @@
 import { staticSourceId, staticStreamId } from 'grapevine/export/component';
 import { Errors } from 'gs-tools/export/error';
-import { BooleanType, EqualType, HasPropertiesType, InstanceofType, UnionType } from 'gs-types/export';
+import { BooleanType, EqualType, HasPropertiesType, InstanceofType, StringType, UnionType } from 'gs-types/export';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { _v } from '../app/app';
 
 export interface OpenState {
   cancelable: boolean;
   isOpen: true;
+  title: string;
   closeFn(canceled: boolean): void;
   elementProvider(): HTMLElement;
 }
@@ -19,6 +20,7 @@ export type DialogState = OpenState|CloseState;
 
 interface DialogSpec {
   cancelable: boolean;
+  title: string;
   elementProvider(): HTMLElement;
   onClose(canceled: boolean): void;
 }
@@ -50,6 +52,7 @@ export class DialogService {
       },
       elementProvider: spec.elementProvider,
       isOpen: true,
+      title: spec.title,
     });
   }
 }
@@ -65,6 +68,7 @@ export const $dialogState = staticStreamId(
         closeFn: InstanceofType<(value: unknown) => void>(Function),
         elementProvider: InstanceofType<() => HTMLElement>(Function),
         isOpen: EqualType<true>(true),
+        title: StringType,
       }),
     ]),
 );

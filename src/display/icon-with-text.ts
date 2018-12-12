@@ -14,9 +14,9 @@ import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export'
 import { attributeIn, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { _p } from '../app/app';
 import { Config } from '../app/config';
+import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
-import { IconConfig } from './icon-config';
 import iconWithTextTemplate from './icon-with-text.html';
 
 export const $ = resolveLocators({

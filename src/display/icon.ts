@@ -14,9 +14,9 @@ import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringTyp
 import { AriaRole } from 'persona/export/a11y';
 import { attributeIn, attributeOut, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { _p, _v } from '../app/app';
+import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
-import { IconConfig } from './icon-config';
 import iconTemplate from './icon.html';
 import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-font';
 
@@ -82,8 +82,8 @@ export class Icon extends ThemedCustomElementCtrl {
 
 export function icon(
     defaultIconFont: string,
-    registeredFonts: ImmutableMap<string, FontConfig>):
-    IconConfig {
+    registeredFonts: ImmutableMap<string, FontConfig>,
+): IconConfig {
   return {
     configure(vine: VineImpl): void {
       vine.setValue($registeredFonts, registeredFonts);
