@@ -1,4 +1,4 @@
-import { assert, match, should, test } from 'gs-testing/export/main';
+import { assert, match, setup, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
@@ -24,7 +24,7 @@ test('component.TextIconButton', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
-  beforeEach(() => {
+  setup(() => {
     tester = testerFactory.build([tag]);
     el = tester.createElement('mk-text-icon-button', document.body);
   });

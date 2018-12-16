@@ -6,6 +6,7 @@ import { textIconButton } from '../src/component/text-icon-button';
 import { breadcrumb } from '../src/display/breadcrumb';
 import { croppedLine } from '../src/display/cropped-line';
 import { iconWithText } from '../src/display/icon-with-text';
+import { textInput } from '../src/input/text-input';
 import { backdrop } from '../src/section/backdrop';
 import { dialog } from '../src/section/dialog';
 import { $dialogService } from '../src/section/dialog-service';
@@ -40,6 +41,7 @@ window.addEventListener('load', () => {
         iconConfig,
         iconWithTextConfig,
         textIconButtonConfig,
+        textInput(),
       ],
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);

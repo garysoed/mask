@@ -1,0 +1,50 @@
+<style id="theme"></style>
+<style>
+  :host {
+    --mkInputLineColor: var(--mkThemeActionPrimaryBG);
+    --mkInputLineWidth: 0%;
+  }
+
+  #input {
+    border: none;
+    color: var(--mkInputFG);
+    line-height: 2rem;
+  }
+
+  #line {
+    background-color: var(--mkInputLineColor);
+    height: 2px;
+    width: var(--mkInputLineWidth);
+
+    transition: width var(--mkAnimationTime);
+  }
+
+  :host([disabled]) {
+    --mkInputFG: var(--mkThemeActionDisabledFG);
+    cursor: default;
+  }
+
+  :host(:hover),
+  :host(:focus),
+  #input:hover,
+  #input:focus {
+    outline: none;
+  }
+
+  :host(:not([disabled]):hover) {
+    --mkInputLineWidth: 100%;
+    --mkInputLineColor: var(--mkThemeActionPrimaryBG);
+  }
+
+  :host(:not([disabled]):focus),
+  #input:not([disabled]):focus + * {
+    --mkInputLineWidth: 100%;
+    --mkInputLineColor: var(--mkThemeActionFocusFG);
+  }
+</style>
+<div layout="column">
+  <input id="input" type="text">
+  <div flex-justify="center" layout="row">
+    <div id="line"></div>
+  </div>
+</div>

@@ -69,10 +69,6 @@ export class TextIconButton extends ThemedCustomElementCtrl {
         )
         .pipe(take(1))
         .subscribe(([disabled, dispatch]) => {
-          if (!dispatch) {
-            return;
-          }
-
           if (disabled) {
             return;
           }

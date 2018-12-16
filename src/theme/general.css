@@ -2,7 +2,7 @@
  * Applied CSS
  *************/
 
-html {
+html, input {
   font-family: var(--mkFontFamilyNormal);
   font-size: 12px;
 }
