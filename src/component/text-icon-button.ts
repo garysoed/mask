@@ -32,7 +32,6 @@ export const $ = resolveLocators({
     dispatch: dispatcher(shadowHost),
     el: shadowHost,
     icon: attributeIn(shadowHost, 'icon', stringParser(), StringType, ''),
-    iconFamily: attributeIn(shadowHost, 'icon-family', stringParser(), StringType, ''),
     label: attributeIn(shadowHost, 'label', stringParser(), StringType, ''),
     role: attributeOut(shadowHost, 'role', stringParser(), StringType),
     tabindex: attributeOut(shadowHost, 'tabindex', integerParser(), NumberType),
@@ -40,8 +39,8 @@ export const $ = resolveLocators({
   iconWithText: {
     el: element('#iconWithText', ElementWithTagType('mk-icon-with-text')),
     icon: attributeOut(element('iconWithText.el'), 'icon', stringParser(), StringType),
-    iconFamily: attributeOut(element('iconWithText.el'), 'icon-family', stringParser(), StringType),
     label: attributeOut(element('iconWithText.el'), 'label', stringParser(), StringType),
+    mode: attributeOut(element('iconWithText.el'), 'mode', stringParser(), StringType),
   },
 });
 
@@ -54,7 +53,6 @@ export const $ = resolveLocators({
 })
 @_p.render($.host.ariaDisabled).withForwarding($.host.disabled)
 @_p.render($.iconWithText.label).withForwarding($.host.label)
-@_p.render($.iconWithText.iconFamily).withForwarding($.host.iconFamily)
 @_p.render($.iconWithText.icon).withForwarding($.host.icon)
 export class TextIconButton extends ThemedCustomElementCtrl {
   @_p.render($.host.role) readonly role_: AriaRole = AriaRole.BUTTON;
@@ -82,6 +80,11 @@ export class TextIconButton extends ThemedCustomElementCtrl {
       @_p.input($.host.ariaLabelIn) hostAriaLabel: string,
       @_p.input($.host.label) hostLabel: string): string {
     return hostAriaLabel || hostLabel;
+  }
+
+  @_p.render($.iconWithText.mode)
+  renderIconMode_(@_p.input($.host.disabled) disabled: boolean): string {
+    return disabled ? 'disabled' : '';
   }
 
   @_p.render($.host.tabindex)

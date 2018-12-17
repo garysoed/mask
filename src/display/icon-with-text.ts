@@ -11,7 +11,7 @@
 
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export';
-import { attributeIn, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { attributeIn, attributeOut, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
 import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { IconConfig } from '../configs/icon-config';
@@ -23,12 +23,13 @@ export const $ = resolveLocators({
   host: {
     el: shadowHost,
     icon: attributeIn(shadowHost, 'icon', stringParser(), StringType, ''),
-    iconFamily: attributeIn(shadowHost, 'icon-family', stringParser(), StringType, ''),
     label: attributeIn(shadowHost, 'label', stringParser(), StringType, ''),
+    mode: attributeIn(shadowHost, 'mode', stringParser(), StringType, ''),
   },
   icon: {
     classes: classlist(element('icon.el')),
     el: element('#icon', ElementWithTagType('mk-icon')),
+    mode: attributeOut(element('icon.el'), 'mode', stringParser(), StringType),
     text: textContent(element('icon.el')),
   },
   text: {
@@ -44,6 +45,7 @@ export const $ = resolveLocators({
 })
 @_p.render($.text.text).withForwarding($.host.label)
 @_p.render($.icon.text).withForwarding($.host.icon)
+@_p.render($.icon.mode).withForwarding($.host.mode)
 export class IconWithText extends ThemedCustomElementCtrl {
   @_p.render($.icon.classes)
   renderIconClasses_(

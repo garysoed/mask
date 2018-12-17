@@ -1,9 +1,10 @@
+import { instanceSourceId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
 import { attributeIn, attributeOut, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
 import { combineLatest, fromEvent, Observable } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
-import { _p } from '../app/app';
+import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ChangeEvent } from '../event/change-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -16,7 +17,8 @@ export const $ = resolveLocators({
   host: {
     disabled: attributeIn(shadowHost, 'disabled', booleanParser(), BooleanType, false),
     dispatch: dispatcher(shadowHost),
-    initValue: attributeIn(shadowHost, 'init-value', stringParser(), StringType, ''),
+    valueIn: attributeIn(shadowHost, 'value', stringParser(), StringType, ''),
+    valueOut: attributeOut(shadowHost, 'value', stringParser(), StringType),
   },
   input: {
     disabled: attributeOut(
@@ -30,12 +32,19 @@ export const $ = resolveLocators({
   },
 });
 
+// TODO: Delete this.
+const $inputValue = instanceSourceId('inputValue', StringType);
+_v.builder.source($inputValue, '');
+
+const $initValueSet = instanceSourceId('initValueSet', BooleanType);
+_v.builder.source($initValueSet, false);
+
 @_p.customElement({
   tag: 'mk-text-input',
   template: textInputTemplate,
   watch: [
     $.host.dispatch,
-    $.host.initValue,
+    $.host.valueIn,
     $.input.el,
   ],
 })
@@ -46,12 +55,12 @@ class TextInput extends ThemedCustomElementCtrl {
 
     this.addSubscription(
         combineLatest(
-            vine.getObservable($.host.initValue.getReadingId(), this),
+            vine.getObservable($.host.valueIn.getReadingId(), this),
             vine.getObservable($.input.el.getReadingId(), this),
         )
-        .pipe(take(1))
         .subscribe(([initValue, inputEl]) => {
           inputEl.value = initValue;
+          vine.setValue($initValueSet, true, this);
         }),
     );
 
@@ -62,8 +71,22 @@ class TextInput extends ThemedCustomElementCtrl {
         )
         .subscribe(([value, dispatch]) => {
           dispatch(new ChangeEvent(value));
+          vine.setValue($inputValue, value, this);
         }),
     );
+  }
+
+  @_p.render($.host.valueOut)
+  renderValueOut_(
+      @_p.input($.host.valueIn) valueIn: string,
+      @_v.vineIn($inputValue) inputValue: string,
+      @_v.vineIn($initValueSet) initValueSet: boolean,
+  ): string {
+    if (initValueSet) {
+      return inputValue;
+    } else {
+      return valueIn;
+    }
   }
 }
 

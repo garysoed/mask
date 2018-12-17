@@ -31,7 +31,8 @@
     outline: none;
   }
 
-  :host(:not([disabled]):hover) {
+  :host(:not([disabled]):hover),
+  #input:not([disabled]):hover + * {
     --mkInputLineWidth: 100%;
     --mkInputLineColor: var(--mkThemeActionPrimaryBG);
   }

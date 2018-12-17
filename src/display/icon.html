@@ -1,15 +1,21 @@
-<link id="link" rel="stylesheet">
 <style id="theme"></style>
 <style>
   :host {
     --mkIconHighlightFG: var(--mkThemePassiveFG);
     --mkIconHighlightBG: var(--mkThemePassiveBG);
+    --mkIconFill: var(--mkThemePassiveFG);
     user-select: none;
   }
 
   :host([mode="passive"]) {
     --mkIconHighlightFG: var(--mkThemePassiveFG);
     --mkIconHighlightBG: var(--mkThemePassiveBG);
+  }
+
+  :host([mode="disabled"]) {
+    --mkIconFill: var(--mkThemeActionDisabledFG);
+    --mkIconHighlightFG: var(--mkThemeActionDisabledFG);
+    --mkIconHighlightBG: var(--mkThemeActionDisabledBG);
   }
 
   :host([mode="action"]) {
@@ -38,7 +44,7 @@
   }
 
   #root > svg #foreground {
-    fill: var(--mkThemePassiveFG) !important;
+    fill: var(--mkIconFill) !important;
   }
 
   #root > svg #highlightFG {

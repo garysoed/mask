@@ -22,7 +22,7 @@ test('input.TextInput', () => {
     should(`set the initial value correctly`, async () => {
       const initValue = 'initValue';
 
-      tester.setAttribute(el, $.host.initValue, initValue);
+      tester.setAttribute(el, $.host.valueIn, initValue);
 
       await retryUntil(() => tester.getProperty(el, $.input.el, 'value')).to.equal(initValue);
     });
@@ -38,23 +38,24 @@ test('input.TextInput', () => {
 
       // Wait until the initial value has been set.
       const initValue = 'initValue';
-      tester.setAttribute(el, $.host.initValue, initValue);
+      tester.setAttribute(el, $.host.valueIn, initValue);
       await retryUntil(() => tester.getProperty(el, $.input.el, 'value')).to.equal(initValue);
 
       const value1 = 'value1';
       tester.setInputValue(el, $.input.el, value1);
 
       // At this point the event shouldn't have been fired.
-      assert(valueSubject.getValue()).to.beNull();
+      assert(valueSubject.getValue()).to.equal(initValue);
 
       const value2 = 'value2';
       tester.setInputValue(el, $.input.el, value2);
 
       // Shouldn't be fired here either, due to debounce.
-      assert(valueSubject.getValue()).to.beNull();
+      assert(valueSubject.getValue()).to.equal(initValue);
 
       // Now wait for the debounce. Should be called with the latest value.
       await retryUntil(() => valueSubject.getValue()).to.equal(value2);
+      assert(tester.getAttribute(el, $.host.valueOut)).to.equal(value2);
     });
   });
 });
