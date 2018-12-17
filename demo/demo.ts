@@ -17,16 +17,11 @@ import { demoCtrl } from './demo-ctrl';
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
 
 const registeredFonts = ImmutableMap.of([
-      [
-        'material',
-        {
-          iconClass: 'material-icons',
-          url: new URL('https://fonts.googleapis.com/icon?family=Material+Icons'),
-        },
-      ],
+      ['palette', './asset/palette.svg'],
+      ['highlight', './asset/highlight.svg'],
     ]);
 
-const iconConfig = icon('material', registeredFonts);
+const iconConfig = icon(registeredFonts);
 const iconWithTextConfig = iconWithText(iconConfig);
 const textIconButtonConfig = textIconButton(iconWithTextConfig);
 

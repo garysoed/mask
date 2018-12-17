@@ -13,7 +13,7 @@ import { backdrop } from './backdrop';
 import { $, dialog } from './dialog';
 import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
-const config = dialog(backdrop(), textIconButton(iconWithText(icon('test', ImmutableMap.of()))));
+const config = dialog(backdrop(), textIconButton(iconWithText(icon(ImmutableMap.of()))));
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('section.Dialog', () => {

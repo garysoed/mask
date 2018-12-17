@@ -3,33 +3,30 @@
  * Displays an icon using icon font.
  *
  * @attr {<string} iconFamily Family of icons to use. This should correspond to the one registered
- *     in $registeredFonts.
+ *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
 
-import { instanceStreamId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
-import { ImmutableMap, ImmutableSet } from 'gs-tools/src/immutable';
-import { BooleanType, HasPropertiesType, InstanceofType, NullableType, StringType } from 'gs-types/export';
+import { ImmutableMap } from 'gs-tools/src/immutable';
+import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
-import { attributeIn, attributeOut, classlist, element, resolveLocators, shadowHost } from 'persona/export/locator';
+import { attributeOut, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { combineLatest, of as observableOf } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 import iconTemplate from './icon.html';
-import { $defaultIconFont, $registeredFonts, FontConfig } from './registered-font';
+import { $svgConfig, $svgService } from './svg-service';
 
 export const $ = resolveLocators({
   host: {
     ariaHidden: attributeOut(shadowHost, 'aria-hidden', booleanParser(), BooleanType),
     el: shadowHost,
-    iconFamily: attributeIn(shadowHost, 'icon-family', stringParser(), StringType, ''),
     role: attributeOut(shadowHost, 'role', stringParser(), StringType),
-  },
-  link: {
-    el: element('#link', InstanceofType(HTMLLinkElement)),
-    href: attributeOut(element('link.el'), 'href', stringParser(), StringType),
+    text: textContent(shadowHost),
   },
   root: {
     classList: classlist(element('root.el')),
@@ -37,83 +34,53 @@ export const $ = resolveLocators({
   },
 });
 
-const FontConfigType = HasPropertiesType<FontConfig>({
-  iconClass: StringType,
-  url: InstanceofType(URL),
-});
-const $fontConfig = instanceStreamId('fontConfig', NullableType(FontConfigType));
-
 @_p.customElement({
   tag: 'mk-icon',
   template: iconTemplate,
+  watch: [
+    $.host.el,
+    $.root.el,
+  ],
 })
 export class Icon extends ThemedCustomElementCtrl {
   @_p.render($.host.ariaHidden) ariaHidden_: boolean = true;
   @_p.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
 
-  @_v.vineOut($fontConfig)
-  providesFontConfig_(
-      @_v.vineIn($defaultIconFont) defaultIconFont: string,
-      @_p.input($.host.iconFamily) iconFamily: string,
-      @_v.vineIn($registeredFonts)
-          registeredFonts: ImmutableMap<string, FontConfig>): FontConfig|null {
-    return registeredFonts.get(iconFamily) || registeredFonts.get(defaultIconFont) || null;
-  }
+  init(vine: VineImpl): void {
+    super.init(vine);
 
-  @_p.render($.link.href)
-  renderLinkHref_(
-      @_v.vineIn($fontConfig) fontConfig: FontConfig|null): string {
-    if (!fontConfig) {
-      return '';
-    }
+    this.addSubscription(
+        combineLatest(
+            vine.getObservable($.host.el.getReadingId(), this),
+            vine.getObservable($svgService),
+        )
+        .pipe(
+            switchMap(([hostEl, svgService]) => {
+              const svgName = hostEl.textContent || '';
 
-    return fontConfig.url.toString();
-  }
-
-  @_p.render($.root.classList)
-  renderRootClassList_(@_v.vineIn($fontConfig) fontConfig: FontConfig|null): ImmutableSet<string> {
-    if (!fontConfig) {
-      return ImmutableSet.of();
-    }
-
-    return ImmutableSet.of([fontConfig.iconClass]);
+              return svgService.getSvg(svgName) || observableOf(null);
+            }),
+            switchMap(svg => {
+              return combineLatest(
+                  vine.getObservable($.root.el.getReadingId(), this),
+                  observableOf(svg),
+              );
+            }),
+        )
+        .subscribe(([rootEl, svg]) => {
+          rootEl.innerHTML = svg || '';
+        }),
+    );
   }
 }
 
 export function icon(
-    defaultIconFont: string,
-    registeredFonts: ImmutableMap<string, FontConfig>,
+    svgConfig: ImmutableMap<string, string>,
 ): IconConfig {
   return {
     configure(vine: VineImpl): void {
-      vine.setValue($registeredFonts, registeredFonts);
-      vine.setValue($defaultIconFont, defaultIconFont);
+      vine.setValue($svgConfig, svgConfig);
     },
     tag: 'mk-icon',
   };
-}
-
-_v.builder.onRun(vine => {
-  vine.getObservable($registeredFonts)
-      .subscribe(
-          registeredFonts => {
-            for (const [key, config] of registeredFonts) {
-              const linkId = `mkIconFamily_${key}`;
-              // tslint:disable-next-line:no-non-null-assertion
-              const el = (document.head!.querySelector(`${linkId}`) as HTMLLinkElement|null)
-                  || createLinkEl(linkId);
-              el.href = config.url.toString();
-            }
-          },
-      );
-});
-
-function createLinkEl(id: string): HTMLLinkElement {
-  const el = document.createElement('link');
-  el.id = id;
-  el.rel = 'stylesheet';
-  // tslint:disable-next-line:no-non-null-assertion
-  document.head!.appendChild(el);
-
-  return el;
 }

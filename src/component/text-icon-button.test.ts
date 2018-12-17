@@ -8,14 +8,12 @@ import { iconWithText } from '../display/icon-with-text';
 import { ActionEvent } from '../event/action-event';
 import { $, textIconButton } from './text-icon-button';
 
-const ICON_CLASS = 'iconClass';
 const ICON_FONT = 'iconFont';
-const FONT_URL = new URL('http://fontUrl');
+const FONT_URL = 'http://fontUrl';
 
 const iconConfig = icon(
-    '',
     ImmutableMap.of([
-      [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
+      [ICON_FONT, FONT_URL],
     ]));
 const {tag} = textIconButton(iconWithText(iconConfig));
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);

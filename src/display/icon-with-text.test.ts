@@ -5,7 +5,7 @@ import { _p, _v } from '../app/app';
 import { icon } from './icon';
 import { $, iconWithText } from './icon-with-text';
 
-const configIcon = icon('', ImmutableMap.of([]));
+const configIcon = icon(ImmutableMap.of([]));
 const {tag} = iconWithText(configIcon);
 
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);

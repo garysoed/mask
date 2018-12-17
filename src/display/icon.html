@@ -2,11 +2,50 @@
 <style id="theme"></style>
 <style>
   :host {
+    --mkIconHighlightFG: var(--mkThemePassiveFG);
+    --mkIconHighlightBG: var(--mkThemePassiveBG);
     user-select: none;
   }
 
-  #root {
-    font-size: 2rem;
+  :host([mode="passive"]) {
+    --mkIconHighlightFG: var(--mkThemePassiveFG);
+    --mkIconHighlightBG: var(--mkThemePassiveBG);
+  }
+
+  :host([mode="action"]) {
+    --mkIconHighlightFG: var(--mkThemeActionFG);
+    --mkIconHighlightBG: var(--mkThemeActionBG);
+  }
+
+  :host([mode="focus"]) {
+    --mkIconHighlightFG: var(--mkThemeActionFocusFG);
+    --mkIconHighlightBG: var(--mkThemeActionFocusBG);
+  }
+
+  :host([mode="active"]) {
+    --mkIconHighlightFG: var(--mkThemeActiveFG);
+    --mkIconHighlightBG: var(--mkThemeActiveBG);
+  }
+
+  :host([mode="actionPrimary"]) {
+    --mkIconHighlightFG: var(--mkThemeActionPrimaryFG);
+    --mkIconHighlightBG: var(--mkThemeActionPrimaryBG);
+  }
+
+  #root > svg {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  #root > svg #foreground {
+    fill: var(--mkThemePassiveFG) !important;
+  }
+
+  #root > svg #highlightFG {
+    fill: var(--mkIconHighlightFG) !important;
+  }
+  #root > svg #highlightBG {
+    fill: var(--mkIconHighlightBG) !important;
   }
 </style>
-<span id="root"><slot></slot></span>
+<span id="root"></span>

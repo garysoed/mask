@@ -1,25 +1,16 @@
 import { VineImpl } from 'grapevine/export/main';
 import { assert, setup, should, test } from 'gs-testing/export/main';
-import { ImmutableMap } from 'gs-tools/src/immutable';
+import { FakeFetch } from 'gs-testing/export/mock';
+import { createSpyInstance, fake } from 'gs-testing/export/spy';
+import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
 import { $, icon } from './icon';
-import { $defaultIconFont } from './registered-font';
 
-const DEFAULT_ICON_CLASS = 'defaultIconClass';
-const DEFAULT_ICON_FONT = 'defaultIconFont';
-const DEFAULT_FONT_URL = new URL('http://defaultFontUrl');
+const SVG_NAME = 'svgName';
+const SVG_URL = 'http://svgUrl';
 
-const ICON_CLASS = 'iconClass';
-const ICON_FONT = 'iconFont';
-const FONT_URL = new URL('http://fontUrl');
-
-const {configure, tag} = icon(
-  '',
-  ImmutableMap.of([
-    [DEFAULT_ICON_FONT, {iconClass: DEFAULT_ICON_CLASS, url: DEFAULT_FONT_URL}],
-    [ICON_FONT, {iconClass: ICON_CLASS, url: FONT_URL}],
-  ]));
+const {configure, tag} = icon(ImmutableMap.of([[SVG_NAME, SVG_URL]]));
 const configureIcon = configure;
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
@@ -27,67 +18,43 @@ test('display.Icon', () => {
   let el: HTMLElement;
   let vine: VineImpl;
   let tester: PersonaTester;
+  let fakeFetch: FakeFetch;
 
   setup(() => {
     tester = testerFactory.build([tag]);
     vine = tester.vine;
     configureIcon(vine);
 
+    fakeFetch = new FakeFetch();
+    fakeFetch.install(window);
+
     el = tester.createElement('mk-icon', document.body);
   });
 
-  test('providesFontConfig_', () => {
-    should(`use the specified font config`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
+  test('init', () => {
+    should(`set the innerHTML correctly`, async () => {
+      const fakeResponse = createSpyInstance(Response);
+      const svgContent = 'svgContent';
 
-      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(FONT_URL.toString());
+      const calledPromise = new Promise(resolve => {
+        fake(fakeResponse.text).always().call(() => {
+          resolve();
+
+          return Promise.resolve(svgContent);
+        });
+      });
+
+      fakeFetch.onGet(SVG_URL).respond(fakeResponse);
+
+      el.textContent = SVG_NAME;
+
+      await calledPromise;
+
+      assert(tester.getElement(el, $.root.el).innerHTML).to.equal(svgContent);
     });
 
-    should(`use the default font config if the specified font doesn't exist`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
-      vine.setValue($defaultIconFont, DEFAULT_ICON_FONT);
-      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(DEFAULT_FONT_URL.toString());
-    });
-
-    should(`return null if the default icon font has no config`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
-      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(window.location.href);
-    });
-  });
-
-  test('renderLinkHref_', () => {
-    should(`render the correct HREF`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
-      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(FONT_URL.toString());
-    });
-
-    should(`render empty string if there are no font configs`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
-      assert(tester.getProperty(el, $.link.el, 'href')).to.equal(window.location.href);
-    });
-  });
-
-  test('renderRootClassList_', () => {
-    should(`render the correct icon class`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, ICON_FONT);
-      assert(tester.getProperty(el, $.root.el, 'classList').contains(ICON_CLASS)).to.beTrue();
-    });
-
-    should(`render empty class if there are no font configs`, async () => {
-      await tester.setAttribute(el, $.host.iconFamily, 'nonexistent');
-      assert(tester.getProperty(el, $.root.el, 'classList').length).to.equal(0);
-    });
-  });
-
-  test('onRun', () => {
-    should(`create the correct link elements`, () => {
-      // tslint:disable-next-line:no-non-null-assertion
-      assert((document.head!.querySelector(`link#mkIconFamily_${DEFAULT_ICON_FONT}`) as
-            HTMLLinkElement).href).to.equal(DEFAULT_FONT_URL.toString());
-
-      // tslint:disable-next-line:no-non-null-assertion
-      assert((document.head!.querySelector(`link#mkIconFamily_${ICON_FONT}`) as
-            HTMLLinkElement).href).to.equal(FONT_URL.toString());
+    should(`set the innerHTML correctly if there are no SVG names specified`, () => {
+      assert(tester.getElement(el, $.root.el).innerHTML).to.equal('');
     });
   });
 });
