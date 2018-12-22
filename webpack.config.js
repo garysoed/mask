@@ -22,6 +22,7 @@ module.exports = smp.wrap({
     alias: {
       'grapevine': path.resolve('./node_modules/grapevine'),
       'gs-tools': path.resolve('./node_modules/gs-tools'),
+      'persona': path.resolve('./node_modules/persona'),
       'rxjs': path.resolve('./node_modules/rxjs'),
       'tslib': path.resolve('./node_modules/tslib'),
     },
