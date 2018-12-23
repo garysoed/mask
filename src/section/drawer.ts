@@ -13,6 +13,8 @@ import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
 import { attributeIn, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -57,30 +59,40 @@ class Drawer extends ThemedCustomElementCtrl {
 
   @_p.render($.host.style.height)
   renderStyleHeight_(
-      @_p.input($.host.expanded) expanded: boolean,
-      @_p.input($.host.maxSize) maxSize: string,
-      @_p.input($.host.minSize) minSize: string,
-      @_p.input($.host.mode) mode: Mode,
-  ): string {
-    if (mode === Mode.VERTICAL) {
-      return '';
-    }
+      @_p.input($.host.expanded) expandedObs: Observable<boolean>,
+      @_p.input($.host.maxSize) maxSizeObs: Observable<string>,
+      @_p.input($.host.minSize) minSizeObs: Observable<string>,
+      @_p.input($.host.mode) modeObs: Observable<Mode>,
+  ): Observable<string> {
+    return combineLatest(expandedObs, maxSizeObs, minSizeObs, modeObs)
+        .pipe(
+            map(([expanded, maxSize, minSize, mode]) => {
+              if (mode === Mode.VERTICAL) {
+                return '';
+              }
 
-    return expanded ? maxSize : minSize;
+              return expanded ? maxSize : minSize;
+            }),
+        );
   }
 
   @_p.render($.host.style.width)
   renderStyleWidth_(
-      @_p.input($.host.expanded) expanded: boolean,
-      @_p.input($.host.maxSize) maxSize: string,
-      @_p.input($.host.minSize) minSize: string,
-      @_p.input($.host.mode) mode: Mode,
-  ): string {
-    if (mode === Mode.HORIZONTAL) {
-      return '';
-    }
+      @_p.input($.host.expanded) expandedObs: Observable<boolean>,
+      @_p.input($.host.maxSize) maxSizeObs: Observable<string>,
+      @_p.input($.host.minSize) minSizeObs: Observable<string>,
+      @_p.input($.host.mode) modeObs: Observable<Mode>,
+  ): Observable<string> {
+    return combineLatest(expandedObs, maxSizeObs, minSizeObs, modeObs)
+        .pipe(
+            map(([expanded, maxSize, minSize, mode]) => {
+              if (mode === Mode.HORIZONTAL) {
+                return '';
+              }
 
-    return expanded ? maxSize : minSize;
+              return expanded ? maxSize : minSize;
+            }),
+        );
   }
 }
 
