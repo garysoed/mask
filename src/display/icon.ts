@@ -15,10 +15,13 @@ import { attributeOut, classlist, element, resolveLocators, shadowHost, textCont
 import { combineLatest, of as observableOf } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import * as dialogCloseSvg from '../asset/dialog_close.svg';
+import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
 import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 import iconTemplate from './icon.html';
+import { SvgConfig } from './svg-config';
 import { $svgConfig, $svgService } from './svg-service';
 
 export const $ = resolveLocators({
@@ -75,11 +78,16 @@ export class Icon extends ThemedCustomElementCtrl {
 }
 
 export function icon(
-    svgConfig: ImmutableMap<string, string>,
+    svgConfig: ImmutableMap<string, SvgConfig>,
 ): IconConfig {
   return {
     configure(vine: VineImpl): void {
-      vine.setValue($svgConfig, svgConfig);
+      vine.setValue(
+          $svgConfig,
+          svgConfig
+              .add(['dialog_close', {type: 'embed', content: dialogCloseSvg}])
+              .add(['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}]),
+      );
     },
     tag: 'mk-icon',
   };

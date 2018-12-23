@@ -26,7 +26,7 @@ module.exports = smp.wrap({
       'rxjs': path.resolve('./node_modules/rxjs'),
       'tslib': path.resolve('./node_modules/tslib'),
     },
-    extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css"],
+    extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css", ".svg"],
     symlinks: false,
   },
 
@@ -40,6 +40,11 @@ module.exports = smp.wrap({
         test: /\.html$/,
         exclude: /node_modules/,
         use: {loader: 'html-loader?exportAsEs6Default'}
+      },
+      {
+        test: /\.svg$/,
+        exclude: /node_modules/,
+        use: {loader: 'raw-loader'},
       },
       {
         test: /\.css$/,

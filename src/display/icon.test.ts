@@ -10,7 +10,9 @@ import { $, icon } from './icon';
 const SVG_NAME = 'svgName';
 const SVG_URL = 'http://svgUrl';
 
-const {configure, tag} = icon(ImmutableMap.of([[SVG_NAME, SVG_URL]]));
+const {configure, tag} = icon(
+    ImmutableMap.of([[SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL}]]),
+);
 const configureIcon = configure;
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 

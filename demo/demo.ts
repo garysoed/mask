@@ -17,8 +17,8 @@ import { demoCtrl } from './demo-ctrl';
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
 
 const registeredFonts = ImmutableMap.of([
-      ['palette', './asset/palette.svg'],
-      ['highlight', './asset/highlight.svg'],
+      ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
+      ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
     ]);
 
 const iconConfig = icon(registeredFonts);

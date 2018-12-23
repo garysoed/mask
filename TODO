@@ -1,7 +1,8 @@
 mask
   General
+    ✔ Icons use SVGs now. @done(18-12-22 18:32)
+    ☐ Update all the docs.
     ☐ Make onDom and other listeners injectable
-    ☐ Icons use SVGs now.
 
   demo
     ☐ Change the header (might need to come up with new header type - label, caption, section header?)

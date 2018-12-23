@@ -13,7 +13,7 @@ const FONT_URL = 'http://fontUrl';
 
 const iconConfig = icon(
     ImmutableMap.of([
-      [ICON_FONT, FONT_URL],
+      [ICON_FONT, {type: 'remote' as 'remote', url: FONT_URL}],
     ]));
 const {tag} = textIconButton(iconWithText(iconConfig));
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);

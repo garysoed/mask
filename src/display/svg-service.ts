@@ -2,16 +2,17 @@ import { staticSourceId, staticStreamId } from 'grapevine/export/component';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { BaseDisposable } from 'gs-tools/export/dispose';
 import { InstanceofType } from 'gs-types/export';
-import { from as observableFrom, Observable } from 'rxjs';
+import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 import { _v } from '../app/app';
+import { SvgConfig } from './svg-config';
 
 const __run = Symbol('SvgService.run');
 
 export class SvgService extends BaseDisposable {
   private readonly svgObs: ImmutableMap<string, Observable<string>>;
 
-  constructor(svgConfig: ImmutableMap<string, string>) {
+  constructor(svgConfig: ImmutableMap<string, SvgConfig>) {
     super();
     this.svgObs = createSvgObs(svgConfig);
   }
@@ -25,23 +26,27 @@ export class SvgService extends BaseDisposable {
   }
 }
 
-function createSvgObs(configs: ImmutableMap<string, string>):
+function createSvgObs(configs: ImmutableMap<string, SvgConfig>):
     ImmutableMap<string, Observable<string>> {
   return configs
-      .map((url): Observable<string> => {
-        // TODO: Retry with exponential backoff.
-        return observableFrom<Response>(fetch(url))
-            .pipe(
-                switchMap(response => response.text()),
-                retry(3),
-                shareReplay(1),
-            );
+      .map((config): Observable<string> => {
+        if (config.type === 'embed') {
+          return observableOf(config.content);
+        } else {
+          // TODO: Retry with exponential backoff.
+          return observableFrom<Response>(fetch(config.url))
+              .pipe(
+                  switchMap(response => response.text()),
+                  retry(3),
+                  shareReplay(1),
+              );
+        }
       });
 }
 
 export const $svgConfig = staticSourceId(
     'SvgService.config',
-    InstanceofType<ImmutableMap<string, string>>(ImmutableMap),
+    InstanceofType<ImmutableMap<string, SvgConfig>>(ImmutableMap),
 );
 _v.builder.source($svgConfig, ImmutableMap.of());
 
