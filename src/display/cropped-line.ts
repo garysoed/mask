@@ -9,7 +9,8 @@ import { instanceStreamId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { attributeIn, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
-import { take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -63,22 +64,24 @@ class CroppedLine extends ThemedCustomElementCtrl {
 
   @_v.vineOut($postfixBoundary)
   providesPostfixBoundary_(
-      @_p.input($.host.text) text: string): number {
-    return Math.max(text.length - MAX_POSTFIX_LENGTH, 0);
+      @_p.input($.host.text) textObs: Observable<string>): Observable<number> {
+    return textObs.pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
   }
 
   @_p.render($.postfix.textContent)
   renderPostfixTextContent_(
-      @_p.input($.host.text) text: string,
-      @_v.vineIn($postfixBoundary) postfixBoundary: number): string {
-    return text.substring(postfixBoundary);
+      @_p.input($.host.text) textObs: Observable<string>,
+      @_v.vineIn($postfixBoundary) postfixBoundaryObs: Observable<number>): Observable<string> {
+    return combineLatest(textObs, postfixBoundaryObs)
+        .pipe(map(([text, postfixBoundary]) => text.substring(postfixBoundary)));
   }
 
   @_p.render($.prefix.textContent)
   renderPrefixTextContent_(
-      @_p.input($.host.text) text: string,
-      @_v.vineIn($postfixBoundary) postfixBoundary: number): string {
-    return text.substring(0, postfixBoundary);
+      @_p.input($.host.text) textObs: Observable<string>,
+      @_v.vineIn($postfixBoundary) postfixBoundaryObs: Observable<number>): Observable<string> {
+    return combineLatest(textObs, postfixBoundaryObs)
+        .pipe(map(([text, postfixBoundary]) => text.substring(0, postfixBoundary)));
   }
 }
 

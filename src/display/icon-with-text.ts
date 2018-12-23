@@ -12,6 +12,8 @@
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export';
 import { attributeIn, attributeOut, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { IconConfig } from '../configs/icon-config';
@@ -49,24 +51,32 @@ export const $ = resolveLocators({
 export class IconWithText extends ThemedCustomElementCtrl {
   @_p.render($.icon.classes)
   renderIconClasses_(
-      @_p.input($.host.icon) iconLigature: string,
-  ): ImmutableSet<string> {
-    if (!iconLigature) {
-      return ImmutableSet.of();
-    }
+      @_p.input($.host.icon) iconLigatureObs: Observable<string>,
+  ): Observable<ImmutableSet<string>> {
+    return iconLigatureObs.pipe(
+        map(iconLigature => {
+          if (!iconLigature) {
+            return ImmutableSet.of();
+          }
 
-    return ImmutableSet.of(['hasIcon']);
+          return ImmutableSet.of(['hasIcon']);
+        }),
+    );
   }
 
   @_p.render($.text.classes)
   renderTextClasses_(
-      @_p.input($.host.label) label: string,
-  ): ImmutableSet<string> {
-    if (!label) {
-      return ImmutableSet.of();
-    }
+      @_p.input($.host.label) labelObs: Observable<string>,
+  ): Observable<ImmutableSet<string>> {
+    return labelObs.pipe(
+        map(label => {
+          if (!label) {
+            return ImmutableSet.of();
+          }
 
-    return ImmutableSet.of(['hasText']);
+          return ImmutableSet.of(['hasText']);
+        }),
+    );
   }
 }
 

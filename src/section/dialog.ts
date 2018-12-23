@@ -2,7 +2,8 @@ import { VineImpl } from 'grapevine/export/main';
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { classlist, element, resolveLocators, textContent } from 'persona/export/locator';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { BackdropConfig } from '../configs/backdrop-config';
@@ -64,31 +65,41 @@ class Dialog extends ThemedCustomElementCtrl {
 
   @_p.render($.cancelButton.classlist)
   renderCancelButtonClasses_(
-      @_v.vineIn($dialogState) dialogState: DialogState,
-  ): ImmutableSet<string> {
-    if (!dialogState.isOpen || !dialogState.cancelable) {
-      return ImmutableSet.of([]);
-    }
+      @_v.vineIn($dialogState) dialogStateObs: Observable<DialogState>,
+  ): Observable<ImmutableSet<string>> {
+    return dialogStateObs.pipe(map(dialogState => {
+      if (!dialogState.isOpen || !dialogState.cancelable) {
+        return ImmutableSet.of([]);
+      }
 
-    return ImmutableSet.of(['isVisible']);
+      return ImmutableSet.of(['isVisible']);
+    }));
   }
 
   @_p.render($.root.classlist)
-  renderRootClasses_(@_v.vineIn($dialogState) dialogState: DialogState): ImmutableSet<string> {
-    if (dialogState.isOpen) {
-      return ImmutableSet.of(['isVisible']);
-    } else {
-      return ImmutableSet.of();
-    }
+  renderRootClasses_(
+      @_v.vineIn($dialogState) dialogStateObs: Observable<DialogState>,
+  ): Observable<ImmutableSet<string>> {
+    return dialogStateObs.pipe(map(dialogState => {
+      if (dialogState.isOpen) {
+        return ImmutableSet.of(['isVisible']);
+      } else {
+        return ImmutableSet.of();
+      }
+    }));
   }
 
   @_p.render($.title.text)
-  renderTitle_(@_v.vineIn($dialogState) dialogState: DialogState): string {
-    if (dialogState.isOpen) {
-      return dialogState.title;
-    } else {
-      return '';
-    }
+  renderTitle_(
+      @_v.vineIn($dialogState) dialogStateObs: Observable<DialogState>,
+  ): Observable<string> {
+    return dialogStateObs.pipe(map(dialogState => {
+      if (dialogState.isOpen) {
+        return dialogState.title;
+      } else {
+        return '';
+      }
+    }));
   }
 }
 

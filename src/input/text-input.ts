@@ -78,15 +78,18 @@ class TextInput extends ThemedCustomElementCtrl {
 
   @_p.render($.host.valueOut)
   renderValueOut_(
-      @_p.input($.host.valueIn) valueIn: string,
-      @_v.vineIn($inputValue) inputValue: string,
-      @_v.vineIn($initValueSet) initValueSet: boolean,
-  ): string {
-    if (initValueSet) {
-      return inputValue;
-    } else {
-      return valueIn;
-    }
+      @_p.input($.host.valueIn) valueInObs: Observable<string>,
+      @_v.vineIn($inputValue) inputValueObs: Observable<string>,
+      @_v.vineIn($initValueSet) initValueSetObs: Observable<boolean>,
+  ): Observable<string> {
+    return combineLatest(valueInObs, inputValueObs, initValueSetObs)
+        .pipe(map(([valueIn, inputValue, initValueSet]) => {
+          if (initValueSet) {
+            return inputValue;
+          } else {
+            return valueIn;
+          }
+        }));
   }
 }
 

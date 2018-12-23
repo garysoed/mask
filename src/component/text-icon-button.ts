@@ -13,8 +13,8 @@ import { VineImpl } from 'grapevine/export/main';
 import { BooleanType, ElementWithTagType, NumberType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attributeIn, attributeOut, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { _p } from '../app/app';
 import { TextIconButtonConfig } from '../configs/text-icon-button-config';
 import { IconWithTextConfig } from '../display/icon-with-text';
@@ -77,19 +77,21 @@ export class TextIconButton extends ThemedCustomElementCtrl {
 
   @_p.render($.host.ariaLabelOut)
   renderHostAriaLabel_(
-      @_p.input($.host.ariaLabelIn) hostAriaLabel: string,
-      @_p.input($.host.label) hostLabel: string): string {
-    return hostAriaLabel || hostLabel;
+      @_p.input($.host.ariaLabelIn) hostAriaLabelObs: Observable<string>,
+      @_p.input($.host.label) hostLabelObs: Observable<string>): Observable<string> {
+    return combineLatest(hostAriaLabelObs, hostLabelObs)
+        .pipe(map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel));
   }
 
   @_p.render($.iconWithText.mode)
-  renderIconMode_(@_p.input($.host.disabled) disabled: boolean): string {
-    return disabled ? 'disabled' : '';
+  renderIconMode_(@_p.input($.host.disabled) disabledObs: Observable<boolean>): Observable<string> {
+    return disabledObs.pipe(map(disabled => disabled ? 'disabled' : ''));
   }
 
   @_p.render($.host.tabindex)
-  renderTabIndex_(@_p.input($.host.disabled) hostDisabled: boolean): number {
-    return hostDisabled ? -1 : 0;
+  renderTabIndex_(@_p.input($.host.disabled) hostDisabledObs: Observable<boolean>):
+      Observable<number> {
+    return hostDisabledObs.pipe(map(disabled => disabled ? -1 : 0));
   }
 }
 

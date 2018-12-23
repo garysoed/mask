@@ -2,6 +2,7 @@ import { staticSourceId, staticStreamId } from 'grapevine/export/component';
 import { Errors } from 'gs-tools/export/error';
 import { BooleanType, EqualType, HasPropertiesType, InstanceofType, StringType, UnionType } from 'gs-types/export';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { _v } from '../app/app';
 
 export interface OpenState {
@@ -74,6 +75,7 @@ export const $dialogState = staticStreamId(
 );
 _v.builder.stream(
     $dialogState,
-    (dialogService: DialogService) => dialogService.getStateObs(),
+    (dialogServiceObs: Observable<DialogService>) => dialogServiceObs
+        .pipe(switchMap(dialogService => dialogService.getStateObs())),
     $dialogService,
 );

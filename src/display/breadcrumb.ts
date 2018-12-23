@@ -5,7 +5,8 @@ import { objectConverter } from 'gs-tools/export/serializer';
 import { HasPropertiesType, InstanceofType, IntersectType, IterableOfType, StringType } from 'gs-types/export';
 import { attributeIn, dispatcher, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
@@ -103,13 +104,16 @@ class Breadcrumb extends ThemedCustomElementCtrl {
 
   @_p.render($.row.crumbsSlot)
   renderCrumbs_(
-      @_p.input($.host.path) path: ImmutableList<CrumbData>,
-  ): ImmutableList<RenderedCrumbData> {
-    return path.mapItem(({key, display}) => ({
-      [__renderId]: key,
-      display,
-      key,
-    }));
+      @_p.input($.host.path) pathObs: Observable<ImmutableList<CrumbData>>,
+  ): Observable<ImmutableList<RenderedCrumbData>> {
+    return pathObs
+        .pipe(
+            map(path => path.mapItem(({key, display}) => ({
+              [__renderId]: key,
+              display,
+              key,
+            }))),
+        );
   }
 }
 

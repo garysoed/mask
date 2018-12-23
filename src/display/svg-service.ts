@@ -3,7 +3,7 @@ import { ImmutableMap } from 'gs-tools/export/collect';
 import { BaseDisposable } from 'gs-tools/export/dispose';
 import { InstanceofType } from 'gs-types/export';
 import { from as observableFrom, Observable } from 'rxjs';
-import { catchError, retry, shareReplay, switchMap } from 'rxjs/operators';
+import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 import { _v } from '../app/app';
 
 const __run = Symbol('SvgService.run');
@@ -51,11 +51,14 @@ export const $svgService = staticStreamId(
 );
 _v.builder.stream(
     $svgService,
-    config => {
-      const service = new SvgService(config);
-      service[__run]();
+    configObs => configObs
+        .pipe(
+            map(config => {
+              const service = new SvgService(config);
+              service[__run]();
 
-      return service;
-    },
+              return service;
+            }),
+        ),
     $svgConfig,
 );

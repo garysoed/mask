@@ -5,7 +5,8 @@ import { Color } from 'gs-tools/export/color';
 import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, IterableOfType, NullableType, StringType } from 'gs-types/export';
 import { attributeOut, element, resolveLocators, slot } from 'persona/export/locator';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { $theme, _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
 import { Palette } from '../src/theme/palette';
@@ -119,14 +120,14 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 
   @_p.render($.accentPalette.slot)
   renderAccentPalette(
-      @_v.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
-    return getPaletteData_(theme.highlightColor);
+      @_v.vineIn($theme) theme: Observable<Theme>): Observable<ImmutableList<PaletteData>> {
+    return theme.pipe(map(theme => getPaletteData_(theme.highlightColor)));
   }
 
   @_p.render($.basePalette.slot)
   renderBasePalette(
-      @_v.vineIn($theme) theme: Theme): ImmutableList<PaletteData> {
-    return getPaletteData_(theme.baseColor);
+    @_v.vineIn($theme) theme: Observable<Theme>): Observable<ImmutableList<PaletteData>> {
+  return theme.pipe(map(theme => getPaletteData_(theme.baseColor)));
   }
 }
 
