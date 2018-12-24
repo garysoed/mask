@@ -29,7 +29,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "raw-loader": "^0.5.1",
     "speed-measure-webpack-plugin": "^1.2.3",
-    "typescript": "^3.0.1",
+    "typescript": "^3.2.2",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.12.0"
   },

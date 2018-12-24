@@ -1,27 +1,27 @@
-import { VineImpl } from 'grapevine/export/main';
 import { InstanceofType } from 'gs-types/export';
-import { element, resolveLocators } from 'persona/export/locator';
+import { element } from 'persona/export/input';
 import { CustomElementCtrl } from 'persona/export/main';
-import { combineLatest } from 'rxjs';
-import { $theme, _p } from '../app/app';
+import { combineLatest, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { $theme, _p, _v } from '../app/app';
+import { Theme } from './theme';
 
-const $ = resolveLocators({
-  theme: {
-    el: element('#theme', InstanceofType(HTMLStyleElement)),
-  },
-});
+const $ = {
+  theme: element('theme', InstanceofType(HTMLStyleElement), {}),
+};
 
 @_p.baseCustomElement({
-  watch: [$.theme.el],
+  input: [$.theme],
 })
 export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
-  init(vine: VineImpl): void {
-    this.addSubscription(
-        combineLatest(
-            vine.getObservable($.theme.el.getReadingId(), this),
-            vine.getObservable($theme),
-        )
-        .subscribe(([el, theme]) => theme.injectCss(el)),
-    );
+  @_p.onCreate()
+  injectCss_(
+      @_v.vineIn($.theme.id) themeElObs: Observable<HTMLStyleElement>,
+      @_v.vineIn($theme) themeObs: Observable<Theme>,
+  ): Observable<unknown> {
+    return combineLatest(themeElObs, themeObs)
+        .pipe(
+            tap(([el, theme]) => theme.injectCss(el)),
+        );
   }
 }
