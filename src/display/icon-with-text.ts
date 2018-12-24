@@ -11,47 +11,50 @@
 
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export';
-import { attributeIn, attributeOut, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
+import { attributeIn, element } from 'persona/export/input';
+import { attributeOut, classlist, textContent } from 'persona/export/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { _p } from '../app/app';
+import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 import iconWithTextTemplate from './icon-with-text.html';
 
-export const $ = resolveLocators({
-  host: {
-    el: shadowHost,
-    icon: attributeIn(shadowHost, 'icon', stringParser(), StringType, ''),
-    label: attributeIn(shadowHost, 'label', stringParser(), StringType, ''),
-    mode: attributeIn(shadowHost, 'mode', stringParser(), StringType, ''),
-  },
-  icon: {
-    classes: classlist(element('icon.el')),
-    el: element('#icon', ElementWithTagType('mk-icon')),
-    mode: attributeOut(element('icon.el'), 'mode', stringParser(), StringType),
-    text: textContent(element('icon.el')),
-  },
-  text: {
-    classes: classlist(element('text.el')),
-    el: element('#text', InstanceofType(HTMLDivElement)),
-    text: textContent(element('text.el')),
-  },
-});
+export const $ = {
+  host: element({
+    icon: attributeIn('icon', stringParser(), StringType, ''),
+    label: attributeIn('label', stringParser(), StringType, ''),
+    mode: attributeIn('mode', stringParser(), StringType, ''),
+  }),
+  icon: element('icon', ElementWithTagType('mk-icon'), {
+    classes: classlist(),
+    icon: attributeOut('icon', stringParser()),
+    mode: attributeOut('mode', stringParser()),
+  }),
+  text: element('text', InstanceofType(HTMLDivElement), {
+    classes: classlist(),
+    text: textContent(),
+  }),
+};
 
 @_p.customElement({
+  input: [
+    $.host._.icon,
+    $.host._.label,
+    $.host._.mode,
+  ],
   tag: 'mk-icon-with-text',
   template: iconWithTextTemplate,
 })
-@_p.render($.text.text).withForwarding($.host.label)
-@_p.render($.icon.text).withForwarding($.host.icon)
-@_p.render($.icon.mode).withForwarding($.host.mode)
+@_p.render($.text._.text).withForwarding($.host._.label.id)
+@_p.render($.icon._.icon).withForwarding($.host._.icon.id)
+@_p.render($.icon._.mode).withForwarding($.host._.mode.id)
 export class IconWithText extends ThemedCustomElementCtrl {
-  @_p.render($.icon.classes)
+  @_p.render($.icon._.classes)
   renderIconClasses_(
-      @_p.input($.host.icon) iconLigatureObs: Observable<string>,
+      @_v.vineIn($.host._.icon.id) iconLigatureObs: Observable<string>,
   ): Observable<ImmutableSet<string>> {
     return iconLigatureObs.pipe(
         map(iconLigature => {
@@ -64,9 +67,9 @@ export class IconWithText extends ThemedCustomElementCtrl {
     );
   }
 
-  @_p.render($.text.classes)
+  @_p.render($.text._.classes)
   renderTextClasses_(
-      @_p.input($.host.label) labelObs: Observable<string>,
+      @_v.vineIn($.host._.label.id) labelObs: Observable<string>,
   ): Observable<ImmutableSet<string>> {
     return labelObs.pipe(
         map(label => {

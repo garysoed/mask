@@ -31,11 +31,11 @@ test('section.Backdrop', () => {
             });
           });
 
-      assert(tester.getClassList(el, $.root.classlist)).to.haveElements(['isVisible']);
+      assert(tester.getClassList_(el, $.root.classlist)).to.haveElements(['isVisible']);
     });
 
     should(`render correctly when dialog is not open`, () => {
-      assert(tester.getClassList(el, $.root.classlist)).to.beEmpty();
+      assert(tester.getClassList_(el, $.root.classlist)).to.beEmpty();
     });
   });
 });

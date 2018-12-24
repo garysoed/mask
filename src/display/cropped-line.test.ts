@@ -62,7 +62,7 @@ test('display.CroppedLine', () => {
     should(`set the postfix text correctly`, async () => {
       await tester.setAttribute_(el, $.host.text, 'abcde');
 
-      assert(tester.getTextContent(el, $.postfix.textContent)).to.equal('cde');
+      assert(tester.getTextContent_(el, $.postfix.textContent)).to.equal('cde');
     });
   });
 
@@ -70,7 +70,7 @@ test('display.CroppedLine', () => {
     should(`set the prefix text correctly`, async () => {
       await tester.setAttribute_(el, $.host.text, 'abcde');
 
-      assert(tester.getTextContent(el, $.prefix.textContent)).to.equal('ab');
+      assert(tester.getTextContent_(el, $.prefix.textContent)).to.equal('ab');
     });
   });
 });

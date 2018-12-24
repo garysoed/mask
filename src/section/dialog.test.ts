@@ -92,7 +92,7 @@ test('section.Dialog', () => {
             });
           });
 
-      assert(tester.getClassList(el, $.cancelButton.classlist)).to.haveElements(['isVisible']);
+      assert(tester.getClassList_(el, $.cancelButton.classlist)).to.haveElements(['isVisible']);
     });
 
     should(`not display the cancel button if not cancelable`, () => {
@@ -108,7 +108,7 @@ test('section.Dialog', () => {
             });
           });
 
-      assert(tester.getClassList(el, $.cancelButton.classlist)).to.beEmpty();
+      assert(tester.getClassList_(el, $.cancelButton.classlist)).to.beEmpty();
     });
   });
 
@@ -125,11 +125,11 @@ test('section.Dialog', () => {
             });
           });
 
-      assert(tester.getClassList(el, $.root.classlist)).to.haveElements(['isVisible']);
+      assert(tester.getClassList_(el, $.root.classlist)).to.haveElements(['isVisible']);
     });
 
     should(`render correctly when dialog is hidden`, () => {
-      assert([...tester.getClassList(el, $.root.classlist)]).to.haveExactElements([]);
+      assert([...tester.getClassList_(el, $.root.classlist)]).to.haveExactElements([]);
     });
   });
 
@@ -147,11 +147,11 @@ test('section.Dialog', () => {
             });
           });
 
-      assert(tester.getTextContent(el, $.title.text)).to.equal(title);
+      assert(tester.getTextContent_(el, $.title.text)).to.equal(title);
     });
 
     should(`render empty string when dialog is hidden`, () => {
-      assert(tester.getTextContent(el, $.title.text)).to.equal('');
+      assert(tester.getTextContent_(el, $.title.text)).to.equal('');
     });
   });
 });

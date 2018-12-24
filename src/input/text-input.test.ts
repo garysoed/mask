@@ -55,7 +55,7 @@ test('input.TextInput', () => {
 
       // Now wait for the debounce. Should be called with the latest value.
       await retryUntil(() => valueSubject.getValue()).to.equal(value2);
-      assert(tester.getAttribute(el, $.host.valueOut)).to.equal(value2);
+      assert(tester.getAttribute_(el, $.host.valueOut)).to.equal(value2);
     });
   });
 });

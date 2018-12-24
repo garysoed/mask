@@ -1,6 +1,9 @@
-import { assert, setup, should, test } from 'gs-testing/export/main';
-import { ImmutableMap } from 'gs-tools/export/collect';
+import { assert, match, retryUntil, setup, should, test } from 'gs-testing/export/main';
+import { createSpySubject } from 'gs-testing/export/spy';
+import { ImmutableMap, ImmutableSet } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { icon } from './icon';
 import { $, iconWithText } from './icon-with-text';
@@ -23,36 +26,59 @@ test('display.IconWithText', () => {
     const iconLigature = 'iconLigature';
     const label = 'label';
 
-    await tester.setAttribute_(el, $.host.icon, iconLigature);
-    await tester.setAttribute_(el, $.host.label, label);
+    combineLatest(
+        tester.setAttribute(el, $.host._.icon, iconLigature),
+        tester.setAttribute(el, $.host._.label, label),
+    ).pipe(take(1)).subscribe();
 
-    assert(tester.getTextContent(el, $.text.text)).to.equal(label);
-    assert(tester.getTextContent(el, $.icon.text)).to.equal(iconLigature);
+    const textSubject = createSpySubject();
+    tester.getTextContent(el, $.text).subscribe(textSubject);
+    const iconSubject = createSpySubject();
+    tester.getAttribute(el, $.icon._.icon).subscribe(iconSubject);
+
+    await retryUntil(() => textSubject.getValue()).to.equal(label);
+    await retryUntil(() => iconSubject.getValue()).to.equal(iconLigature);
   });
 
   test('renderIconClasses_', () => {
     should(`render 'hasIcon' class if icon attribute is set`, async () => {
       const iconLigature = 'iconLigature';
-      await tester.setAttribute_(el, $.host.icon, iconLigature);
+      tester.setAttribute(el, $.host._.icon, iconLigature).pipe(take(1)).subscribe();
 
-      assert(tester.getClassList(el, $.icon.classes)).to.haveElements(['hasIcon']);
+      const classlistSubject = createSpySubject<ImmutableSet<string>>();
+      tester.getClassList(el, $.icon).subscribe(classlistSubject);
+
+      await retryUntil(() => classlistSubject.getValue()).to
+          .equal(match.anyIterableThat().haveElements(['hasIcon']));
     });
 
     should(`render nothing if the icon attribute is not set`, async () => {
-      assert(tester.getClassList(el, $.icon.classes)).to.haveElements([]);
+      const classlistSubject = createSpySubject<ImmutableSet<string>>();
+      tester.getClassList(el, $.icon).subscribe(classlistSubject);
+
+      await retryUntil(() => classlistSubject.getValue()).to
+          .equal(match.anyIterableThat().beEmpty());
     });
   });
 
   test('renderTextClasses_', () => {
-    should(`render 'hasText' class if the slot if filled`, async () => {
+    should(`render 'hasText' class if the label is set`, async () => {
       const label = 'label';
-      await tester.setAttribute_(el, $.host.label, label);
+      tester.setAttribute(el, $.host._.label, label).pipe(take(1)).subscribe();
 
-      assert(tester.getClassList(el, $.text.classes)).to.haveElements(['hasText']);
+      const classlistSubject = createSpySubject<ImmutableSet<string>>();
+      tester.getClassList(el, $.text).subscribe(classlistSubject);
+
+      await retryUntil(() => classlistSubject.getValue()).to
+          .equal(match.anyIterableThat().haveElements(['hasText']));
     });
 
     should(`render nothing if the slot is empty`, async () => {
-      assert(tester.getClassList(el, $.text.classes)).to.haveElements([]);
+      const classlistSubject = createSpySubject<ImmutableSet<string>>();
+      tester.getClassList(el, $.text).subscribe(classlistSubject);
+
+      await retryUntil(() => classlistSubject.getValue()).to
+          .equal(match.anyIterableThat().beEmpty());
     });
   });
 });

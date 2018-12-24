@@ -29,8 +29,8 @@ test('component.TextIconButton', () => {
 
   test('constructor', () => {
     should(`set the default attributes correctly`, () => {
-      assert(tester.getAttribute(el, $.host.ariaDisabled)).to.equal(false);
-      assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal('');
+      assert(tester.getAttribute_(el, $.host.ariaDisabled)).to.equal(false);
+      assert(tester.getAttribute_(el, $.host.ariaLabelOut)).to.equal('');
     });
   });
 
@@ -73,13 +73,13 @@ test('component.TextIconButton', () => {
     should(`render the aria label if given`, async () => {
       const newLabel = 'newLabel';
       await tester.setAttribute_(el, $.host.ariaLabelOut, newLabel);
-      assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal(newLabel);
+      assert(tester.getAttribute_(el, $.host.ariaLabelOut)).to.equal(newLabel);
     });
 
     should(`render the label if aria-label is not given`, async () => {
       const newLabel = 'newLabel';
       await tester.setAttribute_(el, $.host.label, newLabel);
-      assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal(newLabel);
+      assert(tester.getAttribute_(el, $.host.ariaLabelOut)).to.equal(newLabel);
     });
   });
 
@@ -87,7 +87,7 @@ test('component.TextIconButton', () => {
     should(`render the icon correctly`, async () => {
       const icon = 'icon';
       await tester.setAttribute_(el, $.host.icon, icon);
-      assert(tester.getAttribute(el, $.iconWithText.icon)).to.equal(icon);
+      assert(tester.getAttribute_(el, $.iconWithText.icon)).to.equal(icon);
     });
   });
 
@@ -95,25 +95,25 @@ test('component.TextIconButton', () => {
     should(`render the label correctly`, async () => {
       const newLabel = 'newLabel';
       await tester.setAttribute_(el, $.host.label, newLabel);
-      assert(tester.getAttribute(el, $.iconWithText.label)).to.equal(newLabel);
+      assert(tester.getAttribute_(el, $.iconWithText.label)).to.equal(newLabel);
     });
   });
 
   test('renderRole_', () => {
     should(`render the correct role`, () => {
-      assert(tester.getAttribute(el, $.host.role)).to.equal('button');
+      assert(tester.getAttribute_(el, $.host.role)).to.equal('button');
     });
   });
 
   test('renderTabIndex_', () => {
     should(`render 0 if host is not disabled`, async () => {
       await tester.setAttribute_(el, $.host.disabled, false);
-      assert(tester.getAttribute(el, $.host.tabindex)).to.equal(0);
+      assert(tester.getAttribute_(el, $.host.tabindex)).to.equal(0);
     });
 
     should(`return -1 if host is disabled`, async () => {
       await tester.setAttribute_(el, $.host.disabled, true);
-      assert(tester.getAttribute(el, $.host.tabindex)).to.equal(-1);
+      assert(tester.getAttribute_(el, $.host.tabindex)).to.equal(-1);
     });
   });
 });
