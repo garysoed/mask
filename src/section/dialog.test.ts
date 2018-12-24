@@ -43,7 +43,7 @@ test('section.Dialog', () => {
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       tester.vine.getObservable($dialogState).subscribe(stateSubject);
 
-      tester.getElement(el, $.cancelButton.el).click();
+      tester.getElement_(el, $.cancelButton.el).click();
 
       assert(mockOnClose).to.haveBeenCalledWith(true);
 
@@ -69,7 +69,7 @@ test('section.Dialog', () => {
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       tester.vine.getObservable($dialogState).subscribe(stateSubject);
 
-      tester.getElement(el, $.okButton.el).click();
+      tester.getElement_(el, $.okButton.el).click();
 
       assert(mockOnClose).to.haveBeenCalledWith(false);
 

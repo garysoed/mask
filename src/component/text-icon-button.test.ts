@@ -62,7 +62,7 @@ test('component.TextIconButton', () => {
     should(`not fire the action event if disabled`, async () => {
       const mockListener = createSpy('Listener');
 
-      await tester.setAttribute(el, $.host.disabled, true);
+      await tester.setAttribute_(el, $.host.disabled, true);
       el.addEventListener('mk-action', mockListener);
       el.click();
       assert(mockListener).toNot.haveBeenCalled();
@@ -72,13 +72,13 @@ test('component.TextIconButton', () => {
   test('renderHostAriaLabel_', () => {
     should(`render the aria label if given`, async () => {
       const newLabel = 'newLabel';
-      await tester.setAttribute(el, $.host.ariaLabelOut, newLabel);
+      await tester.setAttribute_(el, $.host.ariaLabelOut, newLabel);
       assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal(newLabel);
     });
 
     should(`render the label if aria-label is not given`, async () => {
       const newLabel = 'newLabel';
-      await tester.setAttribute(el, $.host.label, newLabel);
+      await tester.setAttribute_(el, $.host.label, newLabel);
       assert(tester.getAttribute(el, $.host.ariaLabelOut)).to.equal(newLabel);
     });
   });
@@ -86,7 +86,7 @@ test('component.TextIconButton', () => {
   test('renderIcon_', () => {
     should(`render the icon correctly`, async () => {
       const icon = 'icon';
-      await tester.setAttribute(el, $.host.icon, icon);
+      await tester.setAttribute_(el, $.host.icon, icon);
       assert(tester.getAttribute(el, $.iconWithText.icon)).to.equal(icon);
     });
   });
@@ -94,7 +94,7 @@ test('component.TextIconButton', () => {
   test('renderLabel_', () => {
     should(`render the label correctly`, async () => {
       const newLabel = 'newLabel';
-      await tester.setAttribute(el, $.host.label, newLabel);
+      await tester.setAttribute_(el, $.host.label, newLabel);
       assert(tester.getAttribute(el, $.iconWithText.label)).to.equal(newLabel);
     });
   });
@@ -107,12 +107,12 @@ test('component.TextIconButton', () => {
 
   test('renderTabIndex_', () => {
     should(`render 0 if host is not disabled`, async () => {
-      await tester.setAttribute(el, $.host.disabled, false);
+      await tester.setAttribute_(el, $.host.disabled, false);
       assert(tester.getAttribute(el, $.host.tabindex)).to.equal(0);
     });
 
     should(`return -1 if host is disabled`, async () => {
-      await tester.setAttribute(el, $.host.disabled, true);
+      await tester.setAttribute_(el, $.host.disabled, true);
       assert(tester.getAttribute(el, $.host.tabindex)).to.equal(-1);
     });
   });

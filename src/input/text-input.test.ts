@@ -22,7 +22,7 @@ test('input.TextInput', () => {
     should(`set the initial value correctly`, async () => {
       const initValue = 'initValue';
 
-      tester.setAttribute(el, $.host.valueIn, initValue);
+      tester.setAttribute_(el, $.host.valueIn, initValue);
 
       await retryUntil(() => tester.getProperty(el, $.input.el, 'value')).to.equal(initValue);
     });
@@ -38,7 +38,7 @@ test('input.TextInput', () => {
 
       // Wait until the initial value has been set.
       const initValue = 'initValue';
-      tester.setAttribute(el, $.host.valueIn, initValue);
+      tester.setAttribute_(el, $.host.valueIn, initValue);
       await retryUntil(() => tester.getProperty(el, $.input.el, 'value')).to.equal(initValue);
 
       const value1 = 'value1';

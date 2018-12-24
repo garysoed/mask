@@ -21,7 +21,7 @@ test('display.CroppedLine', () => {
     should(`set the clipboard data correctly`, async () => {
       const value = 'value';
 
-      await tester.setAttribute(el, $.host.text, value);
+      await tester.setAttribute_(el, $.host.text, value);
 
       const mockDataTransfer = createSpyInstance(DataTransfer);
       const event = Object.assign(
@@ -40,7 +40,7 @@ test('display.CroppedLine', () => {
 
   test('providesPostfixBoundary_', () => {
     should(`return the correct index for short texts`, async () => {
-      await tester.setAttribute(el, $.host.text, 'ab');
+      await tester.setAttribute_(el, $.host.text, 'ab');
 
       const boundarySubject = new BehaviorSubject<number|null>(null);
       tester.getObservable(el, $postfixBoundary).subscribe(boundarySubject);
@@ -49,7 +49,7 @@ test('display.CroppedLine', () => {
     });
 
     should(`return the correct index for long texts`, async () => {
-      await tester.setAttribute(el, $.host.text, 'abcdefg');
+      await tester.setAttribute_(el, $.host.text, 'abcdefg');
 
       const boundarySubject = new BehaviorSubject<number|null>(null);
       tester.getObservable(el, $postfixBoundary).subscribe(boundarySubject);
@@ -60,7 +60,7 @@ test('display.CroppedLine', () => {
 
   test('providesPostfixTextContent_', () => {
     should(`set the postfix text correctly`, async () => {
-      await tester.setAttribute(el, $.host.text, 'abcde');
+      await tester.setAttribute_(el, $.host.text, 'abcde');
 
       assert(tester.getTextContent(el, $.postfix.textContent)).to.equal('cde');
     });
@@ -68,7 +68,7 @@ test('display.CroppedLine', () => {
 
   test('providesPrefixTextContent_', () => {
     should(`set the prefix text correctly`, async () => {
-      await tester.setAttribute(el, $.host.text, 'abcde');
+      await tester.setAttribute_(el, $.host.text, 'abcde');
 
       assert(tester.getTextContent(el, $.prefix.textContent)).to.equal('ab');
     });

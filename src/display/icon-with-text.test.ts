@@ -23,8 +23,8 @@ test('display.IconWithText', () => {
     const iconLigature = 'iconLigature';
     const label = 'label';
 
-    await tester.setAttribute(el, $.host.icon, iconLigature);
-    await tester.setAttribute(el, $.host.label, label);
+    await tester.setAttribute_(el, $.host.icon, iconLigature);
+    await tester.setAttribute_(el, $.host.label, label);
 
     assert(tester.getTextContent(el, $.text.text)).to.equal(label);
     assert(tester.getTextContent(el, $.icon.text)).to.equal(iconLigature);
@@ -33,7 +33,7 @@ test('display.IconWithText', () => {
   test('renderIconClasses_', () => {
     should(`render 'hasIcon' class if icon attribute is set`, async () => {
       const iconLigature = 'iconLigature';
-      await tester.setAttribute(el, $.host.icon, iconLigature);
+      await tester.setAttribute_(el, $.host.icon, iconLigature);
 
       assert(tester.getClassList(el, $.icon.classes)).to.haveElements(['hasIcon']);
     });
@@ -46,7 +46,7 @@ test('display.IconWithText', () => {
   test('renderTextClasses_', () => {
     should(`render 'hasText' class if the slot if filled`, async () => {
       const label = 'label';
-      await tester.setAttribute(el, $.host.label, label);
+      await tester.setAttribute_(el, $.host.label, label);
 
       assert(tester.getClassList(el, $.text.classes)).to.haveElements(['hasText']);
     });

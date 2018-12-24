@@ -8,72 +8,62 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
+import { typeBased } from 'gs-tools/export/serializer';
 import { ImmutableMap } from 'gs-tools/src/immutable';
 import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
+import { json } from 'nabu/export/grammar';
+import { Serializable } from 'nabu/export/main';
+import { compose } from 'nabu/export/util';
 import { AriaRole } from 'persona/export/a11y';
-import { attributeOut, classlist, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
-import { combineLatest, of as observableOf } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { attributeIn, element } from 'persona/export/input';
+import { attributeOut, innerHtml } from 'persona/export/output';
+import { combineLatest, Observable, of as observableOf } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import * as dialogCloseSvg from '../asset/dialog_close.svg';
 import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
 import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../util/parsers';
+import { stringParser } from '../util/parsers';
 import iconTemplate from './icon.html';
 import { SvgConfig } from './svg-config';
-import { $svgConfig, $svgService } from './svg-service';
+import { $svgConfig, $svgService, SvgService } from './svg-service';
 
-export const $ = resolveLocators({
-  host: {
-    ariaHidden: attributeOut(shadowHost, 'aria-hidden', booleanParser(), BooleanType),
-    el: shadowHost,
-    role: attributeOut(shadowHost, 'role', stringParser(), StringType),
-    text: textContent(shadowHost),
-  },
-  root: {
-    classList: classlist(element('root.el')),
-    el: element('#root', InstanceofType(HTMLSpanElement)),
-  },
-});
+export const $ = {
+  host: element({
+    ariaHidden: attributeOut(
+        'aria-hidden',
+        compose<boolean, Serializable, string>(typeBased(BooleanType), json()),
+        value => !value),
+    icon: attributeIn('icon', stringParser(), StringType),
+    role: attributeOut('role', stringParser()),
+  }),
+  root: element('root', InstanceofType(HTMLSpanElement), {
+    innerHTML: innerHtml(),
+  }),
+};
 
 @_p.customElement({
+  input: [$.host, $.host._.icon],
   tag: 'mk-icon',
   template: iconTemplate,
-  watch: [
-    $.host.el,
-    $.root.el,
-  ],
 })
 export class Icon extends ThemedCustomElementCtrl {
-  @_p.render($.host.ariaHidden) ariaHidden_: boolean = true;
-  @_p.render($.host.role) role_: AriaRole = AriaRole.PRESENTATION;
+  @_p.render($.host._.ariaHidden) ariaHidden_: boolean = true;
+  @_p.render($.host._.role) role_: AriaRole = AriaRole.PRESENTATION;
 
-  init(vine: VineImpl): void {
-    super.init(vine);
-
-    this.addSubscription(
-        combineLatest(
-            vine.getObservable($.host.el.getReadingId(), this),
-            vine.getObservable($svgService),
-        )
+  @_p.render($.root._.innerHTML)
+  renderRootInnerHtml_(
+      @_v.vineIn($svgService) svgServiceObs: Observable<SvgService>,
+      @_v.vineIn($.host._.icon.id) svgNameObs: Observable<string>,
+  ): Observable<string> {
+    return combineLatest(svgServiceObs, svgNameObs)
         .pipe(
-            switchMap(([hostEl, svgService]) => {
-              const svgName = hostEl.textContent || '';
-
+            switchMap(([svgService, svgName]) => {
               return svgService.getSvg(svgName) || observableOf(null);
             }),
-            switchMap(svg => {
-              return combineLatest(
-                  vine.getObservable($.root.el.getReadingId(), this),
-                  observableOf(svg),
-              );
-            }),
-        )
-        .subscribe(([rootEl, svg]) => {
-          rootEl.innerHTML = svg || '';
-        }),
-    );
+            map(svg => svg || ''),
+        );
   }
 }
 

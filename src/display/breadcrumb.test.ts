@@ -38,7 +38,7 @@ test('display.Breadcrumb', () => {
         },
       ]);
 
-      await tester.setAttribute(el, $.host.path, data);
+      await tester.setAttribute_(el, $.host.path, data);
 
       const handler = createSpy('Handler');
       el.addEventListener(BREADCRUMB_CLICK_EVENT, handler);
@@ -70,7 +70,7 @@ test('display.Breadcrumb', () => {
         },
       ]);
 
-      await tester.setAttribute(el, $.host.path, data);
+      await tester.setAttribute_(el, $.host.path, data);
 
       const elements = tester.getElementsAfter(el, $.row.crumbsSlot).slice(0, 3) as
           ImmutableList<HTMLElement>;
