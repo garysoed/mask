@@ -1,12 +1,12 @@
-import { VineImpl } from 'grapevine/export/main';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
 import { objectConverter } from 'gs-tools/export/serializer';
-import { HasPropertiesType, InstanceofType, IntersectType, IterableOfType, StringType } from 'gs-types/export';
-import { attributeIn, dispatcher, element, resolveLocators, shadowHost, slot } from 'persona/export/locator';
+import { HasPropertiesType, InstanceofType, IterableOfType, StringType } from 'gs-types/export';
+import { attributeIn, dispatcher, DispatchFn, element, onDom } from 'persona/export/input';
+import { slot } from 'persona/export/output';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
@@ -28,17 +28,11 @@ const crumbDataType = HasPropertiesType({
 interface RenderedCrumbData extends CrumbData {
   [__renderId]: string;
 }
-const renderedCrumbDataType = IntersectType<RenderedCrumbData>([
-  crumbDataType,
-  HasPropertiesType({[__renderId]: StringType}),
-]);
 
-export const $ = resolveLocators({
-  host: {
-    dispatch: dispatcher(shadowHost),
-    el: shadowHost,
+export const $ = {
+  host: element({
+    dispatch: dispatcher(),
     path: attributeIn<ImmutableList<CrumbData>>(
-        shadowHost,
         'path',
         listParser(
             objectConverter<CrumbData>({
@@ -49,10 +43,9 @@ export const $ = resolveLocators({
         IterableOfType<CrumbData, ImmutableList<CrumbData>>(crumbDataType),
         ImmutableList.of([]),
     ),
-  },
-  row: {
+  }),
+  row: element('row', InstanceofType(HTMLDivElement), {
     crumbsSlot: slot(
-        element('row.el'),
         'crumbs',
         new ElementListRenderer<RenderedCrumbData>(
             new SimpleElementRenderer<RenderedCrumbData>(
@@ -64,47 +57,53 @@ export const $ = resolveLocators({
               },
             ),
         ),
-        IterableOfType(renderedCrumbDataType),
     ),
-    el: element('#row', InstanceofType(HTMLDivElement)),
-  },
-  theme: {
-    el: element('#theme', InstanceofType(HTMLStyleElement)),
-  },
-});
+    onAction: onDom(ACTION_EVENT),
+  }),
+};
 
 @_p.customElement({
+  input: [
+    $.host._.dispatch,
+    $.host._.path,
+    $.row._.onAction,
+  ],
   tag: 'mk-breadcrumb',
   template: breadcrumbTemplate,
-  watch: [
-    $.host.dispatch,
-  ],
 })
 class Breadcrumb extends ThemedCustomElementCtrl {
-  @_p.onDom($.row.el, ACTION_EVENT)
-  onRowAction_(event: ActionEvent, vine: VineImpl): void {
-    const target = event.target;
-    if (!(target instanceof Element)) {
-      throw Errors.assert(`target for ${ACTION_EVENT}`)
-          .shouldBeAnInstanceOf(Element)
-          .butWas(target);
-    }
+  @_p.onCreate()
+  onRowAction_(
+      @_v.vineIn($.row._.onAction.id) onActionObs: Observable<ActionEvent>,
+      @_v.vineIn($.host._.dispatch.id) dispatchObs: Observable<DispatchFn<BreadcrumbClickEvent>>,
+  ): Observable<unknown> {
+    return onActionObs
+        .pipe(
+            map(event => {
+              const target = event.target;
+              if (!(target instanceof Element)) {
+                throw Errors.assert(`target for ${ACTION_EVENT}`)
+                    .shouldBeAnInstanceOf(Element)
+                    .butWas(target);
+              }
 
-    const key = target.getAttribute('key');
-    if (!key) {
-      throw Errors.assert(`key for ${target}`).shouldExist().butNot();
-    }
+              const key = target.getAttribute('key');
+              if (!key) {
+                throw Errors.assert(`key for ${target}`).shouldExist().butNot();
+              }
 
-    vine.getObservable($.host.dispatch.getReadingId(), this)
-        .pipe(take(1))
-        .subscribe(dispatcher => {
-          dispatcher(new BreadcrumbClickEvent(key));
-        });
+              return key;
+            }),
+            withLatestFrom(dispatchObs),
+            tap(([key, dispatcher]) => {
+              dispatcher(new BreadcrumbClickEvent(key));
+            }),
+        );
   }
 
-  @_p.render($.row.crumbsSlot)
+  @_p.render($.row._.crumbsSlot)
   renderCrumbs_(
-      @_p.input($.host.path) pathObs: Observable<ImmutableList<CrumbData>>,
+      @_v.vineIn($.host._.path.id) pathObs: Observable<ImmutableList<CrumbData>>,
   ): Observable<ImmutableList<RenderedCrumbData>> {
     return pathObs
         .pipe(

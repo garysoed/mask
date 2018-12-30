@@ -1,5 +1,5 @@
 import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { createSpy } from 'gs-testing/export/spy';
+import { createSpy, createSpySubject } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
@@ -29,8 +29,14 @@ test('component.TextIconButton', () => {
 
   test('constructor', () => {
     should(`set the default attributes correctly`, () => {
-      assert(tester.getAttribute_(el, $.host.ariaDisabled)).to.equal(false);
-      assert(tester.getAttribute_(el, $.host.ariaLabelOut)).to.equal('');
+      const ariaDisabledSubject = createSpySubject<boolean>();
+      tester.getAttribute(el, $.host._.ariaDisabled).subscribe(ariaDisabledSubject);
+
+      const ariaLabelOutSubject = createSpySubject<string>();
+      tester.getAttribute(el, $.host._.ariaLabelOut).subscribe(ariaLabelOutSubject);
+
+      assert(ariaDisabledSubject.getValue()).to.equal(false);
+      assert(ariaLabelOutSubject.getValue()).to.equal('');
     });
   });
 
@@ -47,7 +53,7 @@ test('component.TextIconButton', () => {
       const mockListener = createSpy('Listener');
 
       el.addEventListener('mk-action', mockListener);
-      tester.simulateKeypress(el, $.host.el, [{key: 'Enter'}]);
+      tester.simulateKeypress(el, $.host, [{key: 'Enter'}]).subscribe();
       assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
     });
 
@@ -55,14 +61,14 @@ test('component.TextIconButton', () => {
       const mockListener = createSpy('Listener');
 
       el.addEventListener('mk-action', mockListener);
-      tester.simulateKeypress(el, $.host.el, [{key: ' '}]);
+      tester.simulateKeypress(el, $.host, [{key: ' '}]).subscribe();
       assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
     });
 
-    should(`not fire the action event if disabled`, async () => {
+    should(`not fire the action event if disabled`, () => {
       const mockListener = createSpy('Listener');
 
-      await tester.setAttribute_(el, $.host.disabled, true);
+      tester.setAttribute(el, $.host._.disabled, true).subscribe();
       el.addEventListener('mk-action', mockListener);
       el.click();
       assert(mockListener).toNot.haveBeenCalled();
@@ -70,24 +76,33 @@ test('component.TextIconButton', () => {
   });
 
   test('renderHostAriaLabel_', () => {
-    should(`render the aria label if given`, async () => {
+    should(`render the aria label if given`, () => {
       const newLabel = 'newLabel';
-      await tester.setAttribute_(el, $.host.ariaLabelOut, newLabel);
-      assert(tester.getAttribute_(el, $.host.ariaLabelOut)).to.equal(newLabel);
+      tester.setAttribute(el, $.host._.ariaLabelIn, newLabel).subscribe();
+
+      const ariaLabelOutSubject = createSpySubject<string>();
+      tester.getAttribute(el, $.host._.ariaLabelOut).subscribe(ariaLabelOutSubject);
+      assert(ariaLabelOutSubject.getValue()).to.equal(newLabel);
     });
 
-    should(`render the label if aria-label is not given`, async () => {
+    should(`render the label if aria-label is not given`, () => {
       const newLabel = 'newLabel';
-      await tester.setAttribute_(el, $.host.label, newLabel);
-      assert(tester.getAttribute_(el, $.host.ariaLabelOut)).to.equal(newLabel);
+      tester.setAttribute(el, $.host._.label, newLabel).subscribe();
+
+      const ariaLabelOutSubject = createSpySubject<string>();
+      tester.getAttribute(el, $.host._.ariaLabelOut).subscribe(ariaLabelOutSubject);
+      assert(ariaLabelOutSubject.getValue()).to.equal(newLabel);
     });
   });
 
   test('renderIcon_', () => {
     should(`render the icon correctly`, async () => {
       const icon = 'icon';
-      await tester.setAttribute_(el, $.host.icon, icon);
-      assert(tester.getAttribute_(el, $.iconWithText.icon)).to.equal(icon);
+      tester.setAttribute(el, $.host._.icon, icon).subscribe();
+
+      const iconSubject = createSpySubject<string>();
+      tester.getAttribute(el, $.iconWithText._.icon).subscribe(iconSubject);
+      assert(iconSubject.getValue()).to.equal(icon);
     });
   });
 

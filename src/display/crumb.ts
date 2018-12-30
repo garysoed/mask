@@ -1,47 +1,48 @@
-import { VineImpl } from 'grapevine/export/main';
 import { InstanceofType } from 'gs-tools/node_modules/gs-types/export';
 import { StringType } from 'gs-types/export';
-import { attributeIn, dispatcher, element, resolveLocators, shadowHost, textContent } from 'persona/export/locator';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { _p } from '../app/app';
+import { attributeIn, dispatcher, DispatchFn, element, onDom } from 'persona/export/input';
+import { textContent } from 'persona/export/output';
+import { Observable } from 'rxjs';
+import { tap, withLatestFrom } from 'rxjs/operators';
+import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 import crumbTemplate from './crumb.html';
 
-export const $ = resolveLocators({
-  host: {
-    dispatch: dispatcher(shadowHost),
-    display: attributeIn(shadowHost, 'display', stringParser(), StringType, ''),
-    el: shadowHost,
-  },
-  text: {
-    el: element('#text', InstanceofType(HTMLDivElement)),
-    text: textContent(element('text.el')),
-  },
-  theme: {
-    el: element('#theme', InstanceofType(HTMLStyleElement)),
-  },
-});
+export const $ = {
+  host: element({
+    dispatch: dispatcher(),
+    display: attributeIn('display', stringParser(), StringType, ''),
+    onClick: onDom('click'),
+  }),
+  text: element('text', InstanceofType(HTMLDivElement), {
+    text: textContent(),
+  }),
+};
 
 @_p.customElement({
+  input: [
+    $.host._.dispatch,
+    $.host._.display,
+    $.host._.onClick,
+  ],
   tag: 'mk-crumb',
   template: crumbTemplate,
-  watch: [
-    $.host.dispatch,
-  ],
 })
-@_p.render($.text.text).withForwarding($.host.display)
+@_p.render($.text._.text).withForwarding($.host._.display.id)
 class Crumb extends ThemedCustomElementCtrl {
-  @_p.onDom($.host.el, 'click')
-  onHostClick_(_: Event, vine: VineImpl): void {
-    combineLatest(
-        vine.getObservable($.host.dispatch.getReadingId(), this),
-        )
-        .pipe(take(1))
-        .subscribe(([dispatcher]) => dispatcher(new ActionEvent()));
+  @_p.onCreate()
+  onHostClick_(
+      @_v.vineIn($.host._.onClick.id) onClickObs: Observable<Event>,
+      @_v.vineIn($.host._.dispatch.id) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
+  ): Observable<unknown> {
+    return onClickObs
+        .pipe(
+            withLatestFrom(dispatcherObs),
+            tap(([, dispatcher]) => dispatcher(new ActionEvent())),
+        );
   }
 }
 
