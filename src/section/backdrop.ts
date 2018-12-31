@@ -1,6 +1,7 @@
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { InstanceofType } from 'gs-types/export';
-import { classlist, element, resolveLocators } from 'persona/export/locator';
+import { element } from 'persona/export/input';
+import { classlist } from 'persona/export/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -9,19 +10,18 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import backdropTemplate from './backdrop.html';
 import { $dialogState, DialogState } from './dialog-service';
 
-export const $ = resolveLocators({
-  root: {
-    classlist: classlist(element('root.el')),
-    el: element('#root', InstanceofType(HTMLDivElement)),
-  },
-});
+export const $ = {
+  root: element('root', InstanceofType(HTMLDivElement), {
+    classlist: classlist(),
+  }),
+};
 
 @_p.customElement({
   tag: 'mk-backdrop',
   template: backdropTemplate,
 })
 class Backdrop extends ThemedCustomElementCtrl {
-  @_p.render($.root.classlist)
+  @_p.render($.root._.classlist)
   renderRootClasslist_(
       @_v.vineIn($dialogState) dialogStateObs: Observable<DialogState>,
   ): Observable<ImmutableSet<string>> {
