@@ -1,9 +1,8 @@
-import { instanceSourceId } from 'grapevine/export/component';
-import { VineImpl } from 'grapevine/export/main';
 import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
-import { attributeIn, attributeOut, dispatcher, element, resolveLocators, shadowHost } from 'persona/export/locator';
-import { combineLatest, fromEvent, Observable } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
+import { attributeIn, dispatcher, DispatchFn, element, onInput, subject } from 'persona/export/input';
+import { attributeOut } from 'persona/export/output';
+import { combineLatest, merge, Observable } from 'rxjs';
+import { startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ChangeEvent } from '../event/change-event';
@@ -13,98 +12,68 @@ import textInputTemplate from './text-input.html';
 
 const DEBOUNCE_MS = 250;
 
-export const $ = resolveLocators({
-  host: {
-    disabled: attributeIn(shadowHost, 'disabled', booleanParser(), BooleanType, false),
-    dispatch: dispatcher(shadowHost),
-    valueIn: attributeIn(shadowHost, 'value', stringParser(), StringType, ''),
-    valueOut: attributeOut(shadowHost, 'value', stringParser(), StringType),
-  },
-  input: {
-    disabled: attributeOut(
-        element('input.el'),
-        'disabled',
-        booleanParser(),
-        BooleanType,
-        value => !value,
-    ),
-    el: element('#input', InstanceofType(HTMLInputElement)),
-  },
-});
-
-// TODO: Delete this.
-const $inputValue = instanceSourceId('inputValue', StringType);
-_v.builder.source($inputValue, '');
-
-const $initValueSet = instanceSourceId('initValueSet', BooleanType);
-_v.builder.source($initValueSet, false);
+export const $ = {
+  host: element({
+    clearObs: subject<void>('mkClear'),
+    disabled: attributeIn('disabled', booleanParser(), BooleanType, false),
+    dispatch: dispatcher(),
+    initValue: attributeIn('init-value', stringParser(), StringType, ''),
+  }),
+  input: element('input', InstanceofType(HTMLInputElement), {
+    disabled: attributeOut('disabled', booleanParser(), value => !value),
+    // TODO: This should cause compile error if the Element type is not InputElement.
+    onInput: onInput(DEBOUNCE_MS),
+  }),
+};
 
 @_p.customElement({
+  input: [
+    $.host._.clearObs,
+    $.host._.disabled,
+    $.host._.dispatch,
+    $.host._.initValue,
+    $.input,
+    $.input._.onInput,
+  ],
   tag: 'mk-text-input',
   template: textInputTemplate,
-  watch: [
-    $.host.dispatch,
-    $.host.valueIn,
-    $.input.el,
-  ],
 })
-@_p.render($.input.disabled).withForwarding($.host.disabled)
+@_p.render($.input._.disabled).withForwarding($.host._.disabled.id)
 class TextInput extends ThemedCustomElementCtrl {
-  init(vine: VineImpl): void {
-    super.init(vine);
-
-    this.addSubscription(
-        combineLatest(
-            vine.getObservable($.host.valueIn.getReadingId(), this),
-            vine.getObservable($.input.el.getReadingId(), this),
-        )
-        .subscribe(([initValue, inputEl]) => {
-          inputEl.value = initValue;
-          vine.setValue($initValueSet, true, this);
-        }),
-    );
-
-    this.addSubscription(
-        combineLatest(
-            createValueObs(vine.getObservable($.input.el.getReadingId(), this)),
-            vine.getObservable($.host.dispatch.getReadingId(), this),
-        )
-        .subscribe(([value, dispatch]) => {
-          dispatch(new ChangeEvent(value));
-          vine.setValue($inputValue, value, this);
-        }),
-    );
+  @_p.onCreate()
+  dispatchChangeEvent_(
+      @_v.vineIn($.host._.dispatch.id) dispatchObs: Observable<DispatchFn<ChangeEvent>>,
+      @_v.vineIn($.input._.onInput.id) onInputObs: Observable<string>,
+  ): Observable<unknown> {
+    return onInputObs
+        .pipe(
+            withLatestFrom(dispatchObs),
+            tap(([inputValue, dispatch]) => {
+              dispatch(new ChangeEvent(inputValue));
+            }),
+        );
   }
 
-  @_p.render($.host.valueOut)
-  renderValueOut_(
-      @_p.input($.host.valueIn) valueInObs: Observable<string>,
-      @_v.vineIn($inputValue) inputValueObs: Observable<string>,
-      @_v.vineIn($initValueSet) initValueSetObs: Observable<boolean>,
-  ): Observable<string> {
-    return combineLatest(valueInObs, inputValueObs, initValueSetObs)
-        .pipe(map(([valueIn, inputValue, initValueSet]) => {
-          if (initValueSet) {
-            return inputValue;
-          } else {
-            return valueIn;
-          }
-        }));
+  @_p.onCreate()
+  setInitValue_(
+      @_v.vineIn($.host._.clearObs.id) clearObs: Observable<void>,
+      @_v.vineIn($.host._.initValue.id) initValueObs: Observable<string>,
+      @_v.vineIn($.input.id) inputElObs: Observable<HTMLInputElement>,
+  ): Observable<unknown> {
+    // Set the initial value when:
+    // 1.  init-value attribute is first set.
+    // 2.  clear is called
+    return merge(
+            clearObs.pipe(startWith()),
+            initValueObs.pipe(take(1)),
+        )
+        .pipe(
+            withLatestFrom(initValueObs, inputElObs),
+            tap(([, initValue, inputEl]) => {
+              inputEl.value = initValue;
+            }),
+        );
   }
-}
-
-function createValueObs(inputElObs: Observable<HTMLInputElement>): Observable<string> {
-  return inputElObs
-      .pipe(
-          switchMap(inputEl => {
-            return fromEvent(inputEl, 'input')
-                .pipe(
-                    map(() => inputEl.value),
-                    startWith(inputEl.value),
-                    debounceTime(DEBOUNCE_MS),
-                );
-          }),
-      );
 }
 
 export function textInput(): Config {
