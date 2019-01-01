@@ -12,7 +12,8 @@
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { ImmutableSet } from 'gs-tools/src/immutable';
 import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
-import { attributeIn, element, resolveLocators, shadowHost, style } from 'persona/export/locator';
+import { attributeIn, element } from 'persona/export/input';
+import { style } from 'persona/export/output';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -26,43 +27,43 @@ export enum Mode {
   VERTICAL = 'vertical',
 }
 
-export const $ = resolveLocators({
-  host: {
-    el: shadowHost,
-    expanded: attributeIn(shadowHost, 'expanded', booleanParser(), BooleanType, false),
-    maxSize: attributeIn(shadowHost, 'max-size', stringParser(), StringType, ''),
-    minSize: attributeIn(shadowHost, 'min-size', stringParser(), StringType, '0'),
+export const $ = {
+  host: element({
+    expanded: attributeIn('expanded', booleanParser(), BooleanType, false),
+    maxSize: attributeIn('max-size', stringParser(), StringType, ''),
+    minSize: attributeIn('min-size', stringParser(), StringType, '0'),
     mode: attributeIn(
-        shadowHost,
         'mode',
         stringMatchConverter(ImmutableSet.of([Mode.HORIZONTAL, Mode.VERTICAL])),
         EnumType(Mode),
         Mode.VERTICAL,
     ),
-    style: {
-      height: style(shadowHost, 'height'),
-      overflow: style(shadowHost, 'overflow'),
-      width: style(shadowHost, 'width'),
-    },
-  },
-  theme: {
-    el: element('#theme', InstanceofType(HTMLStyleElement)),
-  },
-});
+    styleHeight: style('height'),
+    styleOverflow: style('overflow'),
+    styleWidth: style('width'),
+  }),
+  theme: element('theme', InstanceofType(HTMLStyleElement), {}),
+};
 
 @_p.customElement({
+  input: [
+    $.host._.expanded,
+    $.host._.maxSize,
+    $.host._.minSize,
+    $.host._.mode,
+  ],
   tag: 'mk-drawer',
   template: drawerTemplate,
 })
 class Drawer extends ThemedCustomElementCtrl {
-  @_p.render($.host.style.overflow) readonly overflow_: string = 'hidden';
+  @_p.render($.host._.styleOverflow) readonly overflow_: string = 'hidden';
 
-  @_p.render($.host.style.height)
+  @_p.render($.host._.styleHeight)
   renderStyleHeight_(
-      @_p.input($.host.expanded) expandedObs: Observable<boolean>,
-      @_p.input($.host.maxSize) maxSizeObs: Observable<string>,
-      @_p.input($.host.minSize) minSizeObs: Observable<string>,
-      @_p.input($.host.mode) modeObs: Observable<Mode>,
+      @_v.vineIn($.host._.expanded.id) expandedObs: Observable<boolean>,
+      @_v.vineIn($.host._.maxSize.id) maxSizeObs: Observable<string>,
+      @_v.vineIn($.host._.minSize.id) minSizeObs: Observable<string>,
+      @_v.vineIn($.host._.mode.id) modeObs: Observable<Mode>,
   ): Observable<string> {
     return combineLatest(expandedObs, maxSizeObs, minSizeObs, modeObs)
         .pipe(
@@ -76,12 +77,12 @@ class Drawer extends ThemedCustomElementCtrl {
         );
   }
 
-  @_p.render($.host.style.width)
+  @_p.render($.host._.styleWidth)
   renderStyleWidth_(
-      @_p.input($.host.expanded) expandedObs: Observable<boolean>,
-      @_p.input($.host.maxSize) maxSizeObs: Observable<string>,
-      @_p.input($.host.minSize) minSizeObs: Observable<string>,
-      @_p.input($.host.mode) modeObs: Observable<Mode>,
+      @_v.vineIn($.host._.expanded.id) expandedObs: Observable<boolean>,
+      @_v.vineIn($.host._.maxSize.id) maxSizeObs: Observable<string>,
+      @_v.vineIn($.host._.minSize.id) minSizeObs: Observable<string>,
+      @_v.vineIn($.host._.mode.id) modeObs: Observable<Mode>,
   ): Observable<string> {
     return combineLatest(expandedObs, maxSizeObs, minSizeObs, modeObs)
         .pipe(
