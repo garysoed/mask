@@ -1,12 +1,13 @@
 import { instanceSourceId } from 'grapevine/export/component';
-import { VineImpl } from 'grapevine/export/main';
+import { $vine, VineImpl } from 'grapevine/export/main';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
-import { BooleanType, ElementWithTagType, HasPropertiesType, InstanceofType, IterableOfType, NullableType, StringType } from 'gs-types/export';
-import { attributeOut, element, resolveLocators, slot } from 'persona/export/locator';
+import { BooleanType, ElementWithTagType, InstanceofType } from 'gs-types/export';
+import { element, onDom } from 'persona/export/input';
+import { attributeOut, slot } from 'persona/export/output';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
 import { $theme, _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
 import { Palette } from '../src/theme/palette';
@@ -34,39 +35,21 @@ const paletteElementListRenderer = new ElementListRenderer<PaletteData>(
   ),
 );
 
-const paletteDataType = IterableOfType<PaletteData, ImmutableList<PaletteData>>(
-  HasPropertiesType({
-    [__renderId]: StringType,
-    class: StringType,
-    color: StringType,
-    style: StringType,
+const $ = {
+  accentPalette: element('accentPalette', InstanceofType(HTMLDivElement), {
+    onClick: onDom('click'),
+    slot: slot('accentPalette', paletteElementListRenderer),
   }),
-);
-
-const $ = resolveLocators({
-  accentPalette: {
-    el: element<HTMLDivElement>('#accentPalette', InstanceofType(HTMLDivElement)),
-    slot: slot(
-        element('accentPalette.el'),
-        'accentPalette',
-        paletteElementListRenderer,
-        paletteDataType,
-    ),
-  },
-  basePalette: {
-    el: element<HTMLDivElement>('#basePalette', InstanceofType(HTMLDivElement)),
-    slot: slot(
-        element('basePalette.el'),
-        'basePalette',
-        paletteElementListRenderer,
-        paletteDataType,
-    ),
-  },
-  option: {
-    el: element<HTMLElement>('#option', ElementWithTagType('mk-drawer')),
-    expanded: attributeOut(element('option.el'), 'expanded', booleanParser(), BooleanType),
-  },
-});
+  basePalette: element('basePalette', InstanceofType(HTMLDivElement), {
+    onClick: onDom('click'),
+    slot: slot('basePalette', paletteElementListRenderer),
+  }),
+  option: element('option', ElementWithTagType('mk-drawer'), {
+    expanded: attributeOut('expanded', booleanParser()),
+    onMouseOut: onDom('mouseout'),
+    onMouseOver: onDom('mouseover'),
+  }),
+};
 
 export const TAG = 'mk-demo';
 
@@ -74,59 +57,78 @@ const $isOnOption = instanceSourceId('isOnOption', BooleanType);
 _v.builder.source($isOnOption, false);
 
 @_p.customElement({
+  input: [
+    $.accentPalette._.onClick,
+    $.basePalette._.onClick,
+    $.option._.onMouseOut,
+    $.option._.onMouseOver,
+  ],
   tag: TAG,
   template: demoTemplate,
-  watch: [
-    $.accentPalette.el,
-    $.basePalette.el,
-    $.option.el,
-  ],
 })
-@_p.render($.option.expanded).withForwarding($isOnOption)
+@_p.render($.option._.expanded).withForwarding($isOnOption)
 export class DemoCtrl extends ThemedCustomElementCtrl {
-  @_p.onDom($.accentPalette.el, 'click')
-  onAccentPaletteClick_(event: MouseEvent, vine: VineImpl): void {
-    const color = getColor(event);
-    if (!color) {
-      return;
-    }
-
-    vine.getObservable($theme)
-        .pipe(take(1))
-        .subscribe(theme => vine.setValue($theme, theme.setHighlightColor(color)));
+  @_p.onCreate()
+  handleAccentPaletteClick_(
+      @_v.vineIn($.accentPalette._.onClick.id) onClickObs: Observable<MouseEvent>,
+      @_v.vineIn($theme) themeObs: Observable<Theme>,
+      @_v.vineIn($vine) vineObs: Observable<VineImpl>,
+  ): Observable<unknown> {
+    return onClickObs
+        .pipe(
+            map(event => getColor(event)),
+            filter((color): color is Color => !!color),
+            withLatestFrom(themeObs, vineObs),
+            tap(([color, theme, vine]) => {
+              vine.setValue($theme, theme.setHighlightColor(color));
+            }),
+        );
   }
 
-  @_p.onDom($.basePalette.el, 'click')
-  onBasePaletteClick_(event: MouseEvent, vine: VineImpl): void {
-    const color = getColor(event);
-    if (!color) {
-      return;
-    }
-
-    vine.getObservable($theme)
-        .pipe(take(1))
-        .subscribe(theme => vine.setValue($theme, theme.setBaseColor(color)));
+  @_p.onCreate()
+  handleBasePaletteClick_(
+      @_v.vineIn($.basePalette._.onClick.id) onClickObs: Observable<MouseEvent>,
+      @_v.vineIn($theme) themeObs: Observable<Theme>,
+      @_v.vineIn($vine) vineObs: Observable<VineImpl>,
+  ): Observable<unknown> {
+    return onClickObs
+        .pipe(
+            map(event => getColor(event)),
+            filter((color): color is Color => !!color),
+            withLatestFrom(themeObs, vineObs),
+            tap(([color, theme, vine]) => {
+              vine.setValue($theme, theme.setBaseColor(color));
+            }),
+        );
   }
 
-  @_p.onDom($.option.el, 'mouseout')
-  onMouseOutOption_(_: unknown, vine: VineImpl): void {
-    vine.setValue($isOnOption, false, this);
+  @_p.onCreate()
+  handleDrawerExpandCollapse_(
+      @_v.vineIn($.option._.onMouseOut.id) onMouseOutObs: Observable<Event>,
+      @_v.vineIn($.option._.onMouseOver.id) onMouseOverObs: Observable<Event>,
+      @_v.vineIn($vine) vineObs: Observable<VineImpl>,
+  ): Observable<unknown> {
+    return merge(
+        onMouseOutObs.pipe(mapTo(false)),
+        onMouseOverObs.pipe(mapTo(true)),
+    )
+    .pipe(
+        withLatestFrom(vineObs),
+        tap(([showDrawer, vine]) => vine.setValue($isOnOption, showDrawer, this)),
+    );
   }
 
-  @_p.onDom($.option.el, 'mouseover')
-  onMouseOverOption_(_: unknown, vine: VineImpl): void {
-    vine.setValue($isOnOption, true, this);
-  }
-
-  @_p.render($.accentPalette.slot)
+  @_p.render($.accentPalette._.slot)
   renderAccentPalette(
-      @_v.vineIn($theme) theme: Observable<Theme>): Observable<ImmutableList<PaletteData>> {
+      @_v.vineIn($theme) theme: Observable<Theme>,
+  ): Observable<ImmutableList<PaletteData>> {
     return theme.pipe(map(theme => getPaletteData_(theme.highlightColor)));
   }
 
-  @_p.render($.basePalette.slot)
+  @_p.render($.basePalette._.slot)
   renderBasePalette(
-    @_v.vineIn($theme) theme: Observable<Theme>): Observable<ImmutableList<PaletteData>> {
+    @_v.vineIn($theme) theme: Observable<Theme>,
+): Observable<ImmutableList<PaletteData>> {
   return theme.pipe(map(theme => getPaletteData_(theme.baseColor)));
   }
 }
