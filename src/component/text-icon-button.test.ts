@@ -1,7 +1,8 @@
 import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { createSpy, createSpySubject } from 'gs-testing/export/spy';
+import { createSpy, Spy } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { icon } from '../display/icon';
 import { iconWithText } from '../display/icon-with-text';
@@ -27,108 +28,85 @@ test('component.TextIconButton', () => {
     el = tester.createElement('mk-text-icon-button', document.body);
   });
 
-  test('constructor', () => {
-    should(`set the default attributes correctly`, () => {
-      const ariaDisabledSubject = createSpySubject<boolean>();
-      tester.getAttribute(el, $.host._.ariaDisabled).subscribe(ariaDisabledSubject);
-
-      const ariaLabelOutSubject = createSpySubject<string>();
-      tester.getAttribute(el, $.host._.ariaLabelOut).subscribe(ariaLabelOutSubject);
-
-      assert(ariaDisabledSubject.getValue()).to.equal(false);
-      assert(ariaLabelOutSubject.getValue()).to.equal('');
-    });
-  });
-
-  test('activate_', () => {
-    should(`fire the action event if clicked`, () => {
-      const mockListener = createSpy('Listener');
-
-      el.addEventListener('mk-action', mockListener);
-      el.click();
-      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
-    });
-
-    should(`fire the action event on pressing Enter`, () => {
-      const mockListener = createSpy('Listener');
-
-      el.addEventListener('mk-action', mockListener);
-      tester.simulateKeypress(el, $.host, [{key: 'Enter'}]).subscribe();
-      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
-    });
-
-    should(`fire the action event on pressing space`, () => {
-      const mockListener = createSpy('Listener');
-
-      el.addEventListener('mk-action', mockListener);
-      tester.simulateKeypress(el, $.host, [{key: ' '}]).subscribe();
-      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
-    });
-
-    should(`not fire the action event if disabled`, () => {
-      const mockListener = createSpy('Listener');
-
-      tester.setAttribute(el, $.host._.disabled, true).subscribe();
-      el.addEventListener('mk-action', mockListener);
-      el.click();
-      assert(mockListener).toNot.haveBeenCalled();
-    });
-  });
-
   test('renderHostAriaLabel_', () => {
-    should(`render the aria label if given`, () => {
+    should(`render the aria label if given`, async () => {
       const newLabel = 'newLabel';
       tester.setAttribute(el, $.host._.ariaLabelIn, newLabel).subscribe();
 
-      const ariaLabelOutSubject = createSpySubject<string>();
-      tester.getAttribute(el, $.host._.ariaLabelOut).subscribe(ariaLabelOutSubject);
-      assert(ariaLabelOutSubject.getValue()).to.equal(newLabel);
+      await assert(tester.getAttribute(el, $.host._.ariaLabelOut)).to.emitWith(newLabel);
     });
 
-    should(`render the label if aria-label is not given`, () => {
+    should(`render the label if aria-label is not given`, async () => {
       const newLabel = 'newLabel';
       tester.setAttribute(el, $.host._.label, newLabel).subscribe();
 
-      const ariaLabelOutSubject = createSpySubject<string>();
-      tester.getAttribute(el, $.host._.ariaLabelOut).subscribe(ariaLabelOutSubject);
-      assert(ariaLabelOutSubject.getValue()).to.equal(newLabel);
+      await assert(tester.getAttribute(el, $.host._.ariaLabelOut)).to.emitWith(newLabel);
     });
   });
 
-  test('renderIcon_', () => {
-    should(`render the icon correctly`, async () => {
-      const icon = 'icon';
-      tester.setAttribute(el, $.host._.icon, icon).subscribe();
+  test('renderIconMode_', () => {
+    should(`render disabled if disabled`, async () => {
+      tester.setAttribute(el, $.host._.disabled, true).subscribe();
 
-      const iconSubject = createSpySubject<string>();
-      tester.getAttribute(el, $.iconWithText._.icon).subscribe(iconSubject);
-      assert(iconSubject.getValue()).to.equal(icon);
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('disabled');
     });
-  });
 
-  test('renderLabel_', () => {
-    should(`render the label correctly`, async () => {
-      const newLabel = 'newLabel';
-      await tester.setAttribute_(el, $.host.label, newLabel);
-      assert(tester.getAttribute_(el, $.iconWithText.label)).to.equal(newLabel);
-    });
-  });
+    should(`render empty string if not disabled`, async () => {
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
 
-  test('renderRole_', () => {
-    should(`render the correct role`, () => {
-      assert(tester.getAttribute_(el, $.host.role)).to.equal('button');
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('');
     });
   });
 
   test('renderTabIndex_', () => {
     should(`render 0 if host is not disabled`, async () => {
-      await tester.setAttribute_(el, $.host.disabled, false);
-      assert(tester.getAttribute_(el, $.host.tabindex)).to.equal(0);
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      await assert(tester.getAttribute(el, $.host._.tabindex)).to.emitWith(0);
     });
 
     should(`return -1 if host is disabled`, async () => {
-      await tester.setAttribute_(el, $.host.disabled, true);
-      assert(tester.getAttribute_(el, $.host.tabindex)).to.equal(-1);
+      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      await assert(tester.getAttribute(el, $.host._.tabindex)).to.emitWith(-1);
+    });
+  });
+
+  test('setupActions_', () => {
+    let mockListener: Spy;
+
+    setup(() => {
+      mockListener = createSpy('Listener');
+      el.addEventListener('mk-action', mockListener);
+    });
+
+    should(`fire the action event if clicked`, () => {
+      el.click();
+      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
+    });
+
+    should(`fire the action event on pressing Enter`, () => {
+      tester.simulateKeypress(el, $.host, [{key: 'Enter'}]).subscribe();
+      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
+    });
+
+    should(`fire the action event on pressing space`, () => {
+      tester.simulateKeypress(el, $.host, [{key: ' '}]).subscribe();
+      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
+    });
+
+    should(`not fire the action event if disabled`, async () => {
+      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+
+      // Wait for the button to be disabled.
+      await tester
+          .getAttribute(el, $.iconWithText._.mode)
+          .pipe(
+              filter(mode => mode === 'disabled'),
+              take(1),
+          )
+          .toPromise();
+
+      el.click();
+      assert(mockListener).toNot.haveBeenCalled();
     });
   });
 });

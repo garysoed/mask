@@ -1,7 +1,8 @@
 import { assert, retryUntil, setup, should, test } from 'gs-testing/export/main';
+import { createSpySubject } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { BehaviorSubject, fromEvent } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ChangeEvent } from '../event/change-event';
 import { $, textInput } from './text-input';
@@ -18,44 +19,44 @@ test('input.TextInput', () => {
     el = tester.createElement('mk-text-input', document.body);
   });
 
-  test('init', () => {
-    should(`set the initial value correctly`, async () => {
-      const initValue = 'initValue';
+  test('renderValue', () => {
+    should(`dispatch change event when typing`, async () => {
+      const value1 = 'value1';
+      tester.setInputValue(el, $.input, value1).subscribe();
 
-      tester.setAttribute_(el, $.host.valueIn, initValue);
+      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
+    });
+  });
 
-      await retryUntil(() => tester.getProperty(el, $.input.el, 'value')).to.equal(initValue);
+  test('setInitValue_', () => {
+    should(`set the initial value when clear is called`, async () => {
+      // Change the input and wait for the value to update.
+      const value1 = 'value1';
+      tester.setInputValue(el, $.input, value1).subscribe();
+      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
+
+      // Clear the input.
+      tester.sendSignal(el, $.host._.clearObs, undefined).subscribe();
+      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith('');
     });
 
-    should(`dispatch the change event correctly`, async () => {
-      const valueSubject = new BehaviorSubject<string|null>(null);
-      fromEvent(el, 'mk-change')
-          .pipe(
-              filter((event: Event): event is ChangeEvent => event instanceof ChangeEvent),
-              map((event: ChangeEvent) => event.value),
-          )
-          .subscribe(valueSubject);
-
-      // Wait until the initial value has been set.
+    should(`set the initial value when it is changed and input element is clean`, async () => {
+      // Set the initial value.
       const initValue = 'initValue';
-      tester.setAttribute_(el, $.host.valueIn, initValue);
-      await retryUntil(() => tester.getProperty(el, $.input.el, 'value')).to.equal(initValue);
+      tester.setAttribute(el, $.host._.initValue, initValue).subscribe();
+      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(initValue);
+    });
 
+    should(`not set the initial value when it is changed but input is dirty`, async () => {
+      // Change the input and wait for the value to update.
       const value1 = 'value1';
-      tester.setInputValue(el, $.input.el, value1);
+      tester.setInputValue(el, $.input, value1).subscribe();
+      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
 
-      // At this point the event shouldn't have been fired.
-      assert(valueSubject.getValue()).to.equal(initValue);
-
-      const value2 = 'value2';
-      tester.setInputValue(el, $.input.el, value2);
-
-      // Shouldn't be fired here either, due to debounce.
-      assert(valueSubject.getValue()).to.equal(initValue);
-
-      // Now wait for the debounce. Should be called with the latest value.
-      await retryUntil(() => valueSubject.getValue()).to.equal(value2);
-      assert(tester.getAttribute_(el, $.host.valueOut)).to.equal(value2);
+      // Set the initial value.
+      const initValue = 'initValue';
+      tester.setAttribute(el, $.host._.initValue, initValue).subscribe();
+      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
     });
   });
 });

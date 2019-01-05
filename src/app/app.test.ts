@@ -2,7 +2,7 @@ import { VineImpl } from 'grapevine/export/main';
 import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy, createSpyInstance, fake, spy, Spy } from 'gs-testing/export/spy';
 import { CustomElementCtrl } from 'persona/export/main';
-import {of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { Theme } from '../theme/theme';
 import { _p, _v, addToMapConfig_, flattenConfigs_, start } from './app';
 

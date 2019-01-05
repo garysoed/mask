@@ -1,157 +1,157 @@
-import { assert, setup, should, test } from 'gs-testing/export/main';
-import { createSpy } from 'gs-testing/export/spy';
-import { ImmutableMap } from 'gs-tools/export/collect';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
-import { BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { _p, _v } from '../app/app';
-import { textIconButton } from '../component/text-icon-button';
-import { icon } from '../display/icon';
-import { iconWithText } from '../display/icon-with-text';
-import { ActionEvent } from '../event/action-event';
-import { backdrop } from './backdrop';
-import { $, dialog } from './dialog';
-import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
+// import { assert, setup, should, test } from 'gs-testing/export/main';
+// import { createSpy } from 'gs-testing/export/spy';
+// import { ImmutableMap } from 'gs-tools/export/collect';
+// import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+// import { BehaviorSubject } from 'rxjs';
+// import { take } from 'rxjs/operators';
+// import { _p, _v } from '../app/app';
+// import { textIconButton } from '../component/text-icon-button';
+// import { icon } from '../display/icon';
+// import { iconWithText } from '../display/icon-with-text';
+// import { ActionEvent } from '../event/action-event';
+// import { backdrop } from './backdrop';
+// import { $, dialog } from './dialog';
+// import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
-const config = dialog(backdrop(), textIconButton(iconWithText(icon(ImmutableMap.of()))));
-const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
+// const config = dialog(backdrop(), textIconButton(iconWithText(icon(ImmutableMap.of()))));
+// const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-test('section.Dialog', () => {
-  let el: HTMLElement;
-  let tester: PersonaTester;
+// test('section.Dialog', () => {
+//   let el: HTMLElement;
+//   let tester: PersonaTester;
 
-  setup(() => {
-    tester = testerFactory.build([config.tag]);
-    el = tester.createElement('mk-dialog', document.body);
-    tester.vine.setValue($dialogService, new DialogService());
-  });
+//   setup(() => {
+//     tester = testerFactory.build([config.tag]);
+//     el = tester.createElement('mk-dialog', document.body);
+//     tester.vine.setValue($dialogService, new DialogService());
+//   });
 
-  test('onCancelButtonAction_', () => {
-    should(`close the dialog correctly`, () => {
-      const mockOnClose = createSpy('OnClose');
-      tester.vine.getObservable($dialogService)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open<number>({
-              cancelable: true,
-              elementProvider: () => document.createElement('div'),
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
+//   test('onCancelButtonAction_', () => {
+//     should(`close the dialog correctly`, () => {
+//       const mockOnClose = createSpy('OnClose');
+//       tester.vine.getObservable($dialogService)
+//           .pipe(take(1))
+//           .subscribe(dialogService => {
+//             dialogService.open<number>({
+//               cancelable: true,
+//               elementProvider: () => document.createElement('div'),
+//               onClose: mockOnClose,
+//               title: 'title',
+//             });
+//           });
 
-      const stateSubject = new BehaviorSubject<DialogState|null>(null);
-      tester.vine.getObservable($dialogState).subscribe(stateSubject);
+//       const stateSubject = new BehaviorSubject<DialogState|null>(null);
+//       tester.vine.getObservable($dialogState).subscribe(stateSubject);
 
-      tester.getElement_(el, $.cancelButton.el).click();
+//       tester.getElement_(el, $.cancelButton.el).click();
 
-      assert(mockOnClose).to.haveBeenCalledWith(true);
+//       assert(mockOnClose).to.haveBeenCalledWith(true);
 
-      // tslint:disable-next-line:no-non-null-assertion
-      assert(stateSubject.getValue()!.isOpen).to.beFalse();
-    });
-  });
+//       // tslint:disable-next-line:no-non-null-assertion
+//       assert(stateSubject.getValue()!.isOpen).to.beFalse();
+//     });
+//   });
 
-  test('onOkButtonAction_', () => {
-    should(`close the dialog correctly`, () => {
-      const mockOnClose = createSpy('OnClose');
-      tester.vine.getObservable($dialogService)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open<number>({
-              cancelable: true,
-              elementProvider: () => document.createElement('div'),
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
+//   test('onOkButtonAction_', () => {
+//     should(`close the dialog correctly`, () => {
+//       const mockOnClose = createSpy('OnClose');
+//       tester.vine.getObservable($dialogService)
+//           .pipe(take(1))
+//           .subscribe(dialogService => {
+//             dialogService.open<number>({
+//               cancelable: true,
+//               elementProvider: () => document.createElement('div'),
+//               onClose: mockOnClose,
+//               title: 'title',
+//             });
+//           });
 
-      const stateSubject = new BehaviorSubject<DialogState|null>(null);
-      tester.vine.getObservable($dialogState).subscribe(stateSubject);
+//       const stateSubject = new BehaviorSubject<DialogState|null>(null);
+//       tester.vine.getObservable($dialogState).subscribe(stateSubject);
 
-      tester.getElement_(el, $.okButton.el).click();
+//       tester.getElement_(el, $.okButton.el).click();
 
-      assert(mockOnClose).to.haveBeenCalledWith(false);
+//       assert(mockOnClose).to.haveBeenCalledWith(false);
 
-      // tslint:disable-next-line:no-non-null-assertion
-      assert(stateSubject.getValue()!.isOpen).to.beFalse();
-    });
-  });
+//       // tslint:disable-next-line:no-non-null-assertion
+//       assert(stateSubject.getValue()!.isOpen).to.beFalse();
+//     });
+//   });
 
-  test('renderCancelButtonClasses_', () => {
-    should(`display the cancel button if cancelable`, () => {
-      const mockOnClose = createSpy('OnClose');
-      tester.vine.getObservable($dialogService)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open<number>({
-              cancelable: true,
-              elementProvider: () => document.createElement('div'),
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
+//   test('renderCancelButtonClasses_', () => {
+//     should(`display the cancel button if cancelable`, () => {
+//       const mockOnClose = createSpy('OnClose');
+//       tester.vine.getObservable($dialogService)
+//           .pipe(take(1))
+//           .subscribe(dialogService => {
+//             dialogService.open<number>({
+//               cancelable: true,
+//               elementProvider: () => document.createElement('div'),
+//               onClose: mockOnClose,
+//               title: 'title',
+//             });
+//           });
 
-      assert(tester.getClassList_(el, $.cancelButton.classlist)).to.haveElements(['isVisible']);
-    });
+//       assert(tester.getClassList_(el, $.cancelButton.classlist)).to.haveElements(['isVisible']);
+//     });
 
-    should(`not display the cancel button if not cancelable`, () => {
-      const mockOnClose = createSpy('OnClose');
-      tester.vine.getObservable($dialogService)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open<number>({
-              cancelable: false,
-              elementProvider: () => document.createElement('div'),
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
+//     should(`not display the cancel button if not cancelable`, () => {
+//       const mockOnClose = createSpy('OnClose');
+//       tester.vine.getObservable($dialogService)
+//           .pipe(take(1))
+//           .subscribe(dialogService => {
+//             dialogService.open<number>({
+//               cancelable: false,
+//               elementProvider: () => document.createElement('div'),
+//               onClose: mockOnClose,
+//               title: 'title',
+//             });
+//           });
 
-      assert(tester.getClassList_(el, $.cancelButton.classlist)).to.beEmpty();
-    });
-  });
+//       assert(tester.getClassList_(el, $.cancelButton.classlist)).to.beEmpty();
+//     });
+//   });
 
-  test('renderRootClass_', () => {
-    should(`render correctly when dialog is displayed`, () => {
-      tester.vine.getObservable($dialogService)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open<number>({
-              cancelable: false,
-              elementProvider: () => document.createElement('div'),
-              onClose: () => undefined,
-              title: 'title',
-            });
-          });
+//   test('renderRootClass_', () => {
+//     should(`render correctly when dialog is displayed`, () => {
+//       tester.vine.getObservable($dialogService)
+//           .pipe(take(1))
+//           .subscribe(dialogService => {
+//             dialogService.open<number>({
+//               cancelable: false,
+//               elementProvider: () => document.createElement('div'),
+//               onClose: () => undefined,
+//               title: 'title',
+//             });
+//           });
 
-      assert(tester.getClassList_(el, $.root.classlist)).to.haveElements(['isVisible']);
-    });
+//       assert(tester.getClassList_(el, $.root.classlist)).to.haveElements(['isVisible']);
+//     });
 
-    should(`render correctly when dialog is hidden`, () => {
-      assert([...tester.getClassList_(el, $.root.classlist)]).to.haveExactElements([]);
-    });
-  });
+//     should(`render correctly when dialog is hidden`, () => {
+//       assert([...tester.getClassList_(el, $.root.classlist)]).to.haveExactElements([]);
+//     });
+//   });
 
-  test('renderTitle_', () => {
-    should(`render the title correctly`, () => {
-      const title = 'title';
-      tester.vine.getObservable($dialogService)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open<number>({
-              cancelable: false,
-              elementProvider: () => document.createElement('div'),
-              onClose: () => undefined,
-              title,
-            });
-          });
+//   test('renderTitle_', () => {
+//     should(`render the title correctly`, () => {
+//       const title = 'title';
+//       tester.vine.getObservable($dialogService)
+//           .pipe(take(1))
+//           .subscribe(dialogService => {
+//             dialogService.open<number>({
+//               cancelable: false,
+//               elementProvider: () => document.createElement('div'),
+//               onClose: () => undefined,
+//               title,
+//             });
+//           });
 
-      assert(tester.getTextContent_(el, $.title.text)).to.equal(title);
-    });
+//       assert(tester.getTextContent_(el, $.title.text)).to.equal(title);
+//     });
 
-    should(`render empty string when dialog is hidden`, () => {
-      assert(tester.getTextContent_(el, $.title.text)).to.equal('');
-    });
-  });
-});
+//     should(`render empty string when dialog is hidden`, () => {
+//       assert(tester.getTextContent_(el, $.title.text)).to.equal('');
+//     });
+//   });
+// });

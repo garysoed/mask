@@ -2,6 +2,7 @@ import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
 import { ImmutableList } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, breadcrumb } from './breadcrumb';
 import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
@@ -38,13 +39,19 @@ test('display.Breadcrumb', () => {
         },
       ]);
 
-      await tester.setAttribute_(el, $.host.path, data);
-
       const handler = createSpy('Handler');
       el.addEventListener(BREADCRUMB_CLICK_EVENT, handler);
 
-      const element = tester.getElementsAfter(el, $.row.crumbsSlot).get(0) as HTMLElement;
-      element.click();
+      tester.setAttribute(el, $.host._.path, data).subscribe();
+
+      // Wait until all the crumbs are rendered.
+      const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
+          .pipe(
+              filter(children => children.size() >= 3),
+              take(1),
+          )
+          .toPromise();
+      (childrenNodes.get(0) as HTMLElement).click();
 
       const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
@@ -70,10 +77,21 @@ test('display.Breadcrumb', () => {
         },
       ]);
 
-      await tester.setAttribute_(el, $.host.path, data);
+      const handler = createSpy('Handler');
+      el.addEventListener(BREADCRUMB_CLICK_EVENT, handler);
 
-      const elements = tester.getElementsAfter(el, $.row.crumbsSlot).slice(0, 3) as
-          ImmutableList<HTMLElement>;
+      tester.setAttribute(el, $.host._.path, data).subscribe();
+
+      // Wait until all the crumbs are rendered.
+      const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
+          .pipe(
+              filter(children => children.size() >= 3),
+              take(1),
+          )
+          .toPromise();
+
+      const elements = childrenNodes
+          .filterItem((item): item is HTMLElement => item instanceof HTMLElement);
 
       assert(elements.mapItem(el => el.tagName.toLowerCase())).to.equal(
           match.anyIterableThat<string>().haveElements([

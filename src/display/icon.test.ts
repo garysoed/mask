@@ -1,7 +1,7 @@
 import { VineImpl } from 'grapevine/export/main';
 import { assert, retryUntil, setup, should, test } from 'gs-testing/export/main';
 import { FakeFetch } from 'gs-testing/export/mock';
-import { createSpyInstance, createSpySubject, fake } from 'gs-testing/export/spy';
+import { createSpySubject } from 'gs-testing/export/spy';
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { take } from 'rxjs/operators';

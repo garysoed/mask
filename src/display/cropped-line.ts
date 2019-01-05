@@ -10,7 +10,7 @@ import { InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { attributeIn, element, onDom } from 'persona/export/input';
 import { textContent } from 'persona/export/output';
 import { combineLatest, Observable } from 'rxjs';
-import { map, take, tap, withLatestFrom } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
