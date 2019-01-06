@@ -1,22 +1,11 @@
 import { assert, match, setup, should, test } from 'gs-testing/export/main';
 import { createSpy, Spy } from 'gs-testing/export/spy';
-import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { icon } from '../display/icon';
-import { iconWithText } from '../display/icon-with-text';
 import { ActionEvent } from '../event/action-event';
-import { $, textIconButton } from './text-icon-button';
+import { $, TextIconButton } from './text-icon-button';
 
-const ICON_FONT = 'iconFont';
-const FONT_URL = 'http://fontUrl';
-
-const iconConfig = icon(
-    ImmutableMap.of([
-      [ICON_FONT, {type: 'remote' as 'remote', url: FONT_URL}],
-    ]));
-const {tag} = textIconButton(iconWithText(iconConfig));
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('component.TextIconButton', () => {
@@ -24,7 +13,7 @@ test('component.TextIconButton', () => {
   let tester: PersonaTester;
 
   setup(() => {
-    tester = testerFactory.build([tag]);
+    tester = testerFactory.build([TextIconButton]);
     el = tester.createElement('mk-text-icon-button', document.body);
   });
 

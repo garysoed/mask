@@ -1,18 +1,14 @@
 import { assert, match, setup, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
-import { ImmutableMap, ImmutableSet } from 'gs-tools/export/collect';
+import { ImmutableSet } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { textIconButton } from '../component/text-icon-button';
-import { icon } from '../display/icon';
-import { iconWithText } from '../display/icon-with-text';
-import { backdrop } from './backdrop';
-import { $, dialog } from './dialog';
+import { TextIconButton } from '../component/text-icon-button';
+import { $, Dialog } from './dialog';
 import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
-const config = dialog(backdrop(), textIconButton(iconWithText(icon(ImmutableMap.of()))));
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('section.Dialog', () => {
@@ -20,7 +16,7 @@ test('section.Dialog', () => {
   let tester: PersonaTester;
 
   setup(() => {
-    tester = testerFactory.build([config.tag]);
+    tester = testerFactory.build([Dialog, TextIconButton]);
     el = tester.createElement('mk-dialog', document.body);
     tester.vine.setValue($dialogService, new DialogService());
   });

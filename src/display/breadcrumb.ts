@@ -71,7 +71,7 @@ export const $ = {
   tag: 'mk-breadcrumb',
   template: breadcrumbTemplate,
 })
-class Breadcrumb extends ThemedCustomElementCtrl {
+export class Breadcrumb extends ThemedCustomElementCtrl {
   @_p.onCreate()
   onRowAction_(
       @_v.vineIn($.row._.onAction.id) onActionObs: Observable<ActionEvent>,

@@ -44,7 +44,7 @@ const MAX_POSTFIX_LENGTH = 3;
   tag: 'mk-cropped-line',
   template: croppedLineTemplate,
 })
-class CroppedLine extends ThemedCustomElementCtrl {
+export class CroppedLine extends ThemedCustomElementCtrl {
   // TODO: Allow to copy a part of the text, or select all on selecting.
 
   @_p.onCreate()
@@ -63,11 +63,11 @@ class CroppedLine extends ThemedCustomElementCtrl {
         );
   }
 
-  @_v.vineOut($postfixBoundary)
-  providesPostfixBoundary_(
-      @_v.vineIn($.host._.text.id) textObs: Observable<string>): Observable<number> {
-    return textObs.pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
-  }
+  // @_v.vineOut($postfixBoundary)
+  // providesPostfixBoundary_(
+  //     @_v.vineIn($.host._.text.id) textObs: Observable<string>): Observable<number> {
+  //   return textObs.pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
+  // }
 
   @_p.render($.postfix._.text)
   renderPostfixTextContent_(

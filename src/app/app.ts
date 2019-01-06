@@ -3,7 +3,7 @@ import { getOrRegisterApp as getOrRegisterGrapevineApp, VineImpl } from 'grapevi
 import { ImmutableMap } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/src/error';
 import { InstanceofType } from 'gs-types/export';
-import { getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
+import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 import { Config } from './config';
@@ -40,15 +40,15 @@ export function flattenConfigs_(configs: Config[]): ImmutableMap<string, Config>
 }
 
 export function start(
+    rootCtrls: Array<new (...args: any[]) => CustomElementCtrl>,
     configs: Config[],
     theme: Theme,
     styleEl: HTMLStyleElement,
     customElementRegistry: CustomElementRegistry = window.customElements): {vine: VineImpl} {
   const flattenedConfigs = flattenConfigs_(configs);
 
-  const vine = _v.builder.run();
+  const {vine} = _p.builder.build(rootCtrls, customElementRegistry, _v.builder);
   vine.setValue($theme, theme);
-  _p.builder.build([], customElementRegistry, vine);
 
   for (const [, {configure}] of flattenedConfigs) {
     if (configure) {

@@ -3,9 +3,8 @@ import { createSpy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { crumb } from './crumb';
+import { Crumb } from './crumb';
 
-const {tag} = crumb();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('display.crumb', () => {
@@ -13,7 +12,7 @@ test('display.crumb', () => {
   let tester: PersonaTester;
 
   beforeEach(() => {
-    tester = testerFactory.build([tag]);
+    tester = testerFactory.build([Crumb]);
     el = tester.createElement('mk-crumb', document.body);
   });
 

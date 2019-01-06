@@ -2,17 +2,16 @@ import { assert, should, test } from 'gs-testing/export/main';
 import { createSpyInstance, spy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
-import { $, $postfixBoundary, croppedLine } from './cropped-line';
+import { $, $postfixBoundary, CroppedLine } from './cropped-line';
 
-const {tag} = croppedLine();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-test('display.CroppedLine', () => {
+test.skip('display.CroppedLine', () => {
   let tester: PersonaTester;
   let el: HTMLElement;
 
   beforeEach(() => {
-    tester = testerFactory.build([tag]);
+    tester = testerFactory.build([CroppedLine]);
     el = tester.createElement('mk-cropped-line', document.body);
   });
 

@@ -4,10 +4,10 @@ import { ImmutableList } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { $, breadcrumb } from './breadcrumb';
+import { $, Breadcrumb } from './breadcrumb';
 import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
+import { Crumb } from './crumb';
 
-const config = breadcrumb();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('display.Breadcrumb', () => {
@@ -16,8 +16,9 @@ test('display.Breadcrumb', () => {
 
   beforeEach(() => {
     tester = testerFactory.build([
-      config.tag,
-      config.dependencies[0].tag,
+      Breadcrumb,
+      // TODO: Move dependencies to customElement annotation
+      Crumb,
     ]);
     el = tester.createElement('mk-breadcrumb', document.body);
   });

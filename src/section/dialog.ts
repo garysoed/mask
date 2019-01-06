@@ -38,7 +38,7 @@ export const $ = {
   tag: 'mk-dialog',
   template: dialogTemplate,
 })
-class Dialog extends ThemedCustomElementCtrl {
+export class Dialog extends ThemedCustomElementCtrl {
   @_p.onCreate()
   onCloseOrCancel_(
       @_v.vineIn($.cancelButton._.onAction.id) onCancelObs: Observable<Event>,

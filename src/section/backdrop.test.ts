@@ -3,10 +3,9 @@ import { ImmutableSet } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { $, backdrop } from './backdrop';
+import { $, Backdrop } from './backdrop';
 import { $dialogService, DialogService } from './dialog-service';
 
-const config = backdrop();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('section.Backdrop', () => {
@@ -14,8 +13,8 @@ test('section.Backdrop', () => {
   let tester: PersonaTester;
 
   setup(() => {
-    tester = testerFactory.build([config.tag]);
-    el = tester.createElement(config.tag, document.body);
+    tester = testerFactory.build([Backdrop]);
+    el = tester.createElement('mk-backdrop', document.body);
     tester.vine.setValue($dialogService, new DialogService());
   });
 

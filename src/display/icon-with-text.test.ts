@@ -1,15 +1,11 @@
-import { assert, match, retryUntil, setup, should, test } from 'gs-testing/export/main';
+import { match, retryUntil, setup, should, test } from 'gs-testing/export/main';
 import { createSpySubject } from 'gs-testing/export/spy';
-import { ImmutableMap, ImmutableSet } from 'gs-tools/export/collect';
+import { ImmutableSet } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { icon } from './icon';
-import { $, iconWithText } from './icon-with-text';
-
-const configIcon = icon(ImmutableMap.of([]));
-const {tag} = iconWithText(configIcon);
+import { $, IconWithText } from './icon-with-text';
 
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
@@ -18,8 +14,8 @@ test('display.IconWithText', () => {
   let tester: PersonaTester;
 
   setup(() => {
-    tester = testerFactory.build([tag]);
-    el = tester.createElement(tag, document.body);
+    tester = testerFactory.build([IconWithText]);
+    el = tester.createElement('mk-icon-with-text', document.body);
   });
 
   should(`render the text and icon correctly`, async () => {

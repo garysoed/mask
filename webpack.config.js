@@ -20,11 +20,11 @@ module.exports = smp.wrap({
   resolve: {
     // Used to resolve duplicate packages. Make sure that we always use the ones in the root.
     alias: {
-      'grapevine': path.resolve('./node_modules/grapevine'),
-      'gs-tools': path.resolve('./node_modules/gs-tools'),
-      'persona': path.resolve('./node_modules/persona'),
-      'rxjs': path.resolve('./node_modules/rxjs'),
-      'tslib': path.resolve('./node_modules/tslib'),
+      'grapevine': path.resolve(__dirname, './node_modules/grapevine'),
+      'gs-tools': path.resolve(__dirname, './node_modules/gs-tools'),
+      'persona': path.resolve(__dirname, './node_modules/persona'),
+      'rxjs': path.resolve(__dirname, './node_modules/rxjs'),
+      'tslib': path.resolve(__dirname, './node_modules/tslib'),
     },
     extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css", ".svg"],
     symlinks: false,

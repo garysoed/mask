@@ -20,7 +20,7 @@ export const $ = {
   tag: 'mk-backdrop',
   template: backdropTemplate,
 })
-class Backdrop extends ThemedCustomElementCtrl {
+export class Backdrop extends ThemedCustomElementCtrl {
   @_p.render($.root._.classlist)
   renderRootClasslist_(
       @_v.vineIn($dialogState) dialogStateObs: Observable<DialogState>,

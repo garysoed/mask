@@ -1,9 +1,8 @@
 import { assert, setup, should, test } from 'gs-testing/export/main';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
-import { $, drawer, Mode } from './drawer';
+import { $, Drawer, Mode } from './drawer';
 
-const config = drawer();
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
 test('section.Drawer', () => {
@@ -11,7 +10,7 @@ test('section.Drawer', () => {
   let tester: PersonaTester;
 
   setup(() => {
-    tester = testerFactory.build([config.tag]);
+    tester = testerFactory.build([Drawer]);
     el = tester.createElement('mk-drawer', document.body);
   });
 

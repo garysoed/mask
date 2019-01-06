@@ -6,6 +6,8 @@ import { of as observableOf } from 'rxjs';
 import { Theme } from '../theme/theme';
 import { _p, _v, addToMapConfig_, flattenConfigs_, start } from './app';
 
+type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;
+
 /**
  * @test
  */
@@ -86,18 +88,20 @@ test('app.App', () => {
       const mockVineImpl = createSpyInstance(VineImpl);
       fake(mockVineImpl.getObservable).always().return(observableOf(mockTheme));
       fake(spy(_v.builder, 'run')).always().return(mockVineImpl);
+      fake(personaBuilderBuildSpy).always().return({vine: mockVineImpl});
 
       const config1 = {tag: 'TestClass1'};
       const config2 = {tag: 'TestClass2', dependencies: [config1]};
       const config3 = {tag: 'TestClass3', configure: mockConfigure};
 
-      start([config1, config2, config3], mockTheme, styleEl, window.customElements);
+      start([], [config1, config2, config3], mockTheme, styleEl, window.customElements);
 
       assert(mockConfigure).to.haveBeenCalledWith(mockVineImpl);
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
-          match.anyIterableThat<string, string[]>().haveElements([]),
+          match.anyIterableThat<CustomElementCtrlCtor, CustomElementCtrlCtor[]>().haveElements([]),
           window.customElements,
-          mockVineImpl);
+          _v.builder,
+      );
       assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);
     });
   });

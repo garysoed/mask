@@ -32,7 +32,7 @@ export const $ = {
   template: crumbTemplate,
 })
 @_p.render($.text._.text).withForwarding($.host._.display.id)
-class Crumb extends ThemedCustomElementCtrl {
+export class Crumb extends ThemedCustomElementCtrl {
   @_p.onCreate()
   onHostClick_(
       @_v.vineIn($.host._.onClick.id) onClickObs: Observable<Event>,

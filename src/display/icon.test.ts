@@ -6,12 +6,12 @@ import { ImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { $, icon } from './icon';
+import { $, icon, Icon } from './icon';
 
 const SVG_NAME = 'svgName';
 const SVG_URL = 'http://svgUrl';
 
-const {configure, tag} = icon(
+const {configure} = icon(
     ImmutableMap.of([[SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL}]]),
 );
 const configureIcon = configure;
@@ -26,8 +26,10 @@ test('display.Icon', () => {
   let fakeFetch: FakeFetch;
 
   setup(() => {
-    tester = testerFactory.build([tag]);
+    tester = testerFactory.build([Icon]);
     vine = tester.vine;
+
+    // TODO: Move configure to customElement annotation
     configureIcon(vine);
 
     fakeFetch = new FakeFetch();

@@ -55,7 +55,7 @@ export const $ = {
   tag: 'mk-drawer',
   template: drawerTemplate,
 })
-class Drawer extends ThemedCustomElementCtrl {
+export class Drawer extends ThemedCustomElementCtrl {
   @_p.render($.host._.styleOverflow) readonly overflow_: string = 'hidden';
 
   @_p.render($.host._.styleHeight)
