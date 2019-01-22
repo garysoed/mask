@@ -9,7 +9,7 @@
  * @slot The glyph of the icon to display.
  */
 
-import { ImmutableSet } from 'gs-tools/export/collect';
+import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export';
 import { attributeIn, element } from 'persona/export/input';
 import { attributeOut, classlist, textContent } from 'persona/export/output';
@@ -59,10 +59,10 @@ export class IconWithText extends ThemedCustomElementCtrl {
     return iconLigatureObs.pipe(
         map(iconLigature => {
           if (!iconLigature) {
-            return ImmutableSet.of();
+            return createImmutableSet();
           }
 
-          return ImmutableSet.of(['hasIcon']);
+          return createImmutableSet(['hasIcon']);
         }),
     );
   }
@@ -74,10 +74,10 @@ export class IconWithText extends ThemedCustomElementCtrl {
     return labelObs.pipe(
         map(label => {
           if (!label) {
-            return ImmutableSet.of();
+            return createImmutableSet();
           }
 
-          return ImmutableSet.of(['hasText']);
+          return createImmutableSet(['hasText']);
         }),
     );
   }

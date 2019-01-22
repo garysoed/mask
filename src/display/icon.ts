@@ -8,8 +8,8 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
+import { $exec, $push, ImmutableMap } from 'gs-tools/export/collect';
 import { typeBased } from 'gs-tools/export/serializer';
-import { ImmutableMap } from 'gs-tools/src/immutable';
 import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
 import { json } from 'nabu/export/grammar';
 import { Serializable } from 'nabu/export/main';
@@ -74,9 +74,13 @@ export function icon(
     configure(vine: VineImpl): void {
       vine.setValue(
           $svgConfig,
-          svgConfig
-              .add(['dialog_close', {type: 'embed', content: dialogCloseSvg}])
-              .add(['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}]),
+          $exec(
+              svgConfig,
+              $push<[string, SvgConfig], string>(
+                  ['dialog_close', {type: 'embed', content: dialogCloseSvg}],
+                  ['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}],
+              ),
+          ),
       );
     },
     tag: 'mk-icon',

@@ -1,4 +1,4 @@
-import { ImmutableSet } from 'gs-tools/export/collect';
+import { createImmutableList, createImmutableSet } from 'gs-tools/export/collect';
 import { Color, Colors, HslColor, RgbColor } from 'gs-tools/export/color';
 
 export interface BaseShade {
@@ -27,7 +27,7 @@ export const B175 = {isDarkBG: false, mixRatio: 0.25};
 export const B190 = {isDarkBG: false, mixRatio: 0.1 };
 export const B200 = {isDarkBG: false, mixRatio: 0   };
 
-export const BASE_SHADES = ImmutableSet.of([
+export const BASE_SHADES = createImmutableList([
   B000,
   B010,
   B025,
@@ -44,7 +44,7 @@ export const A050 = {isDarkBG: true,  mixRatio: 0.5 , neonize: true};
 export const A100 = {isDarkBG: true,  mixRatio: 1,    neonize: true};
 export const A175 = {isDarkBG: false, mixRatio: 0.25, neonize: true};
 
-export const ACCENT_SHADES = ImmutableSet.of([
+export const ACCENT_SHADES = createImmutableSet([
   A050,
   A100,
   A175,

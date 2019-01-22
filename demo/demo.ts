@@ -1,22 +1,23 @@
+import { createImmutableMap } from 'gs-tools/export/collect';
 import { Jsons } from 'gs-tools/export/data';
-import { ImmutableMap } from 'gs-tools/src/immutable';
 import { icon, Palette, start as startMask } from '../export';
 import { $theme, _v } from '../src/app/app';
-import { textIconButton } from '../src/component/text-icon-button';
-import { breadcrumb } from '../src/display/breadcrumb';
-import { croppedLine } from '../src/display/cropped-line';
-import { iconWithText } from '../src/display/icon-with-text';
-import { textInput } from '../src/input/text-input';
+import { textIconButton, TextIconButton } from '../src/component/text-icon-button';
+import { breadcrumb, Breadcrumb } from '../src/display/breadcrumb';
+import { croppedLine, CroppedLine } from '../src/display/cropped-line';
+import { Icon } from '../src/display/icon';
+import { iconWithText, IconWithText } from '../src/display/icon-with-text';
+import { textInput, TextInput } from '../src/input/text-input';
 import { backdrop } from '../src/section/backdrop';
-import { dialog } from '../src/section/dialog';
+import { dialog, Dialog } from '../src/section/dialog';
 import { $dialogService } from '../src/section/dialog-service';
-import { drawer } from '../src/section/drawer';
+import { drawer, Drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
-import { demoCtrl } from './demo-ctrl';
+import { demoCtrl, DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
 
-const registeredFonts = ImmutableMap.of([
+const registeredFonts = createImmutableMap([
       ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
       ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
     ]);
@@ -27,6 +28,17 @@ const textIconButtonConfig = textIconButton(iconWithTextConfig);
 
 window.addEventListener('load', () => {
   const {vine: maskVine} = startMask(
+      [
+        Breadcrumb,
+        CroppedLine,
+        DemoCtrl,
+        Dialog,
+        Drawer,
+        Icon,
+        IconWithText,
+        TextIconButton,
+        TextInput,
+      ],
       [
         breadcrumb(),
         croppedLine(),

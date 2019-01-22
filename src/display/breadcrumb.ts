@@ -1,4 +1,4 @@
-import { ImmutableList } from 'gs-tools/export/collect';
+import { $exec, $map, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { HasPropertiesType, InstanceofType, IterableOfType, StringType } from 'gs-types/export';
@@ -41,7 +41,7 @@ export const $ = {
             }),
         ),
         IterableOfType<CrumbData, ImmutableList<CrumbData>>(crumbDataType),
-        ImmutableList.of([]),
+        createImmutableList([]),
     ),
   }),
   row: element('row', InstanceofType(HTMLDivElement), {
@@ -107,11 +107,15 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   ): Observable<ImmutableList<RenderedCrumbData>> {
     return pathObs
         .pipe(
-            map(path => path.mapItem(({key, display}) => ({
-              [__renderId]: key,
-              display,
-              key,
-            }))),
+            map(path => $exec(
+                path,
+                $map(({key, display}) => ({
+                  [__renderId]: key,
+                  display,
+                  key,
+                })),
+                asImmutableList(),
+            )),
         );
   }
 }

@@ -1,5 +1,5 @@
 import { staticSourceId, staticStreamId } from 'grapevine/export/component';
-import { ImmutableMap } from 'gs-tools/export/collect';
+import { $exec, $getKey, $head, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap, ImmutableMapType } from 'gs-tools/export/collect';
 import { BaseDisposable } from 'gs-tools/export/dispose';
 import { InstanceofType } from 'gs-types/export';
 import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
@@ -22,33 +22,39 @@ export class SvgService extends BaseDisposable {
   }
 
   getSvg(name: string): Observable<string>|null {
-    return this.svgObs.get(name) || null;
+    return $exec(this.svgObs, $getKey(name), $pick(1), $head()) || null;
   }
 }
 
 function createSvgObs(configs: ImmutableMap<string, SvgConfig>):
     ImmutableMap<string, Observable<string>> {
-  return configs
-      .map((config): Observable<string> => {
-        if (config.type === 'embed') {
-          return observableOf(config.content);
-        } else {
-          // TODO: Retry with exponential backoff.
-          return observableFrom<Response>(fetch(config.url))
-              .pipe(
-                  switchMap(response => response.text()),
-                  retry(3),
-                  shareReplay(1),
-              );
-        }
-      });
+  return $exec(
+      configs,
+      $mapPick(
+          1,
+          (config): Observable<string> => {
+            if (config.type === 'embed') {
+              return observableOf(config.content);
+            } else {
+              // TODO: Retry with exponential backoff.
+              return observableFrom<Response>(fetch(config.url))
+                  .pipe(
+                      switchMap(response => response.text()),
+                      retry(3),
+                      shareReplay(1),
+                  );
+            }
+          },
+      ),
+      asImmutableMap(),
+  );
 }
 
 export const $svgConfig = staticSourceId(
     'SvgService.config',
-    InstanceofType<ImmutableMap<string, SvgConfig>>(ImmutableMap),
+    ImmutableMapType<string, SvgConfig>(),
 );
-_v.builder.source($svgConfig, ImmutableMap.of());
+_v.builder.source($svgConfig, createImmutableMap());
 
 export const $svgService = staticStreamId(
     'SvgService',

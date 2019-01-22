@@ -1,10 +1,9 @@
-import { VineImpl } from 'grapevine/export/main';
-import { ImmutableSet } from 'gs-tools/export/collect';
+import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { element, onDom } from 'persona/export/input';
 import { classlist, textContent } from 'persona/export/output';
 import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, take, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { BackdropConfig } from '../configs/backdrop-config';
@@ -62,10 +61,10 @@ export class Dialog extends ThemedCustomElementCtrl {
   ): Observable<ImmutableSet<string>> {
     return dialogStateObs.pipe(map(dialogState => {
       if (!dialogState.isOpen || !dialogState.cancelable) {
-        return ImmutableSet.of([]);
+        return createImmutableSet([]);
       }
 
-      return ImmutableSet.of(['isVisible']);
+      return createImmutableSet(['isVisible']);
     }));
   }
 
@@ -75,9 +74,9 @@ export class Dialog extends ThemedCustomElementCtrl {
   ): Observable<ImmutableSet<string>> {
     return dialogStateObs.pipe(map(dialogState => {
       if (dialogState.isOpen) {
-        return ImmutableSet.of(['isVisible']);
+        return createImmutableSet(['isVisible']);
       } else {
-        return ImmutableSet.of();
+        return createImmutableSet();
       }
     }));
   }

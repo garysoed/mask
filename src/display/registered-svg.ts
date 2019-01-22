@@ -1,6 +1,6 @@
 import { staticSourceId } from 'grapevine/export/component';
-import { ImmutableMap } from 'gs-tools/src/immutable';
-import { InstanceofType } from 'gs-types/export';
+import { createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
+import { AnyType } from 'gs-types/export';
 import { _v } from '../app/app';
 
 export interface SvgConfig {
@@ -10,5 +10,6 @@ export interface SvgConfig {
 
 export const $registeredSvgs = staticSourceId(
     'display.registeredSvg',
-    InstanceofType<ImmutableMap<string, SvgConfig>>(ImmutableMap));
-_v.builder.source($registeredSvgs, ImmutableMap.of());
+    AnyType<ImmutableMap<string, SvgConfig>>(),
+);
+_v.builder.source($registeredSvgs, createImmutableMap());

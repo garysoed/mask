@@ -1,7 +1,7 @@
-import { ImmutableMap } from 'gs-tools/export/collect';
+import { createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
-import { A050, A100, A175, B010, B025, B050, B100, B125, B150, B175, B200, Shade } from './shade';
+import { A100, B010, B025, B050, B100, B125, B150, B175, B200, Shade } from './shade';
 
 export interface ShadingSpec {
   alpha: Alpha;
@@ -9,7 +9,7 @@ export interface ShadingSpec {
   fg: Shade|'contrast';
 }
 
-export const LIGHT_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
+export const LIGHT_SHADING = createImmutableMap<ColorSection, ShadingSpec>([
   [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: B200, fg: B010}],
   [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: B200, fg: B010}],
   [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: B200, fg: B050}],
@@ -21,7 +21,7 @@ export const LIGHT_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
   [ColorSection.ACTION_PRIMARY_DISABLED, {alpha: Alpha.LOW,    bg: B200, fg: B010}],
 ]);
 
-export const DARK_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
+export const DARK_SHADING = createImmutableMap<ColorSection, ShadingSpec>([
   [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: B025, fg: B200}],
   [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: B025, fg: B200}],
   [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: B025, fg: B150}],
@@ -33,7 +33,7 @@ export const DARK_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
   [ColorSection.ACTION_PRIMARY_DISABLED, {alpha: Alpha.LOW,    bg: B025, fg: B200}],
 ]);
 
-export const HIGHLIGHT_SHADING = ImmutableMap.of<ColorSection, ShadingSpec>([
+export const HIGHLIGHT_SHADING = createImmutableMap<ColorSection, ShadingSpec>([
   [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: B100, fg: 'contrast'}],
   [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: B100, fg: 'contrast'}],
   [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: B100, fg: 'contrast'}],

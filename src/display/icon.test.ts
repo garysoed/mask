@@ -2,17 +2,18 @@ import { VineImpl } from 'grapevine/export/main';
 import { assert, retryUntil, setup, should, test } from 'gs-testing/export/main';
 import { FakeFetch } from 'gs-testing/export/mock';
 import { createSpySubject } from 'gs-testing/export/spy';
-import { ImmutableMap } from 'gs-tools/export/collect';
+import { createImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import { BASE_SHADES } from '../theme/shade';
 import { $, icon, Icon } from './icon';
 
 const SVG_NAME = 'svgName';
 const SVG_URL = 'http://svgUrl';
 
 const {configure} = icon(
-    ImmutableMap.of([[SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL}]]),
+    createImmutableMap([[SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL}]]),
 );
 const configureIcon = configure;
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
@@ -48,6 +49,7 @@ test('display.Icon', () => {
       const spySubject = createSpySubject<Element>();
       tester.getElement(el, $.root).subscribe(spySubject);
       await retryUntil(() => spySubject.getValue().innerHTML).to.equal(svgContent);
+      const b = BASE_SHADES;
     });
 
     should(`set the innerHTML correctly if there are no SVG names specified`, () => {

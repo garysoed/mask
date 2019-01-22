@@ -1,6 +1,6 @@
 import { assert, match, should, test } from 'gs-testing/export/main';
 import { createSpy } from 'gs-testing/export/spy';
-import { ImmutableList } from 'gs-tools/export/collect';
+import { $exec, $filter, $head, $map, $size, createImmutableList } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -25,7 +25,7 @@ test('display.Breadcrumb', () => {
 
   test('onRowAction_', () => {
     should(`dispatch the correct event`, async () => {
-      const data = ImmutableList.of([
+      const data = createImmutableList([
         {
           display: 'displayA',
           key: 'a',
@@ -48,11 +48,11 @@ test('display.Breadcrumb', () => {
       // Wait until all the crumbs are rendered.
       const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
           .pipe(
-              filter(children => children.size() >= 3),
+              filter(children => $exec(children, $size()) >= 3),
               take(1),
           )
           .toPromise();
-      (childrenNodes.get(0) as HTMLElement).click();
+      ($exec(childrenNodes, $head()) as HTMLElement).click();
 
       const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
@@ -63,7 +63,7 @@ test('display.Breadcrumb', () => {
 
   test('renderCrumbs_', () => {
     should(`render the crumbs correctly`, async () => {
-      const data = ImmutableList.of([
+      const data = createImmutableList([
         {
           display: 'displayA',
           key: 'a',
@@ -86,35 +86,31 @@ test('display.Breadcrumb', () => {
       // Wait until all the crumbs are rendered.
       const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
           .pipe(
-              filter(children => children.size() >= 3),
+              filter(children => $exec(children, $size()) >= 3),
               take(1),
           )
           .toPromise();
 
-      const elements = childrenNodes
-          .filterItem((item): item is HTMLElement => item instanceof HTMLElement);
+      const elements = $exec(
+          childrenNodes,
+          $filter((item): item is HTMLElement => item instanceof HTMLElement),
+      );
 
-      assert(elements.mapItem(el => el.tagName.toLowerCase())).to.equal(
-          match.anyIterableThat<string>().haveElements([
-            'mk-crumb',
-            'mk-crumb',
-            'mk-crumb',
-          ]),
-      );
-      assert(elements.mapItem(el => el.getAttribute('display'))).to.equal(
-          match.anyIterableThat<string>().haveElements([
-            'displayA',
-            'displayB',
-            'displayC',
-          ]),
-      );
-      assert(elements.mapItem(el => el.getAttribute('key'))).to.equal(
-          match.anyIterableThat<string>().haveElements([
-            'a',
-            'b',
-            'c',
-          ]),
-      );
+      assert([...$exec(elements, $map(el => el.tagName.toLowerCase()))()]).to.haveExactElements([
+        'mk-crumb',
+        'mk-crumb',
+        'mk-crumb',
+      ]);
+      assert([...$exec(elements, $map(el => el.getAttribute('display')))()]).to.haveExactElements([
+        'displayA',
+        'displayB',
+        'displayC',
+      ]);
+      assert([...$exec(elements, $map(el => el.getAttribute('key')))()]).to.haveExactElements([
+        'a',
+        'b',
+        'c',
+      ]);
     });
   });
 });

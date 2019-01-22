@@ -1,4 +1,4 @@
-import { ImmutableMap } from 'gs-tools/export/collect';
+import { $declareKeyed, $exec, $getKey, $head, $map, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
 import { Color, Colors } from 'gs-tools/export/color';
 import { assertUnreachable } from 'gs-tools/src/typescript/assert-unreachable';
 import { Alpha } from './alpha';
@@ -26,26 +26,33 @@ function generateColorMap_(
     colorMap: ImmutableMap<Shade, Color>,
     contrastShade: Shade,
 ): ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}> {
-  return map.map(({alpha, bg, fg}) => {
-    const normalizedFg = fg === 'contrast' ? contrastShade : fg;
-    const fgColor = colorMap.get(normalizedFg);
-    if (!fgColor) {
-      throw new Error(`Color for shade ${normalizedFg} cannot be found`);
-    }
+  return $exec(
+      map,
+      $mapPick(
+          1,
+          (({alpha, bg, fg}) => {
+            const normalizedFg = fg === 'contrast' ? contrastShade : fg;
+            const fgColor = $exec(colorMap, $getKey(normalizedFg), $pick(1), $head());
+            if (!fgColor) {
+              throw new Error(`Color for shade ${normalizedFg} cannot be found`);
+            }
 
-    const bgColor = colorMap.get(bg);
-    if (!bgColor) {
-      throw new Error(`Color for shade ${bg} cannot be found`);
-    }
+            const bgColor = $exec(colorMap, $getKey(bg), $pick(1), $head());
+            if (!bgColor) {
+              throw new Error(`Color for shade ${bg} cannot be found`);
+            }
 
-    const numericAlpha = getAlphaValue_(alpha, normalizedFg);
+            const numericAlpha = getAlphaValue_(alpha, normalizedFg);
 
-    return {
-      alpha: numericAlpha,
-      bg: bgColor,
-      fg: fgColor,
-    };
-  });
+            return {
+              alpha: numericAlpha,
+              bg: bgColor,
+              fg: fgColor,
+            };
+          }),
+      ),
+      asImmutableMap(),
+  );
 }
 
 function getAlphaValue_(alpha: Alpha, colorShade: Shade): number {
@@ -82,8 +89,8 @@ function getContrastForegroundShade_(
     highlightBackground: Color): Shade {
   const darkShade = B010;
   const lightShade = B200;
-  const darkForeground = shadingMap.get(darkShade);
-  const lightForeground = shadingMap.get(lightShade);
+  const darkForeground = $exec(shadingMap, $getKey(darkShade), $pick(1), $head());
+  const lightForeground = $exec(shadingMap, $getKey(lightShade), $pick(1), $head());
 
   if (!darkForeground) {
     throw new Error(`Cannot find color for ${darkShade}`);
@@ -106,18 +113,24 @@ export class Theme {
       readonly highlightColor: Color) { }
 
   injectCss(styleEl: HTMLStyleElement): void {
-    const baseColorPairs = BASE_SHADES.mapItem(shade => {
-      return [shade, createColor(shade, this.baseColor)] as [Shade, Color];
-    });
-    const accentColorPairs = ACCENT_SHADES.mapItem(shade => {
-      return [shade, createColor(shade, this.highlightColor)] as [Shade, Color];
-    });
-    const colorMap = ImmutableMap.of([
+    const baseColorPairs = $exec(
+        BASE_SHADES,
+        $map(shade => [shade, createColor(shade, this.baseColor)] as [Shade, Color]),
+        $declareKeyed(([key]) => key),
+        asImmutableMap(),
+    );
+    const accentColorPairs = $exec(
+        ACCENT_SHADES,
+        $map(shade => [shade, createColor(shade, this.highlightColor)] as [Shade, Color]),
+        $declareKeyed(([key]) => key),
+        asImmutableMap(),
+    );
+    const colorMap = createImmutableMap([
       ...baseColorPairs,
       ...accentColorPairs,
     ]);
 
-    const b100 = colorMap.get(B100);
+    const b100 = $exec(colorMap, $getKey(B100), $pick(1), $head());
     if (!b100) {
       throw new Error(`Base color does not exist`);
     }

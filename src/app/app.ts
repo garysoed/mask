@@ -1,6 +1,6 @@
 import { staticSourceId } from 'grapevine/export/component';
 import { getOrRegisterApp as getOrRegisterGrapevineApp, VineImpl } from 'grapevine/export/main';
-import { ImmutableMap } from 'gs-tools/export/collect';
+import { createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/src/error';
 import { InstanceofType } from 'gs-types/export';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from 'persona/export/main';
@@ -36,7 +36,7 @@ export function flattenConfigs_(configs: Config[]): ImmutableMap<string, Config>
     }
   }
 
-  return ImmutableMap.of(map);
+  return createImmutableMap(map);
 }
 
 export function start(

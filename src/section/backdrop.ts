@@ -1,4 +1,4 @@
-import { ImmutableSet } from 'gs-tools/export/collect';
+import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
 import { InstanceofType } from 'gs-types/export';
 import { element } from 'persona/export/input';
 import { classlist } from 'persona/export/output';
@@ -28,9 +28,9 @@ export class Backdrop extends ThemedCustomElementCtrl {
     return dialogStateObs.pipe(
         map(dialogState => {
           if (dialogState.isOpen) {
-            return ImmutableSet.of(['isVisible']);
+            return createImmutableSet(['isVisible']);
           } else {
-            return ImmutableSet.of();
+            return createImmutableSet();
           }
         }),
     );
