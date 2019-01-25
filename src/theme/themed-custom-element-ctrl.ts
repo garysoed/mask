@@ -10,13 +10,11 @@ const $ = {
   theme: element('theme', InstanceofType(HTMLStyleElement), {}),
 };
 
-@_p.baseCustomElement({
-  input: [$.theme],
-})
+@_p.baseCustomElement({})
 export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   @_p.onCreate()
   injectCss_(
-      @_v.vineIn($.theme.id) themeElObs: Observable<HTMLStyleElement>,
+      @_p.input($.theme) themeElObs: Observable<HTMLStyleElement>,
       @_v.vineIn($theme) themeObs: Observable<Theme>,
   ): Observable<unknown> {
     return combineLatest(themeElObs, themeObs)

@@ -6,7 +6,6 @@ import { createImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { BASE_SHADES } from '../theme/shade';
 import { $, icon, Icon } from './icon';
 
 const SVG_NAME = 'svgName';
@@ -40,7 +39,7 @@ test('display.Icon', () => {
     el = tester.createElement('mk-icon', document.body);
   });
 
-  test('init', () => {
+  test('renderRootInnerHtml_', () => {
     should(`set the innerHTML correctly`, async () => {
       const svgContent = 'svgContent';
 
@@ -49,7 +48,6 @@ test('display.Icon', () => {
       const spySubject = createSpySubject<Element>();
       tester.getElement(el, $.root).subscribe(spySubject);
       await retryUntil(() => spySubject.getValue().innerHTML).to.equal(svgContent);
-      const b = BASE_SHADES;
     });
 
     should(`set the innerHTML correctly if there are no SVG names specified`, () => {

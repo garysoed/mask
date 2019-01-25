@@ -32,59 +32,52 @@ const $isDirty = instanceStreamId('isDirty', BooleanType);
 const $shouldSetInitValue = instanceStreamId('initValue', StringType);
 
 @_p.customElement({
-  input: [
-    $.host._.clearObs,
-    $.host._.disabled,
-    $.host._.initValue,
-    $.input,
-    $.input._.onInput,
-  ],
   tag: 'mk-text-input',
   template: textInputTemplate,
 })
-@_p.render($.input._.disabled).withForwarding($.host._.disabled.id)
-@_p.render($.host._.value).withForwarding($.input._.onInput.id)
+@_p.render($.input._.disabled).withForwarding($.host._.disabled)
+@_p.render($.host._.value).withForwarding($.input._.onInput)
 export class TextInput extends ThemedCustomElementCtrl {
-  // @_v.vineOut($shouldSetInitValue)
-  // providesInitValue_(
-  //     @_v.vineIn($.host._.clearObs.id) clearObs: Observable<void>,
-  //     @_v.vineIn($isDirty) isDirtyObs: Observable<boolean>,
-  //     @_v.vineIn($.host._.initValue.id) initValueObs: Observable<string>,
-  // ): Observable<string> {
-  //   // Set the initial value when:
-  //   // 1.  clear is called
-  //   // 2.  Whenever init value is changed, but user has not interacted with the input element.
-  //   return merge(
-  //       clearObs,
-  //       initValueObs.pipe(
-  //           withLatestFrom(isDirtyObs),
-  //           filter(([, isDirty]) => !isDirty),
-  //       ),
-  //   )
-  //   .pipe(
-  //       startWith(),
-  //       withLatestFrom(initValueObs),
-  //       map(([, initValue]) => initValue),
-  //   );
-  // }
+  @_v.vineOut($shouldSetInitValue)
+  providesInitValue_(
+      @_p.input($.host._.clearObs) clearObs: Observable<void>,
+      @_v.vineIn($isDirty) isDirtyObs: Observable<boolean>,
+      @_p.input($.host._.initValue) initValueObs: Observable<string>,
+  ): Observable<string> {
+    // Set the initial value when:
+    // 1.  clear is called
+    // 2.  Whenever init value is changed, but user has not interacted with the input element.
+    return merge(
+        clearObs,
+        initValueObs.pipe(
+            withLatestFrom(isDirtyObs),
+            filter(([, isDirty]) => !isDirty),
+        ),
+    )
+    .pipe(
+        startWith(),
+        withLatestFrom(initValueObs),
+        map(([, initValue]) => initValue),
+    );
+  }
 
-  // @_v.vineOut($isDirty)
-  // providesIsDirty_(
-  //     @_v.vineIn($.input._.onInput.id) onInputObs: Observable<string>,
-  //     @_v.vineIn($.host._.clearObs.id) clearObs: Observable<void>,
-  // ): Observable<boolean> {
-  //   return merge(
-  //       onInputObs.pipe(mapTo(true)),
-  //       clearObs.pipe(mapTo(false)),
-  //   )
-  //   .pipe(startWith(false));
-  // }
+  @_v.vineOut($isDirty)
+  providesIsDirty_(
+      @_p.input($.input._.onInput) onInputObs: Observable<string>,
+      @_p.input($.host._.clearObs) clearObs: Observable<void>,
+  ): Observable<boolean> {
+    return merge(
+        onInputObs.pipe(mapTo(true)),
+        clearObs.pipe(mapTo(false)),
+    )
+    .pipe(startWith(false));
+  }
 
   @_p.render($.host._.value)
   renderHostValue_(
       @_v.vineIn($shouldSetInitValue) shouldSetInitValueObs: Observable<string>,
-      @_v.vineIn($.input._.onInput.id) onInputObs: Observable<string>,
-      @_v.vineIn($.input.id) inputElObs: Observable<HTMLInputElement>,
+      @_p.input($.input._.onInput) onInputObs: Observable<string>,
+      @_p.input($.input) inputElObs: Observable<HTMLInputElement>,
   ): Observable<string> {
     return inputElObs
         .pipe(
@@ -98,7 +91,7 @@ export class TextInput extends ThemedCustomElementCtrl {
   @_p.onCreate()
   updateInputEl_(
       @_v.vineIn($shouldSetInitValue) shouldSetInitValueObs: Observable<string>,
-      @_v.vineIn($.input.id) inputElObs: Observable<HTMLInputElement>,
+      @_p.input($.input) inputElObs: Observable<HTMLInputElement>,
   ): Observable<unknown> {
     return shouldSetInitValueObs
         .pipe(

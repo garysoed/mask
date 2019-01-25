@@ -44,7 +44,6 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [$.host, $.host._.icon],
   tag: 'mk-icon',
   template: iconTemplate,
 })
@@ -55,7 +54,7 @@ export class Icon extends ThemedCustomElementCtrl {
   @_p.render($.root._.innerHTML)
   renderRootInnerHtml_(
       @_v.vineIn($svgService) svgServiceObs: Observable<SvgService>,
-      @_v.vineIn($.host._.icon.id) svgNameObs: Observable<string>,
+      @_p.input($.host._.icon) svgNameObs: Observable<string>,
   ): Observable<string> {
     return combineLatest(svgServiceObs, svgNameObs)
         .pipe(

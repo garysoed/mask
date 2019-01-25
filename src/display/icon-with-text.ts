@@ -48,13 +48,13 @@ export const $ = {
   tag: 'mk-icon-with-text',
   template: iconWithTextTemplate,
 })
-@_p.render($.text._.text).withForwarding($.host._.label.id)
-@_p.render($.icon._.icon).withForwarding($.host._.icon.id)
-@_p.render($.icon._.mode).withForwarding($.host._.mode.id)
+@_p.render($.text._.text).withForwarding($.host._.label)
+@_p.render($.icon._.icon).withForwarding($.host._.icon)
+@_p.render($.icon._.mode).withForwarding($.host._.mode)
 export class IconWithText extends ThemedCustomElementCtrl {
   @_p.render($.icon._.classes)
   renderIconClasses_(
-      @_v.vineIn($.host._.icon.id) iconLigatureObs: Observable<string>,
+      @_p.input($.host._.icon) iconLigatureObs: Observable<string>,
   ): Observable<ImmutableSet<string>> {
     return iconLigatureObs.pipe(
         map(iconLigature => {
@@ -69,7 +69,7 @@ export class IconWithText extends ThemedCustomElementCtrl {
 
   @_p.render($.text._.classes)
   renderTextClasses_(
-      @_v.vineIn($.host._.label.id) labelObs: Observable<string>,
+      @_p.input($.host._.label) labelObs: Observable<string>,
   ): Observable<ImmutableSet<string>> {
     return labelObs.pipe(
         map(label => {

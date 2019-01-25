@@ -67,32 +67,32 @@ export class TextIconButton extends ThemedCustomElementCtrl {
 
   @_p.render($.host._.ariaLabelOut)
   renderHostAriaLabel_(
-      @_v.vineIn($.host._.ariaLabelIn.id) hostAriaLabelObs: Observable<string>,
-      @_v.vineIn($.host._.label.id) hostLabelObs: Observable<string>): Observable<string> {
+      @_p.input($.host._.ariaLabelIn) hostAriaLabelObs: Observable<string>,
+      @_p.input($.host._.label) hostLabelObs: Observable<string>): Observable<string> {
     return combineLatest(hostAriaLabelObs, hostLabelObs)
         .pipe(map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel));
   }
 
   @_p.render($.iconWithText._.mode)
   renderIconMode_(
-      @_v.vineIn($.host._.disabled.id) disabledObs: Observable<boolean>,
+      @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
   ): Observable<string> {
     return disabledObs.pipe(map(disabled => disabled ? 'disabled' : ''));
   }
 
   @_p.render($.host._.tabindex)
-  renderTabIndex_(@_v.vineIn($.host._.disabled.id) hostDisabledObs: Observable<boolean>):
+  renderTabIndex_(@_p.input($.host._.disabled) hostDisabledObs: Observable<boolean>):
       Observable<number> {
     return hostDisabledObs.pipe(map(disabled => disabled ? -1 : 0));
   }
 
   @_p.onCreate()
   setupActions_(
-      @_v.vineIn($.host._.onClick.id) onClickObs: Observable<Event>,
-      @_v.vineIn($.host._.onEnterDown.id) onEnterDownObs: Observable<Event>,
-      @_v.vineIn($.host._.onSpaceDown.id) onSpaceDownObs: Observable<Event>,
-      @_v.vineIn($.host._.disabled.id) disabledObs: Observable<boolean>,
-      @_v.vineIn($.host._.dispatch.id) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
+      @_p.input($.host._.onClick) onClickObs: Observable<Event>,
+      @_p.input($.host._.onEnterDown) onEnterDownObs: Observable<Event>,
+      @_p.input($.host._.onSpaceDown) onSpaceDownObs: Observable<Event>,
+      @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
+      @_p.input($.host._.dispatch) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
   ): Observable<unknown> {
     return merge(
             onClickObs,

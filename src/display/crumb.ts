@@ -23,20 +23,15 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [
-    $.host._.dispatch,
-    $.host._.display,
-    $.host._.onClick,
-  ],
   tag: 'mk-crumb',
   template: crumbTemplate,
 })
-@_p.render($.text._.text).withForwarding($.host._.display.id)
+@_p.render($.text._.text).withForwarding($.host._.display)
 export class Crumb extends ThemedCustomElementCtrl {
   @_p.onCreate()
   onHostClick_(
-      @_v.vineIn($.host._.onClick.id) onClickObs: Observable<Event>,
-      @_v.vineIn($.host._.dispatch.id) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
+      @_p.input($.host._.onClick) onClickObs: Observable<Event>,
+      @_p.input($.host._.dispatch) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
   ): Observable<unknown> {
     return onClickObs
         .pipe(

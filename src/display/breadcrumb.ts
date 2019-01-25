@@ -63,19 +63,14 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [
-    $.host._.dispatch,
-    $.host._.path,
-    $.row._.onAction,
-  ],
   tag: 'mk-breadcrumb',
   template: breadcrumbTemplate,
 })
 export class Breadcrumb extends ThemedCustomElementCtrl {
   @_p.onCreate()
   onRowAction_(
-      @_v.vineIn($.row._.onAction.id) onActionObs: Observable<ActionEvent>,
-      @_v.vineIn($.host._.dispatch.id) dispatchObs: Observable<DispatchFn<BreadcrumbClickEvent>>,
+      @_p.input($.row._.onAction) onActionObs: Observable<ActionEvent>,
+      @_p.input($.host._.dispatch) dispatchObs: Observable<DispatchFn<BreadcrumbClickEvent>>,
   ): Observable<unknown> {
     return onActionObs
         .pipe(
@@ -103,7 +98,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
 
   @_p.render($.row._.crumbsSlot)
   renderCrumbs_(
-      @_v.vineIn($.host._.path.id) pathObs: Observable<ImmutableList<CrumbData>>,
+      @_p.input($.host._.path) pathObs: Observable<ImmutableList<CrumbData>>,
   ): Observable<ImmutableList<RenderedCrumbData>> {
     return pathObs
         .pipe(

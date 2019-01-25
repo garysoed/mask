@@ -40,8 +40,8 @@ export const $ = {
 export class Dialog extends ThemedCustomElementCtrl {
   @_p.onCreate()
   onCloseOrCancel_(
-      @_v.vineIn($.cancelButton._.onAction.id) onCancelObs: Observable<Event>,
-      @_v.vineIn($.okButton._.onAction.id) onOkObs: Observable<Event>,
+      @_p.input($.cancelButton._.onAction) onCancelObs: Observable<Event>,
+      @_p.input($.okButton._.onAction) onOkObs: Observable<Event>,
       @_v.vineIn($dialogState) dialogState: Observable<DialogState>,
   ): Observable<unknown> {
     return merge(

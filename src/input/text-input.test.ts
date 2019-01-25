@@ -5,8 +5,7 @@ import { $, TextInput } from './text-input';
 
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-// TODO: Unskip the tests.
-test.skip('input.TextInput', () => {
+test('input.TextInput', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 

@@ -6,7 +6,7 @@ import { $, $postfixBoundary, CroppedLine } from './cropped-line';
 
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
-test.skip('display.CroppedLine', () => {
+test('display.CroppedLine', () => {
   let tester: PersonaTester;
   let el: HTMLElement;
 

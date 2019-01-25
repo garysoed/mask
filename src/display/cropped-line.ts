@@ -33,14 +33,9 @@ export const $ = {
 };
 
 export const $postfixBoundary = instanceStreamId('postfixBoundary', NumberType);
-
 const MAX_POSTFIX_LENGTH = 3;
 
 @_p.customElement({
-  input: [
-    $.container._.onCopy,
-    $.host._.text,
-  ],
   tag: 'mk-cropped-line',
   template: croppedLineTemplate,
 })
@@ -49,8 +44,8 @@ export class CroppedLine extends ThemedCustomElementCtrl {
 
   @_p.onCreate()
   onContainerCopy_(
-      @_v.vineIn($.container._.onCopy.id) onCopyObs: Observable<ClipboardEvent>,
-      @_v.vineIn($.host._.text.id) hostTextObs: Observable<string>,
+      @_p.input($.container._.onCopy) onCopyObs: Observable<ClipboardEvent>,
+      @_p.input($.host._.text) hostTextObs: Observable<string>,
   ): Observable<unknown> {
     return onCopyObs
         .pipe(
@@ -63,15 +58,15 @@ export class CroppedLine extends ThemedCustomElementCtrl {
         );
   }
 
-  // @_v.vineOut($postfixBoundary)
-  // providesPostfixBoundary_(
-  //     @_v.vineIn($.host._.text.id) textObs: Observable<string>): Observable<number> {
-  //   return textObs.pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
-  // }
+  @_v.vineOut($postfixBoundary)
+  providesPostfixBoundary_(
+      @_p.input($.host._.text) textObs: Observable<string>): Observable<number> {
+    return textObs.pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
+  }
 
   @_p.render($.postfix._.text)
   renderPostfixTextContent_(
-      @_v.vineIn($.host._.text.id) textObs: Observable<string>,
+      @_p.input($.host._.text) textObs: Observable<string>,
       @_v.vineIn($postfixBoundary) postfixBoundaryObs: Observable<number>): Observable<string> {
     return combineLatest(textObs, postfixBoundaryObs)
         .pipe(map(([text, postfixBoundary]) => text.substring(postfixBoundary)));
@@ -79,7 +74,7 @@ export class CroppedLine extends ThemedCustomElementCtrl {
 
   @_p.render($.prefix._.text)
   renderPrefixTextContent_(
-      @_v.vineIn($.host._.text.id) textObs: Observable<string>,
+      @_p.input($.host._.text) textObs: Observable<string>,
       @_v.vineIn($postfixBoundary) postfixBoundaryObs: Observable<number>): Observable<string> {
     return combineLatest(textObs, postfixBoundaryObs)
         .pipe(map(([text, postfixBoundary]) => text.substring(0, postfixBoundary)));

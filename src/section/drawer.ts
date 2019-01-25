@@ -46,12 +46,6 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [
-    $.host._.expanded,
-    $.host._.maxSize,
-    $.host._.minSize,
-    $.host._.mode,
-  ],
   tag: 'mk-drawer',
   template: drawerTemplate,
 })
@@ -60,10 +54,10 @@ export class Drawer extends ThemedCustomElementCtrl {
 
   @_p.render($.host._.styleHeight)
   renderStyleHeight_(
-      @_v.vineIn($.host._.expanded.id) expandedObs: Observable<boolean>,
-      @_v.vineIn($.host._.maxSize.id) maxSizeObs: Observable<string>,
-      @_v.vineIn($.host._.minSize.id) minSizeObs: Observable<string>,
-      @_v.vineIn($.host._.mode.id) modeObs: Observable<Mode>,
+      @_p.input($.host._.expanded) expandedObs: Observable<boolean>,
+      @_p.input($.host._.maxSize) maxSizeObs: Observable<string>,
+      @_p.input($.host._.minSize) minSizeObs: Observable<string>,
+      @_p.input($.host._.mode) modeObs: Observable<Mode>,
   ): Observable<string> {
     return combineLatest(expandedObs, maxSizeObs, minSizeObs, modeObs)
         .pipe(
@@ -79,10 +73,10 @@ export class Drawer extends ThemedCustomElementCtrl {
 
   @_p.render($.host._.styleWidth)
   renderStyleWidth_(
-      @_v.vineIn($.host._.expanded.id) expandedObs: Observable<boolean>,
-      @_v.vineIn($.host._.maxSize.id) maxSizeObs: Observable<string>,
-      @_v.vineIn($.host._.minSize.id) minSizeObs: Observable<string>,
-      @_v.vineIn($.host._.mode.id) modeObs: Observable<Mode>,
+      @_p.input($.host._.expanded) expandedObs: Observable<boolean>,
+      @_p.input($.host._.maxSize) maxSizeObs: Observable<string>,
+      @_p.input($.host._.minSize) minSizeObs: Observable<string>,
+      @_p.input($.host._.mode) modeObs: Observable<Mode>,
   ): Observable<string> {
     return combineLatest(expandedObs, maxSizeObs, minSizeObs, modeObs)
         .pipe(
