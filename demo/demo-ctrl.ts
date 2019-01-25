@@ -57,12 +57,6 @@ const $isOnOption = instanceSourceId('isOnOption', BooleanType);
 _v.builder.source($isOnOption, false);
 
 @_p.customElement({
-  input: [
-    $.accentPalette._.onClick,
-    $.basePalette._.onClick,
-    $.option._.onMouseOut,
-    $.option._.onMouseOver,
-  ],
   tag: TAG,
   template: demoTemplate,
 })

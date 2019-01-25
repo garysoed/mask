@@ -30,10 +30,6 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [
-    $.cancelButton._.onAction,
-    $.okButton._.onAction,
-  ],
   tag: 'mk-dialog',
   template: dialogTemplate,
 })

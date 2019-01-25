@@ -40,11 +40,6 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [
-    $.host._.icon,
-    $.host._.label,
-    $.host._.mode,
-  ],
   tag: 'mk-icon-with-text',
   template: iconWithTextTemplate,
 })

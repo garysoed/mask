@@ -46,16 +46,6 @@ export const $ = {
 };
 
 @_p.customElement({
-  input: [
-    $.host._.ariaLabelIn,
-    $.host._.disabled,
-    $.host._.dispatch,
-    $.host._.icon,
-    $.host._.label,
-    $.host._.onClick,
-    $.host._.onEnterDown,
-    $.host._.onSpaceDown,
-  ],
   tag: 'mk-text-icon-button',
   template: textButtonTemplate,
 })
