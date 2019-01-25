@@ -64,7 +64,7 @@ _v.builder.source($isOnOption, false);
 export class DemoCtrl extends ThemedCustomElementCtrl {
   @_p.onCreate()
   handleAccentPaletteClick_(
-      @_v.vineIn($.accentPalette._.onClick.id) onClickObs: Observable<MouseEvent>,
+      @_p.input($.accentPalette._.onClick) onClickObs: Observable<MouseEvent>,
       @_v.vineIn($theme) themeObs: Observable<Theme>,
       @_v.vineIn($vine) vineObs: Observable<VineImpl>,
   ): Observable<unknown> {
@@ -81,7 +81,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 
   @_p.onCreate()
   handleBasePaletteClick_(
-      @_v.vineIn($.basePalette._.onClick.id) onClickObs: Observable<MouseEvent>,
+      @_p.input($.basePalette._.onClick) onClickObs: Observable<MouseEvent>,
       @_v.vineIn($theme) themeObs: Observable<Theme>,
       @_v.vineIn($vine) vineObs: Observable<VineImpl>,
   ): Observable<unknown> {
@@ -98,8 +98,8 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 
   @_p.onCreate()
   handleDrawerExpandCollapse_(
-      @_v.vineIn($.option._.onMouseOut.id) onMouseOutObs: Observable<Event>,
-      @_v.vineIn($.option._.onMouseOver.id) onMouseOverObs: Observable<Event>,
+      @_p.input($.option._.onMouseOut) onMouseOutObs: Observable<Event>,
+      @_p.input($.option._.onMouseOver) onMouseOverObs: Observable<Event>,
       @_v.vineIn($vine) vineObs: Observable<VineImpl>,
   ): Observable<unknown> {
     return merge(

@@ -1,30 +1,23 @@
-import { createImmutableMap } from 'gs-tools/export/collect';
+import { $exec, $push, asImmutableMap, createImmutableMap } from 'gs-tools/export/collect';
 import { Jsons } from 'gs-tools/export/data';
-import { icon, Palette, start as startMask } from '../export';
+import { take } from 'rxjs/operators';
+import { Palette, start as startMask } from '../export';
 import { $theme, _v } from '../src/app/app';
-import { textIconButton, TextIconButton } from '../src/component/text-icon-button';
-import { breadcrumb, Breadcrumb } from '../src/display/breadcrumb';
-import { croppedLine, CroppedLine } from '../src/display/cropped-line';
+import { TextIconButton } from '../src/component/text-icon-button';
+import { Breadcrumb } from '../src/display/breadcrumb';
+import { CroppedLine } from '../src/display/cropped-line';
 import { Icon } from '../src/display/icon';
-import { iconWithText, IconWithText } from '../src/display/icon-with-text';
-import { textInput, TextInput } from '../src/input/text-input';
-import { backdrop } from '../src/section/backdrop';
-import { dialog, Dialog } from '../src/section/dialog';
+import { IconWithText } from '../src/display/icon-with-text';
+import { SvgConfig } from '../src/display/svg-config';
+import { $svgConfig } from '../src/display/svg-service';
+import { TextInput } from '../src/input/text-input';
+import { Dialog } from '../src/section/dialog';
 import { $dialogService } from '../src/section/dialog-service';
-import { drawer, Drawer } from '../src/section/drawer';
+import { Drawer } from '../src/section/drawer';
 import { Theme } from '../src/theme/theme';
-import { demoCtrl, DemoCtrl } from './demo-ctrl';
+import { DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
-
-const registeredFonts = createImmutableMap([
-      ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
-      ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
-    ]);
-
-const iconConfig = icon(registeredFonts);
-const iconWithTextConfig = iconWithText(iconConfig);
-const textIconButtonConfig = textIconButton(iconWithTextConfig);
 
 window.addEventListener('load', () => {
   const {vine: maskVine} = startMask(
@@ -39,19 +32,22 @@ window.addEventListener('load', () => {
         TextIconButton,
         TextInput,
       ],
-      [
-        breadcrumb(),
-        croppedLine(),
-        demoCtrl(),
-        dialog(backdrop(), textIconButtonConfig),
-        drawer(),
-        iconConfig,
-        iconWithTextConfig,
-        textIconButtonConfig,
-        textInput(),
-      ],
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);
+
+  maskVine.getObservable($svgConfig)
+      .pipe(take(1))
+      .subscribe(config => {
+        const newConfig = $exec(
+            config,
+            $push<[string, SvgConfig], string>(
+                ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
+                ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
+            ),
+            asImmutableMap(),
+        );
+        maskVine.setValue($svgConfig, newConfig);
+      });
 
   maskVine.getObservable($theme).subscribe(theme => maskVine.setValue($theme, theme));
   maskVine.getObservable($dialogService).subscribe(service => {
