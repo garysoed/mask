@@ -49,9 +49,9 @@ export const $ = {
   tag: 'mk-text-icon-button',
   template: textButtonTemplate,
 })
-@_p.render($.host._.ariaDisabled).withForwarding($.host._.disabled.id)
-@_p.render($.iconWithText._.label).withForwarding($.host._.label.id)
-@_p.render($.iconWithText._.icon).withForwarding($.host._.icon.id)
+@_p.render($.host._.ariaDisabled).withForwarding($.host._.disabled)
+@_p.render($.iconWithText._.label).withForwarding($.host._.label)
+@_p.render($.iconWithText._.icon).withForwarding($.host._.icon)
 export class TextIconButton extends ThemedCustomElementCtrl {
   @_p.render($.host._.role) readonly role_: AriaRole = AriaRole.BUTTON;
 

@@ -8,7 +8,7 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
-import { $exec, $push, ImmutableMap } from 'gs-tools/export/collect';
+import { $exec, $push, asImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
 import { typeBased } from 'gs-tools/export/serializer';
 import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
 import { json } from 'nabu/export/grammar';
@@ -18,7 +18,7 @@ import { AriaRole } from 'persona/export/a11y';
 import { attributeIn, element } from 'persona/export/input';
 import { attributeOut, innerHtml } from 'persona/export/output';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import * as dialogCloseSvg from '../asset/dialog_close.svg';
 import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
@@ -44,6 +44,22 @@ export const $ = {
 };
 
 @_p.customElement({
+  configure(vine: VineImpl): void {
+    vine.getObservable($svgConfig)
+        .pipe(take(1))
+        .subscribe(svgConfig => {
+          const newConfig = $exec(
+              svgConfig,
+              $push<[string, SvgConfig], string>(
+                  ['dialog_close', {type: 'embed', content: dialogCloseSvg}],
+                  ['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}],
+              ),
+              asImmutableMap(),
+          );
+
+          vine.setValue($svgConfig, newConfig);
+        });
+  },
   tag: 'mk-icon',
   template: iconTemplate,
 })
@@ -70,18 +86,6 @@ export function icon(
     svgConfig: ImmutableMap<string, SvgConfig>,
 ): IconConfig {
   return {
-    configure(vine: VineImpl): void {
-      vine.setValue(
-          $svgConfig,
-          $exec(
-              svgConfig,
-              $push<[string, SvgConfig], string>(
-                  ['dialog_close', {type: 'embed', content: dialogCloseSvg}],
-                  ['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}],
-              ),
-          ),
-      );
-    },
     tag: 'mk-icon',
   };
 }
