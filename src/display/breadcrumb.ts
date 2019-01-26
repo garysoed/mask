@@ -14,7 +14,7 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { listParser, stringParser } from '../util/parsers';
 import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
-import { crumb, CrumbConfig } from './crumb';
+import { crumb, Crumb, CrumbConfig } from './crumb';
 
 interface CrumbData {
   display: string;
@@ -63,6 +63,7 @@ export const $ = {
 };
 
 @_p.customElement({
+  dependencies: [Crumb],
   tag: 'mk-breadcrumb',
   template: breadcrumbTemplate,
 })
