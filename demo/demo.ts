@@ -1,4 +1,4 @@
-import { $exec, $push, asImmutableMap, createImmutableMap } from 'gs-tools/export/collect';
+import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
 import { Jsons } from 'gs-tools/export/data';
 import { take } from 'rxjs/operators';
 import { Palette, start as startMask } from '../export';
@@ -38,7 +38,7 @@ window.addEventListener('load', () => {
   maskVine.getObservable($svgConfig)
       .pipe(take(1))
       .subscribe(config => {
-        const newConfig = $exec(
+        const newConfig = $pipe(
             config,
             $push<[string, SvgConfig], string>(
                 ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],

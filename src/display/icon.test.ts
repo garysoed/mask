@@ -1,7 +1,7 @@
 import { assert, retryUntil, setup, should, test } from 'gs-testing/export/main';
 import { FakeFetch } from 'gs-testing/export/mock';
 import { createSpySubject } from 'gs-testing/export/spy';
-import { $exec, $push, asImmutableMap } from 'gs-tools/export/collect';
+import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -26,7 +26,7 @@ test('display.Icon', () => {
     tester.vine.getObservable($svgConfig)
         .pipe(take(1))
         .subscribe(config => {
-          const newConfig = $exec(
+          const newConfig = $pipe(
               config,
               $push<[string, SvgConfig], string>(
                   [SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL}],

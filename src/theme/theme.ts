@@ -1,4 +1,4 @@
-import { $declareKeyed, $exec, $getKey, $head, $map, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
+import { $declareKeyed, $pipe, $getKey, $head, $map, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
 import { Color, Colors } from 'gs-tools/export/color';
 import { assertUnreachable } from 'gs-tools/src/typescript/assert-unreachable';
 import { Alpha } from './alpha';
@@ -26,18 +26,18 @@ function generateColorMap_(
     colorMap: ImmutableMap<Shade, Color>,
     contrastShade: Shade,
 ): ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}> {
-  return $exec(
+  return $pipe(
       map,
       $mapPick(
           1,
           (({alpha, bg, fg}) => {
             const normalizedFg = fg === 'contrast' ? contrastShade : fg;
-            const fgColor = $exec(colorMap, $getKey(normalizedFg), $pick(1), $head());
+            const fgColor = $pipe(colorMap, $getKey(normalizedFg), $pick(1), $head());
             if (!fgColor) {
               throw new Error(`Color for shade ${normalizedFg} cannot be found`);
             }
 
-            const bgColor = $exec(colorMap, $getKey(bg), $pick(1), $head());
+            const bgColor = $pipe(colorMap, $getKey(bg), $pick(1), $head());
             if (!bgColor) {
               throw new Error(`Color for shade ${bg} cannot be found`);
             }
@@ -89,8 +89,8 @@ function getContrastForegroundShade_(
     highlightBackground: Color): Shade {
   const darkShade = B010;
   const lightShade = B200;
-  const darkForeground = $exec(shadingMap, $getKey(darkShade), $pick(1), $head());
-  const lightForeground = $exec(shadingMap, $getKey(lightShade), $pick(1), $head());
+  const darkForeground = $pipe(shadingMap, $getKey(darkShade), $pick(1), $head());
+  const lightForeground = $pipe(shadingMap, $getKey(lightShade), $pick(1), $head());
 
   if (!darkForeground) {
     throw new Error(`Cannot find color for ${darkShade}`);
@@ -113,13 +113,13 @@ export class Theme {
       readonly highlightColor: Color) { }
 
   injectCss(styleEl: HTMLStyleElement): void {
-    const baseColorPairs = $exec(
+    const baseColorPairs = $pipe(
         BASE_SHADES,
         $map(shade => [shade, createColor(shade, this.baseColor)] as [Shade, Color]),
         $declareKeyed(([key]) => key),
         asImmutableMap(),
     );
-    const accentColorPairs = $exec(
+    const accentColorPairs = $pipe(
         ACCENT_SHADES,
         $map(shade => [shade, createColor(shade, this.highlightColor)] as [Shade, Color]),
         $declareKeyed(([key]) => key),
@@ -130,7 +130,7 @@ export class Theme {
       ...accentColorPairs,
     ]);
 
-    const b100 = $exec(colorMap, $getKey(B100), $pick(1), $head());
+    const b100 = $pipe(colorMap, $getKey(B100), $pick(1), $head());
     if (!b100) {
       throw new Error(`Base color does not exist`);
     }

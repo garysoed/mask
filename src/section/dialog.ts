@@ -90,16 +90,3 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 }
-
-export function dialog(
-    backdropConfig: BackdropConfig,
-    textIconButtonConfig: TextIconButtonConfig,
-): Config {
-  return {
-    dependencies: [
-      backdropConfig,
-      textIconButtonConfig,
-    ],
-    tag: 'mk-dialog',
-  };
-}

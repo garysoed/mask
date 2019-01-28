@@ -1,6 +1,6 @@
 import { instanceSourceId } from 'grapevine/export/component';
 import { $vine, VineImpl } from 'grapevine/export/main';
-import { $exec, $map, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
+import { $pipe, $map, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
 import { BooleanType, ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { element, onDom } from 'persona/export/input';
@@ -161,7 +161,7 @@ const ORDERED_PALETTES: Array<[string, Color]> = [
 ];
 
 function getPaletteData_(selectedColor: Color): ImmutableList<PaletteData> {
-  return $exec(
+  return $pipe(
       createImmutableList(ORDERED_PALETTES),
       $map(([colorName, color]) => {
         const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;

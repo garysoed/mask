@@ -8,7 +8,7 @@
  */
 
 import { VineImpl } from 'grapevine/export/main';
-import { $exec, $push, asImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
+import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
 import { typeBased } from 'gs-tools/export/serializer';
 import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
 import { json } from 'nabu/export/grammar';
@@ -22,7 +22,6 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import * as dialogCloseSvg from '../asset/dialog_close.svg';
 import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
-import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 import iconTemplate from './icon.html';
@@ -48,7 +47,7 @@ export const $ = {
     vine.getObservable($svgConfig)
         .pipe(take(1))
         .subscribe(svgConfig => {
-          const newConfig = $exec(
+          const newConfig = $pipe(
               svgConfig,
               $push<[string, SvgConfig], string>(
                   ['dialog_close', {type: 'embed', content: dialogCloseSvg}],
@@ -80,12 +79,4 @@ export class Icon extends ThemedCustomElementCtrl {
             map(svg => svg || ''),
         );
   }
-}
-
-export function icon(
-    svgConfig: ImmutableMap<string, SvgConfig>,
-): IconConfig {
-  return {
-    tag: 'mk-icon',
-  };
 }

@@ -8,8 +8,27 @@
   }
 
   :host([mode="passive"]) {
+    --mkIconFill: var(--mkThemePassiveFG);
     --mkIconHighlightFG: var(--mkThemePassiveFG);
     --mkIconHighlightBG: var(--mkThemePassiveBG);
+  }
+
+  :host([mode="secondary"]) {
+    --mkIconFill: var(--mkThemeSecondaryFG);
+    --mkIconHighlightFG: var(--mkThemeSecondaryFG);
+    --mkIconHighlightBG: var(--mkThemeSecondaryBG);
+  }
+
+  :host([mode="action"]) {
+    --mkIconFill: var(--mkThemeActionFG);
+    --mkIconHighlightFG: var(--mkThemeActionFG);
+    --mkIconHighlightBG: var(--mkThemeActionBG);
+  }
+
+  :host([mode="focus"]) {
+    --mkIconFill: var(--mkThemeActionFocusFG);
+    --mkIconHighlightFG: var(--mkThemeActionFocusFG);
+    --mkIconHighlightBG: var(--mkThemeActionFocusBG);
   }
 
   :host([mode="disabled"]) {
@@ -18,24 +37,27 @@
     --mkIconHighlightBG: var(--mkThemeActionDisabledBG);
   }
 
-  :host([mode="action"]) {
-    --mkIconHighlightFG: var(--mkThemeActionFG);
-    --mkIconHighlightBG: var(--mkThemeActionBG);
-  }
-
-  :host([mode="focus"]) {
-    --mkIconHighlightFG: var(--mkThemeActionFocusFG);
-    --mkIconHighlightBG: var(--mkThemeActionFocusBG);
-  }
-
   :host([mode="active"]) {
     --mkIconHighlightFG: var(--mkThemeActiveFG);
     --mkIconHighlightBG: var(--mkThemeActiveBG);
   }
 
   :host([mode="actionPrimary"]) {
+    --mkIconFill: var(--mkThemeActionFG);
     --mkIconHighlightFG: var(--mkThemeActionPrimaryFG);
     --mkIconHighlightBG: var(--mkThemeActionPrimaryBG);
+  }
+
+  :host([mode="primaryFocus"]) {
+    --mkIconFill: var(--mkThemeActionPrimaryFocusFG);
+    --mkIconHighlightFG: var(--mkThemeActionPrimaryFocusFG);
+    --mkIconHighlightBG: var(--mkThemeActionPrimaryFocusBG);
+  }
+
+  :host([mode="primaryDisabled"]) {
+    --mkIconFill: var(--mkThemeActionPrimaryDisabledFG);
+    --mkIconHighlightFG: var(--mkThemeActionPrimaryDisabledFG);
+    --mkIconHighlightBG: var(--mkThemeActionPrimaryDisabledBG);
   }
 
   #root > svg {

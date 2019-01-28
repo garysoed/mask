@@ -16,7 +16,9 @@ export function start(
     theme: Theme,
     styleEl: HTMLStyleElement,
     customElementRegistry: CustomElementRegistry = window.customElements): {vine: VineImpl} {
+  console.time('persona build');
   const {vine} = _p.builder.build(rootCtrls, customElementRegistry, _v.builder);
+  console.timeEnd('persona build');
   vine.setValue($theme, theme);
 
   vine.getObservable($theme).subscribe(theme => theme.injectCss(styleEl));

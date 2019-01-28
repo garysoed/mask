@@ -1,5 +1,5 @@
 import { staticSourceId, staticStreamId } from 'grapevine/export/component';
-import { $exec, $getKey, $head, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap, ImmutableMapType } from 'gs-tools/export/collect';
+import { $pipe, $getKey, $head, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap, ImmutableMapType } from 'gs-tools/export/collect';
 import { BaseDisposable } from 'gs-tools/export/dispose';
 import { InstanceofType } from 'gs-types/export';
 import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
@@ -22,13 +22,13 @@ export class SvgService extends BaseDisposable {
   }
 
   getSvg(name: string): Observable<string>|null {
-    return $exec(this.svgObs, $getKey(name), $pick(1), $head()) || null;
+    return $pipe(this.svgObs, $getKey(name), $pick(1), $head()) || null;
   }
 }
 
 function createSvgObs(configs: ImmutableMap<string, SvgConfig>):
     ImmutableMap<string, Observable<string>> {
-  return $exec(
+  return $pipe(
       configs,
       $mapPick(
           1,

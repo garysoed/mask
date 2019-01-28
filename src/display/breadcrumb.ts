@@ -1,4 +1,4 @@
-import { $exec, $map, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
+import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { HasPropertiesType, InstanceofType, IterableOfType, StringType } from 'gs-types/export';
@@ -103,7 +103,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   ): Observable<ImmutableList<RenderedCrumbData>> {
     return pathObs
         .pipe(
-            map(path => $exec(
+            map(path => $pipe(
                 path,
                 $map(({key, display}) => ({
                   [__renderId]: key,

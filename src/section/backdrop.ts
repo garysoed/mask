@@ -5,7 +5,6 @@ import { classlist } from 'persona/export/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { BackdropConfig } from '../configs/backdrop-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import backdropTemplate from './backdrop.html';
 import { $dialogState, DialogState } from './dialog-service';
@@ -35,13 +34,4 @@ export class Backdrop extends ThemedCustomElementCtrl {
         }),
     );
   }
-}
-
-export function backdrop(): BackdropConfig {
-  return {
-    configure(): void {
-      document.body.appendChild(document.createElement('mk-backdrop'));
-    },
-    tag: 'mk-backdrop',
-  };
 }

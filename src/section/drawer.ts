@@ -90,7 +90,3 @@ export class Drawer extends ThemedCustomElementCtrl {
         );
   }
 }
-
-export function drawer(): Config {
-  return {tag: 'mk-drawer'};
-}

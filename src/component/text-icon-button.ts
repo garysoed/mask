@@ -11,13 +11,11 @@
 
 import { BooleanType, ElementWithTagType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
-import { attributeIn, dispatcher, DispatchFn, element, onDom, onKeydown } from 'persona/export/input';
+import { attributeIn, dispatcher, DispatchFn, element, hasAttribute, onDom, onKeydown } from 'persona/export/input';
 import { attributeOut } from 'persona/export/output';
 import { combineLatest, merge, Observable } from 'rxjs';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { TextIconButtonConfig } from '../configs/text-icon-button-config';
-import { IconWithTextConfig } from '../display/icon-with-text';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
@@ -30,10 +28,13 @@ export const $ = {
     ariaLabelOut: attributeOut('aria-label', stringParser()),
     disabled: attributeIn('disabled', booleanParser(), BooleanType, false),
     dispatch: dispatcher(),
+    hasMkPrimary: hasAttribute('mk-primary'),
     icon: attributeIn('icon', stringParser(), StringType, ''),
     label: attributeIn('label', stringParser(), StringType, ''),
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
+    onMouseEnter: onDom('mouseenter'),
+    onMouseLeave: onDom('mouseleave'),
     onSpaceDown: onKeydown(' '),
     role: attributeOut('role', stringParser()),
     tabindex: attributeOut('tabindex', integerParser()),
@@ -66,8 +67,34 @@ export class TextIconButton extends ThemedCustomElementCtrl {
   @_p.render($.iconWithText._.mode)
   renderIconMode_(
       @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
+      @_p.input($.host._.onMouseEnter) onMouseEnterObs: Observable<MouseEvent>,
+      @_p.input($.host._.onMouseLeave) onMouseLeaveObs: Observable<MouseEvent>,
+      @_p.input($.host._.hasMkPrimary) primaryObs: Observable<boolean>,
   ): Observable<string> {
-    return disabledObs.pipe(map(disabled => disabled ? 'disabled' : ''));
+    const hoverObs = merge(
+        onMouseEnterObs.pipe(mapTo(true)),
+        onMouseLeaveObs.pipe(mapTo(false)),
+    )
+    .pipe(startWith(false));
+
+    return combineLatest(
+        disabledObs,
+        hoverObs,
+        primaryObs,
+    )
+    .pipe(
+        map(([disabled, hover, primary]) => {
+          if (disabled) {
+            return primary ? 'primaryDisabled' : 'disabled';
+          }
+
+          if (hover) {
+            return primary ? 'primaryFocus' : 'focus';
+          }
+
+          return primary ? 'actionPrimary' : 'action';
+        }),
+    );
   }
 
   @_p.render($.host._.tabindex)
@@ -100,8 +127,4 @@ export class TextIconButton extends ThemedCustomElementCtrl {
             }),
         );
   }
-}
-
-export function textIconButton(iconWithTextConfig: IconWithTextConfig): TextIconButtonConfig {
-  return {dependencies: [iconWithTextConfig], tag: 'mk-text-icon-button'};
 }
