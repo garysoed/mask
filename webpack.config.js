@@ -24,6 +24,7 @@ module.exports = smp.wrap({
       'gs-tools': path.resolve(__dirname, './node_modules/gs-tools'),
       'persona': path.resolve(__dirname, './node_modules/persona'),
       'rxjs': path.resolve(__dirname, './node_modules/rxjs'),
+      'santa': path.resolve(__dirname, './node_modules/santa'),
       'tslib': path.resolve(__dirname, './node_modules/tslib'),
     },
     extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css", ".svg"],

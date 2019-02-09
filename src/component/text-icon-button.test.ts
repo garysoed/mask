@@ -40,10 +40,10 @@ test('component.TextIconButton', () => {
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('disabled');
     });
 
-    should(`render empty string if not disabled`, async () => {
+    should(`render "action" if not disabled`, async () => {
       tester.setAttribute(el, $.host._.disabled, false).subscribe();
 
-      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('');
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('action');
     });
   });
 

@@ -121,9 +121,9 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 
   @_p.render($.basePalette._.slot)
   renderBasePalette(
-    @_v.vineIn($theme) theme: Observable<Theme>,
-): Observable<ImmutableList<PaletteData>> {
-  return theme.pipe(map(theme => getPaletteData_(theme.baseColor)));
+      @_v.vineIn($theme) theme: Observable<Theme>,
+  ): Observable<ImmutableList<PaletteData>> {
+    return theme.pipe(map(theme => getPaletteData_(theme.baseColor)));
   }
 }
 

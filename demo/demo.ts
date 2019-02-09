@@ -1,6 +1,7 @@
 import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
 import { Jsons } from 'gs-tools/export/data';
 import { take } from 'rxjs/operators';
+import { ConsoleDestination, logDestination } from 'santa/export';
 import { Palette, start as startMask } from '../export';
 import { $theme, _v } from '../src/app/app';
 import { TextIconButton } from '../src/component/text-icon-button';
