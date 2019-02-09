@@ -1,16 +1,15 @@
-import { instanceStreamId } from 'grapevine/export/component';
-import { AnyType, BooleanType, InstanceofType, StringType } from 'gs-types/export';
+import { instanceStreamId, staticSourceId } from 'grapevine/export/component';
+import { AnyType, BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
 import { attributeIn, element, onInput, subject } from 'persona/export/input';
 import { attributeOut } from 'persona/export/output';
 import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { debounce, filter, map, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 import textInputTemplate from './text-input.html';
 
-const DEBOUNCE_MS = 250;
 
 export const $ = {
   host: element({
@@ -22,9 +21,13 @@ export const $ = {
   input: element('input', InstanceofType(HTMLInputElement), {
     disabled: attributeOut('disabled', booleanParser(), value => !value),
     // TODO: This should cause compile error if the Element type is not InputElement.
-    onInput: onInput(DEBOUNCE_MS),
+    onInput: onInput(),
   }),
 };
+
+const DEBOUNCE_MS = 250;
+export const $debounceMs = staticSourceId('debounceMs', NumberType);
+_v.builder.source($debounceMs, DEBOUNCE_MS);
 
 const $isDirty = instanceStreamId('isDirty', BooleanType);
 
@@ -75,16 +78,17 @@ export class TextInput extends ThemedCustomElementCtrl {
 
   @_p.render($.host._.value)
   renderHostValue_(
+      @_v.vineIn($debounceMs) debounceMsObs: Observable<number>,
       @_v.vineIn($shouldSetInitValue) shouldSetInitValueObs: Observable<string>,
       @_p.input($.input._.onInput) onInputObs: Observable<string>,
       @_p.input($.input) inputElObs: Observable<HTMLInputElement>,
   ): Observable<string> {
     return inputElObs
         .pipe(
-            switchMap(el => {
-              return merge(shouldSetInitValueObs, onInputObs)
-                  .pipe(startWith(el.value));
-            }),
+            debounce(() => debounceMsObs),
+            switchMap(el => merge(shouldSetInitValueObs, onInputObs)
+                .pipe(startWith(el.value)),
+            ),
         );
   }
 

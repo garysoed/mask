@@ -1,7 +1,7 @@
 import { assert, setup, should, test } from 'gs-testing/export/main';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { _p, _v } from '../app/app';
-import { $, TextInput } from './text-input';
+import { $, $debounceMs, TextInput } from './text-input';
 
 const testerFactory = new PersonaTesterFactory(_v.builder, _p.builder);
 
@@ -11,11 +11,12 @@ test('input.TextInput', () => {
 
   setup(() => {
     tester = testerFactory.build([TextInput]);
+    tester.vine.setValue($debounceMs, 0);
     el = tester.createElement('mk-text-input', document.body);
   });
 
-  test('renderValue', () => {
-    should(`dispatch change event when typing`, async () => {
+  test('renderHostValue_', () => {
+    should(`update the host value when typing`, async () => {
       const value1 = 'value1';
       tester.setInputValue(el, $.input, value1).subscribe();
 
