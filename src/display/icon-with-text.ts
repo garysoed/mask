@@ -20,6 +20,7 @@ import { Config } from '../app/config';
 import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
+import { Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
 
 export const $ = {
@@ -40,6 +41,7 @@ export const $ = {
 };
 
 @_p.customElement({
+  dependencies: [Icon],
   tag: 'mk-icon-with-text',
   template: iconWithTextTemplate,
 })
