@@ -17,6 +17,7 @@
 
   :host([disabled]) {
     --mkButtonFG: var(--mkThemeActionDisabledFG);
+    --mkButtonBG: var(--mkThemeActionDisabledBG);
     cursor: default;
   }
 
@@ -28,10 +29,12 @@
   :host(:not([disabled]):hover),
   :host(:not([disabled]):focus) {
     --mkButtonFG: var(--mkThemeActionFocusFG);
+    --mkButtonBG: var(--mkThemeActionFocusBG);
   }
 
   :host([disabled]:focus) {
     --mkButtonFG: var(--mkThemeActionDisabledFG);
+    --mkButtonBG: var(--mkThemeActionDisabledBG);
   }
 
   /* Primary button */

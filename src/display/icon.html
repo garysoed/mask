@@ -38,12 +38,13 @@
   }
 
   :host([mode="active"]) {
+    --mkIconFill: var(--mkThemeActiveFG);
     --mkIconHighlightFG: var(--mkThemeActiveFG);
     --mkIconHighlightBG: var(--mkThemeActiveBG);
   }
 
   :host([mode="actionPrimary"]) {
-    --mkIconFill: var(--mkThemeActionFG);
+    --mkIconFill: var(--mkThemeActionPrimaryFG);
     --mkIconHighlightFG: var(--mkThemeActionPrimaryFG);
     --mkIconHighlightBG: var(--mkThemeActionPrimaryBG);
   }

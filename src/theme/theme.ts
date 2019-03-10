@@ -1,10 +1,10 @@
-import { $declareKeyed, $pipe, $getKey, $head, $map, $mapPick, $pick, asImmutableMap, createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
+import { $declareKeyed, $getKey, $head, $map, $pick, $pipe, asImmutableMap, createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
 import { Color, Colors } from 'gs-tools/export/color';
 import { assertUnreachable } from 'gs-tools/src/typescript/assert-unreachable';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import * as generalCss from './general.css';
-import { ACCENT_SHADES, B010, B100, B200, BASE_SHADES, createColor, Shade } from './shade';
+import { B010, B100, B200, BASE_SHADES, createColor, Shade } from './shade';
 import { DARK_SHADING, HIGHLIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
 import * as variablesCssTemplate from './variables.css';
 
@@ -23,32 +23,38 @@ function generateColorCss_(
 
 function generateColorMap_(
     map: ImmutableMap<ColorSection, ShadingSpec>,
-    colorMap: ImmutableMap<Shade, Color>,
-    contrastShade: Shade,
+    baseColors: ImmutableMap<Shade, Color>,
+    accentColors: ImmutableMap<Shade, Color>,
+    contrastBaseShade: Shade,
+    contrastAccentShade: Shade,
 ): ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}> {
   return $pipe(
       map,
-      $mapPick(
-          1,
-          (({alpha, bg, fg}) => {
-            const normalizedFg = fg === 'contrast' ? contrastShade : fg;
-            const fgColor = $pipe(colorMap, $getKey(normalizedFg), $pick(1), $head());
+      $map(
+          (([section, {alpha, bg, fg}]) => {
+            const useAccent = section === ColorSection.ACTION_FOCUS ||
+                section === ColorSection.ACTION_PRIMARY_FOCUS;
+            const map = useAccent ? accentColors : baseColors;
+            const contrast = useAccent ? contrastAccentShade : contrastBaseShade;
+            const normalizedFg = fg === 'contrast' ? contrast : fg;
+
+            const fgColor = $pipe(map, $getKey(normalizedFg), $pick(1), $head());
             if (!fgColor) {
               throw new Error(`Color for shade ${normalizedFg} cannot be found`);
             }
 
-            const bgColor = $pipe(colorMap, $getKey(bg), $pick(1), $head());
+            const bgColor = $pipe(map, $getKey(bg), $pick(1), $head());
             if (!bgColor) {
               throw new Error(`Color for shade ${bg} cannot be found`);
             }
 
             const numericAlpha = getAlphaValue_(alpha, normalizedFg);
 
-            return {
+            return [section, {
               alpha: numericAlpha,
               bg: bgColor,
               fg: fgColor,
-            };
+            }] as [ColorSection, {alpha: number; bg: Color; fg: Color}];
           }),
       ),
       asImmutableMap(),
@@ -120,35 +126,43 @@ export class Theme {
         asImmutableMap(),
     );
     const accentColorPairs = $pipe(
-        ACCENT_SHADES,
+        BASE_SHADES,
         $map(shade => [shade, createColor(shade, this.highlightColor)] as [Shade, Color]),
         $declareKeyed(([key]) => key),
         asImmutableMap(),
     );
-    const colorMap = createImmutableMap([
-      ...baseColorPairs,
-      ...accentColorPairs,
-    ]);
 
-    const b100 = $pipe(colorMap, $getKey(B100), $pick(1), $head());
-    if (!b100) {
+    const baseB100 = $pipe(baseColorPairs, $getKey(B100), $pick(1), $head());
+    if (!baseB100) {
       throw new Error(`Base color does not exist`);
     }
-    const contrastShade = getContrastForegroundShade_(colorMap, b100);
+    const accentB100 = $pipe(accentColorPairs, $getKey(B100), $pick(1), $head());
+    if (!accentB100) {
+      throw new Error('Accent color does not exist');
+    }
+
+    const contrastBaseShade = getContrastForegroundShade_(baseColorPairs, baseB100);
+    const contrastAccentShade = getContrastForegroundShade_(accentColorPairs, accentB100);
     const lightColorMap = generateColorMap_(
         LIGHT_SHADING,
-        colorMap,
-        contrastShade,
+        baseColorPairs,
+        accentColorPairs,
+        contrastBaseShade,
+        contrastAccentShade,
     );
     const darkColorMap = generateColorMap_(
         DARK_SHADING,
-        colorMap,
-        contrastShade,
+        baseColorPairs,
+        accentColorPairs,
+        contrastBaseShade,
+        contrastAccentShade,
     );
     const highlightColorMap = generateColorMap_(
         HIGHLIGHT_SHADING,
-        colorMap,
-        contrastShade,
+        baseColorPairs,
+        accentColorPairs,
+        contrastBaseShade,
+        contrastAccentShade,
     );
     const cssContent = variablesCssTemplate
         .replace('/*{themeLight}*/', generateColorCss_(lightColorMap))
