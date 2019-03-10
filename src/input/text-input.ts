@@ -1,6 +1,6 @@
 import { instanceStreamId, staticSourceId } from 'grapevine/export/component';
 import { AnyType, BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
-import { attributeIn, channelIn, element, onInput } from 'persona/export/input';
+import { attributeIn, element, handler, onInput } from 'persona/export/input';
 import { attributeOut } from 'persona/export/output';
 import { merge, Observable } from 'rxjs';
 import { debounce, filter, map, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import textInputTemplate from './text-input.html';
 
 export const $ = {
   host: element({
-    clearObs: channelIn<void>('mkClear', AnyType()),
+    clearObs: handler<[]>('clear', AnyType()),
     disabled: attributeIn('disabled', booleanParser(), BooleanType, false),
     initValue: attributeIn('init-value', stringParser(), StringType, ''),
     value: attributeOut('value', stringParser()),
@@ -43,7 +43,7 @@ const $shouldSetInitValue = instanceStreamId('initValue', StringType);
 export class TextInput extends ThemedCustomElementCtrl {
   @_v.vineOut($shouldSetInitValue)
   providesInitValue_(
-      @_p.input($.host._.clearObs) clearObs: Observable<void>,
+      @_p.input($.host._.clearObs) clearObs: Observable<[]>,
       @_v.vineIn($isDirty) isDirtyObs: Observable<boolean>,
       @_p.input($.host._.initValue) initValueObs: Observable<string>,
   ): Observable<string> {
@@ -67,7 +67,7 @@ export class TextInput extends ThemedCustomElementCtrl {
   @_v.vineOut($isDirty)
   providesIsDirty_(
       @_p.input($.input._.onInput) onInputObs: Observable<string>,
-      @_p.input($.host._.clearObs) clearObs: Observable<void>,
+      @_p.input($.host._.clearObs) clearObs: Observable<[]>,
   ): Observable<boolean> {
     return merge(
         onInputObs.pipe(mapTo(true)),
