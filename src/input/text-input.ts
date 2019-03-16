@@ -5,7 +5,6 @@ import { attributeOut } from 'persona/export/output';
 import { merge, Observable } from 'rxjs';
 import { debounce, filter, map, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { Config } from '../app/config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 import textInputTemplate from './text-input.html';
@@ -105,8 +104,4 @@ export class TextInput extends ThemedCustomElementCtrl {
             }),
         );
   }
-}
-
-export function textInput(): Config {
-  return {tag: 'mk-text-input'};
 }

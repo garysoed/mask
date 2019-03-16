@@ -1,19 +1,19 @@
-import { instanceSourceId } from 'grapevine/export/component';
 import { $vine, VineImpl } from 'grapevine/export/main';
-import { $pipe, $map, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
+import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
-import { BooleanType, ElementWithTagType, InstanceofType } from 'gs-types/export';
+import { InstanceofType } from 'gs-types/export';
 import { element, onDom } from 'persona/export/input';
-import { attributeOut, slot } from 'persona/export/output';
+import { slot } from 'persona/export/output';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
-import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { $theme, _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
+import { RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { Theme } from '../src/theme/theme';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../src/util/parsers';
+import { stringParser } from '../src/util/parsers';
 import demoTemplate from './demo.html';
 
 interface PaletteData {
@@ -44,23 +44,17 @@ const $ = {
     onClick: onDom('click'),
     slot: slot('basePalette', paletteElementListRenderer),
   }),
-  option: element('option', ElementWithTagType('mk-drawer'), {
-    expanded: attributeOut('expanded', booleanParser()),
-    onMouseOut: onDom('mouseout'),
-    onMouseOver: onDom('mouseover'),
-  }),
 };
 
 export const TAG = 'mk-demo';
 
-const $isOnOption = instanceSourceId('isOnOption', BooleanType);
-_v.builder.source($isOnOption, false);
-
 @_p.customElement({
+  dependencies: [
+    RootLayout,
+  ],
   tag: TAG,
   template: demoTemplate,
 })
-@_p.render($.option._.expanded).withForwarding($isOnOption)
 export class DemoCtrl extends ThemedCustomElementCtrl {
   @_p.onCreate()
   handleAccentPaletteClick_(
@@ -94,22 +88,6 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
               vine.setValue($theme, theme.setBaseColor(color));
             }),
         );
-  }
-
-  @_p.onCreate()
-  handleDrawerExpandCollapse_(
-      @_p.input($.option._.onMouseOut) onMouseOutObs: Observable<Event>,
-      @_p.input($.option._.onMouseOver) onMouseOverObs: Observable<Event>,
-      @_v.vineIn($vine) vineObs: Observable<VineImpl>,
-  ): Observable<unknown> {
-    return merge(
-        onMouseOutObs.pipe(mapTo(false)),
-        onMouseOverObs.pipe(mapTo(true)),
-    )
-    .pipe(
-        withLatestFrom(vineObs),
-        tap(([showDrawer, vine]) => vine.setValue($isOnOption, showDrawer, this)),
-    );
   }
 
   @_p.render($.accentPalette._.slot)
@@ -147,6 +125,8 @@ const ORDERED_PALETTES: Array<[string, Color]> = [
   ['AMBER', Palette.AMBER],
   ['YELLOW', Palette.YELLOW],
   ['LIME', Palette.LIME],
+  ['GREEN', Palette.GREEN],
+  ['TEAL', Palette.TEAL],
   ['CYAN', Palette.CYAN],
   ['AZURE', Palette.AZURE],
   ['BLUE', Palette.BLUE],
@@ -155,8 +135,6 @@ const ORDERED_PALETTES: Array<[string, Color]> = [
   ['MAGENTA', Palette.MAGENTA],
   ['PINK', Palette.PINK],
   ['BROWN', Palette.BROWN],
-  ['GREEN', Palette.GREEN],
-  ['TEAL', Palette.TEAL],
   ['GREY', Palette.GREY],
 ];
 

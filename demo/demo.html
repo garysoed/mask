@@ -1,10 +1,5 @@
 <style id="theme"></style>
 <style>
-  #container {
-    padding: 2rem;
-    position: relative;
-  }
-
   #drawerRoot {
     width: 16rem;
   }
@@ -19,8 +14,8 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #option[expanded="T"] #accentPalette,
-  #option[expanded="T"] #basePalette {
+  #root[drawer-expanded="T"] #accentPalette,
+  #root[drawer-expanded="T"] #basePalette {
     height: 16rem;
     transition: height var(--mkAnimationTime);
   }
@@ -39,14 +34,8 @@
 </style>
 <style id="globalStyle"></style>
 <section layout="row" mk-theme="light" fill-parent>
-  <mk-drawer
-      id="option"
-      max-size="16rem"
-      min-size="4rem"
-      mk-theme="highlight"
-      mode="vertical"
-      shadow="down">
-    <div id="drawerRoot">
+  <mk-root-layout id="root">
+    <div id="drawerRoot" slot="drawer">
       <div id="basePaletteSection">
         <mk-icon-with-text icon="palette" label="Base Palette"></mk-icon-with-text>
         <div id="basePalette" shadow="down">
@@ -62,8 +51,7 @@
         </div>
       </div>
     </div>
-  </mk-drawer>
-  <section flex id="container">
-    <slot></slot>
-  </section>
+
+    <slot slot="main"></slot>
+  </mk-root-layout>
 </section>

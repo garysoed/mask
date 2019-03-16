@@ -1,7 +1,7 @@
 import { RgbColor } from 'gs-tools/export/color';
 
-const GREY = RgbColor.newInstance(128, 128, 128);
-const RED = RgbColor.newInstance(255, 33, 1);
+const GREY = RgbColor.newInstance(128, 142, 154);
+const RED = RgbColor.newInstance(220, 28, 0);
 const ORANGE = RgbColor.newInstance(255, 120, 1);
 const AMBER = RgbColor.newInstance(255, 193, 1);
 const YELLOW = RgbColor.newInstance(232, 229, 24);
@@ -15,7 +15,7 @@ const VIOLET = RgbColor.newInstance(86, 32, 224);
 const PURPLE = RgbColor.newInstance(65, 24, 172);
 const MAGENTA = RgbColor.newInstance(186, 32, 224);
 const PINK = RgbColor.newInstance(255, 1, 149);
-const BROWN = RgbColor.newInstance(180, 80, 0);
+const BROWN = RgbColor.newInstance(140, 66, 0);
 
 export const Palette = {
   AMBER,
