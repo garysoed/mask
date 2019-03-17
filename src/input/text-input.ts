@@ -12,13 +12,13 @@ import textInputTemplate from './text-input.html';
 
 export const $ = {
   host: element({
-    clearObs: handler<[]>('clear', AnyType()),
-    disabled: attributeIn('disabled', booleanParser(), BooleanType, false),
-    initValue: attributeIn('init-value', stringParser(), StringType, ''),
+    clearObs: handler<[]>('clear'),
+    disabled: attributeIn('disabled', booleanParser(), false),
+    initValue: attributeIn('init-value', stringParser(), ''),
     value: attributeOut('value', stringParser()),
   }),
   input: element('input', InstanceofType(HTMLInputElement), {
-    disabled: attributeOut('disabled', booleanParser(), value => !value),
+    disabled: attributeOut('disabled', booleanParser(), false),
     // TODO: This should cause compile error if the Element type is not InputElement.
     onInput: onInput(),
   }),

@@ -1,7 +1,7 @@
 import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
 import { objectConverter } from 'gs-tools/export/serializer';
-import { HasPropertiesType, InstanceofType, IterableOfType, StringType } from 'gs-types/export';
+import { InstanceofType } from 'gs-types/export';
 import { attributeIn, element, onDom } from 'persona/export/input';
 import { dispatcher, slot } from 'persona/export/output';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
@@ -20,10 +20,6 @@ interface CrumbData {
   display: string;
   key: string;
 }
-const crumbDataType = HasPropertiesType({
-  display: StringType,
-  key: StringType,
-});
 
 interface RenderedCrumbData extends CrumbData {
   [__renderId]: string;
@@ -40,7 +36,6 @@ export const $ = {
               key: stringParser(),
             }),
         ),
-        IterableOfType<CrumbData, ImmutableList<CrumbData>>(crumbDataType),
         createImmutableList([]),
     ),
   }),

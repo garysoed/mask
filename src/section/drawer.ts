@@ -11,13 +11,12 @@
 
 import { createImmutableSet } from 'gs-tools/export/collect';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
-import { BooleanType, EnumType, InstanceofType, StringType } from 'gs-types/export';
+import { InstanceofType } from 'gs-types/export';
 import { attributeIn, element } from 'persona/export/input';
 import { style } from 'persona/export/output';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { _p, _v } from '../app/app';
-import { Config } from '../app/config';
+import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 import drawerTemplate from './drawer.html';
@@ -29,13 +28,12 @@ export enum Mode {
 
 export const $ = {
   host: element({
-    expanded: attributeIn('expanded', booleanParser(), BooleanType, false),
-    maxSize: attributeIn('max-size', stringParser(), StringType, ''),
-    minSize: attributeIn('min-size', stringParser(), StringType, '0'),
+    expanded: attributeIn('expanded', booleanParser(), false),
+    maxSize: attributeIn('max-size', stringParser(), ''),
+    minSize: attributeIn('min-size', stringParser(), '0'),
     mode: attributeIn(
         'mode',
         stringMatchConverter(createImmutableSet([Mode.HORIZONTAL, Mode.VERTICAL])),
-        EnumType(Mode),
         Mode.VERTICAL,
     ),
     styleHeight: style('height'),

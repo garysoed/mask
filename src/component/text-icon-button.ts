@@ -9,13 +9,13 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { BooleanType, ElementWithTagType, StringType } from 'gs-types/export';
+import { ElementWithTagType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
 import { attributeIn, element, hasAttribute, onDom, onKeydown } from 'persona/export/input';
 import { attributeOut, dispatcher } from 'persona/export/output';
 import { combineLatest, merge, Observable } from 'rxjs';
-import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
-import { _p, _v } from '../app/app';
+import { filter, map, mapTo, startWith, withLatestFrom } from 'rxjs/operators';
+import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
@@ -24,13 +24,13 @@ import textButtonTemplate from './text-icon-button.html';
 export const $ = {
   host: element({
     ariaDisabled: attributeOut('aria-disabled', booleanParser()),
-    ariaLabelIn: attributeIn('aria-label', stringParser(), StringType, ''),
+    ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
     ariaLabelOut: attributeOut('aria-label', stringParser()),
-    disabled: attributeIn('disabled', booleanParser(), BooleanType, false),
+    disabled: attributeIn('disabled', booleanParser(), false),
     dispatch: dispatcher(),
     hasMkPrimary: hasAttribute('mk-primary'),
-    icon: attributeIn('icon', stringParser(), StringType, ''),
-    label: attributeIn('label', stringParser(), StringType, ''),
+    icon: attributeIn('icon', stringParser(), ''),
+    label: attributeIn('label', stringParser(), ''),
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
     onMouseEnter: onDom('mouseenter'),

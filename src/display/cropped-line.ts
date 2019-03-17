@@ -6,7 +6,7 @@
  */
 
 import { instanceStreamId } from 'grapevine/export/component';
-import { InstanceofType, NumberType, StringType } from 'gs-types/export';
+import { InstanceofType, NumberType } from 'gs-types/export';
 import { attributeIn, element, onDom } from 'persona/export/input';
 import { textContent } from 'persona/export/output';
 import { combineLatest, Observable } from 'rxjs';
@@ -22,7 +22,7 @@ export const $ = {
     onCopy: onDom('copy'),
   }),
   host: element({
-    text: attributeIn('text', stringParser(), StringType, ''),
+    text: attributeIn('text', stringParser(), ''),
   }),
   postfix: element('postfix', InstanceofType(HTMLElement), {
     text: textContent(),

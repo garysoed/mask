@@ -1,5 +1,4 @@
 import { InstanceofType } from 'gs-tools/node_modules/gs-types/export';
-import { StringType } from 'gs-types/export';
 import { attributeIn, element, onDom } from 'persona/export/input';
 import { dispatcher, textContent } from 'persona/export/output';
 import { Observable } from 'rxjs';
@@ -14,7 +13,7 @@ import crumbTemplate from './crumb.html';
 export const $ = {
   host: element({
     dispatch: dispatcher(),
-    display: attributeIn('display', stringParser(), StringType, ''),
+    display: attributeIn('display', stringParser(), ''),
     onClick: onDom('click'),
   }),
   text: element('text', InstanceofType(HTMLDivElement), {

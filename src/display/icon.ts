@@ -10,7 +10,7 @@
 import { VineImpl } from 'grapevine/export/main';
 import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
 import { typeBased } from 'gs-tools/export/serializer';
-import { BooleanType, InstanceofType, StringType } from 'gs-types/export';
+import { BooleanType, InstanceofType } from 'gs-types/export';
 import { json } from 'nabu/export/grammar';
 import { Serializable } from 'nabu/export/main';
 import { compose } from 'nabu/export/util';
@@ -33,8 +33,9 @@ export const $ = {
     ariaHidden: attributeOut(
         'aria-hidden',
         compose<boolean, Serializable, string>(typeBased(BooleanType), json()),
-        value => !value),
-    icon: attributeIn('icon', stringParser(), StringType),
+        false,
+    ),
+    icon: attributeIn('icon', stringParser()),
     role: attributeOut('role', stringParser()),
   }),
   root: element('root', InstanceofType(HTMLSpanElement), {

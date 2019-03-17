@@ -10,7 +10,7 @@
  */
 
 import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
-import { ElementWithTagType, InstanceofType, StringType } from 'gs-types/export';
+import { ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { attributeIn, element } from 'persona/export/input';
 import { attributeOut, classlist, textContent } from 'persona/export/output';
 import { Observable } from 'rxjs';
@@ -25,9 +25,9 @@ import iconWithTextTemplate from './icon-with-text.html';
 
 export const $ = {
   host: element({
-    icon: attributeIn('icon', stringParser(), StringType, ''),
-    label: attributeIn('label', stringParser(), StringType, ''),
-    mode: attributeIn('mode', stringParser(), StringType, ''),
+    icon: attributeIn('icon', stringParser(), ''),
+    label: attributeIn('label', stringParser(), ''),
+    mode: attributeIn('mode', stringParser(), ''),
   }),
   icon: element('icon', ElementWithTagType('mk-icon'), {
     classes: classlist(),
