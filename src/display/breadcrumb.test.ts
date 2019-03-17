@@ -1,7 +1,8 @@
 import { assert, match, should, test } from 'gs-testing/export/main';
-import { createSpy } from 'gs-testing/export/spy';
+import { createSpySubject } from 'gs-testing/export/spy';
 import { $filter, $head, $map, $pipe, $size, createImmutableList } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, Breadcrumb } from './breadcrumb';
@@ -40,8 +41,8 @@ test('display.Breadcrumb', () => {
         },
       ]);
 
-      const handler = createSpy('Handler');
-      el.addEventListener(BREADCRUMB_CLICK_EVENT, handler);
+      const actionSubject = createSpySubject();
+      fromEvent(el, BREADCRUMB_CLICK_EVENT).subscribe(actionSubject);
 
       tester.setAttribute(el, $.host._.path, data).subscribe();
 
@@ -56,7 +57,7 @@ test('display.Breadcrumb', () => {
 
       const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
-      assert(handler).to.haveBeenCalledWith(eventMatcher);
+      await assert(actionSubject).to.emitWith(eventMatcher);
       assert(eventMatcher.getLastMatch().crumbKey).to.equal('a');
     });
   });
@@ -77,9 +78,6 @@ test('display.Breadcrumb', () => {
           key: 'c',
         },
       ]);
-
-      const handler = createSpy('Handler');
-      el.addEventListener(BREADCRUMB_CLICK_EVENT, handler);
 
       tester.setAttribute(el, $.host._.path, data).subscribe();
 

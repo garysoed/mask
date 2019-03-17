@@ -1,5 +1,5 @@
 import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { createSpy } from 'gs-testing/export/spy';
+import { createSpy, createSpySubject } from 'gs-testing/export/spy';
 import { ImmutableSet } from 'gs-tools/export/collect';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { BehaviorSubject } from 'rxjs';
@@ -21,16 +21,16 @@ test('section.Dialog', () => {
     tester.vine.setValue($dialogService, new DialogService());
   });
 
-  test('onCancelButtonAction_', () => {
-    should(`close the dialog correctly`, () => {
-      const mockOnClose = createSpy('OnClose');
+  test('onCloseOrCancel_', () => {
+    should(`close the dialog correctly if canceled`, async () => {
+      const onCloseSubject = createSpySubject<boolean>();
       tester.vine.getObservable($dialogService)
           .pipe(take(1))
           .subscribe(dialogService => {
             dialogService.open<number>({
               cancelable: true,
               elementProvider: () => document.createElement('div'),
-              onClose: mockOnClose,
+              onClose: v => onCloseSubject.next(v),
               title: 'title',
             });
           });
@@ -42,23 +42,21 @@ test('section.Dialog', () => {
           .pipe(take(1))
           .subscribe(el => el.click());
 
-      assert(mockOnClose).to.haveBeenCalledWith(true);
+      await assert(onCloseSubject).to.emitWith(true);
 
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();
     });
-  });
 
-  test('onOkButtonAction_', () => {
-    should(`close the dialog correctly`, () => {
-      const mockOnClose = createSpy('OnClose');
+    should(`close the dialog correctly if OK'd`, async () => {
+      const onCloseSubject = createSpySubject<boolean>();
       tester.vine.getObservable($dialogService)
           .pipe(take(1))
           .subscribe(dialogService => {
             dialogService.open<number>({
               cancelable: true,
               elementProvider: () => document.createElement('div'),
-              onClose: mockOnClose,
+              onClose: v => onCloseSubject.next(v),
               title: 'title',
             });
           });
@@ -70,7 +68,7 @@ test('section.Dialog', () => {
           .pipe(take(1))
           .subscribe(el => el.click());
 
-      assert(mockOnClose).to.haveBeenCalledWith(false);
+      await assert(onCloseSubject).to.emitWith(false);
 
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();

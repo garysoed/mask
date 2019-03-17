@@ -1,6 +1,7 @@
 import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { createSpy, Spy } from 'gs-testing/export/spy';
+import { createSpy, createSpySubject, Spy } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { fromEvent, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ActionEvent } from '../event/action-event';
@@ -15,6 +16,49 @@ test('component.TextIconButton', () => {
   setup(() => {
     tester = testerFactory.build([TextIconButton]);
     el = tester.createElement('mk-text-icon-button', document.body);
+  });
+
+  test('renderDispatchActions_', () => {
+    let actionSubject: Subject<ActionEvent>;
+
+    setup(() => {
+      actionSubject = createSpySubject();
+      fromEvent(el, 'mk-action').subscribe(actionSubject);
+    });
+
+    should(`fire the action event if clicked`, async () => {
+      el.click();
+      await assert(actionSubject).to
+          .emitWith(match.anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+    });
+
+    should(`fire the action event on pressing Enter`, async () => {
+      tester.simulateKeypress(el, $.host, [{key: 'Enter'}]).subscribe();
+      await assert(actionSubject).to
+          .emitWith(match.anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+    });
+
+    should(`fire the action event on pressing space`, async () => {
+      tester.simulateKeypress(el, $.host, [{key: ' '}]).subscribe();
+      await assert(actionSubject).to
+          .emitWith(match.anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+    });
+
+    should(`not fire the action event if disabled`, async () => {
+      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+
+      // Wait for the button to be disabled.
+      await tester
+          .getAttribute(el, $.iconWithText._.mode)
+          .pipe(
+              filter(mode => mode === 'disabled'),
+              take(1),
+          )
+          .toPromise();
+
+      el.click();
+      await assert(actionSubject).toNot.emit();
+    });
   });
 
   test('renderHostAriaLabel_', () => {
@@ -56,46 +100,6 @@ test('component.TextIconButton', () => {
     should(`return -1 if host is disabled`, async () => {
       tester.setAttribute(el, $.host._.disabled, true).subscribe();
       await assert(tester.getAttribute(el, $.host._.tabindex)).to.emitWith(-1);
-    });
-  });
-
-  test('setupActions_', () => {
-    let mockListener: Spy;
-
-    setup(() => {
-      mockListener = createSpy('Listener');
-      el.addEventListener('mk-action', mockListener);
-    });
-
-    should(`fire the action event if clicked`, () => {
-      el.click();
-      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
-    });
-
-    should(`fire the action event on pressing Enter`, () => {
-      tester.simulateKeypress(el, $.host, [{key: 'Enter'}]).subscribe();
-      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
-    });
-
-    should(`fire the action event on pressing space`, () => {
-      tester.simulateKeypress(el, $.host, [{key: ' '}]).subscribe();
-      assert(mockListener).to.haveBeenCalledWith(match.anyThat().beAnInstanceOf(ActionEvent));
-    });
-
-    should(`not fire the action event if disabled`, async () => {
-      tester.setAttribute(el, $.host._.disabled, true).subscribe();
-
-      // Wait for the button to be disabled.
-      await tester
-          .getAttribute(el, $.iconWithText._.mode)
-          .pipe(
-              filter(mode => mode === 'disabled'),
-              take(1),
-          )
-          .toPromise();
-
-      el.click();
-      assert(mockListener).toNot.haveBeenCalled();
     });
   });
 });

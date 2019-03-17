@@ -1,13 +1,11 @@
 import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
+import { debug } from 'gs-tools/export/rxjs';
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { element, onDom } from 'persona/export/input';
 import { classlist, textContent } from 'persona/export/output';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { Config } from '../app/config';
-import { BackdropConfig } from '../configs/backdrop-config';
-import { TextIconButtonConfig } from '../configs/text-icon-button-config';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { $dialogState, DialogState, OpenState } from './dialog-service';

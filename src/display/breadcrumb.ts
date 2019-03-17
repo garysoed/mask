@@ -2,12 +2,12 @@ import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from
 import { Errors } from 'gs-tools/export/error';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { HasPropertiesType, InstanceofType, IterableOfType, StringType } from 'gs-types/export';
-import { attributeIn, dispatcher, DispatchFn, element, onDom } from 'persona/export/input';
-import { slot } from 'persona/export/output';
+import { attributeIn, element, onDom } from 'persona/export/input';
+import { dispatcher, slot } from 'persona/export/output';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
 import { Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
-import { _p, _v } from '../app/app';
+import { map } from 'rxjs/operators';
+import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -68,11 +68,28 @@ export const $ = {
   template: breadcrumbTemplate,
 })
 export class Breadcrumb extends ThemedCustomElementCtrl {
-  @_p.onCreate()
-  onRowAction_(
+
+  @_p.render($.row._.crumbsSlot)
+  renderCrumbs_(
+      @_p.input($.host._.path) pathObs: Observable<ImmutableList<CrumbData>>,
+  ): Observable<ImmutableList<RenderedCrumbData>> {
+    return pathObs
+        .pipe(
+            map(path => $pipe(
+                path,
+                $map(({key, display}) => ({
+                  [__renderId]: key,
+                  display,
+                  key,
+                })),
+                asImmutableList(),
+            )),
+        );
+  }
+  @_p.render($.host._.dispatch)
+  renderDispatchAction_(
       @_p.input($.row._.onAction) onActionObs: Observable<ActionEvent>,
-      @_p.input($.host._.dispatch) dispatchObs: Observable<DispatchFn<BreadcrumbClickEvent>>,
-  ): Observable<unknown> {
+  ): Observable<BreadcrumbClickEvent> {
     return onActionObs
         .pipe(
             map(event => {
@@ -90,28 +107,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
 
               return key;
             }),
-            withLatestFrom(dispatchObs),
-            tap(([key, dispatcher]) => {
-              dispatcher(new BreadcrumbClickEvent(key));
-            }),
-        );
-  }
-
-  @_p.render($.row._.crumbsSlot)
-  renderCrumbs_(
-      @_p.input($.host._.path) pathObs: Observable<ImmutableList<CrumbData>>,
-  ): Observable<ImmutableList<RenderedCrumbData>> {
-    return pathObs
-        .pipe(
-            map(path => $pipe(
-                path,
-                $map(({key, display}) => ({
-                  [__renderId]: key,
-                  display,
-                  key,
-                })),
-                asImmutableList(),
-            )),
+            map(key => new BreadcrumbClickEvent(key)),
         );
   }
 }

@@ -1,6 +1,7 @@
 import { assert, match, should, test } from 'gs-testing/export/main';
-import { createSpy } from 'gs-testing/export/spy';
+import { createSpySubject } from 'gs-testing/export/spy';
 import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { fromEvent } from 'rxjs';
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { Crumb } from './crumb';
@@ -16,14 +17,14 @@ test('display.crumb', () => {
     el = tester.createElement('mk-crumb', document.body);
   });
 
-  test('onHostClick_', () => {
+  test('renderDispatchAction_', () => {
     should(`emit correct event if clicked`, async () => {
-      const handler = createSpy('handler');
-      el.addEventListener(ACTION_EVENT, handler);
+      const actionSubject = createSpySubject();
+      fromEvent(el, ACTION_EVENT).subscribe(actionSubject);
 
       el.click();
 
-      assert(handler).to.haveBeenCalledWith(
+      await assert(actionSubject).to.emitWith(
           match.anyObjectThat<ActionEvent>().beAnInstanceOf(ActionEvent));
     });
   });

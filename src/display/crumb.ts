@@ -1,10 +1,10 @@
 import { InstanceofType } from 'gs-tools/node_modules/gs-types/export';
 import { StringType } from 'gs-types/export';
-import { attributeIn, dispatcher, DispatchFn, element, onDom } from 'persona/export/input';
-import { textContent } from 'persona/export/output';
+import { attributeIn, element, onDom } from 'persona/export/input';
+import { dispatcher, textContent } from 'persona/export/output';
 import { Observable } from 'rxjs';
-import { tap, withLatestFrom } from 'rxjs/operators';
-import { _p, _v } from '../app/app';
+import { map } from 'rxjs/operators';
+import { _p } from '../app/app';
 import { Config } from '../app/config';
 import { ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -28,16 +28,11 @@ export const $ = {
 })
 @_p.render($.text._.text).withForwarding($.host._.display)
 export class Crumb extends ThemedCustomElementCtrl {
-  @_p.onCreate()
+  @_p.render($.host._.dispatch)
   onHostClick_(
       @_p.input($.host._.onClick) onClickObs: Observable<Event>,
-      @_p.input($.host._.dispatch) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
-  ): Observable<unknown> {
-    return onClickObs
-        .pipe(
-            withLatestFrom(dispatcherObs),
-            tap(([, dispatcher]) => dispatcher(new ActionEvent())),
-        );
+  ): Observable<ActionEvent> {
+    return onClickObs.pipe(map(() => new ActionEvent()));
   }
 }
 

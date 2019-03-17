@@ -11,8 +11,8 @@
 
 import { BooleanType, ElementWithTagType, StringType } from 'gs-types/export';
 import { AriaRole } from 'persona/export/a11y';
-import { attributeIn, dispatcher, DispatchFn, element, hasAttribute, onDom, onKeydown } from 'persona/export/input';
-import { attributeOut } from 'persona/export/output';
+import { attributeIn, element, hasAttribute, onDom, onKeydown } from 'persona/export/input';
+import { attributeOut, dispatcher } from 'persona/export/output';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -55,6 +55,27 @@ export const $ = {
 @_p.render($.iconWithText._.icon).withForwarding($.host._.icon)
 export class TextIconButton extends ThemedCustomElementCtrl {
   @_p.render($.host._.role) readonly role_: AriaRole = AriaRole.BUTTON;
+
+  @_p.render($.host._.dispatch)
+  renderDispatchActions_(
+      @_p.input($.host._.onClick) onClickObs: Observable<Event>,
+      @_p.input($.host._.onEnterDown) onEnterDownObs: Observable<Event>,
+      @_p.input($.host._.onSpaceDown) onSpaceDownObs: Observable<Event>,
+      @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
+  ): Observable<ActionEvent> {
+    return merge(
+            onClickObs,
+            onEnterDownObs,
+            onSpaceDownObs,
+        )
+        .pipe(
+            withLatestFrom(
+                disabledObs,
+            ),
+            filter(([, disabled]) => !disabled),
+            map(() => new ActionEvent()),
+        );
+  }
 
   @_p.render($.host._.ariaLabelOut)
   renderHostAriaLabel_(
@@ -101,30 +122,5 @@ export class TextIconButton extends ThemedCustomElementCtrl {
   renderTabIndex_(@_p.input($.host._.disabled) hostDisabledObs: Observable<boolean>):
       Observable<number> {
     return hostDisabledObs.pipe(map(disabled => disabled ? -1 : 0));
-  }
-
-  @_p.onCreate()
-  setupActions_(
-      @_p.input($.host._.onClick) onClickObs: Observable<Event>,
-      @_p.input($.host._.onEnterDown) onEnterDownObs: Observable<Event>,
-      @_p.input($.host._.onSpaceDown) onSpaceDownObs: Observable<Event>,
-      @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
-      @_p.input($.host._.dispatch) dispatcherObs: Observable<DispatchFn<ActionEvent>>,
-  ): Observable<unknown> {
-    return merge(
-            onClickObs,
-            onEnterDownObs,
-            onSpaceDownObs,
-        )
-        .pipe(
-            withLatestFrom(
-                disabledObs,
-                dispatcherObs,
-            ),
-            filter(([, disabled]) => !disabled),
-            tap(([, , dispatch]) => {
-              dispatch(new ActionEvent());
-            }),
-        );
   }
 }
