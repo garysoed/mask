@@ -27,7 +27,7 @@ interface RenderedCrumbData extends CrumbData {
 
 export const $ = {
   host: element({
-    dispatch: dispatcher(),
+    dispatch: dispatcher(ACTION_EVENT),
     path: attributeIn<ImmutableList<CrumbData>>(
         'path',
         listParser(

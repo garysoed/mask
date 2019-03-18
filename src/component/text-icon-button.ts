@@ -16,7 +16,7 @@ import { attributeOut, dispatcher } from 'persona/export/output';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { filter, map, mapTo, startWith, withLatestFrom } from 'rxjs/operators';
 import { _p } from '../app/app';
-import { ActionEvent } from '../event/action-event';
+import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
 import textButtonTemplate from './text-icon-button.html';
@@ -27,7 +27,7 @@ export const $ = {
     ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
     ariaLabelOut: attributeOut('aria-label', stringParser()),
     disabled: attributeIn('disabled', booleanParser(), false),
-    dispatch: dispatcher(),
+    dispatch: dispatcher(ACTION_EVENT),
     hasMkPrimary: hasAttribute('mk-primary'),
     icon: attributeIn('icon', stringParser(), ''),
     label: attributeIn('label', stringParser(), ''),
