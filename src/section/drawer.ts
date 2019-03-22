@@ -26,16 +26,20 @@ export enum Mode {
   VERTICAL = 'vertical',
 }
 
+export const $$ = {
+  expanded: attributeIn('expanded', booleanParser(), false),
+  maxSize: attributeIn('max-size', stringParser(), ''),
+  minSize: attributeIn('min-size', stringParser(), '0'),
+  mode: attributeIn(
+      'mode',
+      stringMatchConverter(createImmutableSet([Mode.HORIZONTAL, Mode.VERTICAL])),
+      Mode.VERTICAL,
+  ),
+};
+
 export const $ = {
   host: element({
-    expanded: attributeIn('expanded', booleanParser(), false),
-    maxSize: attributeIn('max-size', stringParser(), ''),
-    minSize: attributeIn('min-size', stringParser(), '0'),
-    mode: attributeIn(
-        'mode',
-        stringMatchConverter(createImmutableSet([Mode.HORIZONTAL, Mode.VERTICAL])),
-        Mode.VERTICAL,
-    ),
+    ...$$,
     styleHeight: style('height'),
     styleOverflow: style('overflow'),
     styleWidth: style('width'),

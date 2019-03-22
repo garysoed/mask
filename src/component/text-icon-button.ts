@@ -21,23 +21,27 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
 import textButtonTemplate from './text-icon-button.html';
 
+export const $$ = {
+  actionEvent: dispatcher(ACTION_EVENT),
+  ariaDisabled: attributeOut('aria-disabled', booleanParser()),
+  ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
+  ariaLabelOut: attributeOut('aria-label', stringParser()),
+  disabled: attributeIn('disabled', booleanParser(), false),
+  hasMkPrimary: hasAttribute('mk-primary'),
+  icon: attributeIn('icon', stringParser(), ''),
+  label: attributeIn('label', stringParser(), ''),
+  role: attributeOut('role', stringParser()),
+  tabindex: attributeOut('tabindex', integerParser()),
+};
+
 export const $ = {
   host: element({
-    ariaDisabled: attributeOut('aria-disabled', booleanParser()),
-    ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
-    ariaLabelOut: attributeOut('aria-label', stringParser()),
-    disabled: attributeIn('disabled', booleanParser(), false),
-    dispatch: dispatcher(ACTION_EVENT),
-    hasMkPrimary: hasAttribute('mk-primary'),
-    icon: attributeIn('icon', stringParser(), ''),
-    label: attributeIn('label', stringParser(), ''),
+    ...$$,
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
     onSpaceDown: onKeydown(' '),
-    role: attributeOut('role', stringParser()),
-    tabindex: attributeOut('tabindex', integerParser()),
   }),
   iconWithText: element('iconWithText', ElementWithTagType('mk-icon-with-text'), {
     icon: attributeOut('icon', stringParser()),
@@ -56,7 +60,7 @@ export const $ = {
 export class TextIconButton extends ThemedCustomElementCtrl {
   @_p.render($.host._.role) readonly role_: AriaRole = AriaRole.BUTTON;
 
-  @_p.render($.host._.dispatch)
+  @_p.render($.host._.actionEvent)
   renderDispatchActions_(
       @_p.input($.host._.onClick) onClickObs: Observable<Event>,
       @_p.input($.host._.onEnterDown) onEnterDownObs: Observable<Event>,

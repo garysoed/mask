@@ -32,7 +32,7 @@ test('input.TextInput', () => {
       await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
 
       // Clear the input.
-      tester.callFunction(el, $.host._.clearObs, []).subscribe();
+      tester.callFunction(el, $.host._.clearFn, []).subscribe();
       await assert(tester.getAttribute(el, $.host._.value)).to.emitWith('');
     });
 

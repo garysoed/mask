@@ -42,8 +42,9 @@ window.addEventListener('load', () => {
         const newConfig = $pipe(
             config,
             $push<[string, SvgConfig], string>(
-                ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
                 ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
+                ['logo', {type: 'remote' as 'remote', url: './asset/mask.svg'}],
+                ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
             ),
             asImmutableMap(),
         );

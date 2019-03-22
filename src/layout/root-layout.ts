@@ -1,26 +1,33 @@
 import { instanceSourceId } from 'grapevine/export/component';
 import { $vine, VineImpl } from 'grapevine/export/main';
-import { debug } from 'gs-tools/export/rxjs';
 import { BooleanType, ElementWithTagType } from 'gs-types/export';
-import { element, mediaQuery, onDom } from 'persona/export/input';
+import { attributeIn, element, mediaQuery, onDom } from 'persona/export/input';
+import { api } from 'persona/export/main';
 import { attributeOut } from 'persona/export/output';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import { $$ as $textIconButton } from '../component/text-icon-button';
+import { $$ as $drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser } from '../util/parsers';
+import { booleanParser, stringParser } from '../util/parsers';
 import template from './root-layout.html';
+
+export const $$ = {
+  drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
+  icon: attributeIn('icon', stringParser()),
+  label: attributeIn('label', stringParser()),
+};
 
 export const $ = {
   drawer: element('drawer', ElementWithTagType('mk-drawer'), {
-    expanded: attributeOut('expanded', booleanParser()),
+    ...api($drawer),
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
   }),
-  host: element({
-    drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
-  }),
+  host: element($$),
+  title: element('title', ElementWithTagType('mk-text-icon-button'), api($textIconButton)),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
 
@@ -33,6 +40,8 @@ _v.builder.source($isDrawerOpen, false);
 })
 @_p.render($.drawer._.expanded).withForwarding($isDrawerOpen)
 @_p.render($.host._.drawerExpanded).withForwarding($isDrawerOpen)
+@_p.render($.title._.label).withForwarding($.host._.label)
+@_p.render($.title._.icon).withForwarding($.host._.icon)
 export class RootLayout extends ThemedCustomElementCtrl {
   @_p.onCreate()
   handleDrawerExpandCollapse(

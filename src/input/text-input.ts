@@ -9,14 +9,15 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 import textInputTemplate from './text-input.html';
 
+export const $$ = {
+  clearFn: handler<[]>('clear'),
+  disabled: attributeIn('disabled', booleanParser(), false),
+  initValue: attributeIn('init-value', stringParser(), ''),
+  value: attributeOut('value', stringParser()),
+};
 
 export const $ = {
-  host: element({
-    clearObs: handler<[]>('clear'),
-    disabled: attributeIn('disabled', booleanParser(), false),
-    initValue: attributeIn('init-value', stringParser(), ''),
-    value: attributeOut('value', stringParser()),
-  }),
+  host: element($$),
   input: element('input', InstanceofType(HTMLInputElement), {
     disabled: attributeOut('disabled', booleanParser(), false),
     // TODO: This should cause compile error if the Element type is not InputElement.
@@ -42,7 +43,7 @@ const $shouldSetInitValue = instanceStreamId('initValue', StringType);
 export class TextInput extends ThemedCustomElementCtrl {
   @_v.vineOut($shouldSetInitValue)
   providesInitValue_(
-      @_p.input($.host._.clearObs) clearObs: Observable<[]>,
+      @_p.input($.host._.clearFn) clearObs: Observable<[]>,
       @_v.vineIn($isDirty) isDirtyObs: Observable<boolean>,
       @_p.input($.host._.initValue) initValueObs: Observable<string>,
   ): Observable<string> {
@@ -66,7 +67,7 @@ export class TextInput extends ThemedCustomElementCtrl {
   @_v.vineOut($isDirty)
   providesIsDirty_(
       @_p.input($.input._.onInput) onInputObs: Observable<string>,
-      @_p.input($.host._.clearObs) clearObs: Observable<[]>,
+      @_p.input($.host._.clearFn) clearObs: Observable<[]>,
   ): Observable<boolean> {
     return merge(
         onInputObs.pipe(mapTo(true)),
