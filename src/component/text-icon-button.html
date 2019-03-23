@@ -15,7 +15,8 @@
     cursor: pointer;
   }
 
-  :host([disabled]) {
+  :host([disabled]),
+  :host([disabled]:focus) {
     --mkButtonFG: var(--mkThemeActionDisabledFG);
     --mkButtonBG: var(--mkThemeActionDisabledBG);
     cursor: default;
@@ -27,14 +28,16 @@
   }
 
   :host(:not([disabled]):hover),
-  :host(:not([disabled]):focus) {
+  :host(:not([disabled]):focus),
+  :host(:not([disabled])[active]:focus),
+  :host(:not([disabled])[active]:hover) {
     --mkButtonFG: var(--mkThemeActionFocusFG);
     --mkButtonBG: var(--mkThemeActionFocusBG);
   }
 
-  :host([disabled]:focus) {
-    --mkButtonFG: var(--mkThemeActionDisabledFG);
-    --mkButtonBG: var(--mkThemeActionDisabledBG);
+  :host(:not([disabled])[active]) {
+    --mkButtonFG: var(--mkThemeActiveFG);
+    --mkButtonBG: var(--mkThemeActiveBG);
   }
 
   /* Primary button */

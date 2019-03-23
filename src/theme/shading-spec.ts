@@ -1,7 +1,7 @@
-import { createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
+import { createImmutableMap } from 'gs-tools/export/collect';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
-import { B010, B025, B050, B075, B100, B125, B150, B175, B200, Shade } from './shade';
+import { B000, B010, B050, B075, B100, B175, B200, Shade } from './shade';
 
 export interface ShadingSpec {
   alpha: Alpha;
@@ -22,15 +22,15 @@ export const LIGHT_SHADING = createImmutableMap<ColorSection, ShadingSpec>([
 ]);
 
 export const DARK_SHADING = createImmutableMap<ColorSection, ShadingSpec>([
-  [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: B025, fg: B200}],
-  [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: B025, fg: B200}],
-  [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: B025, fg: B175}],
+  [ColorSection.PASSIVE,                 {alpha: Alpha.HIGH,   bg: B000, fg: B200}],
+  [ColorSection.SECONDARY,               {alpha: Alpha.MEDIUM, bg: B000, fg: B200}],
+  [ColorSection.ACTION,                  {alpha: Alpha.HIGH,   bg: B000, fg: B175}],
   [ColorSection.ACTION_FOCUS,            {alpha: Alpha.HIGH,   bg: B075, fg: B175}],
-  [ColorSection.ACTION_DISABLED,         {alpha: Alpha.LOW,    bg: B025, fg: B200}],
+  [ColorSection.ACTION_DISABLED,         {alpha: Alpha.LOW,    bg: B000, fg: B200}],
   [ColorSection.ACTIVE,                  {alpha: Alpha.HIGH,   bg: B075, fg: B175}],
   [ColorSection.ACTION_PRIMARY,          {alpha: Alpha.HIGH,   bg: B100, fg: 'contrast'}],
   [ColorSection.ACTION_PRIMARY_FOCUS,    {alpha: Alpha.HIGH,   bg: B100, fg: 'contrast'}],
-  [ColorSection.ACTION_PRIMARY_DISABLED, {alpha: Alpha.LOW,    bg: B025, fg: B200}],
+  [ColorSection.ACTION_PRIMARY_DISABLED, {alpha: Alpha.LOW,    bg: B000, fg: B200}],
 ]);
 
 export const HIGHLIGHT_SHADING = createImmutableMap<ColorSection, ShadingSpec>([

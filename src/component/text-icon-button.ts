@@ -23,6 +23,7 @@ import textButtonTemplate from './text-icon-button.html';
 
 export const $$ = {
   actionEvent: dispatcher(ACTION_EVENT),
+  active: hasAttribute('active'),
   ariaDisabled: attributeOut('aria-disabled', booleanParser()),
   ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
   ariaLabelOut: attributeOut('aria-label', stringParser()),
@@ -91,6 +92,7 @@ export class TextIconButton extends ThemedCustomElementCtrl {
 
   @_p.render($.iconWithText._.mode)
   renderIconMode_(
+      @_p.input($.host._.active) activeObs: Observable<boolean>,
       @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
       @_p.input($.host._.onMouseEnter) onMouseEnterObs: Observable<MouseEvent>,
       @_p.input($.host._.onMouseLeave) onMouseLeaveObs: Observable<MouseEvent>,
@@ -103,17 +105,18 @@ export class TextIconButton extends ThemedCustomElementCtrl {
     .pipe(startWith(false));
 
     return combineLatest(
+        activeObs,
         disabledObs,
         hoverObs,
         primaryObs,
     )
     .pipe(
-        map(([disabled, hover, primary]) => {
+        map(([active, disabled, hover, primary]) => {
           if (disabled) {
             return primary ? 'primaryDisabled' : 'disabled';
           }
 
-          if (hover) {
+          if (hover || active) {
             return primary ? 'primaryFocus' : 'focus';
           }
 
