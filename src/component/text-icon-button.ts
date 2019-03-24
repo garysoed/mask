@@ -38,8 +38,10 @@ export const $$ = {
 export const $ = {
   host: element({
     ...$$,
+    onBlur: onDom('blur'),
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
+    onFocus: onDom('focus'),
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
     onSpaceDown: onKeydown(' '),
@@ -94,6 +96,8 @@ export class TextIconButton extends ThemedCustomElementCtrl {
   renderIconMode_(
       @_p.input($.host._.active) activeObs: Observable<boolean>,
       @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
+      @_p.input($.host._.onBlur) onBlurObs: Observable<Event>,
+      @_p.input($.host._.onFocus) onFocusObs: Observable<Event>,
       @_p.input($.host._.onMouseEnter) onMouseEnterObs: Observable<MouseEvent>,
       @_p.input($.host._.onMouseLeave) onMouseLeaveObs: Observable<MouseEvent>,
       @_p.input($.host._.hasMkPrimary) primaryObs: Observable<boolean>,
@@ -104,20 +108,31 @@ export class TextIconButton extends ThemedCustomElementCtrl {
     )
     .pipe(startWith(false));
 
+    const focusedObs = merge(
+        onFocusObs.pipe(mapTo(true)),
+        onBlurObs.pipe(mapTo(false)),
+    )
+    .pipe(startWith(false));
+
     return combineLatest(
         activeObs,
         disabledObs,
+        focusedObs,
         hoverObs,
         primaryObs,
     )
     .pipe(
-        map(([active, disabled, hover, primary]) => {
+        map(([active, disabled, focused, hover, primary]) => {
           if (disabled) {
             return primary ? 'primaryDisabled' : 'disabled';
           }
 
-          if (hover || active) {
+          if (hover || focused) {
             return primary ? 'primaryFocus' : 'focus';
+          }
+
+          if (active) {
+            return 'active';
           }
 
           return primary ? 'actionPrimary' : 'action';

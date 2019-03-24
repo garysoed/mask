@@ -78,16 +78,88 @@ test('component.TextIconButton', () => {
   });
 
   test('renderIconMode_', () => {
-    should(`render disabled if disabled`, async () => {
+    should(`render "action" if not primary, hovered, focused, or disabled`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('action');
+    });
+
+    should(`render "actionPrimary" if primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('actionPrimary');
+    });
+
+    should(`render "active" if active and not primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, true).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('active');
+    });
+
+    should(`render "active" if active and primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, true).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('active');
+    });
+
+    should(`render "focus" if hovered and not primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
+      tester.dispatchEvent(el, $.host, new CustomEvent('mouseenter')).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('focus');
+    });
+
+    should(`render "focus" if focused and not primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
+      tester.dispatchEvent(el, $.host, new CustomEvent('focus')).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('focus');
+    });
+
+    should(`render "primaryFocus" if hovered and primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
+      tester.dispatchEvent(el, $.host, new CustomEvent('mouseenter')).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('primaryFocus');
+    });
+
+    should(`render "primaryFocus if focused and primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
+      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
+      tester.dispatchEvent(el, $.host, new CustomEvent('focus')).subscribe();
+
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('primaryFocus');
+    });
+
+    should(`render "disabled" if disabled and not primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
       tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('disabled');
     });
 
-    should(`render "action" if not disabled`, async () => {
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+    should(`render "primaryDisabled" if disabled and primary`, async () => {
+      tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
+      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      tester.setHasAttribute(el, $.host._.active, false).subscribe();
 
-      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('action');
+      await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('primaryDisabled');
     });
   });
 
