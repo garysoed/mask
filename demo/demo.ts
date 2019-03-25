@@ -1,7 +1,6 @@
 import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
 import { Jsons } from 'gs-tools/export/data';
 import { take } from 'rxjs/operators';
-import { ConsoleDestination, logDestination } from 'santa/export';
 import { Palette, start as startMask } from '../export';
 import { $theme, _v } from '../src/app/app';
 import { TextIconButton } from '../src/component/text-icon-button';
@@ -12,6 +11,7 @@ import { IconWithText } from '../src/display/icon-with-text';
 import { SvgConfig } from '../src/display/svg-config';
 import { $svgConfig } from '../src/display/svg-service';
 import { TextInput } from '../src/input/text-input';
+import { LayoutOverlay } from '../src/layout/util/layout-overlay';
 import { Dialog } from '../src/section/dialog';
 import { $dialogService } from '../src/section/dialog-service';
 import { Drawer } from '../src/section/drawer';
@@ -30,6 +30,7 @@ window.addEventListener('load', () => {
         Drawer,
         Icon,
         IconWithText,
+        LayoutOverlay,
         TextIconButton,
         TextInput,
       ],

@@ -21,8 +21,8 @@ export class SvgService extends BaseDisposable {
     // TODO: Preload in background.
   }
 
-  getSvg(name: string): Observable<string>|null {
-    return $pipe(this.svgObs, $getKey(name), $pick(1), $head()) || null;
+  getSvg(name: string): Observable<string|null> {
+    return $pipe(this.svgObs, $getKey(name), $pick(1), $head()) || observableOf(null);
   }
 }
 
@@ -39,7 +39,7 @@ function createSvgObs(configs: ImmutableMap<string, SvgConfig>):
               // TODO: Retry with exponential backoff.
               return observableFrom<Response>(fetch(config.url))
                   .pipe(
-                      switchMap(response => response.text()),
+                      switchMap(async response => response.text()),
                       retry(3),
                       shareReplay(1),
                   );

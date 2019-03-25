@@ -31,7 +31,6 @@ export const $$ = {
   hasMkPrimary: hasAttribute('mk-primary'),
   icon: attributeIn('icon', stringParser(), ''),
   label: attributeIn('label', stringParser(), ''),
-  role: attributeOut('role', stringParser()),
   tabindex: attributeOut('tabindex', integerParser()),
 };
 
@@ -45,6 +44,7 @@ export const $ = {
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
     onSpaceDown: onKeydown(' '),
+    role: attributeOut('role', stringParser()),
   }),
   iconWithText: element('iconWithText', ElementWithTagType('mk-icon-with-text'), {
     icon: attributeOut('icon', stringParser()),

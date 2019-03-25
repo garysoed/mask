@@ -1,11 +1,15 @@
-import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
-import { debug } from 'gs-tools/export/rxjs';
+import { VineImpl } from 'grapevine/export/main';
+import { $pipe, $push, asImmutableMap, createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
 import { element, onDom } from 'persona/export/input';
 import { classlist, textContent } from 'persona/export/output';
 import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, take, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import * as dialogCloseSvg from '../asset/dialog_close.svg';
+import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
+import { SvgConfig } from '../display/svg-config';
+import { $svgConfig } from '../display/svg-service';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { $dialogState, DialogState, OpenState } from './dialog-service';
@@ -28,6 +32,22 @@ export const $ = {
 };
 
 @_p.customElement({
+  configure(vine: VineImpl): void {
+    vine.getObservable($svgConfig)
+        .pipe(take(1))
+        .subscribe(svgConfig => {
+          const newConfig = $pipe(
+              svgConfig,
+              $push<[string, SvgConfig], string>(
+                  ['dialog_close', {type: 'embed', content: dialogCloseSvg}],
+                  ['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}],
+              ),
+              asImmutableMap(),
+          );
+
+          vine.setValue($svgConfig, newConfig);
+        });
+  },
   tag: 'mk-dialog',
   template: dialogTemplate,
 })
