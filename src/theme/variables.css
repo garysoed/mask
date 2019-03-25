@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700|Montserrat:400,700|Ubuntu+Mono');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700|Lato:400|Ubuntu+Mono');
 /**
  * Colors
  */
@@ -18,8 +18,8 @@
  * Fonts
  */
 * {
-  --mkFontFamilyHeader: 'Comfortaa', cursive;
-  --mkFontFamilyNormal: 'Montserrat', sans-serif;
+  --mkFontFamilyHeader: 'Montserrat', cursive;
+  --mkFontFamilyNormal: 'Lato', sans-serif;
   --mkFontFamilyMono: 'Ubuntu Mono', monospace;
 
   --mkFontWeightNormal: 400;

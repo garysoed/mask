@@ -4,16 +4,29 @@
 
 html, input {
   font-family: var(--mkFontFamilyNormal);
-  font-size: 12px;
+  font-size: 75%;
 }
 
-a, .gs-action {
+[mk-body],
+a,
+code {
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+[mk-secondary] {
+  color: var(--mkThemeSecondaryFG);
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+a {
   color: var(--mkThemeActionFG);
-  font-weight: var(--gsFontWeightBold);
+  font-weight: var(--mkFontWeightBold);
   text-decoration: none;
 }
 
-a:hover, a:focus, .gs-action:hover {
+a:hover, a:focus {
   color: var(--mkThemeActionFocusFG);
   cursor: pointer;
   text-decoration: underline;
@@ -23,44 +36,69 @@ a:focus {
   outline: none;
 }
 
-a[disabled], .gs-action[disabled] {
+a[disabled] {
   color: var(--mkThemeActionDisabledFG);
   cursor: default;
 }
 
 h1 {
-  font-size: 3rem;
-  line-height: 4.5rem;
-  margin-top: 1.75rem;
-  margin-bottom: 1.75rem;
+  font-size: 9rem;
+  font-weight: 300;
+}
+
+h1[mk-display] {
+  line-height: 12rem;
 }
 
 h2 {
-  font-size: 2rem;
-  line-height: 3rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  font-size: 5rem;
+  font-weight: 400;
+}
+
+h2[mk-display] {
+  line-height: 8rem;
 }
 
 h3 {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  font-size: 4rem;
+  font-weight: 400;
 }
 
-h1, h2, h3 {
+h3[mk-display] {
+  line-height: 8rem;
+}
+
+h4 {
+  font-size: 3rem;
+  font-weight: 400;
+}
+
+h4[mk-display] {
+  line-height: 4rem;
+}
+
+h5 {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+h5[mk-display] {
+  line-height: 4rem;
+}
+
+h6 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h6[mk-display] {
+  line-height: 4rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
   color: var(--mkThemePassiveFG);
   font-family: var(--mkFontFamilyHeader);
-  font-weight: var(--mkFontWeightBold);
-}
-
-header {
-  font-family: var(--mkFontFamilyHeader);
-  font-weight: var(--mkFontWeightBold);
-  line-height: 2rem;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
+  margin: 0;
 }
 
 code {

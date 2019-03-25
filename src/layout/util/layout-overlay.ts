@@ -2,7 +2,6 @@ import { staticSourceId } from 'grapevine/export/component';
 import { VineImpl } from 'grapevine/export/main';
 import { $pipe, $push } from 'gs-tools/export/collect';
 import { Jsons } from 'gs-tools/export/data';
-import { debug } from 'gs-tools/export/rxjs';
 import { BooleanType, InstanceofType } from 'gs-types/export';
 import { element } from 'persona/export/input';
 import { CustomElementCtrl } from 'persona/export/main';
@@ -58,9 +57,7 @@ export class LayoutOverlay extends CustomElementCtrl {
     return svgServiceObs
         .pipe(
             switchMap(service => service.getSvg('layout_overlay')),
-            debug('svg'),
             map(svg => `url('data:image/svg+xml;base64,${btoa(svg || '')}')`),
-            debug('url'),
         );
   }
 }
