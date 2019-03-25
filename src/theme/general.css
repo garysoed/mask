@@ -7,11 +7,16 @@ html, input {
   font-size: 75%;
 }
 
-[mk-body],
+[mk-body-1],
+[mk-body-2],
 a,
 code {
   font-size: 1.25rem;
   line-height: 2rem;
+}
+
+[mk-body-2] {
+  font-weight: 700;
 }
 
 [mk-secondary] {
@@ -124,6 +129,11 @@ legend {
 
 fieldset:hover > legend, fieldset:focus > legend {
   color: var(--mkThemeActionFocusFG);
+}
+
+p {
+  margin-block-start: 1rem;
+  margin-block-end: 1rem;
 }
 
 /* Table styling */
