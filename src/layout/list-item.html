@@ -1,0 +1,34 @@
+<style id="theme"></style>
+<style>
+  #iconContainer, #itemNameContainer, #itemDetailContainer {
+    display: none;
+  }
+
+  #itemNameContainer.displayed,
+  #itemDetailContainer.displayed,
+  #iconContainer.displayed {
+    display: flex;
+  }
+
+  #iconContainer {
+    width: 4rem;
+  }
+
+  #root {
+    height: 4rem;
+  }
+</style>
+
+<div id="root" layout="row">
+  <div flex-align="center" flex-justify="center" id="iconContainer" layout="row">
+    <mk-icon id="icon"></mk-icon>
+  </div>
+  <div flex layout="column">
+    <div flex flex-justify="center" id="itemNameContainer" layout="column" mk-body-2>
+      <div id="itemName"></div>
+    </div>
+    <div flex flex-justify="center" id="itemDetailContainer" layout="column" mk-secondary>
+      <div id="itemDetail"></div>
+    </div>
+  </div>
+</div>

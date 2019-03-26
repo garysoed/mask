@@ -11,6 +11,7 @@ import { IconWithText } from '../src/display/icon-with-text';
 import { SvgConfig } from '../src/display/svg-config';
 import { $svgConfig } from '../src/display/svg-service';
 import { TextInput } from '../src/input/text-input';
+import { ListItem } from '../src/layout/list-item';
 import { LayoutOverlay } from '../src/layout/util/layout-overlay';
 import { Dialog } from '../src/section/dialog';
 import { $dialogService } from '../src/section/dialog-service';
@@ -31,6 +32,7 @@ window.addEventListener('load', () => {
         Icon,
         IconWithText,
         LayoutOverlay,
+        ListItem,
         TextIconButton,
         TextInput,
       ],
