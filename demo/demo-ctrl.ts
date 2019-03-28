@@ -1,48 +1,35 @@
 import { $vine, VineImpl } from 'grapevine/export/main';
-import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
+import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
 import { InstanceofType } from 'gs-types/export';
 import { element, onDom } from 'persona/export/input';
-import { slot } from 'persona/export/output';
-import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
-import { Observable } from 'rxjs';
-import { filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { ArrayDiff, repeated } from 'persona/export/output';
+import { concat, Observable, of as observableOf } from 'rxjs';
+import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { $theme, _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
 import { RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { Theme } from '../src/theme/theme';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
-import { stringParser } from '../src/util/parsers';
 import demoTemplate from './demo.html';
 
 interface PaletteData {
-  [__renderId]: string;
   class: string;
   color: string;
   style: string;
 }
 
-const paletteElementListRenderer = new ElementListRenderer<PaletteData>(
-  new SimpleElementRenderer<PaletteData>(
-      'div',
-      {
-        [__renderId]: stringParser(),
-        class: stringParser(),
-        color: stringParser(),
-        style: stringParser(),
-      },
-  ),
-);
+type PaletteD = {class: string; color: string; style: string};
 
 const $ = {
   accentPalette: element('accentPalette', InstanceofType(HTMLDivElement), {
+    colorlist: repeated<PaletteD>('accentPalette', 'div'),
     onClick: onDom('click'),
-    slot: slot('accentPalette', paletteElementListRenderer),
   }),
   basePalette: element('basePalette', InstanceofType(HTMLDivElement), {
+    colorlist: repeated<PaletteD>('basePalette', 'div'),
     onClick: onDom('click'),
-    slot: slot('basePalette', paletteElementListRenderer),
   }),
 };
 
@@ -90,19 +77,69 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         );
   }
 
-  @_p.render($.accentPalette._.slot)
+  @_p.render($.accentPalette._.colorlist)
   renderAccentPalette(
-      @_v.vineIn($theme) theme: Observable<Theme>,
-  ): Observable<ImmutableList<PaletteData>> {
-    return theme.pipe(map(theme => getPaletteData_(theme.highlightColor)));
+      @_v.vineIn($theme) themeObs: Observable<Theme>,
+  ): Observable<ArrayDiff<PaletteData>> {
+    const initPaletteData = ORDERED_PALETTES
+        .map(([colorName, color]) => createPaletteData(colorName, color, false));
+
+    const diffObs = themeObs.pipe(
+        map(theme => theme.highlightColor),
+        pairwise(),
+        switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
+    );
+
+    return concat(
+        observableOf<ArrayDiff<PaletteData>>({type: 'init' as 'init', payload: initPaletteData}),
+        diffObs,
+    );
   }
 
-  @_p.render($.basePalette._.slot)
+  @_p.render($.basePalette._.colorlist)
   renderBasePalette(
-      @_v.vineIn($theme) theme: Observable<Theme>,
-  ): Observable<ImmutableList<PaletteData>> {
-    return theme.pipe(map(theme => getPaletteData_(theme.baseColor)));
+      @_v.vineIn($theme) themeObs: Observable<Theme>,
+  ): Observable<ArrayDiff<PaletteData>> {
+    const initPaletteData = ORDERED_PALETTES
+        .map(([colorName, color]) => createPaletteData(colorName, color, false));
+
+    const diffObs = themeObs.pipe(
+        map(theme => theme.baseColor),
+        pairwise(),
+        switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
+    );
+
+    return concat(
+        observableOf<ArrayDiff<PaletteData>>({type: 'init' as 'init', payload: initPaletteData}),
+        diffObs,
+    );
   }
+}
+
+function createDiffObs(oldColor: Color, newColor: Color): Observable<ArrayDiff<PaletteData>> {
+  const diffs: Array<ArrayDiff<PaletteData>> = [];
+
+  const oldIndex = COLOR_TO_INDEX.get(oldColor);
+  const oldName = COLOR_TO_NAME.get(oldColor);
+  if (oldIndex !== undefined && oldName !== undefined) {
+    diffs.push({
+      index: oldIndex,
+      payload: createPaletteData(oldName, oldColor, false),
+      type: 'set',
+    });
+  }
+
+  const newIndex = COLOR_TO_INDEX.get(newColor);
+  const newName = COLOR_TO_NAME.get(newColor);
+  if (newIndex !== undefined && newName !== undefined) {
+    diffs.push({
+      index: newIndex,
+      payload: createPaletteData(newName, newColor, true),
+      type: 'set',
+    });
+  }
+
+  return observableOf(...diffs);
 }
 
 function getColor(event: MouseEvent): Color|null {
@@ -137,27 +174,33 @@ const ORDERED_PALETTES: Array<[string, Color]> = [
   ['BROWN', Palette.BROWN],
   ['GREY', Palette.GREY],
 ];
+const COLOR_TO_INDEX = new Map<Color, number>([...$pipe(
+    createImmutableList(ORDERED_PALETTES),
+    $map(([, color]) => color),
+    $zip(countable()),
+    $declareKeyed(([color]) => color),
+    asImmutableMap<Color, number>(),
+)]);
+const COLOR_TO_NAME = new Map<Color, string>([...$pipe(
+    createImmutableList(ORDERED_PALETTES),
+    $map(([colorName, color]) => [color, colorName] as [Color, string]),
+    $declareKeyed(([color]) => color),
+    asImmutableMap<Color, string>(),
+)]);
 
-function getPaletteData_(selectedColor: Color): ImmutableList<PaletteData> {
-  return $pipe(
-      createImmutableList(ORDERED_PALETTES),
-      $map(([colorName, color]) => {
-        const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
+function createPaletteData(colorName: string, color: Color, selected: boolean): PaletteData {
+  const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
 
-        const classes = ['palette'];
-        if (selectedColor === color) {
-          classes.push('selected');
-        }
+  const classes = ['palette'];
+  if (selected) {
+    classes.push('selected');
+  }
 
-        return {
-          [__renderId]: colorName,
-          class: classes.join(' '),
-          color: colorName,
-          style: `background-color: ${colorCss};`,
-        };
-      }),
-      asImmutableList(),
-  );
+  return {
+    class: classes.join(' '),
+    color: colorName,
+    style: `background-color: ${colorCss};`,
+  };
 }
 
 export function demoCtrl(): Config {
