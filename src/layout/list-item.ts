@@ -1,7 +1,7 @@
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
-import { attributeIn, element } from 'persona/export/input';
-import { api } from 'persona/export/main';
-import { classToggle, innerHtml } from 'persona/export/output';
+import { attributeIn, element } from '@persona/input';
+import { api } from '@persona/main';
+import { classToggle, innerHtml } from '@persona/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p } from '../app/app';

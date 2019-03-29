@@ -1,8 +1,8 @@
-import { assert, retryUntil, setup, should, test } from 'gs-testing/export/main';
-import { FakeFetch } from 'gs-testing/export/mock';
-import { createSpySubject } from 'gs-testing/export/spy';
-import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, retryUntil, setup, should, test } from '@gs-testing/main';
+import { FakeFetch } from '@gs-testing/mock';
+import { createSpySubject } from '@gs-testing/spy';
+import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, Icon } from './icon';

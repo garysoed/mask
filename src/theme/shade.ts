@@ -1,5 +1,5 @@
-import { createImmutableList } from 'gs-tools/export/collect';
-import { Color, Colors, HslColor, RgbColor } from 'gs-tools/export/color';
+import { createImmutableList } from '@gs-tools/collect';
+import { Color, Colors, HslColor, RgbColor } from '@gs-tools/color';
 
 
 export interface Shade {

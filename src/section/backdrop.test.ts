@@ -1,6 +1,6 @@
-import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { ImmutableSet } from 'gs-tools/export/collect';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, match, setup, should, test } from '@gs-testing/main';
+import { ImmutableSet } from '@gs-tools/collect';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, Backdrop } from './backdrop';

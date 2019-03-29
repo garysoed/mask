@@ -1,5 +1,5 @@
-import { staticSourceId, staticStreamId } from 'grapevine/export/component';
-import { Errors } from 'gs-tools/export/error';
+import { staticSourceId, staticStreamId } from '@grapevine/component';
+import { Errors } from '@gs-tools/error';
 import { BooleanType, EqualType, HasPropertiesType, InstanceofType, StringType, UnionType } from 'gs-types/export';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

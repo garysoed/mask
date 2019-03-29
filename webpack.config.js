@@ -1,8 +1,8 @@
 const glob = require("glob");
 const path = require("path");
-var DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const smp = new SpeedMeasurePlugin();
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 module.exports = smp.wrap({
   entry: {
@@ -20,14 +20,13 @@ module.exports = smp.wrap({
   resolve: {
     // Used to resolve duplicate packages. Make sure that we always use the ones in the root.
     alias: {
-      'grapevine': path.resolve(__dirname, './node_modules/grapevine'),
-      'gs-tools': path.resolve(__dirname, './node_modules/gs-tools'),
-      'persona': path.resolve(__dirname, './node_modules/persona'),
       'rxjs': path.resolve(__dirname, './node_modules/rxjs'),
-      'santa': path.resolve(__dirname, './node_modules/santa'),
       'tslib': path.resolve(__dirname, './node_modules/tslib'),
     },
     extensions: [".ts", ".tsx", ".js", ".json", ".html", ".css", ".svg"],
+    plugins: [
+      new TsConfigPathsPlugin()
+    ],
     symlinks: false,
   },
 
@@ -68,15 +67,5 @@ module.exports = smp.wrap({
 
   watch: true,
 
-  plugins: [
-    // new UglifyJsPlugin({
-    //   uglifyOptions: {
-    //     keep_classnames: true,
-    //     keep_fnames: true,
-    //     mangle: false,
-    //   },
-    //   sourceMap: true,
-    // }),
-    new DuplicatePackageCheckerPlugin(),
-  ]
+  plugins: [ ]
 });

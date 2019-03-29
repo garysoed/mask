@@ -1,6 +1,6 @@
-import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { createSpy, createSpySubject, Spy } from 'gs-testing/export/spy';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, match, setup, should, test } from '@gs-testing/main';
+import { createSpy, createSpySubject, Spy } from '@gs-testing/spy';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

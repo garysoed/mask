@@ -1,7 +1,7 @@
-import { match, retryUntil, setup, should, test } from 'gs-testing/export/main';
-import { createSpySubject } from 'gs-testing/export/spy';
-import { ImmutableSet } from 'gs-tools/export/collect';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { match, retryUntil, setup, should, test } from '@gs-testing/main';
+import { createSpySubject } from '@gs-testing/spy';
+import { ImmutableSet } from '@gs-tools/collect';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

@@ -5,10 +5,10 @@
  * @attr {<string} text Text to display.
  */
 
-import { instanceStreamId } from 'grapevine/export/component';
+import { instanceStreamId } from '@grapevine/component';
 import { InstanceofType, NumberType } from 'gs-types/export';
-import { attributeIn, element, onDom } from 'persona/export/input';
-import { textContent } from 'persona/export/output';
+import { attributeIn, element, onDom } from '@persona/input';
+import { textContent } from '@persona/output';
 import { combineLatest, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

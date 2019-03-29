@@ -1,6 +1,6 @@
 import { InstanceofType } from 'gs-tools/node_modules/gs-types/export';
-import { attributeIn, element, onDom } from 'persona/export/input';
-import { dispatcher, textContent } from 'persona/export/output';
+import { attributeIn, element, onDom } from '@persona/input';
+import { dispatcher, textContent } from '@persona/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p } from '../app/app';

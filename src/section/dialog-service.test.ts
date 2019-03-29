@@ -1,5 +1,5 @@
-import { assert, setup, should, test } from 'gs-testing/export/main';
-import { createSpy } from 'gs-testing/export/spy';
+import { assert, setup, should, test } from '@gs-testing/main';
+import { createSpy } from '@gs-testing/spy';
 import { BehaviorSubject } from 'rxjs';
 import { DialogService, DialogState, OpenState } from './dialog-service';
 

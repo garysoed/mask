@@ -7,14 +7,14 @@
  * @slot The glyph of the icon to display.
  */
 
-import { typeBased } from 'gs-tools/export/serializer';
+import { typeBased } from '@gs-tools/serializer';
 import { BooleanType, InstanceofType } from 'gs-types/export';
 import { json } from 'nabu/export/grammar';
 import { Serializable } from 'nabu/export/main';
 import { compose } from 'nabu/export/util';
-import { AriaRole } from 'persona/export/a11y';
-import { attributeIn, element } from 'persona/export/input';
-import { attributeOut, innerHtml } from 'persona/export/output';
+import { AriaRole } from '@persona/a11y';
+import { attributeIn, element } from '@persona/input';
+import { attributeOut, innerHtml } from '@persona/output';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

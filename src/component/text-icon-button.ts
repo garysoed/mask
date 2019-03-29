@@ -10,9 +10,9 @@
  */
 
 import { ElementWithTagType } from 'gs-types/export';
-import { AriaRole } from 'persona/export/a11y';
-import { attributeIn, element, hasAttribute, onDom, onKeydown } from 'persona/export/input';
-import { attributeOut, dispatcher } from 'persona/export/output';
+import { AriaRole } from '@persona/a11y';
+import { attributeIn, element, hasAttribute, onDom, onKeydown } from '@persona/input';
+import { attributeOut, dispatcher } from '@persona/output';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { filter, map, mapTo, startWith, withLatestFrom } from 'rxjs/operators';
 import { _p } from '../app/app';

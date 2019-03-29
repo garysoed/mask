@@ -1,5 +1,5 @@
-import { $pipe, $push, asImmutableMap } from 'gs-tools/export/collect';
-import { Jsons } from 'gs-tools/export/data';
+import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
+import { Jsons } from '@gs-tools/data';
 import { take } from 'rxjs/operators';
 import { Palette, start as startMask } from '../export';
 import { $theme, _v } from '../src/app/app';

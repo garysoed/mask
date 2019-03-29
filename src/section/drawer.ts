@@ -9,11 +9,11 @@
  * @slot The content of the drawer.
  */
 
-import { createImmutableSet } from 'gs-tools/export/collect';
-import { stringMatchConverter } from 'gs-tools/export/serializer';
+import { createImmutableSet } from '@gs-tools/collect';
+import { stringMatchConverter } from '@gs-tools/serializer';
 import { InstanceofType } from 'gs-types/export';
-import { attributeIn, element } from 'persona/export/input';
-import { style } from 'persona/export/output';
+import { attributeIn, element } from '@persona/input';
+import { style } from '@persona/output';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p } from '../app/app';

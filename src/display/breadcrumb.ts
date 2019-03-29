@@ -1,10 +1,10 @@
-import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from 'gs-tools/export/collect';
-import { Errors } from 'gs-tools/export/error';
-import { objectConverter } from 'gs-tools/export/serializer';
+import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from '@gs-tools/collect';
+import { Errors } from '@gs-tools/error';
+import { objectConverter } from '@gs-tools/serializer';
 import { InstanceofType } from 'gs-types/export';
-import { attributeIn, element, onDom } from 'persona/export/input';
-import { dispatcher, slot } from 'persona/export/output';
-import { __renderId, ElementListRenderer, SimpleElementRenderer } from 'persona/export/renderer';
+import { attributeIn, element, onDom } from '@persona/input';
+import { dispatcher, slot } from '@persona/output';
+import { __renderId, ElementListRenderer, SimpleElementRenderer } from '@persona/renderer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p } from '../app/app';

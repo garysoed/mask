@@ -1,5 +1,5 @@
-import { staticSourceId } from 'grapevine/export/component';
-import { createImmutableMap, ImmutableMap } from 'gs-tools/export/collect';
+import { staticSourceId } from '@grapevine/component';
+import { createImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { AnyType } from 'gs-types/export';
 import { _v } from '../app/app';
 

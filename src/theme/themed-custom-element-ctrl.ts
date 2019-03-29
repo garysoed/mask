@@ -1,6 +1,6 @@
 import { InstanceofType } from 'gs-types/export';
-import { element } from 'persona/export/input';
-import { CustomElementCtrl } from 'persona/export/main';
+import { element } from '@persona/input';
+import { CustomElementCtrl } from '@persona/main';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { $theme, _p, _v } from '../app/app';

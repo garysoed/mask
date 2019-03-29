@@ -1,7 +1,7 @@
-import { instanceStreamId, staticSourceId } from 'grapevine/export/component';
+import { instanceStreamId, staticSourceId } from '@grapevine/component';
 import { AnyType, BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
-import { attributeIn, element, handler, onInput } from 'persona/export/input';
-import { attributeOut } from 'persona/export/output';
+import { attributeIn, element, handler, onInput } from '@persona/input';
+import { attributeOut } from '@persona/output';
 import { merge, Observable } from 'rxjs';
 import { debounce, filter, map, mapTo, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

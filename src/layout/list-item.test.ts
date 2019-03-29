@@ -1,5 +1,5 @@
-import { assert, setup, should, test } from 'gs-testing/export/main';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, setup, should, test } from '@gs-testing/main';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p, _v } from '../app/app';
 import { $, ListItem } from './list-item';
 

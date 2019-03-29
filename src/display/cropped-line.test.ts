@@ -1,6 +1,6 @@
-import { assert, should, test } from 'gs-testing/export/main';
-import { createSpyInstance, spy } from 'gs-testing/export/spy';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, should, test } from '@gs-testing/main';
+import { createSpyInstance, spy } from '@gs-testing/spy';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p, _v } from '../app/app';
 import { $, $postfixBoundary, CroppedLine } from './cropped-line';
 

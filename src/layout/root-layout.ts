@@ -1,9 +1,9 @@
-import { instanceSourceId } from 'grapevine/export/component';
-import { $vine, VineImpl } from 'grapevine/export/main';
+import { instanceSourceId } from '@grapevine/component';
+import { $vine, VineImpl } from '@grapevine/main';
 import { BooleanType, ElementWithTagType } from 'gs-types/export';
-import { attributeIn, element, mediaQuery, onDom } from 'persona/export/input';
-import { api } from 'persona/export/main';
-import { attributeOut } from 'persona/export/output';
+import { attributeIn, element, mediaQuery, onDom } from '@persona/input';
+import { api } from '@persona/main';
+import { attributeOut } from '@persona/output';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

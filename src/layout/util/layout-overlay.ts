@@ -1,11 +1,11 @@
-import { staticSourceId } from 'grapevine/export/component';
-import { VineImpl } from 'grapevine/export/main';
-import { $pipe, $push } from 'gs-tools/export/collect';
-import { Jsons } from 'gs-tools/export/data';
+import { staticSourceId } from '@grapevine/component';
+import { VineImpl } from '@grapevine/main';
+import { $pipe, $push } from '@gs-tools/collect';
+import { Jsons } from '@gs-tools/data';
 import { BooleanType, InstanceofType } from 'gs-types/export';
-import { element } from 'persona/export/input';
-import { CustomElementCtrl } from 'persona/export/main';
-import { classlist, style } from 'persona/export/output';
+import { element } from '@persona/input';
+import { CustomElementCtrl } from '@persona/main';
+import { classlist, style } from '@persona/output';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { _p, _v } from '../../app/app';

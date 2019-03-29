@@ -1,7 +1,7 @@
-import { assert, match, should, test } from 'gs-testing/export/main';
-import { createSpySubject } from 'gs-testing/export/spy';
-import { $filter, $head, $map, $pipe, $size, createImmutableList } from 'gs-tools/export/collect';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, match, should, test } from '@gs-testing/main';
+import { createSpySubject } from '@gs-testing/spy';
+import { $filter, $head, $map, $pipe, $size, createImmutableList } from '@gs-tools/collect';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

@@ -1,6 +1,6 @@
-import { assert, match, should, test } from 'gs-testing/export/main';
-import { createSpySubject } from 'gs-testing/export/spy';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, match, should, test } from '@gs-testing/main';
+import { createSpySubject } from '@gs-testing/spy';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent } from 'rxjs';
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';

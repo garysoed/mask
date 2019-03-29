@@ -1,7 +1,7 @@
-import { assert, match, setup, should, test } from 'gs-testing/export/main';
-import { createSpy, createSpySubject } from 'gs-testing/export/spy';
-import { ImmutableSet } from 'gs-tools/export/collect';
-import { PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, match, setup, should, test } from '@gs-testing/main';
+import { createSpy, createSpySubject } from '@gs-testing/spy';
+import { ImmutableSet } from '@gs-tools/collect';
+import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

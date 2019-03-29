@@ -1,5 +1,5 @@
-import { ImmutableList } from 'gs-tools/export/collect';
-import { integerConverter, listConverter, typeBased } from 'gs-tools/export/serializer';
+import { ImmutableList } from '@gs-tools/collect';
+import { integerConverter, listConverter, typeBased } from '@gs-tools/serializer';
 import { BooleanType } from 'gs-types/export';
 import { human } from 'nabu/export/grammar';
 import { Converter, Serializable } from 'nabu/export/main';

@@ -1,4 +1,4 @@
-import { createImmutableMap } from 'gs-tools/export/collect';
+import { createImmutableMap } from '@gs-tools/collect';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import { B000, B010, B050, B075, B100, B175, B200, Shade } from './shade';

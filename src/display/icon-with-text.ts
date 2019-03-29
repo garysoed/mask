@@ -9,10 +9,10 @@
  * @slot The glyph of the icon to display.
  */
 
-import { createImmutableSet, ImmutableSet } from 'gs-tools/export/collect';
+import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from 'gs-types/export';
-import { attributeIn, element } from 'persona/export/input';
-import { attributeOut, classlist, textContent } from 'persona/export/output';
+import { attributeIn, element } from '@persona/input';
+import { attributeOut, classlist, textContent } from '@persona/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

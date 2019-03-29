@@ -1,5 +1,5 @@
-import { VineImpl } from 'grapevine/export/main';
-import { CustomElementCtrl } from 'persona/export/main';
+import { VineImpl } from '@grapevine/main';
+import { CustomElementCtrl } from '@persona/main';
 
 export interface Config {
   /** TODO: Delete ctrl */

@@ -1,6 +1,6 @@
-import { staticSourceId, staticStreamId } from 'grapevine/export/component';
-import { $getKey, $head, $mapPick, $pick, $pipe, asImmutableMap, createImmutableMap, ImmutableMap, ImmutableMapType } from 'gs-tools/export/collect';
-import { BaseDisposable } from 'gs-tools/export/dispose';
+import { staticSourceId, staticStreamId } from '@grapevine/component';
+import { $getKey, $head, $mapPick, $pick, $pipe, asImmutableMap, createImmutableMap, ImmutableMap, ImmutableMapType } from '@gs-tools/collect';
+import { BaseDisposable } from '@gs-tools/dispose';
 import { InstanceofType } from 'gs-types/export';
 import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
