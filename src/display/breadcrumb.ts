@@ -1,7 +1,7 @@
 import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from '@gs-tools/collect';
 import { Errors } from '@gs-tools/error';
 import { objectConverter } from '@gs-tools/serializer';
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { attributeIn, element, onDom } from '@persona/input';
 import { dispatcher, slot } from '@persona/output';
 import { __renderId, ElementListRenderer, SimpleElementRenderer } from '@persona/renderer';

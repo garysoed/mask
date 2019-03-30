@@ -1,6 +1,6 @@
 import { staticSourceId } from '@grapevine/component';
 import { getOrRegisterApp as getOrRegisterGrapevineApp, VineImpl } from '@grapevine/main';
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from '@persona/main';
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';

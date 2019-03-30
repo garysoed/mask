@@ -6,7 +6,7 @@
  */
 
 import { instanceStreamId } from '@grapevine/component';
-import { InstanceofType, NumberType } from 'gs-types/export';
+import { InstanceofType, NumberType } from '@gs-types';
 import { attributeIn, element, onDom } from '@persona/input';
 import { textContent } from '@persona/output';
 import { combineLatest, Observable } from 'rxjs';

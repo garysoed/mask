@@ -8,10 +8,10 @@
  */
 
 import { typeBased } from '@gs-tools/serializer';
-import { BooleanType, InstanceofType } from 'gs-types/export';
-import { json } from 'nabu/export/grammar';
-import { Serializable } from 'nabu/export/main';
-import { compose } from 'nabu/export/util';
+import { BooleanType, InstanceofType } from '@gs-types';
+import { json } from '@nabu/grammar';
+import { Serializable } from '@nabu/main';
+import { compose } from '@nabu/util';
 import { AriaRole } from '@persona/a11y';
 import { attributeIn, element } from '@persona/input';
 import { attributeOut, innerHtml } from '@persona/output';

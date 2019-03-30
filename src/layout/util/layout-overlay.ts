@@ -2,7 +2,7 @@ import { staticSourceId } from '@grapevine/component';
 import { VineImpl } from '@grapevine/main';
 import { $pipe, $push } from '@gs-tools/collect';
 import { Jsons } from '@gs-tools/data';
-import { BooleanType, InstanceofType } from 'gs-types/export';
+import { BooleanType, InstanceofType } from '@gs-types';
 import { element } from '@persona/input';
 import { CustomElementCtrl } from '@persona/main';
 import { classlist, style } from '@persona/output';

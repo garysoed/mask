@@ -11,7 +11,7 @@
 
 import { createImmutableSet } from '@gs-tools/collect';
 import { stringMatchConverter } from '@gs-tools/serializer';
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { attributeIn, element } from '@persona/input';
 import { style } from '@persona/output';
 import { combineLatest, Observable } from 'rxjs';

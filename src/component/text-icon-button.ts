@@ -9,7 +9,7 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { ElementWithTagType } from 'gs-types/export';
+import { ElementWithTagType } from '@gs-types';
 import { AriaRole } from '@persona/a11y';
 import { attributeIn, element, hasAttribute, onDom, onKeydown } from '@persona/input';
 import { attributeOut, dispatcher } from '@persona/output';

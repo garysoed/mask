@@ -1,4 +1,4 @@
-import { ElementWithTagType, InstanceofType } from 'gs-types/export';
+import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { attributeIn, element } from '@persona/input';
 import { api } from '@persona/main';
 import { classToggle, innerHtml } from '@persona/output';

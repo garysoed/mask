@@ -1,6 +1,6 @@
 import { instanceSourceId } from '@grapevine/component';
 import { $vine, VineImpl } from '@grapevine/main';
-import { BooleanType, ElementWithTagType } from 'gs-types/export';
+import { BooleanType, ElementWithTagType } from '@gs-types';
 import { attributeIn, element, mediaQuery, onDom } from '@persona/input';
 import { api } from '@persona/main';
 import { attributeOut } from '@persona/output';

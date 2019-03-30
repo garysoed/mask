@@ -1,5 +1,5 @@
 import { instanceStreamId, staticSourceId } from '@grapevine/component';
-import { AnyType, BooleanType, InstanceofType, NumberType, StringType } from 'gs-types/export';
+import { AnyType, BooleanType, InstanceofType, NumberType, StringType } from '@gs-types';
 import { attributeIn, element, handler, onInput } from '@persona/input';
 import { attributeOut } from '@persona/output';
 import { merge, Observable } from 'rxjs';

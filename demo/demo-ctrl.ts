@@ -1,7 +1,7 @@
 import { $vine, VineImpl } from '@grapevine/main';
 import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from '@gs-tools/collect';
 import { Color } from '@gs-tools/color';
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { element, onDom } from '@persona/input';
 import { ArrayDiff, repeated } from '@persona/output';
 import { concat, Observable, of as observableOf } from 'rxjs';

@@ -10,7 +10,7 @@
  */
 
 import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
-import { ElementWithTagType, InstanceofType } from 'gs-types/export';
+import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { attributeIn, element } from '@persona/input';
 import { attributeOut, classlist, textContent } from '@persona/output';
 import { Observable } from 'rxjs';

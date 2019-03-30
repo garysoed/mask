@@ -1,4 +1,4 @@
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { element } from '@persona/input';
 import { CustomElementCtrl } from '@persona/main';
 import { combineLatest, Observable } from 'rxjs';

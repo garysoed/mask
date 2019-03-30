@@ -1,5 +1,5 @@
 import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { element } from '@persona/input';
 import { classlist } from '@persona/output';
 import { Observable } from 'rxjs';
