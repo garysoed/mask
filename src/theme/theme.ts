@@ -1,11 +1,11 @@
-import { $declareKeyed, $getKey, $head, $map, $pick, $pipe, asImmutableMap, createImmutableMap, ImmutableMap } from '@gs-tools/collect';
+import { $declareKeyed, $getKey, $head, $map, $pick, $pipe, asImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { Color, Colors } from '@gs-tools/color';
 import { assertUnreachable } from '@gs-tools/typescript';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import * as generalCss from './general.css';
-import { B010, B100, B200, BASE_SHADES, createColor, Shade } from './shade';
-import { DARK_SHADING, HIGHLIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
+import { B010, B100, B190, B200, BASE_SHADES, createColor, Shade } from './shade';
+import { DARK_SHADING, HIGHLIGHT_DARK_SHADING, HIGHLIGHT_LIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
 import * as variablesCssTemplate from './variables.css';
 
 
@@ -76,7 +76,7 @@ function getAlphaValue_(alpha: Alpha, colorShade: Shade): number {
         default:
           assertUnreachable(alpha);
       }
-    case B200:
+    case B190:
       switch (alpha) {
         case Alpha.MEDIUM:
           return 0.75;
@@ -94,7 +94,7 @@ function getContrastForegroundShade_(
     shadingMap: ImmutableMap<Shade, Color>,
     highlightBackground: Color): Shade {
   const darkShade = B010;
-  const lightShade = B200;
+  const lightShade = B190;
   const darkForeground = $pipe(shadingMap, $getKey(darkShade), $pick(1), $head());
   const lightForeground = $pipe(shadingMap, $getKey(lightShade), $pick(1), $head());
 
@@ -157,8 +157,15 @@ export class Theme {
         contrastBaseShade,
         contrastAccentShade,
     );
-    const highlightColorMap = generateColorMap_(
-        HIGHLIGHT_SHADING,
+    const highlightLightColorMap = generateColorMap_(
+        HIGHLIGHT_LIGHT_SHADING,
+        baseColorPairs,
+        accentColorPairs,
+        contrastBaseShade,
+        contrastAccentShade,
+    );
+    const highlightDarkColorMap = generateColorMap_(
+        HIGHLIGHT_DARK_SHADING,
         baseColorPairs,
         accentColorPairs,
         contrastBaseShade,
@@ -167,7 +174,8 @@ export class Theme {
     const cssContent = variablesCssTemplate
         .replace('/*{themeLight}*/', generateColorCss_(lightColorMap))
         .replace('/*{themeDark}*/', generateColorCss_(darkColorMap))
-        .replace('/*{themeHighlight}*/', generateColorCss_(highlightColorMap));
+        .replace('/*{themeHighlightLight}*/', generateColorCss_(highlightLightColorMap))
+        .replace('/*{themeHighlightDark}*/', generateColorCss_(highlightDarkColorMap));
 
     styleEl.innerHTML = `${cssContent}\n${generalCss}`;
   }

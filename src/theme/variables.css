@@ -10,8 +10,12 @@
   /*{themeDark}*/
 }
 
-[mk-theme="highlight"] {
-  /*{themeHighlight}*/
+[mk-theme="light"] [mk-theme="highlight"] {
+  /*{themeHighlightLight}*/
+}
+
+[mk-theme="dark"] [mk-theme="highlight"] {
+  /*{themeHighlightDark}*/
 }
 
 /**
