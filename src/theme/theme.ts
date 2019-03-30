@@ -1,6 +1,6 @@
 import { $declareKeyed, $getKey, $head, $map, $pick, $pipe, asImmutableMap, createImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { Color, Colors } from '@gs-tools/color';
-import { assertUnreachable } from 'gs-tools/src/typescript/assert-unreachable';
+import { assertUnreachable } from '@gs-tools/typescript';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import * as generalCss from './general.css';
