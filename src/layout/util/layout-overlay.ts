@@ -4,7 +4,6 @@ import { $pipe, $push } from '@gs-tools/collect';
 import { Jsons } from '@gs-tools/data';
 import { BooleanType, InstanceofType } from '@gs-types';
 import { element } from '@persona/input';
-import { CustomElementCtrl } from '@persona/main';
 import { classlist, style } from '@persona/output';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -12,14 +11,20 @@ import { _p, _v } from '../../app/app';
 import * as layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import { SvgConfig } from '../../display/svg-config';
 import { $svgConfig, $svgService, SvgService } from '../../display/svg-service';
+import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 import layoutOverlayTemplate from './layout-overlay.html';
 
 const $isActive = staticSourceId('isActive', BooleanType);
 _v.builder.source($isActive, false);
 
 const $ = {
-  root: element('root', InstanceofType(HTMLDivElement), {
+  gridLeft: element('gridLeft', InstanceofType(HTMLDivElement), {
     backgroundImage: style('backgroundImage'),
+  }),
+  gridRight: element('gridRight', InstanceofType(HTMLDivElement), {
+    backgroundImage: style('backgroundImage'),
+  }),
+  root: element('root', InstanceofType(HTMLDivElement), {
     classlist: classlist(),
   }),
 };
@@ -42,7 +47,7 @@ const $ = {
   tag: 'mk-layout-overlay',
   template: layoutOverlayTemplate,
 })
-export class LayoutOverlay extends CustomElementCtrl {
+export class LayoutOverlay extends ThemedCustomElementCtrl {
   @_p.render($.root._.classlist)
   handleIsActiveChange(
       @_v.vineIn($isActive) isActiveObs: Observable<boolean>,
@@ -50,7 +55,8 @@ export class LayoutOverlay extends CustomElementCtrl {
     return isActiveObs.pipe(map(isActive => isActive ? ['active'] : []));
   }
 
-  @_p.render($.root._.backgroundImage)
+  @_p.render($.gridLeft._.backgroundImage)
+  @_p.render($.gridRight._.backgroundImage)
   renderBackgroundImage(
       @_v.vineIn($svgService) svgServiceObs: Observable<SvgService>,
   ): Observable<string> {

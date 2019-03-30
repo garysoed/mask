@@ -1,7 +1,12 @@
+<style id="theme"></style>
 <style>
+  #gridRight {
+    transform: scaleX(-1);
+  }
+
   #root {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -12,7 +17,10 @@
   }
 
   #root.active {
-    display: block;
+    display: flex;
   }
 </style>
-<div id="root"></div>
+<div layout="row" id="root">
+  <div flex id="gridLeft"></div>
+  <div flex id="gridRight"></div>
+</div>
