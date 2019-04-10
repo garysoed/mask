@@ -5,6 +5,7 @@ export { Config } from '../src/app/config';
 export { Drawer } from '../src/section/drawer';
 export { Icon } from '../src/display/icon';
 export { IconWithText } from '../src/display/icon-with-text';
+export { ListItem } from '../src/layout/list-item';
 export { Palette } from '../src/theme/palette';
 export { RootLayout } from '../src/layout/root-layout';
 export { start } from '../src/app/app';

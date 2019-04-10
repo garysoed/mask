@@ -1,0 +1,25 @@
+<style id="theme"></style>
+<style>
+  #root {
+    color: var(--mkCheckboxFG);
+  }
+
+  :host {
+    --mkCheckboxFG: var(--mkThemeActionFG);
+    cursor: pointer;
+  }
+
+  :host([disabled]),
+  :host([disabled]:focus) {
+    --mkCheckboxFG: var(--mkThemeActionDisabledFG);
+    cursor: default;
+  }
+
+  :host(:not([disabled]):hover),
+  :host(:not([disabled]):focus) {
+    --mkCheckboxFG: var(--mkThemeActionFocusFG);
+  }
+</style>
+<div id="root">
+  <mk-icon-with-text id="text"></mk-icon-with-text>
+</div>

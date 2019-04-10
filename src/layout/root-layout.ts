@@ -18,6 +18,7 @@ export const $$ = {
   drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
   icon: attributeIn('icon', stringParser()),
   label: attributeIn('label', stringParser()),
+  theme: attributeIn('theme', stringParser()),
 };
 
 export const $ = {
@@ -27,6 +28,9 @@ export const $ = {
     onMouseOver: onDom('mouseover'),
   }),
   host: element($$),
+  root: element('root', ElementWithTagType('section'), {
+    theme: attributeOut('mk-theme', stringParser()),
+  }),
   title: element('title', ElementWithTagType('mk-text-icon-button'), api($textIconButton)),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
@@ -42,6 +46,7 @@ _v.builder.source($isDrawerOpen, false);
 @_p.render($.host._.drawerExpanded).withForwarding($isDrawerOpen)
 @_p.render($.title._.label).withForwarding($.host._.label)
 @_p.render($.title._.icon).withForwarding($.host._.icon)
+@_p.render($.root._.theme).withForwarding($.host._.theme)
 export class RootLayout extends ThemedCustomElementCtrl {
   @_p.onCreate()
   handleDrawerExpandCollapse(

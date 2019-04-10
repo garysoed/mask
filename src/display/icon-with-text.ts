@@ -23,12 +23,14 @@ import { stringParser } from '../util/parsers';
 import { Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
 
+export const $$ = {
+  icon: attributeIn('icon', stringParser(), ''),
+  label: attributeIn('label', stringParser(), ''),
+  mode: attributeIn('mode', stringParser(), ''),
+};
+
 export const $ = {
-  host: element({
-    icon: attributeIn('icon', stringParser(), ''),
-    label: attributeIn('label', stringParser(), ''),
-    mode: attributeIn('mode', stringParser(), ''),
-  }),
+  host: element($$),
   icon: element('icon', ElementWithTagType('mk-icon'), {
     classes: classlist(),
     icon: attributeOut('icon', stringParser()),
