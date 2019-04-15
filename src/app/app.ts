@@ -9,6 +9,7 @@ export const _p = new PersonaBuilder(_v);
 
 export const $theme = _v.source(
     () => new BehaviorSubject(new Theme(Palette.ORANGE, Palette.GREEN)),
+    globalThis,
 );
 
 export function start(
@@ -18,7 +19,7 @@ export function start(
     styleEl: HTMLStyleElement,
     customElementRegistry: CustomElementRegistry = window.customElements): {vine: Vine} {
   const {vine} = _p.build(appName, rootCtrls, customElementRegistry);
-  const themeSbj = $theme.get(vine, globalThis);
+  const themeSbj = $theme.get(vine);
   themeSbj.next(theme);
   themeSbj.subscribe(theme => theme.injectCss(styleEl));
 

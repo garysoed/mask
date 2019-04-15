@@ -1,5 +1,6 @@
 import { Palette, start as startMask } from '../export';
 import { Theme } from '../src/theme/theme';
+import { DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
 
@@ -10,7 +11,7 @@ window.addEventListener('load', () => {
         // Breadcrumb,
         // Checkbox,
         // CroppedLine,
-        // DemoCtrl,
+        DemoCtrl,
         // Dialog,
         // Drawer,
         // Icon,

@@ -1,14 +1,16 @@
 import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from '@gs-tools/collect';
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
-import { InstanceofType } from '@gs-types';
+import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { element, onDom } from '@persona/input';
+import { api } from '@persona/main';
 import { repeated } from '@persona/output';
 import { InitFn } from 'persona/export';
 import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
+import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 // import { $$ as $checkbox, Checkbox, CheckedValue } from '../src/input/checkbox';
 // import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
@@ -33,7 +35,7 @@ const $ = {
     onClick: onDom<MouseEvent>('click'),
   }),
   // darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
-  // root: element('root', ElementWithTagType('mk-root-layout'), api($rootLayout)),
+  root: element('root', ElementWithTagType('mk-root-layout'), api($rootLayout)),
 };
 
 export const TAG = 'mk-demo';
@@ -41,21 +43,22 @@ export const TAG = 'mk-demo';
 @_p.customElement({
   dependencies: [
     // Checkbox,
-    // RootLayout,
+    RootLayout,
   ],
   tag: TAG,
   template: demoTemplate,
 })
 export class DemoCtrl extends ThemedCustomElementCtrl {
-  private readonly onClickObs = _p.input($.accentPalette._.onClick);
+  private readonly onClickObs = _p.input($.accentPalette._.onClick, this);
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
       this.setupHandleAccentPaletteClick,
       this.setupHandleBasePaletteClick,
-      _p.render($.accentPalette._.colorlist).with(_v.stream(this.renderAccentPalette)),
-      _p.render($.basePalette._.colorlist).with(_v.stream(this.renderBasePalette)),
+      _p.render($.accentPalette._.colorlist).with(_v.stream(this.renderAccentPalette, this)),
+      _p.render($.basePalette._.colorlist).with(_v.stream(this.renderBasePalette, this)),
+      // _p.render($.root._.theme).with(_v.stream(this.renderTheme, this)),
       // _p.render($.root._.theme).with(_v.stream(this.renderTheme)),
     ];
   }
@@ -92,7 +95,6 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  // @_p.render($.root._.theme)
   // renderTheme(
   //     @_p.input($.darkMode._.value) darkModeObs: Observable<CheckedValue>,
   // ): Observable<'light'|'dark'> {

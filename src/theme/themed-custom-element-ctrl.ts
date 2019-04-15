@@ -12,7 +12,7 @@ const $ = {
 @_p.baseCustomElement({})
 export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   protected readonly themeSbj = $theme.asSubject();
-  private readonly themeElObs = _p.input($.theme);
+  private readonly themeElObs = _p.input($.theme, this);
 
   getInitFunctions(): InitFn[] {
     return [
