@@ -1,19 +1,17 @@
-import { $vine, VineImpl } from '@grapevine/main';
 import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from '@gs-tools/collect';
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
-import { ElementWithTagType, InstanceofType } from '@gs-types';
+import { InstanceofType } from '@gs-types';
 import { element, onDom } from '@persona/input';
-import { api } from '@persona/main';
-import { attributeOut, repeated } from '@persona/output';
+import { repeated } from '@persona/output';
+import { InitFn } from 'persona/export';
 import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { $theme, _p, _v } from '../src/app/app';
+import { _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
-import { $$ as $checkbox, Checkbox, CheckedValue } from '../src/input/checkbox';
-import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
+// import { $$ as $checkbox, Checkbox, CheckedValue } from '../src/input/checkbox';
+// import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
-import { Theme } from '../src/theme/theme';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import demoTemplate from './demo.html';
 
@@ -28,69 +26,45 @@ type PaletteD = {class: string; color: string; style: string};
 const $ = {
   accentPalette: element('accentPalette', InstanceofType(HTMLDivElement), {
     colorlist: repeated<PaletteD>('accentPalette', 'div'),
-    onClick: onDom('click'),
+    onClick: onDom<MouseEvent>('click'),
   }),
   basePalette: element('basePalette', InstanceofType(HTMLDivElement), {
     colorlist: repeated<PaletteD>('basePalette', 'div'),
-    onClick: onDom('click'),
+    onClick: onDom<MouseEvent>('click'),
   }),
-  darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
-  root: element('root', ElementWithTagType('mk-root-layout'), api($rootLayout)),
+  // darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
+  // root: element('root', ElementWithTagType('mk-root-layout'), api($rootLayout)),
 };
 
 export const TAG = 'mk-demo';
 
 @_p.customElement({
   dependencies: [
-    Checkbox,
-    RootLayout,
+    // Checkbox,
+    // RootLayout,
   ],
   tag: TAG,
   template: demoTemplate,
 })
 export class DemoCtrl extends ThemedCustomElementCtrl {
-  @_p.onCreate()
-  handleAccentPaletteClick_(
-      @_p.input($.accentPalette._.onClick) onClickObs: Observable<MouseEvent>,
-      @_v.vineIn($theme) themeObs: Observable<Theme>,
-      @_v.vineIn($vine) vineObs: Observable<VineImpl>,
-  ): Observable<unknown> {
-    return onClickObs
-        .pipe(
-            map(event => getColor(event)),
-            filter((color): color is Color => !!color),
-            withLatestFrom(themeObs, vineObs),
-            tap(([color, theme, vine]) => {
-              vine.setValue($theme, theme.setHighlightColor(color));
-            }),
-        );
+  private readonly onClickObs = _p.input($.accentPalette._.onClick);
+
+  getInitFunctions(): InitFn[] {
+    return [
+      ...super.getInitFunctions(),
+      this.setupHandleAccentPaletteClick,
+      this.setupHandleBasePaletteClick,
+      _p.render($.accentPalette._.colorlist).with(_v.stream(this.renderAccentPalette)),
+      _p.render($.basePalette._.colorlist).with(_v.stream(this.renderBasePalette)),
+      // _p.render($.root._.theme).with(_v.stream(this.renderTheme)),
+    ];
   }
 
-  @_p.onCreate()
-  handleBasePaletteClick_(
-      @_p.input($.basePalette._.onClick) onClickObs: Observable<MouseEvent>,
-      @_v.vineIn($theme) themeObs: Observable<Theme>,
-      @_v.vineIn($vine) vineObs: Observable<VineImpl>,
-  ): Observable<unknown> {
-    return onClickObs
-        .pipe(
-            map(event => getColor(event)),
-            filter((color): color is Color => !!color),
-            withLatestFrom(themeObs, vineObs),
-            tap(([color, theme, vine]) => {
-              vine.setValue($theme, theme.setBaseColor(color));
-            }),
-        );
-  }
-
-  @_p.render($.accentPalette._.colorlist)
-  renderAccentPalette(
-      @_v.vineIn($theme) themeObs: Observable<Theme>,
-  ): Observable<ArrayDiff<PaletteData>> {
+  renderAccentPalette(): Observable<ArrayDiff<PaletteData>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
-    const diffObs = themeObs.pipe(
+    const diffObs = this.themeSbj.pipe(
         map(theme => theme.highlightColor),
         pairwise(),
         switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
@@ -102,14 +76,11 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  @_p.render($.basePalette._.colorlist)
-  renderBasePalette(
-      @_v.vineIn($theme) themeObs: Observable<Theme>,
-  ): Observable<ArrayDiff<PaletteData>> {
+  renderBasePalette(): Observable<ArrayDiff<PaletteData>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
-    const diffObs = themeObs.pipe(
+    const diffObs = this.themeSbj.pipe(
         map(theme => theme.baseColor),
         pairwise(),
         switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
@@ -121,18 +92,42 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  @_p.render($.root._.theme)
-  renderTheme(
-      @_p.input($.darkMode._.value) darkModeObs: Observable<CheckedValue>,
-  ): Observable<'light'|'dark'> {
-    return darkModeObs
-        .pipe(
-            map(isDarkMode => {
-              if (!isDarkMode || isDarkMode === 'unknown') {
-                return 'light';
-              }
+  // @_p.render($.root._.theme)
+  // renderTheme(
+  //     @_p.input($.darkMode._.value) darkModeObs: Observable<CheckedValue>,
+  // ): Observable<'light'|'dark'> {
+  //   return darkModeObs
+  //       .pipe(
+  //           map(isDarkMode => {
+  //             if (!isDarkMode || isDarkMode === 'unknown') {
+  //               return 'light';
+  //             }
 
-              return 'dark';
+  //             return 'dark';
+  //           }),
+  //       );
+  // }
+
+  setupHandleAccentPaletteClick(): Observable<unknown> {
+    return this.onClickObs
+        .pipe(
+            map(event => getColor(event)),
+            filter((color): color is Color => !!color),
+            withLatestFrom(this.themeSbj),
+            tap(([color, theme]) => {
+              this.themeSbj.next(theme.setHighlightColor(color));
+            }),
+        );
+  }
+
+  setupHandleBasePaletteClick(): Observable<unknown> {
+    return this.onClickObs
+        .pipe(
+            map(event => getColor(event)),
+            filter((color): color is Color => !!color),
+            withLatestFrom(this.themeSbj),
+            tap(([color, theme]) => {
+              this.themeSbj.next(theme.setBaseColor(color));
             }),
         );
   }

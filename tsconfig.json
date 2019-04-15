@@ -15,11 +15,13 @@
     "outDir": "out",
     "paths": {
       "@grapevine/*": ["node_modules/grapevine/export/*"],
+      "@grapevine": ["node_modules/grapevine/export/index.ts"],
       "@gs-testing/*": ["node_modules/gs-testing/export/*"],
       "@gs-tools/*": ["node_modules/gs-tools/export/*"],
       "@gs-types": ["node_modules/gs-types/export/index.ts"],
       "@moirai": ["node_modules/moirai/export/index.ts"],
       "@nabu/*": ["node_modules/nabu/export/*"],
+      "@persona": ["node_modules/persona/export/index.ts"],
       "@persona/*": ["node_modules/persona/export/*"],
     },
     "pretty": true,

@@ -1,25 +1,26 @@
-import { staticSourceId } from '@grapevine/component';
-import { getOrRegisterApp as getOrRegisterGrapevineApp, VineImpl } from '@grapevine/main';
-import { InstanceofType } from '@gs-types';
-import { CustomElementCtrl, getOrRegisterApp as getOrRegisterPersonaApp } from '@persona/main';
+import { Vine, VineBuilder } from '@grapevine';
+import { CustomElementCtrl, PersonaBuilder } from '@persona';
+import { BehaviorSubject } from 'rxjs';
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 
-export const _v = getOrRegisterGrapevineApp('maskBase');
-export const _p = getOrRegisterPersonaApp('maskBase', _v);
+export const _v = new VineBuilder();
+export const _p = new PersonaBuilder(_v);
 
-export const $theme = staticSourceId('theme', InstanceofType(Theme));
-_v.builder.source($theme, new Theme(Palette.ORANGE, Palette.GREEN));
+export const $theme = _v.source(
+    () => new BehaviorSubject(new Theme(Palette.ORANGE, Palette.GREEN)),
+);
 
 export function start(
+    appName: string,
     rootCtrls: Array<new (...args: any[]) => CustomElementCtrl>,
     theme: Theme,
     styleEl: HTMLStyleElement,
-    customElementRegistry: CustomElementRegistry = window.customElements): {vine: VineImpl} {
-  const {vine} = _p.builder.build(rootCtrls, customElementRegistry, _v.builder);
-  vine.setValue($theme, theme);
-
-  vine.getObservable($theme).subscribe(theme => theme.injectCss(styleEl));
+    customElementRegistry: CustomElementRegistry = window.customElements): {vine: Vine} {
+  const {vine} = _p.build(appName, rootCtrls, customElementRegistry);
+  const themeSbj = $theme.get(vine, globalThis);
+  themeSbj.next(theme);
+  themeSbj.subscribe(theme => theme.injectCss(styleEl));
 
   return {vine};
 }
