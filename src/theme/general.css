@@ -244,7 +244,7 @@ td {
 }
 
 /* Themes */
-[mk-theme="highlight"],
+[mk-theme-highlight],
 [mk-theme="light"],
 [mk-theme="dark"] {
   background: var(--mkThemePassiveBG);

@@ -2,17 +2,16 @@ import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmu
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
+import { InitFn } from '@persona';
 import { element, onDom } from '@persona/input';
 import { api } from '@persona/main';
 import { repeated } from '@persona/output';
-import { InitFn } from 'persona/export';
 import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
 import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 // import { $$ as $checkbox, Checkbox, CheckedValue } from '../src/input/checkbox';
-// import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import demoTemplate from './demo.html';
@@ -58,7 +57,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
       this.setupHandleBasePaletteClick,
       _p.render($.accentPalette._.colorlist).with(_v.stream(this.renderAccentPalette, this)),
       _p.render($.basePalette._.colorlist).with(_v.stream(this.renderBasePalette, this)),
-      // _p.render($.root._.theme).with(_v.stream(this.renderTheme, this)),
+      _p.render($.root._.theme).with(_v.stream(this.renderTheme, this)),
       // _p.render($.root._.theme).with(_v.stream(this.renderTheme)),
     ];
   }
@@ -95,20 +94,21 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  // renderTheme(
-  //     @_p.input($.darkMode._.value) darkModeObs: Observable<CheckedValue>,
-  // ): Observable<'light'|'dark'> {
-  //   return darkModeObs
-  //       .pipe(
-  //           map(isDarkMode => {
-  //             if (!isDarkMode || isDarkMode === 'unknown') {
-  //               return 'light';
-  //             }
+  renderTheme(
+      // @_p.input($.darkMode._.value) darkModeObs: Observable<CheckedValue>,
+  ): Observable<'light'|'dark'> {
+    return observableOf('light');
+    // return darkModeObs
+    //     .pipe(
+    //         map(isDarkMode => {
+    //           if (!isDarkMode || isDarkMode === 'unknown') {
+    //             return 'light';
+    //           }
 
-  //             return 'dark';
-  //           }),
-  //       );
-  // }
+    //           return 'dark';
+    //         }),
+    //     );
+  }
 
   setupHandleAccentPaletteClick(): Observable<unknown> {
     return this.onClickObs
