@@ -7,6 +7,7 @@ import { InitFn } from 'persona/export';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith, tap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import { $$ as $textIconButton, TextIconButton } from '../component/text-icon-button';
 import { $$ as $drawer, Drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -30,20 +31,21 @@ export const $ = {
   root: element('root', ElementWithTagType('section'), {
     theme: attributeOut('mk-theme', stringParser()),
   }),
-  // title: element('title', ElementWithTagType('mk-text-icon-button'), api($textIconButton)),
+  title: element('title', ElementWithTagType('mk-text-icon-button'), api($textIconButton)),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
 
 @_p.customElement({
   dependencies: [
     Drawer,
+    TextIconButton,
   ],
   tag: 'mk-root-layout',
   template,
 })
-// @_p.render($.title._.label).withForwarding($.host._.label)
-// @_p.render($.title._.icon).withForwarding($.host._.icon)
 export class RootLayout extends ThemedCustomElementCtrl {
+  private readonly hostIconObs = _p.input($.host._.icon, this);
+  private readonly hostLabelObs = _p.input($.host._.label, this);
   private readonly hostThemeObs = _p.input($.host._.theme, this);
   private readonly isDrawerOpenSbj = _v.source(() => new BehaviorSubject(false), this).asSubject();
   private readonly onMouseOutObs = _p.input($.drawer._.onMouseOut, this);
@@ -57,6 +59,8 @@ export class RootLayout extends ThemedCustomElementCtrl {
       _p.render($.host._.drawerExpanded).withObservable(this.isDrawerOpenSbj),
       _p.render($.root._.theme).withObservable(this.hostThemeObs),
       _p.render($.drawer._.expanded).withObservable(this.isDrawerOpenSbj),
+      _p.render($.title._.label).withObservable(this.hostLabelObs),
+      _p.render($.title._.icon).withObservable(this.hostIconObs),
     ];
   }
 
