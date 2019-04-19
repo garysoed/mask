@@ -13,10 +13,12 @@ import { ElementWithTagType } from '@gs-types';
 import { InitFn } from '@persona';
 import { AriaRole } from '@persona/a11y';
 import { attributeIn, element, hasAttribute, onDom, onKeydown } from '@persona/input';
+import { api } from '@persona/main';
 import { attributeOut, dispatcher } from '@persona/output';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
+import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
@@ -48,26 +50,31 @@ export const $ = {
     role: attributeOut('role', stringParser()),
   }),
   iconWithText: element('iconWithText', ElementWithTagType('mk-icon-with-text'), {
-    // ...api($iconWithText),
-    // icon: attributeOut('icon', stringParser()),
-    // label: attributeOut('label', stringParser()),
-    // mode: attributeOut('mode', stringParser()),
+    ...api($iconWithText),
+    icon: attributeOut('icon', stringParser()),
+    label: attributeOut('label', stringParser()),
+    mode: attributeOut('mode', stringParser()),
   }),
 };
 
 @_p.customElement({
+  dependencies: [IconWithText],
   tag: 'mk-text-icon-button',
   template: textButtonTemplate,
 })
-// @_p.render($.iconWithText._.label).withForwarding($.host._.label)
-// @_p.render($.iconWithText._.icon).withForwarding($.host._.icon)
 export class TextIconButton extends ThemedCustomElementCtrl {
+  private readonly activeObs = _p.input($.host._.active, this);
+  private readonly ariaLabelObs = _p.input($.host._.ariaLabelIn, this);
   private readonly disabledObs = _p.input($.host._.disabled, this);
-  private readonly hostAriaLabelObs = _p.input($.host._.ariaLabelIn, this);
-  private readonly hostDisabledObs = _p.input($.host._.disabled, this);
-  private readonly hostLabelObs = _p.input($.host._.label, this);
+  private readonly hasPrimaryObs = _p.input($.host._.hasMkPrimary, this);
+  private readonly iconObs = _p.input($.host._.icon, this);
+  private readonly labelObs = _p.input($.host._.label, this);
+  private readonly onBlurObs = _p.input($.host._.onBlur, this);
   private readonly onClickObs = _p.input($.host._.onClick, this);
   private readonly onEnterDownObs = _p.input($.host._.onEnterDown, this);
+  private readonly onFocusObs = _p.input($.host._.onFocus, this);
+  private readonly onMouseEnterObs = _p.input($.host._.onMouseEnter, this);
+  private readonly onMouseLeaveObs = _p.input($.host._.onMouseLeave, this);
   private readonly onSpaceDownObs = _p.input($.host._.onSpaceDown, this);
 
   getInitFunctions(): InitFn[] {
@@ -77,6 +84,9 @@ export class TextIconButton extends ThemedCustomElementCtrl {
       _p.render($.host._.actionEvent).with(_v.stream(this.renderDispatchActions, this)),
       _p.render($.host._.ariaLabelOut).with(_v.stream(this.renderHostAriaLabel, this)),
       _p.render($.host._.tabindex).with(_v.stream(this.renderTabIndex, this)),
+      _p.render($.iconWithText._.label).withObservable(this.labelObs),
+      _p.render($.iconWithText._.icon).withObservable(this.iconObs),
+      _p.render($.iconWithText._.mode).with(_v.stream(this.renderIconMode, this)),
     ];
   }
 
@@ -94,59 +104,50 @@ export class TextIconButton extends ThemedCustomElementCtrl {
   }
 
   private renderHostAriaLabel(): Observable<string> {
-    return combineLatest(this.hostAriaLabelObs, this.hostLabelObs)
+    return combineLatest(this.ariaLabelObs, this.labelObs)
         .pipe(map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel));
   }
 
-  // @_p.render($.iconWithText._.mode)
-  // renderIconMode_(
-  //     @_p.input($.host._.active) activeObs: Observable<boolean>,
-  //     @_p.input($.host._.disabled) disabledObs: Observable<boolean>,
-  //     @_p.input($.host._.onBlur) onBlurObs: Observable<Event>,
-  //     @_p.input($.host._.onFocus) onFocusObs: Observable<Event>,
-  //     @_p.input($.host._.onMouseEnter) onMouseEnterObs: Observable<MouseEvent>,
-  //     @_p.input($.host._.onMouseLeave) onMouseLeaveObs: Observable<MouseEvent>,
-  //     @_p.input($.host._.hasMkPrimary) primaryObs: Observable<boolean>,
-  // ): Observable<string> {
-  //   const hoverObs = merge(
-  //       onMouseEnterObs.pipe(mapTo(true)),
-  //       onMouseLeaveObs.pipe(mapTo(false)),
-  //   )
-  //   .pipe(startWith(false));
+  renderIconMode(): Observable<string> {
+    const hoverObs = merge(
+        this.onMouseEnterObs.pipe(mapTo(true)),
+        this.onMouseLeaveObs.pipe(mapTo(false)),
+    )
+    .pipe(startWith(false));
 
-  //   const focusedObs = merge(
-  //       onFocusObs.pipe(mapTo(true)),
-  //       onBlurObs.pipe(mapTo(false)),
-  //   )
-  //   .pipe(startWith(false));
+    const focusedObs = merge(
+        this.onFocusObs.pipe(mapTo(true)),
+        this.onBlurObs.pipe(mapTo(false)),
+    )
+    .pipe(startWith(false));
 
-  //   return combineLatest(
-  //       activeObs,
-  //       disabledObs,
-  //       focusedObs,
-  //       hoverObs,
-  //       primaryObs,
-  //   )
-  //   .pipe(
-  //       map(([active, disabled, focused, hover, primary]) => {
-  //         if (disabled) {
-  //           return primary ? 'primaryDisabled' : 'disabled';
-  //         }
+    return combineLatest(
+        this.activeObs,
+        this.disabledObs,
+        focusedObs,
+        hoverObs,
+        this.hasPrimaryObs,
+    )
+    .pipe(
+        map(([active, disabled, focused, hover, primary]) => {
+          if (disabled) {
+            return primary ? 'primaryDisabled' : 'disabled';
+          }
 
-  //         if (hover || focused) {
-  //           return primary ? 'primaryFocus' : 'focus';
-  //         }
+          if (hover || focused) {
+            return primary ? 'primaryFocus' : 'focus';
+          }
 
-  //         if (active) {
-  //           return 'active';
-  //         }
+          if (active) {
+            return 'active';
+          }
 
-  //         return primary ? 'actionPrimary' : 'action';
-  //       }),
-  //   );
-  // }
+          return primary ? 'actionPrimary' : 'action';
+        }),
+    );
+  }
 
   renderTabIndex(): Observable<number> {
-    return this.hostDisabledObs.pipe(map(disabled => disabled ? -1 : 0));
+    return this.disabledObs.pipe(map(disabled => disabled ? -1 : 0));
   }
 }
