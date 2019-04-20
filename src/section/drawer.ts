@@ -61,9 +61,10 @@ export class Drawer extends ThemedCustomElementCtrl {
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render($.host._.styleHeight).with(_v.stream(this.renderStyleHeight, this)),
-      _p.render($.host._.styleWidth).with(_v.stream(this.renderStyleWidth, this)),
-      _p.render($.host._.styleOverflow).with(_v.source(() => new BehaviorSubject('hidden'), this)),
+      _p.render($.host._.styleHeight).withVine(_v.stream(this.renderStyleHeight, this)),
+      _p.render($.host._.styleWidth).withVine(_v.stream(this.renderStyleWidth, this)),
+      _p.render($.host._.styleOverflow)
+          .withVine(_v.source(() => new BehaviorSubject('hidden'), this)),
     ];
   }
 

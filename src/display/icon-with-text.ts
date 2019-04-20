@@ -21,7 +21,7 @@ import { Config } from '../app/config';
 import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
-// import { Icon } from './icon';
+import { Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
 
 export const $$ = {
@@ -44,7 +44,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  // dependencies: [Icon],
+  dependencies: [Icon],
   tag: 'mk-icon-with-text',
   template: iconWithTextTemplate,
 })
@@ -56,11 +56,12 @@ export class IconWithText extends ThemedCustomElementCtrl {
 
   getInitFunctions(): InitFn[] {
     return [
+      ...super.getInitFunctions(),
       _p.render($.text._.text).withObservable(this.labelObs),
       _p.render($.icon._.icon).withObservable(this.iconObs),
       _p.render($.icon._.mode).withObservable(this.modeObs),
-      _p.render($.icon._.classes).with(_v.stream(this.renderIconClasses, this)),
-      _p.render($.text._.classes).with(_v.stream(this.renderTextClasses, this)),
+      _p.render($.icon._.classes).withVine(_v.stream(this.renderIconClasses, this)),
+      _p.render($.text._.classes).withVine(_v.stream(this.renderTextClasses, this)),
     ];
   }
 

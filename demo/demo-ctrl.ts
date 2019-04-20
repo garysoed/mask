@@ -55,9 +55,9 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
       ...super.getInitFunctions(),
       this.setupHandleAccentPaletteClick,
       this.setupHandleBasePaletteClick,
-      _p.render($.accentPalette._.colorlist).with(_v.stream(this.renderAccentPalette, this)),
-      _p.render($.basePalette._.colorlist).with(_v.stream(this.renderBasePalette, this)),
-      _p.render($.root._.theme).with(_v.stream(this.renderTheme, this)),
+      _p.render($.accentPalette._.colorlist).withVine(_v.stream(this.renderAccentPalette, this)),
+      _p.render($.basePalette._.colorlist).withVine(_v.stream(this.renderBasePalette, this)),
+      _p.render($.root._.theme).withVine(_v.stream(this.renderTheme, this)),
       // _p.render($.root._.theme).with(_v.stream(this.renderTheme)),
     ];
   }

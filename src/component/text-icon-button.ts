@@ -79,14 +79,15 @@ export class TextIconButton extends ThemedCustomElementCtrl {
 
   getInitFunctions(): InitFn[] {
     return [
+      ...super.getInitFunctions(),
       _p.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON)),
       _p.render($.host._.ariaDisabled).withObservable(this.disabledObs),
-      _p.render($.host._.actionEvent).with(_v.stream(this.renderDispatchActions, this)),
-      _p.render($.host._.ariaLabelOut).with(_v.stream(this.renderHostAriaLabel, this)),
-      _p.render($.host._.tabindex).with(_v.stream(this.renderTabIndex, this)),
+      _p.render($.host._.actionEvent).withVine(_v.stream(this.renderDispatchActions, this)),
+      _p.render($.host._.ariaLabelOut).withVine(_v.stream(this.renderHostAriaLabel, this)),
+      _p.render($.host._.tabindex).withVine(_v.stream(this.renderTabIndex, this)),
       _p.render($.iconWithText._.label).withObservable(this.labelObs),
       _p.render($.iconWithText._.icon).withObservable(this.iconObs),
-      _p.render($.iconWithText._.mode).with(_v.stream(this.renderIconMode, this)),
+      _p.render($.iconWithText._.mode).withVine(_v.stream(this.renderIconMode, this)),
     ];
   }
 

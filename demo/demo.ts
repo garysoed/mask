@@ -1,5 +1,6 @@
-import { Palette, start as startMask } from '../export';
-import { Theme } from '../src/theme/theme';
+import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
+import { take } from 'rxjs/operators';
+import { $svgConfig, Icon, IconWithText, Palette, start as startMask, SvgConfig, TextIconButton, Theme } from '../export';
 import { DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
@@ -14,30 +15,31 @@ window.addEventListener('load', () => {
         DemoCtrl,
         // Dialog,
         // Drawer,
-        // Icon,
-        // IconWithText,
+        Icon,
+        IconWithText,
         // LayoutOverlay,
         // ListItem,
-        // TextIconButton,
+        TextIconButton,
         // TextInput,
       ],
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);
 
-  // vine.getObservable($svgConfig)
-  //     .pipe(take(1))
-  //     .subscribe(config => {
-  //       const newConfig = $pipe(
-  //           config,
-  //           $push<[string, SvgConfig], string>(
-  //               ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
-  //               ['logo', {type: 'remote' as 'remote', url: './asset/mask.svg'}],
-  //               ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
-  //           ),
-  //           asImmutableMap(),
-  //       );
-  //       vine.setValue($svgConfig, newConfig);
-  //     });
+  const svgConfigSbj = $svgConfig.get(vine);
+  svgConfigSbj
+      .pipe(take(1))
+      .subscribe(config => {
+        const newConfig = $pipe(
+            config,
+            $push<[string, SvgConfig], string>(
+                ['highlight', {type: 'remote' as 'remote', url: './asset/highlight.svg'}],
+                ['logo', {type: 'remote' as 'remote', url: './asset/mask.svg'}],
+                ['palette', {type: 'remote' as 'remote', url: './asset/palette.svg'}],
+            ),
+            asImmutableMap(),
+        );
+        svgConfigSbj.next(newConfig);
+      });
 
   // vine.getObservable($dialogService).subscribe(service => {
   //   Jsons.setValue(window, 'demo.dialogService', service);
