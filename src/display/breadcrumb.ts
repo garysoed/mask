@@ -1,119 +1,113 @@
-// import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from '@gs-tools/collect';
-// import { Errors } from '@gs-tools/error';
-// import { objectConverter } from '@gs-tools/serializer';
-// import { InstanceofType } from '@gs-types';
-// import { attributeIn, element, onDom } from '@persona/input';
-// import { dispatcher, slot } from '@persona/output';
-// import { __renderId, ElementListRenderer, SimpleElementRenderer } from '@persona/renderer';
-// import { Observable } from 'rxjs';
-// import { map } from 'rxjs/operators';
-// import { _p } from '../app/app';
-// import { Config } from '../app/config';
-// import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-// import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-// import { listParser, stringParser } from '../util/parsers';
-// import { BreadcrumbClickEvent } from './breadcrumb-event';
-// import breadcrumbTemplate from './breadcrumb.html';
-// import { crumb, Crumb, CrumbConfig } from './crumb';
+import { $map, $pipe, asImmutableList, createImmutableList, ImmutableList } from '@gs-tools/collect';
+import { Errors } from '@gs-tools/error';
+import { objectConverter } from '@gs-tools/serializer';
+import { InstanceofType } from '@gs-types';
+import { InitFn } from '@persona';
+import { attributeIn, element, onDom } from '@persona/input';
+import { dispatcher, slot } from '@persona/output';
+import { __renderId, ElementListRenderer, SimpleElementRenderer } from '@persona/renderer';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { _p, _v } from '../app/app';
+import { ACTION_EVENT } from '../event/action-event';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { listParser, stringParser } from '../util/parsers';
+import { BreadcrumbClickEvent } from './breadcrumb-event';
+import breadcrumbTemplate from './breadcrumb.html';
+import { Crumb } from './crumb';
 
-// interface CrumbData {
-//   display: string;
-//   key: string;
-// }
+interface CrumbData {
+  display: string;
+  key: string;
+}
 
-// interface RenderedCrumbData extends CrumbData {
-//   [__renderId]: string;
-// }
+interface RenderedCrumbData extends CrumbData {
+  [__renderId]: string;
+}
 
-// export const $ = {
-//   host: element({
-//     dispatch: dispatcher(ACTION_EVENT),
-//     path: attributeIn<ImmutableList<CrumbData>>(
-//         'path',
-//         listParser(
-//             objectConverter<CrumbData>({
-//               display: stringParser(),
-//               key: stringParser(),
-//             }),
-//         ),
-//         createImmutableList([]),
-//     ),
-//   }),
-//   row: element('row', InstanceofType(HTMLDivElement), {
-//     crumbsSlot: slot(
-//         'crumbs',
-//         new ElementListRenderer<RenderedCrumbData>(
-//             new SimpleElementRenderer<RenderedCrumbData>(
-//               'mk-crumb',
-//               {
-//                 [__renderId]: stringParser(),
-//                 display: stringParser(),
-//                 key: stringParser(),
-//               },
-//             ),
-//         ),
-//     ),
-//     onAction: onDom(ACTION_EVENT),
-//   }),
-// };
+export const $ = {
+  host: element({
+    dispatch: dispatcher(ACTION_EVENT),
+    path: attributeIn<ImmutableList<CrumbData>>(
+        'path',
+        listParser(
+            objectConverter<CrumbData>({
+              display: stringParser(),
+              key: stringParser(),
+            }),
+        ),
+        createImmutableList([]),
+    ),
+  }),
+  row: element('row', InstanceofType(HTMLDivElement), {
+    crumbsSlot: slot(
+        'crumbs',
+        new ElementListRenderer<RenderedCrumbData>(
+            new SimpleElementRenderer<RenderedCrumbData>(
+              'mk-crumb',
+              {
+                [__renderId]: stringParser(),
+                display: stringParser(),
+                key: stringParser(),
+              },
+            ),
+        ),
+    ),
+    onAction: onDom(ACTION_EVENT),
+  }),
+};
 
-// @_p.customElement({
-//   dependencies: [Crumb],
-//   tag: 'mk-breadcrumb',
-//   template: breadcrumbTemplate,
-// })
-// export class Breadcrumb extends ThemedCustomElementCtrl {
+@_p.customElement({
+  dependencies: [Crumb],
+  tag: 'mk-breadcrumb',
+  template: breadcrumbTemplate,
+})
+export class Breadcrumb extends ThemedCustomElementCtrl {
+  private readonly pathObs = _p.input($.host._.path, this);
+  private readonly rowOnActionObs = _p.input($.row._.onAction, this);
 
-//   @_p.render($.row._.crumbsSlot)
-//   renderCrumbs_(
-//       @_p.input($.host._.path) pathObs: Observable<ImmutableList<CrumbData>>,
-//   ): Observable<ImmutableList<RenderedCrumbData>> {
-//     return pathObs
-//         .pipe(
-//             map(path => $pipe(
-//                 path,
-//                 $map(({key, display}) => ({
-//                   [__renderId]: key,
-//                   display,
-//                   key,
-//                 })),
-//                 asImmutableList(),
-//             )),
-//         );
-//   }
-//   @_p.render($.host._.dispatch)
-//   renderDispatchAction_(
-//       @_p.input($.row._.onAction) onActionObs: Observable<ActionEvent>,
-//   ): Observable<BreadcrumbClickEvent> {
-//     return onActionObs
-//         .pipe(
-//             map(event => {
-//               const target = event.target;
-//               if (!(target instanceof Element)) {
-//                 throw Errors.assert(`target for ${ACTION_EVENT}`)
-//                     .shouldBeAnInstanceOf(Element)
-//                     .butWas(target);
-//               }
+  getInitFunctions(): InitFn[] {
+    return [
+      ...super.getInitFunctions(),
+      _p.render($.row._.crumbsSlot).withVine(_v.stream(this.renderCrumbs, this)),
+      _p.render($.host._.dispatch).withVine(_v.stream(this.renderDispatchAction, this)),
+    ];
+  }
 
-//               const key = target.getAttribute('key');
-//               if (!key) {
-//                 throw Errors.assert(`key for ${target}`).shouldExist().butNot();
-//               }
+  renderCrumbs(): Observable<ImmutableList<RenderedCrumbData>> {
+    return this.pathObs
+        .pipe(
+            map(path => $pipe(
+                path,
+                $map(({key, display}) => ({
+                  [__renderId]: key,
+                  display,
+                  key,
+                })),
+                asImmutableList(),
+            )),
+        );
+  }
 
-//               return key;
-//             }),
-//             map(key => new BreadcrumbClickEvent(key)),
-//         );
-//   }
-// }
+  renderDispatchAction(): Observable<BreadcrumbClickEvent> {
+    return this.rowOnActionObs
+        .pipe(
+            map(event => {
+              const target = event.target;
+              if (!(target instanceof Element)) {
+                throw Errors.assert(`target for ${ACTION_EVENT}`)
+                    .shouldBeAnInstanceOf(Element)
+                    .butWas(target);
+              }
 
-// interface BreadcrumbConfig extends Config {
-//   dependencies: [CrumbConfig];
-// }
+              const key = target.getAttribute('key');
+              if (!key) {
+                throw Errors.assert(`key for ${target}`).shouldExist().butNot();
+              }
 
-// export function breadcrumb(): BreadcrumbConfig {
-//   return {
-//     dependencies: [crumb()],
-//     tag: 'mk-breadcrumb',
-//   };
-// }
+              return key;
+            }),
+            map(key => new BreadcrumbClickEvent(key)),
+        );
+  }
+}

@@ -1,6 +1,7 @@
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { take } from 'rxjs/operators';
-import { $svgConfig, Icon, IconWithText, Palette, start as startMask, SvgConfig, TextIconButton, Theme } from '../export';
+import { Checkbox } from 'src/input/checkbox';
+import { $svgConfig, Breadcrumb, Drawer, Icon, IconWithText, Palette, start as startMask, SvgConfig, TextIconButton, Theme } from '../export';
 import { DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
@@ -9,12 +10,12 @@ window.addEventListener('load', () => {
   const {vine} = startMask(
       'demo',
       [
-        // Breadcrumb,
-        // Checkbox,
+        Breadcrumb,
+        Checkbox,
         // CroppedLine,
         DemoCtrl,
         // Dialog,
-        // Drawer,
+        Drawer,
         Icon,
         IconWithText,
         // LayoutOverlay,
