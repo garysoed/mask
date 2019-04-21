@@ -1,6 +1,6 @@
 import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from '@gs-tools/collect';
 import { Color } from '@gs-tools/color';
-import { ArrayDiff, debug } from '@gs-tools/rxjs';
+import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { InitFn } from '@persona';
 import { element, onDom } from '@persona/input';
@@ -9,7 +9,6 @@ import { repeated } from '@persona/output';
 import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../src/app/app';
-import { Config } from '../src/app/config';
 import { $$ as $checkbox, Checkbox } from '../src/input/checkbox';
 import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
@@ -218,11 +217,5 @@ function createPaletteData(colorName: string, color: Color, selected: boolean): 
     class: classes.join(' '),
     color: colorName,
     style: `background-color: ${colorCss};`,
-  };
-}
-
-export function demoCtrl(): Config {
-  return {
-    tag: TAG,
   };
 }

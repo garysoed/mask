@@ -17,7 +17,8 @@ export function start(
     rootCtrls: Array<new (...args: any[]) => CustomElementCtrl>,
     theme: Theme,
     styleEl: HTMLStyleElement,
-    customElementRegistry: CustomElementRegistry = window.customElements): {vine: Vine} {
+    customElementRegistry: CustomElementRegistry = window.customElements,
+): {vine: Vine} {
   const {vine} = _p.build(appName, rootCtrls, customElementRegistry);
   const themeSbj = $theme.get(vine);
   themeSbj.next(theme);

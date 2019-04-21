@@ -17,8 +17,6 @@ import { attributeOut, classlist, textContent } from '@persona/output';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { Config } from '../app/config';
-import { IconConfig } from '../configs/icon-config';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 import { Icon } from './icon';
@@ -88,15 +86,4 @@ export class IconWithText extends ThemedCustomElementCtrl {
         }),
     );
   }
-}
-
-export interface IconWithTextConfig extends Config {
-  tag: 'mk-icon-with-text';
-}
-
-export function iconWithText(iconConfig: IconConfig): IconWithTextConfig {
-  return {
-    dependencies: [iconConfig],
-    tag: 'mk-icon-with-text',
-  };
 }

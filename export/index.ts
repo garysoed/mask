@@ -1,7 +1,6 @@
 export { _p, _v } from '../src/app/app';
 export { $svgConfig } from '../src/display/svg-service';
 export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
-export { Config } from '../src/app/config';
 export { Drawer } from '../src/section/drawer';
 export { Icon } from '../src/display/icon';
 export { IconWithText } from '../src/display/icon-with-text';
