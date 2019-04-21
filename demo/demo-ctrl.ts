@@ -1,6 +1,6 @@
 import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from '@gs-tools/collect';
 import { Color } from '@gs-tools/color';
-import { ArrayDiff } from '@gs-tools/rxjs';
+import { ArrayDiff, debug } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { InitFn } from '@persona';
 import { element, onDom } from '@persona/input';
@@ -10,8 +10,8 @@ import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../src/app/app';
 import { Config } from '../src/app/config';
+import { $$ as $checkbox, Checkbox } from '../src/input/checkbox';
 import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
-// import { $$ as $checkbox, Checkbox, CheckedValue } from '../src/input/checkbox';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import demoTemplate from './demo.html';
@@ -33,7 +33,7 @@ const $ = {
     colorlist: repeated<PaletteD>('basePalette', 'div'),
     onClick: onDom<MouseEvent>('click'),
   }),
-  // darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
+  darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
   root: element('root', ElementWithTagType('mk-root-layout'), api($rootLayout)),
 };
 
@@ -41,14 +41,16 @@ export const TAG = 'mk-demo';
 
 @_p.customElement({
   dependencies: [
-    // Checkbox,
+    Checkbox,
     RootLayout,
   ],
   tag: TAG,
   template: demoTemplate,
 })
 export class DemoCtrl extends ThemedCustomElementCtrl {
-  private readonly onClickObs = _p.input($.accentPalette._.onClick, this);
+  private readonly darkModeObs = _p.input($.darkMode._.value, this);
+  private readonly onAccentClickObs = _p.input($.accentPalette._.onClick, this);
+  private readonly onBaseClickObs = _p.input($.basePalette._.onClick, this);
 
   getInitFunctions(): InitFn[] {
     return [
@@ -58,11 +60,11 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
       _p.render($.accentPalette._.colorlist).withVine(_v.stream(this.renderAccentPalette, this)),
       _p.render($.basePalette._.colorlist).withVine(_v.stream(this.renderBasePalette, this)),
       _p.render($.root._.theme).withVine(_v.stream(this.renderTheme, this)),
-      // _p.render($.root._.theme).with(_v.stream(this.renderTheme)),
+      _p.render($.root._.theme).withVine(_v.stream(this.renderTheme, this)),
     ];
   }
 
-  renderAccentPalette(): Observable<ArrayDiff<PaletteData>> {
+  private renderAccentPalette(): Observable<ArrayDiff<PaletteData>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -78,7 +80,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  renderBasePalette(): Observable<ArrayDiff<PaletteData>> {
+  private renderBasePalette(): Observable<ArrayDiff<PaletteData>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -94,24 +96,21 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  renderTheme(
-      // @_p.input($.darkMode._.value) darkModeObs: Observable<CheckedValue>,
-  ): Observable<'light'|'dark'> {
-    return observableOf('light');
-    // return darkModeObs
-    //     .pipe(
-    //         map(isDarkMode => {
-    //           if (!isDarkMode || isDarkMode === 'unknown') {
-    //             return 'light';
-    //           }
+  private renderTheme(): Observable<'light'|'dark'> {
+    return this.darkModeObs
+        .pipe(
+            map(isDarkMode => {
+              if (!isDarkMode || isDarkMode === 'unknown') {
+                return 'light';
+              }
 
-    //           return 'dark';
-    //         }),
-    //     );
+              return 'dark';
+            }),
+        );
   }
 
   setupHandleAccentPaletteClick(): Observable<unknown> {
-    return this.onClickObs
+    return this.onAccentClickObs
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
@@ -123,7 +122,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
   }
 
   setupHandleBasePaletteClick(): Observable<unknown> {
-    return this.onClickObs
+    return this.onBaseClickObs
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
