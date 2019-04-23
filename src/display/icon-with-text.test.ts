@@ -7,7 +7,7 @@ import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, IconWithText } from './icon-with-text';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.IconWithText', () => {
   let el: HTMLElement;

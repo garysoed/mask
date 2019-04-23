@@ -15,21 +15,13 @@ import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import demoTemplate from './demo.html';
 
-interface PaletteData {
-  class: string;
-  color: string;
-  style: string;
-}
-
-type PaletteD = {class: string; color: string; style: string};
-
 const $ = {
   accentPalette: element('accentPalette', InstanceofType(HTMLDivElement), {
-    colorlist: repeated<PaletteD>('accentPalette', 'div'),
+    colorlist: repeated('accentPalette', 'div'),
     onClick: onDom<MouseEvent>('click'),
   }),
   basePalette: element('basePalette', InstanceofType(HTMLDivElement), {
-    colorlist: repeated<PaletteD>('basePalette', 'div'),
+    colorlist: repeated('basePalette', 'div'),
     onClick: onDom<MouseEvent>('click'),
   }),
   darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
@@ -63,7 +55,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     ];
   }
 
-  private renderAccentPalette(): Observable<ArrayDiff<PaletteData>> {
+  private renderAccentPalette(): Observable<ArrayDiff<Map<string, string>>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -74,12 +66,15 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
 
     return concat(
-        observableOf<ArrayDiff<PaletteData>>({type: 'init' as 'init', payload: initPaletteData}),
+        observableOf<ArrayDiff<Map<string, string>>>({
+          type: 'init' as 'init',
+          value: initPaletteData,
+        }),
         diffObs,
     );
   }
 
-  private renderBasePalette(): Observable<ArrayDiff<PaletteData>> {
+  private renderBasePalette(): Observable<ArrayDiff<Map<string, string>>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -90,7 +85,10 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
 
     return concat(
-        observableOf<ArrayDiff<PaletteData>>({type: 'init' as 'init', payload: initPaletteData}),
+        observableOf<ArrayDiff<Map<string, string>>>({
+          type: 'init' as 'init',
+          value: initPaletteData,
+        }),
         diffObs,
     );
   }
@@ -133,16 +131,17 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
   }
 }
 
-function createDiffObs(oldColor: Color, newColor: Color): Observable<ArrayDiff<PaletteData>> {
-  const diffs: Array<ArrayDiff<PaletteData>> = [];
+function createDiffObs(oldColor: Color, newColor: Color):
+    Observable<ArrayDiff<Map<string, string>>> {
+  const diffs: Array<ArrayDiff<Map<string, string>>> = [];
 
   const oldIndex = COLOR_TO_INDEX.get(oldColor);
   const oldName = COLOR_TO_NAME.get(oldColor);
   if (oldIndex !== undefined && oldName !== undefined) {
     diffs.push({
       index: oldIndex,
-      payload: createPaletteData(oldName, oldColor, false),
       type: 'set',
+      value: createPaletteData(oldName, oldColor, false),
     });
   }
 
@@ -151,8 +150,8 @@ function createDiffObs(oldColor: Color, newColor: Color): Observable<ArrayDiff<P
   if (newIndex !== undefined && newName !== undefined) {
     diffs.push({
       index: newIndex,
-      payload: createPaletteData(newName, newColor, true),
       type: 'set',
+      value: createPaletteData(newName, newColor, true),
     });
   }
 
@@ -205,7 +204,8 @@ const COLOR_TO_NAME = new Map<Color, string>([...$pipe(
     asImmutableMap<Color, string>(),
 )]);
 
-function createPaletteData(colorName: string, color: Color, selected: boolean): PaletteData {
+function createPaletteData(colorName: string, color: Color, selected: boolean):
+    Map<string, string> {
   const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
 
   const classes = ['palette'];
@@ -213,9 +213,9 @@ function createPaletteData(colorName: string, color: Color, selected: boolean): 
     classes.push('selected');
   }
 
-  return {
-    class: classes.join(' '),
-    color: colorName,
-    style: `background-color: ${colorCss};`,
-  };
+  return new Map([
+    ['class', classes.join(' ')],
+    ['color', colorName],
+    ['style', `background-color: ${colorCss};`],
+  ]);
 }

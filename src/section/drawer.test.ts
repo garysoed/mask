@@ -3,7 +3,7 @@ import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p, _v } from '../app/app';
 import { $, Drawer, Mode } from './drawer';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('section.Drawer', () => {
   let el: HTMLElement;

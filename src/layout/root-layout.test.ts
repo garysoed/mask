@@ -3,7 +3,7 @@ import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p, _v } from '../app/app';
 import { $, $qIsDesktop, RootLayout } from './root-layout';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('layout.RootLayout', () => {
   let el: HTMLElement;

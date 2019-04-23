@@ -12,7 +12,7 @@ import { $svgConfig } from './svg-service';
 const SVG_NAME = 'svgName';
 const SVG_URL = 'http://svgUrl';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.Icon', () => {
   const SVG_CONTENT = 'svgContent';

@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, Checkbox } from './checkbox';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('mask.input.checkbox', () => {
   let el: HTMLElement;

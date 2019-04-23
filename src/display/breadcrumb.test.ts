@@ -9,7 +9,7 @@ import { $, Breadcrumb } from './breadcrumb';
 import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
 import { Crumb } from './crumb';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.Breadcrumb', () => {
   let el: HTMLElement;
@@ -22,7 +22,7 @@ test('display.Breadcrumb', () => {
     el = tester.createElement('mk-breadcrumb', document.body);
   });
 
-  test('onRowAction_', () => {
+  test('onRowAction', () => {
     should(`dispatch the correct event`, async () => {
       const data = createImmutableList([
         {

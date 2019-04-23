@@ -7,7 +7,7 @@ import { _p, _v } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 import { $, TextIconButton } from './text-icon-button';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('component.TextIconButton', () => {
   let el: HTMLElement;

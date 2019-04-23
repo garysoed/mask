@@ -6,7 +6,7 @@ import { _p, _v } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { Crumb } from './crumb';
 
-const testerFactory = new PersonaTesterFactory(_v, _p);
+const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.crumb', () => {
   let el: HTMLElement;
