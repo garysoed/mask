@@ -1,7 +1,6 @@
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { take } from 'rxjs/operators';
-import { Checkbox } from 'src/input/checkbox';
-import { $svgConfig, Breadcrumb, Drawer, Icon, IconWithText, Palette, start as startMask, SvgConfig, TextIconButton, Theme } from '../export';
+import { $svgConfig, Breadcrumb, Checkbox, CroppedLine, Drawer, Icon, IconWithText, Palette, start as startMask, SvgConfig, TextIconButton, TextInput, Theme } from '../export';
 import { DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
@@ -12,7 +11,7 @@ window.addEventListener('load', () => {
       [
         Breadcrumb,
         Checkbox,
-        // CroppedLine,
+        CroppedLine,
         DemoCtrl,
         // Dialog,
         Drawer,
@@ -21,7 +20,7 @@ window.addEventListener('load', () => {
         // LayoutOverlay,
         // ListItem,
         TextIconButton,
-        // TextInput,
+        TextInput,
       ],
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement);
