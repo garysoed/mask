@@ -7,6 +7,10 @@ html, input {
   font-size: 75%;
 }
 
+body {
+  margin: 0;
+}
+
 [mk-body-1],
 [mk-body-2],
 a,

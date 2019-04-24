@@ -12,4 +12,7 @@ mask
     ☐ Change sidebar to be highlight
     ☐ Dark mode toggle
 
+  bugs:
+    ☐ Dialog, clicking on the button the second time doesn't work. Event dispatch doesn't seem to work.
+
   ☐ Gather TODOs

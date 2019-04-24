@@ -1,6 +1,7 @@
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
+import { Jsons } from '@gs-tools/data';
 import { take } from 'rxjs/operators';
-import { $svgConfig, Breadcrumb, Checkbox, CroppedLine, Drawer, Icon, IconWithText, Palette, start as startMask, SvgConfig, TextIconButton, TextInput, Theme } from '../export';
+import { $dialogService, $svgConfig, Breadcrumb, Checkbox, CroppedLine, Dialog, Drawer, Icon, IconWithText, LayoutOverlay, ListItem, Palette, start as startMask, SvgConfig, TextIconButton, TextInput, Theme } from '../export';
 import { DemoCtrl } from './demo-ctrl';
 
 const theme = new Theme(Palette.ORANGE, Palette.GREEN);
@@ -13,12 +14,12 @@ window.addEventListener('load', () => {
         Checkbox,
         CroppedLine,
         DemoCtrl,
-        // Dialog,
+        Dialog,
         Drawer,
         Icon,
         IconWithText,
-        // LayoutOverlay,
-        // ListItem,
+        LayoutOverlay,
+        ListItem,
         TextIconButton,
         TextInput,
       ],
@@ -41,7 +42,7 @@ window.addEventListener('load', () => {
         svgConfigSbj.next(newConfig);
       });
 
-  // vine.getObservable($dialogService).subscribe(service => {
-  //   Jsons.setValue(window, 'demo.dialogService', service);
-  // });
+  $dialogService.get(vine).subscribe(service => {
+    Jsons.setValue(window, 'demo.dialogService', service);
+  });
 });
