@@ -1,12 +1,11 @@
-import { $getKey, $head, $map, $pick, $pipe, asImmutableList, createImmutableList, ImmutableList, ImmutableMap } from '@gs-tools/collect';
+import { $getKey, $head, $map, $pick, $pipe, asImmutableList, createImmutableList, createImmutableMap, ImmutableList } from '@gs-tools/collect';
 import { Errors } from '@gs-tools/error';
-import { ArrayDiff, ArraySubject, filterNonNull, MapSubject } from '@gs-tools/rxjs';
+import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs-tools/rxjs';
 import { objectConverter } from '@gs-tools/serializer';
 import { InstanceofType } from '@gs-types';
 import { InitFn } from '@persona';
 import { attributeIn, element, onDom } from '@persona/input';
 import { dispatcher, repeated } from '@persona/output';
-import { __renderId } from '@persona/renderer';
 import { Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -65,14 +64,15 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   renderCrumbs(): Observable<ArrayDiff<Map<string, string>>> {
     return this.pathKeySubject.getDiffs()
         .pipe(
-            withLatestFrom(this.pathDataSubject.getObs()),
+            withLatestFrom(this.pathDataSubject.getDiffs().pipe(scanMap())),
             map(([diff, map]) => {
+              const immutableMap = createImmutableMap(map);
               switch (diff.type) {
                 case 'delete':
                   return diff;
                 case 'init':
                   const crumbDataList = $pipe(
-                      map,
+                      immutableMap,
                       $getKey(...diff.value),
                       $pick(1),
                       $map(renderCrumbData),
@@ -81,7 +81,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
 
                   return {type: 'init' as 'init', value: [...crumbDataList]};
                 case 'insert':
-                  const insertData = $pipe(map, $getKey(diff.value), $pick(1), $head());
+                  const insertData = $pipe(immutableMap, $getKey(diff.value), $pick(1), $head());
                   if (!insertData) {
                     return null;
                   }
@@ -92,7 +92,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
                     value: renderCrumbData(insertData),
                   };
                 case 'set':
-                  const setData = $pipe(map, $getKey(diff.value), $pick(1), $head());
+                  const setData = $pipe(immutableMap, $getKey(diff.value), $pick(1), $head());
                   if (!setData) {
                     return null;
                   }
