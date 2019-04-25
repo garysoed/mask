@@ -1,7 +1,5 @@
 import { ElementWithTagType } from '@gs-types';
-import { attributeIn, element, mediaQuery, onDom } from '@persona/input';
-import { api } from '@persona/main';
-import { attributeOut } from '@persona/output';
+import { api, attributeIn, attributeOut, element, mediaQuery, onDom } from '@persona';
 import { Vine } from 'grapevine/export';
 import { InitFn } from 'persona/export';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';

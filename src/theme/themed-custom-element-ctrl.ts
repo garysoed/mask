@@ -1,9 +1,8 @@
 import { InstanceofType } from '@gs-types';
-import { CustomElementCtrl, InitFn } from '@persona';
-import { element } from '@persona/input';
+import { CustomElementCtrl, element, InitFn } from '@persona';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { $theme, _p, _v } from '../app/app';
+import { $theme, _p } from '../app/app';
 
 const $ = {
   theme: element('theme', InstanceofType(HTMLStyleElement), {}),

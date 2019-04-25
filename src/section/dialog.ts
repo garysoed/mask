@@ -1,9 +1,7 @@
 import { Vine } from '@grapevine';
 import { $pipe, $push, asImmutableMap, createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { element, onDom } from '@persona/input';
-import { classlist, textContent } from '@persona/output';
+import { classlist, element, InitFn, onDom, textContent } from '@persona';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, take, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

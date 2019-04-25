@@ -1,8 +1,5 @@
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { attributeIn, element } from '@persona/input';
-import { api } from '@persona/main';
-import { classToggle, innerHtml } from '@persona/output';
+import { api, attributeIn, classToggle, element, InitFn, innerHtml } from '@persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

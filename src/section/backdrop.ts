@@ -1,9 +1,7 @@
 import { Vine } from '@grapevine';
 import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { element } from '@persona/input';
-import { classlist } from '@persona/output';
+import { classlist, element, InitFn } from '@persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

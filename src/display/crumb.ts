@@ -1,7 +1,5 @@
 import { InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { attributeIn, element, onDom } from '@persona/input';
-import { dispatcher, textContent } from '@persona/output';
+import { attributeIn, dispatcher, element, InitFn, onDom, textContent } from '@persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

@@ -12,9 +12,7 @@
 import { createImmutableSet } from '@gs-tools/collect';
 import { stringMatchConverter } from '@gs-tools/serializer';
 import { InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { attributeIn, element } from '@persona/input';
-import { style } from '@persona/output';
+import { attributeIn, element, InitFn, style } from '@persona';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

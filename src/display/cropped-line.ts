@@ -6,9 +6,7 @@
  */
 
 import { InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { attributeIn, element, onDom } from '@persona/input';
-import { textContent } from '@persona/output';
+import { attributeIn, element, InitFn, onDom, textContent } from '@persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

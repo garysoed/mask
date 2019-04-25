@@ -2,15 +2,13 @@ import { Vine } from '@grapevine';
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { Jsons } from '@gs-tools/data';
 import { InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { element } from '@persona/input';
-import { classlist, style } from '@persona/output';
+import { classlist, element, InitFn, style } from '@persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { _p, _v } from '../../app/app';
 import * as layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import { SvgConfig } from '../../display/svg-config';
-import { $svgConfig, $svgService, SvgService } from '../../display/svg-service';
+import { $svgConfig, $svgService } from '../../display/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 import layoutOverlayTemplate from './layout-overlay.html';
 

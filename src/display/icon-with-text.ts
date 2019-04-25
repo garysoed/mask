@@ -11,9 +11,7 @@
 
 import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { attributeIn, element } from '@persona/input';
-import { attributeOut, classlist, textContent } from '@persona/output';
+import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from '@persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { _p, _v } from '../app/app';

@@ -2,10 +2,7 @@ import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmu
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { InitFn } from '@persona';
-import { element, onDom } from '@persona/input';
-import { api } from '@persona/main';
-import { repeated } from '@persona/output';
+import { api, element, InitFn, onDom, repeated } from '@persona';
 import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../src/app/app';
