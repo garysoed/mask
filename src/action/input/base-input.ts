@@ -1,15 +1,15 @@
 import { Vine } from '@grapevine';
-import { attributeIn, element, handler, hasAttribute, InitFn } from '@persona';
+import { attributeIn, element, handler, InitFn } from '@persona';
 import { Output } from '@persona/internal';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, skip, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../../app/app';
-import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 import { stringParser } from '../../util/parsers';
+import { $$ as $baseAction, BaseAction } from '../base-action';
 
 export const $$ = {
+  ...$baseAction,
   clearFn: handler<[]>('clear'),
-  disabled: hasAttribute('disabled'),
   label: attributeIn('label', stringParser(), ''),
 };
 
@@ -18,25 +18,24 @@ export const $ = {
 };
 
 @_p.baseCustomElement({})
-export abstract class BaseInput<T> extends ThemedCustomElementCtrl {
-  protected readonly disabledObs = _p.input($.host._.disabled, this);
+export abstract class BaseInput<T> extends BaseAction {
   protected readonly isDirtyObs = _v.stream(this.providesIsDirty, this).asObservable();
   protected readonly labelObs = _p.input($.host._.label, this);
   protected readonly onClearObs = _p.input($.host._.clearFn, this);
   protected readonly shouldSetInitValueObs = _v.stream(this.providesInitValue, this).asObservable();
 
   constructor(
-      private readonly disabledOutput: Output<boolean>,
       private readonly labelOutput: Output<string>,
       private readonly valueOutput: Output<T>,
-      shadowRoot: ShadowRoot) {
-    super(shadowRoot);
+      disabledOutput: Output<boolean>,
+      shadowRoot: ShadowRoot,
+  ) {
+    super(disabledOutput, shadowRoot);
   }
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render(this.disabledOutput).withObservable(this.disabledObs),
       _p.render(this.labelOutput).withObservable(this.labelObs),
       _p.render(this.valueOutput).withVine(_v.stream(this.renderHostValue, this)),
       vine => this.setupUpdateInitValue(vine),

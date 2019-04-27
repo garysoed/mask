@@ -39,7 +39,12 @@ export class TextInput extends BaseInput<string> {
   private readonly onInputObs = _p.input($.input._.onInput, this);
 
   constructor(root: ShadowRoot) {
-    super($.input._.disabled, $.label._.innerHtml, $.host._.value, root);
+    super(
+        $.label._.innerHtml,
+        $.host._.value,
+        $.input._.disabled,
+        root,
+    );
   }
 
   protected getCurrentValueObs(vine: Vine): Observable<string> {

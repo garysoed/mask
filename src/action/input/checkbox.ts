@@ -117,9 +117,9 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
   constructor(shadowRoot: ShadowRoot) {
     super(
-        $.text._.disabledClass,
         $.text._.label,
         $.host._.value,
+        $.text._.disabledClass,
         shadowRoot,
     );
   }

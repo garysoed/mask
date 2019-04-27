@@ -45,7 +45,7 @@ test('component.TextIconButton', () => {
     });
 
     should(`not fire the action event if disabled`, async () => {
-      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
 
       // Wait for the button to be disabled.
       await tester
@@ -80,7 +80,7 @@ test('component.TextIconButton', () => {
   test('renderIconMode', () => {
     should(`render "action" if not primary, hovered, focused, or disabled`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('action');
@@ -88,7 +88,7 @@ test('component.TextIconButton', () => {
 
     should(`render "actionPrimary" if primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('actionPrimary');
@@ -96,7 +96,7 @@ test('component.TextIconButton', () => {
 
     should(`render "active" if active and not primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, true).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('active');
@@ -104,7 +104,7 @@ test('component.TextIconButton', () => {
 
     should(`render "active" if active and primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, true).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('active');
@@ -112,7 +112,7 @@ test('component.TextIconButton', () => {
 
     should(`render "focus" if hovered and not primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
       tester.dispatchEvent(el, $.host, new CustomEvent('mouseenter')).subscribe();
 
@@ -121,7 +121,7 @@ test('component.TextIconButton', () => {
 
     should(`render "focus" if focused and not primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
       tester.dispatchEvent(el, $.host, new CustomEvent('focus')).subscribe();
 
@@ -130,7 +130,7 @@ test('component.TextIconButton', () => {
 
     should(`render "primaryFocus" if hovered and primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
       tester.dispatchEvent(el, $.host, new CustomEvent('mouseenter')).subscribe();
 
@@ -139,7 +139,7 @@ test('component.TextIconButton', () => {
 
     should(`render "primaryFocus if focused and primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
       tester.dispatchEvent(el, $.host, new CustomEvent('focus')).subscribe();
 
@@ -148,7 +148,7 @@ test('component.TextIconButton', () => {
 
     should(`render "disabled" if disabled and not primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
-      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('disabled');
@@ -156,7 +156,7 @@ test('component.TextIconButton', () => {
 
     should(`render "primaryDisabled" if disabled and primary`, async () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
-      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('primaryDisabled');
@@ -165,12 +165,12 @@ test('component.TextIconButton', () => {
 
   test('renderTabIndex', () => {
     should(`render 0 if host is not disabled`, async () => {
-      tester.setAttribute(el, $.host._.disabled, false).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       await assert(tester.getAttribute(el, $.host._.tabindex)).to.emitWith(0);
     });
 
     should(`return -1 if host is disabled`, async () => {
-      tester.setAttribute(el, $.host._.disabled, true).subscribe();
+      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
       await assert(tester.getAttribute(el, $.host._.tabindex)).to.emitWith(-1);
     });
   });

@@ -21,7 +21,7 @@ const $ = {
 };
 
 @_p.customElement({
-  tag: 'mk-test',
+  tag: 'mk-test-base-input',
   template: '<style id="theme"></style><div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
@@ -30,9 +30,9 @@ class TestInput extends BaseInput<number> {
 
   constructor(root: ShadowRoot) {
     super(
-        $.div._.disabled,
         $.div._.label,
         $.div._.valueOut,
+        $.div._.disabled,
         root,
     );
   }
@@ -58,7 +58,7 @@ test('@mask/input/base-input', () => {
 
   setup(() => {
     tester = testerFactory.build([TestInput]);
-    el = tester.createElement('mk-test', document.body);
+    el = tester.createElement('mk-test-base-input', document.body);
   });
 
   test('providesInitValue', () => {

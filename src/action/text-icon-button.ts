@@ -10,23 +10,22 @@
  */
 
 import { ElementWithTagType } from '@gs-types';
-import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, onDom, onKeydown } from '@persona';
+import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, noop, onDom, onKeydown } from '@persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, integerParser, stringParser } from '../util/parsers';
+import { BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';
 
 export const $$ = {
   actionEvent: dispatcher(ACTION_EVENT),
   active: hasAttribute('active'),
-  ariaDisabled: attributeOut('aria-disabled', booleanParser()),
   ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
   ariaLabelOut: attributeOut('aria-label', stringParser()),
-  disabled: attributeIn('disabled', booleanParser(), false),
+  disabled: hasAttribute('disabled'),
   hasMkPrimary: hasAttribute('mk-primary'),
   icon: attributeIn('icon', stringParser(), ''),
   label: attributeIn('label', stringParser(), ''),
@@ -58,10 +57,9 @@ export const $ = {
   tag: 'mk-text-icon-button',
   template: textButtonTemplate,
 })
-export class TextIconButton extends ThemedCustomElementCtrl {
+export class TextIconButton extends BaseAction {
   private readonly activeObs = _p.input($.host._.active, this);
   private readonly ariaLabelObs = _p.input($.host._.ariaLabelIn, this);
-  private readonly disabledObs = _p.input($.host._.disabled, this);
   private readonly hasPrimaryObs = _p.input($.host._.hasMkPrimary, this);
   private readonly iconObs = _p.input($.host._.icon, this);
   private readonly labelObs = _p.input($.host._.label, this);
@@ -73,11 +71,17 @@ export class TextIconButton extends ThemedCustomElementCtrl {
   private readonly onMouseLeaveObs = _p.input($.host._.onMouseLeave, this);
   private readonly onSpaceDownObs = _p.input($.host._.onSpaceDown, this);
 
+  constructor(shadowRoot: ShadowRoot) {
+    super(
+        noop(),
+        shadowRoot,
+    );
+  }
+
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
       _p.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON)),
-      _p.render($.host._.ariaDisabled).withObservable(this.disabledObs),
       _p.render($.host._.actionEvent).withVine(_v.stream(this.renderDispatchActions, this)),
       _p.render($.host._.ariaLabelOut).withVine(_v.stream(this.renderHostAriaLabel, this)),
       _p.render($.host._.tabindex).withVine(_v.stream(this.renderTabIndex, this)),
@@ -105,7 +109,7 @@ export class TextIconButton extends ThemedCustomElementCtrl {
         .pipe(map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel));
   }
 
-  renderIconMode(): Observable<string> {
+  private renderIconMode(): Observable<string> {
     const hoverObs = merge(
         this.onMouseEnterObs.pipe(mapTo(true)),
         this.onMouseLeaveObs.pipe(mapTo(false)),
@@ -144,7 +148,7 @@ export class TextIconButton extends ThemedCustomElementCtrl {
     );
   }
 
-  renderTabIndex(): Observable<number> {
+  private renderTabIndex(): Observable<number> {
     return this.disabledObs.pipe(map(disabled => disabled ? -1 : 0));
   }
 }
