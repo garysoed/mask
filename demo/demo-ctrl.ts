@@ -6,7 +6,7 @@ import { api, element, InitFn, onDom, repeated } from '@persona';
 import { concat, Observable, of as observableOf } from 'rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../src/app/app';
-import { $$ as $checkbox, Checkbox } from '../src/input/checkbox';
+import { $$ as $checkbox, Checkbox } from '../src/action/input/checkbox';
 import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';

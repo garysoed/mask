@@ -5,7 +5,7 @@ import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
-import { TextIconButton } from '../component/text-icon-button';
+import { TextIconButton } from '../action/text-icon-button';
 import { $, Dialog } from './dialog';
 import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 

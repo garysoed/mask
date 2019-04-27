@@ -3,8 +3,8 @@ import { attributeIn, attributeOut, element } from '@persona';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { InstanceofType } from 'gs-types/export';
 import { Observable, of as observableOf } from 'rxjs';
-import { _p } from '../app/app';
-import { booleanParser, integerParser, stringParser } from '../util/parsers';
+import { _p } from '../../app/app';
+import { booleanParser, integerParser, stringParser } from '../../util/parsers';
 import { $$ as $baseInput, BaseInput } from './base-input';
 
 const $ = {

@@ -1,6 +1,6 @@
 import { assert, setup, should, test } from '@gs-testing/main';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { _p, _v } from '../app/app';
+import { _p, _v } from '../../app/app';
 import { $, $debounceMs, TextInput } from './text-input';
 
 const testerFactory = new PersonaTesterFactory(_p);

@@ -3,9 +3,9 @@ import { attributeIn, element, handler, hasAttribute, InitFn } from '@persona';
 import { Output } from '@persona/internal';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, skip, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
-import { _p, _v } from '../app/app';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
+import { _p, _v } from '../../app/app';
+import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
+import { stringParser } from '../../util/parsers';
 
 export const $$ = {
   clearFn: handler<[]>('clear'),
