@@ -52,6 +52,30 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     ];
   }
 
+  setupHandleAccentPaletteClick(): Observable<unknown> {
+    return this.onAccentClickObs
+        .pipe(
+            map(event => getColor(event)),
+            filter((color): color is Color => !!color),
+            withLatestFrom(this.themeSbj),
+            tap(([color, theme]) => {
+              this.themeSbj.next(theme.setHighlightColor(color));
+            }),
+        );
+  }
+
+  setupHandleBasePaletteClick(): Observable<unknown> {
+    return this.onBaseClickObs
+        .pipe(
+            map(event => getColor(event)),
+            filter((color): color is Color => !!color),
+            withLatestFrom(this.themeSbj),
+            tap(([color, theme]) => {
+              this.themeSbj.next(theme.setBaseColor(color));
+            }),
+        );
+  }
+
   private renderAccentPalette(): Observable<ArrayDiff<Map<string, string>>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
@@ -99,30 +123,6 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
               }
 
               return 'dark';
-            }),
-        );
-  }
-
-  setupHandleAccentPaletteClick(): Observable<unknown> {
-    return this.onAccentClickObs
-        .pipe(
-            map(event => getColor(event)),
-            filter((color): color is Color => !!color),
-            withLatestFrom(this.themeSbj),
-            tap(([color, theme]) => {
-              this.themeSbj.next(theme.setHighlightColor(color));
-            }),
-        );
-  }
-
-  setupHandleBasePaletteClick(): Observable<unknown> {
-    return this.onBaseClickObs
-        .pipe(
-            map(event => getColor(event)),
-            filter((color): color is Color => !!color),
-            withLatestFrom(this.themeSbj),
-            tap(([color, theme]) => {
-              this.themeSbj.next(theme.setBaseColor(color));
             }),
         );
   }

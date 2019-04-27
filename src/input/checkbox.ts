@@ -6,7 +6,7 @@ import { Converter, Result } from '@nabu/main';
 import { compose, firstSuccess } from '@nabu/util';
 import { api, attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { map, mapTo, startWith, take, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, startWith, take, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import * as checkboxChecked from '../asset/checkbox_checked.svg';
 import * as checkboxEmpty from '../asset/checkbox_empty.svg';
@@ -182,7 +182,8 @@ export class Checkbox extends BaseInput<CheckedValue> {
         this.shadowRoot,
         this.onClickObs
             .pipe(
-                withLatestFrom(this.textIconIn),
+                withLatestFrom(this.textIconIn, this.disabledObs),
+                filter(([, , disabled]) => !disabled),
                 map(([, currentValue]) => {
                   switch (currentValue) {
                     case 'unknown':

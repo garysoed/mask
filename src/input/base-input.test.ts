@@ -81,7 +81,7 @@ test('@mask/input/base-input', () => {
   });
 
   should(`render disabled status correctly`, async () => {
-    tester.setAttribute(el, $.host._.disabled, true).subscribe();
+    tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
 
     await assert(tester.getAttribute(el, $.div._.disabled)).to.emitWith(true);
   });

@@ -1,15 +1,15 @@
 import { Vine } from '@grapevine';
-import { attributeIn, element, handler, InitFn } from '@persona';
+import { attributeIn, element, handler, hasAttribute, InitFn } from '@persona';
 import { Output } from '@persona/internal';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, skip, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../util/parsers';
+import { stringParser } from '../util/parsers';
 
 export const $$ = {
   clearFn: handler<[]>('clear'),
-  disabled: attributeIn('disabled', booleanParser(), false),
+  disabled: hasAttribute('disabled'),
   label: attributeIn('label', stringParser(), ''),
 };
 
