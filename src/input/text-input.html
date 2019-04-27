@@ -2,13 +2,14 @@
 <style>
   :host {
     --mkInputLineColor: var(--mkThemeActionPrimaryBG);
-    --mkInputLineWidth: 0%;
+    --mkInputLineWidth: 100%;
   }
 
   #input {
     border: none;
     color: var(--mkInputFG);
     line-height: 2rem;
+    padding: 0;
   }
 
   #line {
@@ -19,8 +20,13 @@
     transition: width var(--mkAnimationTime);
   }
 
+  #root {
+    height: 4rem;
+  }
+
   :host([disabled]) {
     --mkInputFG: var(--mkThemeActionDisabledFG);
+    --mkInputLineWidth: 0;
     cursor: default;
   }
 
@@ -33,18 +39,17 @@
 
   :host(:not([disabled]):hover),
   #input:not([disabled]):hover + * {
-    --mkInputLineWidth: 100%;
     --mkInputLineColor: var(--mkThemeActionPrimaryBG);
   }
 
   :host(:not([disabled]):focus),
   #input:not([disabled]):focus + * {
-    --mkInputLineWidth: 100%;
     --mkInputLineColor: var(--mkThemeActionPrimaryFocusBG);
   }
 </style>
-<div layout="column">
-  <input id="input" type="text">
+<div id="root" flex-justify="center" layout="column">
+  <label for="input" id="label"></label>
+  <input id="input" mk-body-1 type="text">
   <div flex-justify="center" layout="row">
     <div id="line"></div>
   </div>

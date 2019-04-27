@@ -1,5 +1,6 @@
 import { Vine, VineBuilder } from '@grapevine';
-import { CustomElementCtrl, PersonaBuilder } from '@persona';
+import { PersonaBuilder } from '@persona';
+import { CustomElementCtrlCtor } from '@persona/internal';
 import { BehaviorSubject } from 'rxjs';
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
@@ -14,7 +15,7 @@ export const $theme = _v.source(
 
 export function start(
     appName: string,
-    rootCtrls: Array<new (...args: any[]) => CustomElementCtrl>,
+    rootCtrls: CustomElementCtrlCtor[],
     theme: Theme,
     styleEl: HTMLStyleElement,
     customElementRegistry: CustomElementRegistry = window.customElements,

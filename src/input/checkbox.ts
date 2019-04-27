@@ -4,9 +4,9 @@ import { stringMatchConverter } from '@gs-tools/serializer';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { Converter, Result } from '@nabu/main';
 import { compose, firstSuccess } from '@nabu/util';
-import { api, attributeIn, attributeOut, element, handler, InitFn, onDom } from '@persona';
-import { combineLatest, merge, Observable } from 'rxjs';
-import { filter, map, mapTo, startWith, take, withLatestFrom } from 'rxjs/operators';
+import { api, attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
+import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
+import { map, mapTo, startWith, take, withLatestFrom } from 'rxjs/operators';
 import { _p, _v } from '../app/app';
 import * as checkboxChecked from '../asset/checkbox_checked.svg';
 import * as checkboxEmpty from '../asset/checkbox_empty.svg';
@@ -14,8 +14,8 @@ import * as checkboxUnknown from '../asset/checkbox_unknown.svg';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { SvgConfig } from '../display/svg-config';
 import { $svgConfig } from '../display/svg-service';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../util/parsers';
+import { booleanParser } from '../util/parsers';
+import { $$ as $baseInput, BaseInput } from './base-input';
 import template from './checkbox.html';
 
 export type CheckedValue = boolean | 'unknown';
@@ -57,10 +57,8 @@ const iconCheckedValueParser = compose(
 );
 
 export const $$ = {
-  clearFn: handler<[]>('clear'),
-  disabled: attributeIn('disabled', booleanParser(), false),
+  ...$baseInput,
   initValue: attributeIn('init-value', checkedValueParser, false),
-  label: attributeIn('label', stringParser(), ''),
   value: attributeOut('value', checkedValueParser, false),
 };
 
@@ -77,6 +75,7 @@ export const $ = {
   }),
   text: element('text', ElementWithTagType('mk-icon-with-text'), {
     ...api($iconWithText),
+    disabledClass: classToggle('disabled'),
     iconIn: attributeIn($iconWithText.icon.attrName, iconCheckedValueParser, false),
     iconOut: attributeOut($iconWithText.icon.attrName, iconCheckedValueParser),
   }),
@@ -107,75 +106,45 @@ export const $ = {
   tag: 'mk-checkbox',
   template,
 })
-export class Checkbox extends ThemedCustomElementCtrl {
-  private readonly clearObs = _p.input($.host._.clearFn, this);
-  private readonly disabledObs = _p.input($.host._.disabled, this);
-  private readonly iconObs = _p.input($.text._.iconIn, this);
+export class Checkbox extends BaseInput<CheckedValue> {
   private readonly initValueObs = _p.input($.host._.initValue, this);
-  private readonly isDirtyObs = _v.stream(this.providesIsDirty, this).asObservable();
-  private readonly labelObs = _p.input($.host._.label, this);
   private readonly onBlurObs = _p.input($.host._.onBlur, this);
   private readonly onClickObs = _p.input($.root._.onClick, this);
   private readonly onFocusObs = _p.input($.host._.onFocus, this);
   private readonly onMouseEnterObs = _p.input($.host._.onMouseEnter, this);
   private readonly onMouseLeaveObs = _p.input($.host._.onMouseLeave, this);
-  private readonly shouldSetInitValueObs = _v.stream(this.providesInitValue, this).asObservable();
   private readonly textIconIn = _p.input($.text._.iconIn, this);
+
+  constructor(shadowRoot: ShadowRoot) {
+    super(
+        $.text._.disabledClass,
+        $.text._.label,
+        $.host._.value,
+        shadowRoot,
+    );
+  }
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render($.host._.value).withObservable(this.textIconIn),
-      _p.render($.text._.iconOut).withVine(_v.stream(this.renderIcon, this)),
-      _p.render($.text._.label).withObservable(this.labelObs),
+      () => this.setupOnClickHandler(),
       _p.render($.text._.mode).withVine(_v.stream(this.renderIconMode, this)),
     ];
   }
 
-  private providesInitValue(): Observable<CheckedValue> {
-    // Set the initial value when:
-    // 1.  clear is called
-    // 2.  Whenever init value is changed, but is not dirty.
-    return merge(
-        this.clearObs,
-        this.initValueObs.pipe(
-            withLatestFrom(this.isDirtyObs),
-            filter(([, isDirty]) => !isDirty),
-        ),
-    )
-    .pipe(
-        startWith(),
-        withLatestFrom(this.initValueObs),
-        map(([, initValue]) => initValue),
-    );
+  protected getCurrentValueObs(): Observable<CheckedValue> {
+    return this.textIconIn;
   }
 
-  private providesIsDirty(): Observable<boolean> {
-    return merge(
-        this.onClickObs.pipe(mapTo(true)),
-        this.clearObs.pipe(mapTo(false)),
-    )
-    .pipe(startWith(false));
+  protected getInitValueObs(): Observable<CheckedValue> {
+    return this.initValueObs;
   }
 
-  private renderIcon(): Observable<CheckedValue> {
-    return this.onClickObs
-        .pipe(
-            withLatestFrom(this.iconObs),
-            map(([, currentValue]) => {
-              switch (currentValue) {
-                case 'unknown':
-                case true:
-                  return false;
-                case false:
-                  return true;
-              }
-            }),
-            startWith(false),
-        );
+  protected updateCurrentValue(value: CheckedValue): Observable<unknown> {
+    return $.text._.iconOut.output(this.shadowRoot, observableOf(value));
   }
 
-  renderIconMode(): Observable<string> {
+  private renderIconMode(): Observable<string> {
     const hoverObs = merge(
         this.onMouseEnterObs.pipe(mapTo(true)),
         this.onMouseLeaveObs.pipe(mapTo(false)),
@@ -205,6 +174,25 @@ export class Checkbox extends ThemedCustomElementCtrl {
 
           return 'action';
         }),
+    );
+  }
+
+  private setupOnClickHandler(): Observable<unknown> {
+    return $.text._.iconOut.output(
+        this.shadowRoot,
+        this.onClickObs
+            .pipe(
+                withLatestFrom(this.textIconIn),
+                map(([, currentValue]) => {
+                  switch (currentValue) {
+                    case 'unknown':
+                    case false:
+                      return true;
+                    case true:
+                      return false;
+                  }
+                }),
+        ),
     );
   }
 }

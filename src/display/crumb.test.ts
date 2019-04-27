@@ -8,7 +8,7 @@ import { Crumb } from './crumb';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('display.crumb', () => {
+test('@mask/display/crumb', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -17,7 +17,7 @@ test('display.crumb', () => {
     el = tester.createElement('mk-crumb', document.body);
   });
 
-  test('renderDispatchAction_', () => {
+  test('renderDispatchAction', () => {
     should(`emit correct event if clicked`, async () => {
       const actionSubject = createSpySubject();
       fromEvent(el, ACTION_EVENT).subscribe(actionSubject);

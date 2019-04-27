@@ -13,12 +13,6 @@ export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   protected readonly themeSbj = $theme.asSubject();
   private readonly themeElObs = _p.input($.theme, this);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      this.setupThemeUpdate,
-    ];
-  }
-
   private setupThemeUpdate(): Observable<unknown> {
     return combineLatest(
         this.themeElObs,
@@ -27,5 +21,11 @@ export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
     .pipe(
         tap(([el, theme]) => theme.injectCss(el)),
     );
+  }
+
+  getInitFunctions(): InitFn[] {
+    return [
+      this.setupThemeUpdate,
+    ];
   }
 }

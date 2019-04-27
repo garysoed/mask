@@ -1,10 +1,12 @@
 <style id="theme"></style>
 <style>
   #root {
+    background-color: var(--mkCheckboxBG);
     color: var(--mkCheckboxFG);
   }
 
   :host {
+    --mkCheckboxBG: var(--mkThemeActionBG);
     --mkCheckboxFG: var(--mkThemeActionFG);
     cursor: pointer;
   }
@@ -17,6 +19,7 @@
 
   :host(:not([disabled]):hover),
   :host(:not([disabled]):focus) {
+    --mkCheckboxBG: var(--mkThemeActionFocusBG);
     --mkCheckboxFG: var(--mkThemeActionFocusFG);
   }
 </style>

@@ -2,7 +2,7 @@ const glob = require("glob");
 const path = require("path");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const smp = new SpeedMeasurePlugin();
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 module.exports = smp.wrap({
   entry: {
@@ -67,5 +67,5 @@ module.exports = smp.wrap({
 
   watch: true,
 
-  plugins: [ ]
+  plugins: [ new CheckerPlugin() ]
 });
