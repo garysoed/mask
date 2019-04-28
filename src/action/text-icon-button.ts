@@ -9,16 +9,19 @@
  * @attr {<string} icon Icon ligature
  */
 
+import { debug } from '@gs-tools/rxjs';
 import { ElementWithTagType } from '@gs-types';
 import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, noop, onDom, onKeydown } from '@persona';
 import { combineLatest, merge, Observable, of as observableOf } from '@rxjs';
-import { filter, map, mapTo, startWith, withLatestFrom } from '@rxjs/operators';
+import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { booleanParser, integerParser, stringParser } from '../util/parsers';
+import { integerParser, stringParser } from '../util/parsers';
 import { BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';
+
+const THROTTLE_MS = 500;
 
 export const $$ = {
   actionEvent: dispatcher(ACTION_EVENT),
@@ -98,6 +101,7 @@ export class TextIconButton extends BaseAction {
             this.onSpaceDownObs,
         )
         .pipe(
+            throttleTime(THROTTLE_MS),
             withLatestFrom(this.disabledObs),
             filter(([, disabled]) => !disabled),
             map(() => new ActionEvent()),

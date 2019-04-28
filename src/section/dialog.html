@@ -3,13 +3,13 @@
   #root {
     background-color: var(--mkThemePassiveBG);
     overflow: hidden;
-    left: 100%;
+    top: 100%;
     z-index: 100;
     transition: all var(--mkAnimationTime);
   }
 
   #root.isVisible {
-    left: 0%;
+    top: 0%;
     transition: all var(--mkAnimationTime);
   }
 
@@ -27,7 +27,7 @@
     <mk-text-icon-button id="okButton" icon="dialog_confirm"></mk-text-icon-button>
   </div>
   <div flex id="content" layout="column">
-    <h2 id="title"></h2>
+    <h2 id="title" mk-display></h2>
     <!-- #content -->
   </div>
 </div>
