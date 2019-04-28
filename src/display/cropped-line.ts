@@ -7,8 +7,8 @@
 
 import { InstanceofType } from '@gs-types';
 import { attributeIn, element, InitFn, onDom, textContent } from '@persona';
-import { combineLatest, Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, Observable } from '@rxjs';
+import { map, tap, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';

@@ -2,7 +2,7 @@ import { assert, setup, should, test } from '@gs-testing';
 import { InstanceofType } from '@gs-types';
 import { attributeOut, element } from '@persona';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { Observable } from 'rxjs';
+import { Observable } from '@rxjs';
 import { _p } from '../app/app';
 import { booleanParser } from '../util/parsers';
 import { $ as $baseAction, $$ as $$baseAction, BaseAction } from './base-action';

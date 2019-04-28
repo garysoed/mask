@@ -1,8 +1,8 @@
 import { Vine } from '@grapevine';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, element, innerHtml, onInput } from '@persona';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from '@rxjs';
+import { debounceTime, startWith, switchMap, take, tap, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../../app/app';
 import { booleanParser, stringParser } from '../../util/parsers';
 import { $$ as $baseInput, BaseInput } from './base-input';

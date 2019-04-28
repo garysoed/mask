@@ -11,8 +11,8 @@
 
 import { ElementWithTagType } from '@gs-types';
 import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, noop, onDom, onKeydown } from '@persona';
-import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { filter, map, mapTo, startWith, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, merge, Observable, of as observableOf } from '@rxjs';
+import { filter, map, mapTo, startWith, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';

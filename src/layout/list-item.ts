@@ -1,7 +1,7 @@
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { api, attributeIn, classToggle, element, InitFn, innerHtml } from '@persona';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from '@rxjs';
+import { map } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

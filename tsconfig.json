@@ -24,6 +24,8 @@
       "@nabu/*": ["node_modules/nabu/export/*"],
       "@persona": ["node_modules/persona/export/index.ts"],
       "@persona/*": ["node_modules/persona/export/*"],
+      "@rxjs": ["node_modules/rxjs"],
+      "@rxjs/operators": ["node_modules/rxjs/operators"],
     },
     "pretty": true,
     "sourceMap": true,
@@ -35,9 +37,5 @@
     "demo/*",
     "src/**/*.ts",
     "typings/*.d.ts",
-    "node_modules/grapevine/export/*",
-    "node_modules/gs-testing/export/*",
-    "node_modules/gs-tools/export/*",
-    "node_modules/gs-types/export/*"
   ]
 }

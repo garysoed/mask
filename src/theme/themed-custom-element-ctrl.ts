@@ -1,7 +1,7 @@
 import { InstanceofType } from '@gs-types';
 import { CustomElementCtrl, element, InitFn } from '@persona';
-import { combineLatest, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { combineLatest, Observable } from '@rxjs';
+import { tap } from '@rxjs/operators';
 import { $theme, _p } from '../app/app';
 
 const $ = {

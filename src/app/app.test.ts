@@ -3,7 +3,7 @@ import { assert, match, should, test } from '@gs-testing/main';
 import { createSpyInstance, fake, spy } from '@gs-testing/spy';
 import { CustomElementCtrl } from '@persona';
 import { Palette } from 'export';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from '@rxjs';
 import { Theme } from '../theme/theme';
 import { $theme, _p, start } from './app';
 

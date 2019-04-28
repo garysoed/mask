@@ -1,7 +1,7 @@
 import { attributeOut, element, hasAttribute, InitFn } from '@persona';
 import { Output } from '@persona/internal';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from '@rxjs';
+import { map } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';

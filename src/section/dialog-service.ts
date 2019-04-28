@@ -1,6 +1,6 @@
 import { Errors } from '@gs-tools/error';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from '@rxjs';
+import { switchMap } from '@rxjs/operators';
 import { _v } from '../app/app';
 
 export interface OpenState {

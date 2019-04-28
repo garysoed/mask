@@ -1,6 +1,6 @@
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { Jsons } from '@gs-tools/data';
-import { take } from 'rxjs/operators';
+import { take } from '@rxjs/operators';
 import { $dialogService, $svgConfig, Breadcrumb, Checkbox, CroppedLine, Dialog, Drawer, Icon, IconWithText, LayoutOverlay, ListItem, Palette, start as startMask, SvgConfig, TextIconButton, TextInput, Theme } from '../export';
 import { DemoCtrl } from './demo-ctrl';
 

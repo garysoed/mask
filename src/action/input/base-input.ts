@@ -1,8 +1,8 @@
 import { Vine } from '@grapevine';
 import { attributeIn, element, handler, InitFn } from '@persona';
 import { Output } from '@persona/internal';
-import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, skip, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { merge, Observable } from '@rxjs';
+import { filter, map, mapTo, skip, startWith, switchMap, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../../app/app';
 import { stringParser } from '../../util/parsers';
 import { $$ as $baseAction, BaseAction } from '../base-action';

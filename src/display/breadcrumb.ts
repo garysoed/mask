@@ -4,8 +4,8 @@ import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs
 import { objectConverter } from '@gs-tools/serializer';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, dispatcher, element, InitFn, onDom, repeated } from '@persona';
-import { Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable } from '@rxjs';
+import { map, tap, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

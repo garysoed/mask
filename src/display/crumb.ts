@@ -1,7 +1,7 @@
 import { InstanceofType } from '@gs-types';
 import { attributeIn, dispatcher, element, InitFn, onDom, textContent } from '@persona';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from '@rxjs';
+import { map } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

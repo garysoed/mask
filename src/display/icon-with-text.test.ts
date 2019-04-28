@@ -2,8 +2,8 @@ import { match, retryUntil, setup, should, test } from '@gs-testing/main';
 import { createSpySubject } from '@gs-testing/spy';
 import { ImmutableSet } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { combineLatest } from '@rxjs';
+import { take } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, IconWithText } from './icon-with-text';
 

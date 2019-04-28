@@ -3,7 +3,7 @@ import { FakeFetch } from '@gs-testing/mock';
 import { createSpySubject } from '@gs-testing/spy';
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { take } from 'rxjs/operators';
+import { take } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $, Icon } from './icon';
 import { SvgConfig } from './svg-config';
