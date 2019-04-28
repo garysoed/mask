@@ -1,4 +1,4 @@
-import { assert, runEnvironment, setup, should, test } from '@gs-testing/main';
+import { assert, runEnvironment, setup, should, test } from '@gs-testing';
 import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../../app/app';
 import { $, Checkbox } from './checkbox';

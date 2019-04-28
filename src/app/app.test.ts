@@ -1,9 +1,8 @@
 import { Vine } from '@grapevine';
-import { assert, match, should, test } from '@gs-testing/main';
-import { createSpyInstance, fake, spy } from '@gs-testing/spy';
+import { assert, createSpyInstance, fake, match, should, spy, test } from '@gs-testing';
 import { CustomElementCtrl } from '@persona';
-import { Palette } from 'export';
 import { BehaviorSubject } from '@rxjs';
+import { Palette } from 'export';
 import { Theme } from '../theme/theme';
 import { $theme, _p, start } from './app';
 

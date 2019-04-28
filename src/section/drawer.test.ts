@@ -1,4 +1,4 @@
-import { assert, setup, should, test } from '@gs-testing/main';
+import { assert, setup, should, test } from '@gs-testing';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p, _v } from '../app/app';
 import { $, Drawer, Mode } from './drawer';

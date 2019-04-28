@@ -1,13 +1,11 @@
-import { assert, match, should, test } from '@gs-testing/main';
-import { createSpySubject } from '@gs-testing/spy';
+import { assert, createSpySubject, match, should, test } from '@gs-testing';
 import { $filter, $head, $map, $pipe, $size, createImmutableList } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent } from '@rxjs';
 import { filter, take } from '@rxjs/operators';
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { $, Breadcrumb } from './breadcrumb';
 import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
-import { Crumb } from './crumb';
 
 const testerFactory = new PersonaTesterFactory(_p);
 

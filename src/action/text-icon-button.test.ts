@@ -1,9 +1,8 @@
-import { assert, match, setup, should, test } from '@gs-testing/main';
-import { createSpySubject } from '@gs-testing/spy';
+import { assert, createSpySubject, match, setup, should, test } from '@gs-testing';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, Subject } from '@rxjs';
 import { filter, take } from '@rxjs/operators';
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 import { $, TextIconButton } from './text-icon-button';
 

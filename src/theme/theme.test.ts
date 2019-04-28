@@ -1,4 +1,4 @@
-import { assert, should, test } from '@gs-testing/main';
+import { assert, should, test } from '@gs-testing';
 import { HslColor } from '@gs-tools/color';
 import { Theme } from './theme';
 

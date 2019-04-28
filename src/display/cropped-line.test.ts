@@ -1,5 +1,4 @@
-import { assert, should, test } from '@gs-testing/main';
-import { createSpyInstance, spy } from '@gs-testing/spy';
+import { assert, createSpyInstance, should, spy, test } from '@gs-testing';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../app/app';
 import { $, CroppedLine } from './cropped-line';

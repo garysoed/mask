@@ -1,11 +1,10 @@
-import { assert, match, setup, should, test } from '@gs-testing/main';
-import { createSpy, createSpySubject } from '@gs-testing/spy';
+import { assert, createSpy, createSpySubject, match, setup, should, test } from '@gs-testing';
 import { ImmutableSet } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { BehaviorSubject } from '@rxjs';
 import { take } from '@rxjs/operators';
-import { _p, _v } from '../app/app';
 import { TextIconButton } from '../action/text-icon-button';
+import { _p } from '../app/app';
 import { $, Dialog } from './dialog';
 import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
