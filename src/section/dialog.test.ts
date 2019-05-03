@@ -1,3 +1,4 @@
+
 import { assert, createSpy, createSpySubject, match, setup, should, test } from '@gs-testing';
 import { ImmutableSet } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
@@ -26,9 +27,9 @@ test('section.Dialog', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: true,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: v => onCloseSubject.next(v),
               title: 'title',
             });
@@ -52,9 +53,9 @@ test('section.Dialog', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: true,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: v => onCloseSubject.next(v),
               title: 'title',
             });
@@ -80,9 +81,9 @@ test('section.Dialog', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: true,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: mockOnClose,
               title: 'title',
             });
@@ -98,9 +99,9 @@ test('section.Dialog', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: false,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: mockOnClose,
               title: 'title',
             });
@@ -117,9 +118,9 @@ test('section.Dialog', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: false,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: () => undefined,
               title: 'title',
             });
@@ -143,9 +144,9 @@ test('section.Dialog', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: false,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: () => undefined,
               title,
             });

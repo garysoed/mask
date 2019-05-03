@@ -11,7 +11,6 @@ import { SvgConfig } from '../display/svg-config';
 import { $svgConfig } from '../display/svg-service';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { Backdrop } from './backdrop';
 import { $dialogState, OpenState } from './dialog-service';
 import dialogTemplate from './dialog.html';
 
@@ -49,9 +48,6 @@ export const $ = {
           svgSubject.next(newConfig);
         });
   },
-  dependencies: [
-    Backdrop,
-  ],
   tag: 'mk-dialog',
   template: dialogTemplate,
 })
@@ -75,7 +71,7 @@ export class Dialog extends ThemedCustomElementCtrl {
         .get(vine)
         .pipe(
             map(dialogState => {
-              if (!dialogState.isOpen || !dialogState.cancelable) {
+              if (!dialogState.isOpen || !dialogState.spec.cancelable) {
                 return createImmutableSet([]);
               }
 
@@ -97,7 +93,7 @@ export class Dialog extends ThemedCustomElementCtrl {
   renderTitle(vine: Vine): Observable<string> {
     return $dialogState.get(vine).pipe(map(dialogState => {
       if (dialogState.isOpen) {
-        return dialogState.title;
+        return dialogState.spec.title;
       } else {
         return '';
       }

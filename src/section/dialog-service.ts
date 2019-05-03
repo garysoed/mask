@@ -3,14 +3,6 @@ import { BehaviorSubject, Observable } from '@rxjs';
 import { switchMap } from '@rxjs/operators';
 import { _v } from '../app/app';
 
-export interface OpenState {
-  cancelable: boolean;
-  isOpen: true;
-  title: string;
-  closeFn(canceled: boolean): void;
-  elementProvider(): HTMLElement;
-}
-
 interface CloseState {
   isOpen: false;
 }
@@ -19,40 +11,45 @@ export type DialogState = OpenState|CloseState;
 
 interface DialogSpec {
   cancelable: boolean;
+  contentAttr?: Map<string, string>;
+  contentTag: string;
   title: string;
-  elementProvider(): HTMLElement;
   onClose(canceled: boolean): void;
 }
 
+export interface OpenState {
+  isOpen: true;
+  spec: DialogSpec;
+  closeFn(canceled: boolean): void;
+}
+
 export class DialogService {
-  private readonly stateObs_: BehaviorSubject<DialogState> =
+  private readonly stateObs: BehaviorSubject<DialogState> =
       new BehaviorSubject<DialogState>({isOpen: false});
 
-  private close_(): void {
-    this.stateObs_.next({isOpen: false});
-  }
-
   getStateObs(): Observable<DialogState> {
-    return this.stateObs_;
+    return this.stateObs;
   }
 
-  open<T>(spec: DialogSpec): void {
-    const latestState = this.stateObs_.getValue();
+  open(spec: DialogSpec): void {
+    const latestState = this.stateObs.getValue();
     if (latestState.isOpen) {
       throw Errors.assert('State of dialog service').shouldBe('closed').butWas('opened');
     }
 
-    this.stateObs_.next({
-      cancelable: spec.cancelable,
+    this.stateObs.next({
       closeFn: (canceled: boolean) => {
-        this.close_();
+        this.close();
 
         spec.onClose(canceled);
       },
-      elementProvider: spec.elementProvider,
       isOpen: true,
-      title: spec.title,
+      spec: {...spec},
     });
+  }
+
+  private close(): void {
+    this.stateObs.next({isOpen: false});
   }
 }
 export const $dialogService = _v.source(() => new BehaviorSubject(new DialogService()), globalThis);

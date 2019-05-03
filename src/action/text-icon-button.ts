@@ -9,7 +9,6 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { debug } from '@gs-tools/rxjs';
 import { ElementWithTagType } from '@gs-types';
 import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, noop, onDom, onKeydown } from '@persona';
 import { combineLatest, merge, Observable, of as observableOf } from '@rxjs';

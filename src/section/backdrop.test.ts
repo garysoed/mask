@@ -23,9 +23,9 @@ test('section.Backdrop', () => {
       $dialogService.get(tester.vine)
           .pipe(take(1))
           .subscribe(dialogService => {
-            dialogService.open<number>({
+            dialogService.open({
               cancelable: false,
-              elementProvider: () => document.createElement('div'),
+              contentTag: 'div',
               onClose: () => undefined,
               title: 'title',
             });

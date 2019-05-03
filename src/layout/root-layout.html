@@ -5,6 +5,28 @@
     padding: 0 1rem;
     position: relative;
   }
+
+  #drawer {
+    position: relative;
+  }
+
+  #drawerSection {
+    position: absolute;
+  }
+
+  #drawerSlot::slotted([slot="drawer"]),
+  #title {
+    width: 16rem;
+  }
+
+  #drawerSlot::slotted([slot="drawer"]) {
+    flex: 1;
+  }
+
+  #mainSlot::slotted([slot="main"]) {
+    height: 100%;
+    position: relative;
+  }
 </style>
 
 <section id="root" layout="row" fill-parent>
@@ -13,12 +35,13 @@
       max-size="16rem"
       min-size="4rem"
       mk-theme-highlight
-      mode="vertical"
-      shadow="down">
-    <mk-text-icon-button id="title"></mk-text-icon-button>
-    <slot name="drawer"></slot>
+      mode="vertical">
+    <div id="drawerSection" fill-parent layout="column" shadow="down">
+      <mk-text-icon-button id="title"></mk-text-icon-button>
+      <slot id="drawerSlot" name="drawer"></slot>
+    </div>
   </mk-drawer>
   <section flex id="container">
-    <slot name="main"></slot>
+    <slot id="mainSlot" name="main"></slot>
   </section>
 </section>
