@@ -11,8 +11,10 @@ export type DialogState = OpenState|CloseState;
 
 interface DialogSpec {
   cancelable: boolean;
-  contentAttr?: Map<string, string>;
-  contentTag: string;
+  content: {
+    attr?: Map<string, string>;
+    tag: string;
+  };
   title: string;
   onClose(canceled: boolean): void;
 }

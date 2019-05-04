@@ -1,7 +1,7 @@
 import { Vine } from '@grapevine';
 import { $pipe, $push, asImmutableMap, createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { classlist, element, InitFn, onDom, textContent } from '@persona';
+import { classlist, element, InitFn, onDom, single, SingleRenderSpec, textContent } from '@persona';
 import { merge, Observable } from '@rxjs';
 import { filter, map, mapTo, take, tap, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -19,13 +19,16 @@ export const $ = {
     classlist: classlist(),
     onAction: onDom(ACTION_EVENT),
   }),
+  content: element('content', InstanceofType(HTMLDivElement), {
+    single: single('#content'),
+  }),
   okButton: element('okButton', ElementWithTagType('mk-text-icon-button'), {
     onAction: onDom(ACTION_EVENT),
   }),
   root: element('root', InstanceofType(HTMLDivElement), {
     classlist: classlist(),
   }),
-  title: element('title', ElementWithTagType('h2'), {
+  title: element('title', ElementWithTagType('h3'), {
     text: textContent(),
   }),
 };
@@ -63,10 +66,11 @@ export class Dialog extends ThemedCustomElementCtrl {
           .withVine(_v.stream(this.renderCancelButtonClasses, this)),
       _p.render($.root._.classlist).withVine(_v.stream(this.renderRootClasses, this)),
       _p.render($.title._.text).withVine(_v.stream(this.renderTitle, this)),
+      _p.render($.content._.single).withVine(_v.stream(this.renderContent, this)),
     ];
   }
 
-  renderCancelButtonClasses(vine: Vine): Observable<ImmutableSet<string>> {
+  private renderCancelButtonClasses(vine: Vine): Observable<ImmutableSet<string>> {
     return $dialogState
         .get(vine)
         .pipe(
@@ -80,7 +84,23 @@ export class Dialog extends ThemedCustomElementCtrl {
         );
   }
 
-  renderRootClasses(vine: Vine): Observable<ImmutableSet<string>> {
+  private renderContent(vine: Vine): Observable<SingleRenderSpec|null> {
+    return $dialogState.get(vine)
+        .pipe(
+            map(state => {
+              if (!state.isOpen) {
+                return null;
+              }
+
+              return {
+                attr: state.spec.content.attr || new Map(),
+                tag: state.spec.content.tag,
+              };
+            }),
+        );
+  }
+
+  private renderRootClasses(vine: Vine): Observable<ImmutableSet<string>> {
     return $dialogState.get(vine).pipe(map(dialogState => {
       if (dialogState.isOpen) {
         return createImmutableSet(['isVisible']);
@@ -90,7 +110,7 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 
-  renderTitle(vine: Vine): Observable<string> {
+  private renderTitle(vine: Vine): Observable<string> {
     return $dialogState.get(vine).pipe(map(dialogState => {
       if (dialogState.isOpen) {
         return dialogState.spec.title;
@@ -100,7 +120,7 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 
-  setupOnCloseOrCancel(vine: Vine): Observable<unknown> {
+  private setupOnCloseOrCancel(vine: Vine): Observable<unknown> {
     return merge(
         this.onCancelObs.pipe(mapTo(true)),
         this.onOkObs.pipe(mapTo(false)),

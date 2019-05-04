@@ -25,7 +25,7 @@ test('section.Backdrop', () => {
           .subscribe(dialogService => {
             dialogService.open({
               cancelable: false,
-              contentTag: 'div',
+              content: {tag: 'div'},
               onClose: () => undefined,
               title: 'title',
             });

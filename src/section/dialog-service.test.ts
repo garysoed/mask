@@ -18,7 +18,7 @@ test('section.DialogService', () => {
 
       service.open({
         cancelable: true,
-        contentTag: 'div',
+        content: {tag: 'div'},
         onClose: mockCloseHandler,
         title: 'title',
       });
@@ -41,7 +41,7 @@ test('section.DialogService', () => {
 
       const spec = {
         cancelable: true,
-        contentTag: 'div',
+        content: {tag: 'div'},
         onClose: mockCloseHandler,
         title: 'title',
       };

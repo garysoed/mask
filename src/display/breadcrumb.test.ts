@@ -1,5 +1,5 @@
 import { assert, createSpySubject, match, should, test } from '@gs-testing';
-import { $filter, $head, $map, $pipe, $size, createImmutableList } from '@gs-tools/collect';
+import { createImmutableList } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent } from '@rxjs';
 import { filter, take } from '@rxjs/operators';
@@ -45,11 +45,11 @@ test('display.Breadcrumb', () => {
       // Wait until all the crumbs are rendered.
       const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
           .pipe(
-              filter(children => $pipe(children, $size()) >= 3),
+              filter(children => children.length >= 3),
               take(1),
           )
           .toPromise();
-      ($pipe(childrenNodes, $head()) as HTMLElement).click();
+      (childrenNodes[0] as HTMLElement).click();
 
       const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
@@ -80,27 +80,25 @@ test('display.Breadcrumb', () => {
       // Wait until all the crumbs are rendered.
       const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
           .pipe(
-              filter(children => $pipe(children, $size()) >= 3),
+              filter(children => children.length >= 3),
               take(1),
           )
           .toPromise();
 
-      const elements = $pipe(
-          childrenNodes,
-          $filter((item): item is HTMLElement => item instanceof HTMLElement),
-      );
+      const elements = childrenNodes
+          .filter((item): item is HTMLElement => item instanceof HTMLElement);
 
-      assert([...$pipe(elements, $map(el => el.tagName.toLowerCase()))()]).to.haveExactElements([
+      assert([...elements.map(el => el.tagName.toLowerCase())]).to.haveExactElements([
         'mk-crumb',
         'mk-crumb',
         'mk-crumb',
       ]);
-      assert([...$pipe(elements, $map(el => el.getAttribute('display')))()]).to.haveExactElements([
+      assert([...elements.map(el => el.getAttribute('display'))]).to.haveExactElements([
         'displayA',
         'displayB',
         'displayC',
       ]);
-      assert([...$pipe(elements, $map(el => el.getAttribute('key')))()]).to.haveExactElements([
+      assert([...elements.map(el => el.getAttribute('key'))]).to.haveExactElements([
         'a',
         'b',
         'c',

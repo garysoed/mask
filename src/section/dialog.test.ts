@@ -1,9 +1,9 @@
 
 import { assert, createSpy, createSpySubject, match, setup, should, test } from '@gs-testing';
-import { ImmutableSet } from '@gs-tools/collect';
+import { $pipe, ImmutableSet } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { BehaviorSubject } from '@rxjs';
-import { take } from '@rxjs/operators';
+import { map, take } from '@rxjs/operators';
 import { TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';
 import { $, Dialog } from './dialog';
@@ -21,7 +21,128 @@ test('section.Dialog', () => {
     $dialogService.get(tester.vine).next(new DialogService());
   });
 
-  test('onCloseOrCancel_', () => {
+  test('renderCancelButtonClasses', () => {
+    should(`display the cancel button if cancelable`, async () => {
+      const mockOnClose = createSpy('OnClose');
+      $dialogService.get(tester.vine)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open({
+              cancelable: true,
+              content: {tag: 'div'},
+              onClose: mockOnClose,
+              title: 'title',
+            });
+          });
+
+      await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
+          match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
+      );
+    });
+
+    should(`not display the cancel button if not cancelable`, async () => {
+      const mockOnClose = createSpy('OnClose');
+      $dialogService.get(tester.vine)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open({
+              cancelable: false,
+              content: {tag: 'div'},
+              onClose: mockOnClose,
+              title: 'title',
+            });
+          });
+
+      await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
+        match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
+      );
+    });
+  });
+
+  test('renderContent', () => {
+    should(`render the content correctly`, async () => {
+      $dialogService.get(tester.vine)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open({
+              cancelable: false,
+              content: {
+                attr: new Map([['a', '1'], ['b', '2']]),
+                tag: 'mk-content',
+              },
+              onClose: () => undefined,
+              title: 'title',
+            });
+          });
+
+      const node = await tester.getNodesAfter(el, $.content._.single)
+          .pipe(
+              take(1),
+              map(nodes => nodes[0]),
+          )
+          .toPromise() as HTMLElement;
+      assert(node.tagName).to.equal('MK-CONTENT');
+      assert(node.getAttribute('a')).to.equal('1');
+      assert(node.getAttribute('b')).to.equal('2');
+    });
+
+    should(`render nothing if dialog is not open`, async () => {
+      const elementsObs = tester.getNodesAfter(el, $.content._.single)
+          .pipe(map(nodes => nodes.filter(node => node.nodeType === Node.ELEMENT_NODE)));
+      await assert(elementsObs).to.emitWith(
+          match.anyIterableThat<Node, Node[]>().beEmpty(),
+      );
+    });
+  });
+
+  test('renderRootClasses', () => {
+    should(`render correctly when dialog is displayed`, async () => {
+      $dialogService.get(tester.vine)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open({
+              cancelable: false,
+              content: {tag: 'div'},
+              onClose: () => undefined,
+              title: 'title',
+            });
+          });
+
+      await assert(tester.getClassList(el, $.root)).to.emitWith(
+        match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
+      );
+    });
+
+    should(`render correctly when dialog is hidden`, async () => {
+      await assert(tester.getClassList(el, $.root)).to.emitWith(
+        match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
+      );
+    });
+  });
+
+  test('renderTitle', () => {
+    should(`render the title correctly`, async () => {
+      const title = 'title';
+      $dialogService.get(tester.vine)
+          .pipe(take(1))
+          .subscribe(dialogService => {
+            dialogService.open({
+              cancelable: false,
+              content: {tag: 'div'},
+              onClose: () => undefined,
+              title,
+            });
+          });
+
+      await assert(tester.getTextContent(el, $.title)).to.emitWith(title);
+    });
+
+    should(`render empty string when dialog is hidden`, async () => {
+      await assert(tester.getTextContent(el, $.title)).to.emitWith('');
+    });
+  });
+
+  test('setupOnCloseOrCancel', () => {
     should(`close the dialog correctly if canceled`, async () => {
       const onCloseSubject = createSpySubject<boolean>();
       $dialogService.get(tester.vine)
@@ -29,7 +150,7 @@ test('section.Dialog', () => {
           .subscribe(dialogService => {
             dialogService.open({
               cancelable: true,
-              contentTag: 'div',
+              content: {tag: 'div'},
               onClose: v => onCloseSubject.next(v),
               title: 'title',
             });
@@ -55,7 +176,7 @@ test('section.Dialog', () => {
           .subscribe(dialogService => {
             dialogService.open({
               cancelable: true,
-              contentTag: 'div',
+              content: {tag: 'div'},
               onClose: v => onCloseSubject.next(v),
               title: 'title',
             });
@@ -72,91 +193,6 @@ test('section.Dialog', () => {
 
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();
-    });
-  });
-
-  test('renderCancelButtonClasses_', () => {
-    should(`display the cancel button if cancelable`, async () => {
-      const mockOnClose = createSpy('OnClose');
-      $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: true,
-              contentTag: 'div',
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
-
-      await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
-          match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
-      );
-    });
-
-    should(`not display the cancel button if not cancelable`, async () => {
-      const mockOnClose = createSpy('OnClose');
-      $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              contentTag: 'div',
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
-
-      await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
-        match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
-      );
-    });
-  });
-
-  test('renderRootClass_', () => {
-    should(`render correctly when dialog is displayed`, async () => {
-      $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              contentTag: 'div',
-              onClose: () => undefined,
-              title: 'title',
-            });
-          });
-
-      await assert(tester.getClassList(el, $.root)).to.emitWith(
-        match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
-      );
-    });
-
-    should(`render correctly when dialog is hidden`, async () => {
-      await assert(tester.getClassList(el, $.root)).to.emitWith(
-        match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
-      );
-    });
-  });
-
-  test('renderTitle_', () => {
-    should(`render the title correctly`, async () => {
-      const title = 'title';
-      $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              contentTag: 'div',
-              onClose: () => undefined,
-              title,
-            });
-          });
-
-      await assert(tester.getTextContent(el, $.title)).to.emitWith(title);
-    });
-
-    should(`render empty string when dialog is hidden`, async () => {
-      await assert(tester.getTextContent(el, $.title)).to.emitWith('');
     });
   });
 });

@@ -14,11 +14,12 @@
     <script>
       const dialogLaunchButton = document.getElementById('dialogLaunchButton');
       dialogLaunchButton.addEventListener('mk-action', () => {
-        const el = document.createElement('div');
-        el.textContent = 'Dialog Content';
         demo.dialogService.open({
           cancelable: true,
-          elementProvider: () => el,
+          content: {
+            attr: new Map([['label', 'Dialog content']]),
+            tag: 'mk-icon-with-text',
+          },
           onClose: canceled => window.alert(`Canceled: ${canceled}`),
           title: 'Dialog title',
         });
