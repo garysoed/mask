@@ -1,40 +1,53 @@
-import { assert, createSpy, setup, should, test } from '@gs-testing';
-import { BehaviorSubject } from '@rxjs';
+import { Source, Vine } from '@grapevine';
+import { assert, createSpy, fake, match, setup, should, test } from '@gs-testing';
+import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
+import { _v } from '../app/app';
 import { DialogService, DialogState, OpenState } from './dialog-service';
 
-test('section.DialogService', () => {
+test('@mask/section/dialog-service', () => {
+  let source: Source<number|null, typeof globalThis>;
+  let vine: Vine;
   let service: DialogService;
 
   setup(() => {
-    service = new DialogService();
+    source = _v.source(() => new BehaviorSubject<number|null>(null), globalThis);
+    vine = _v.build('test');
+    service = new DialogService(vine);
   });
 
   test('open', () => {
     should(`update the state correctly`, () => {
-      const mockCloseHandler = createSpy<number>('CloseHandler');
+      const mockCloseHandler = createSpy<Observable<unknown>>('CloseHandler');
+      fake(mockCloseHandler).always().return(EMPTY);
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       service.getStateObs().subscribe(stateSubject);
 
-      service.open({
-        cancelable: true,
-        content: {tag: 'div'},
-        onClose: mockCloseHandler,
-        title: 'title',
-      });
+      service
+          .open({
+            cancelable: true,
+            content: {tag: 'div'},
+            onClose: mockCloseHandler,
+            source,
+            title: 'title',
+          })
+          .subscribe();
 
       const newState = stateSubject.getValue() as OpenState;
       assert(newState.isOpen).to.beTrue();
 
+      const value = 123;
+      source.get(vine).next(value);
+
       // Close the dialog.
-      newState.closeFn(true);
-      assert(mockCloseHandler).to.haveBeenCalledWith(true);
+      newState.closeFn(true).subscribe();
+      assert(mockCloseHandler).to.haveBeenCalledWith(true, value, vine);
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();
     });
 
     should(`throw error if already opening a dialog`, () => {
-      const mockCloseHandler = createSpy<number>('CloseHandler');
+      const mockCloseHandler = createSpy<Observable<unknown>>('CloseHandler');
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       service.getStateObs().subscribe(stateSubject);
@@ -45,12 +58,13 @@ test('section.DialogService', () => {
         onClose: mockCloseHandler,
         title: 'title',
       };
-      service.open(spec);
+      service.open(spec).subscribe();
 
       // Open the dialog again.
-      assert(() => {
-        service.open(spec);
-      }).to.throwErrorWithMessage(/State of dialog service/);
+      const mockError = createSpy('error');
+      service.open(spec).subscribe(undefined, err => mockError(err.message));
+      assert(mockError).to
+          .haveBeenCalledWith(match.anyStringThat().match(/State of dialog service/));
     });
   });
 });

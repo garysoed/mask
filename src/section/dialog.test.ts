@@ -2,38 +2,40 @@
 import { assert, createSpy, createSpySubject, match, setup, should, test } from '@gs-testing';
 import { $pipe, ImmutableSet } from '@gs-tools/collect';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { BehaviorSubject } from '@rxjs';
-import { map, take } from '@rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
+import { map, switchMap, take } from '@rxjs/operators';
 import { TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';
+import { ActionEvent } from '../event/action-event';
 import { $, Dialog } from './dialog';
 import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('section.Dialog', () => {
+test('@mask/section/dialog', () => {
   let el: HTMLElement;
   let tester: PersonaTester;
 
   setup(() => {
     tester = testerFactory.build([Dialog, TextIconButton]);
     el = tester.createElement('mk-dialog', document.body);
-    $dialogService.get(tester.vine).next(new DialogService());
+    $dialogService.get(tester.vine).next(new DialogService(tester.vine));
   });
 
   test('renderCancelButtonClasses', () => {
     should(`display the cancel button if cancelable`, async () => {
-      const mockOnClose = createSpy('OnClose');
+      const mockOnClose = createSpy<Observable<unknown>>('OnClose');
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: true,
-              content: {tag: 'div'},
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: true,
+                content: {tag: 'div'},
+                onClose: mockOnClose,
+                title: 'title',
+              })),
+          )
+          .subscribe();
 
       await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
           match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
@@ -41,17 +43,18 @@ test('section.Dialog', () => {
     });
 
     should(`not display the cancel button if not cancelable`, async () => {
-      const mockOnClose = createSpy('OnClose');
+      const mockOnClose = createSpy<Observable<unknown>>('OnClose');
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              content: {tag: 'div'},
-              onClose: mockOnClose,
-              title: 'title',
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: false,
+                content: {tag: 'div'},
+                onClose: mockOnClose,
+                title: 'title',
+              })),
+          )
+          .subscribe();
 
       await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
         match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
@@ -62,18 +65,19 @@ test('section.Dialog', () => {
   test('renderContent', () => {
     should(`render the content correctly`, async () => {
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              content: {
-                attr: new Map([['a', '1'], ['b', '2']]),
-                tag: 'mk-content',
-              },
-              onClose: () => undefined,
-              title: 'title',
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: false,
+                content: {
+                  attr: new Map([['a', '1'], ['b', '2']]),
+                  tag: 'mk-content',
+                },
+                onClose: () => EMPTY,
+                title: 'title',
+              })),
+          )
+          .subscribe();
 
       const node = await tester.getNodesAfter(el, $.content._.single)
           .pipe(
@@ -98,15 +102,16 @@ test('section.Dialog', () => {
   test('renderRootClasses', () => {
     should(`render correctly when dialog is displayed`, async () => {
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              content: {tag: 'div'},
-              onClose: () => undefined,
-              title: 'title',
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: false,
+                content: {tag: 'div'},
+                onClose: () => EMPTY,
+                title: 'title',
+              })),
+          )
+          .subscribe();
 
       await assert(tester.getClassList(el, $.root)).to.emitWith(
         match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
@@ -124,15 +129,16 @@ test('section.Dialog', () => {
     should(`render the title correctly`, async () => {
       const title = 'title';
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: false,
-              content: {tag: 'div'},
-              onClose: () => undefined,
-              title,
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: false,
+                content: {tag: 'div'},
+                onClose: () => EMPTY,
+                title,
+              })),
+          )
+          .subscribe();
 
       await assert(tester.getTextContent(el, $.title)).to.emitWith(title);
     });
@@ -146,15 +152,20 @@ test('section.Dialog', () => {
     should(`close the dialog correctly if canceled`, async () => {
       const onCloseSubject = createSpySubject<boolean>();
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: true,
-              content: {tag: 'div'},
-              onClose: v => onCloseSubject.next(v),
-              title: 'title',
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: true,
+                content: {tag: 'div'},
+                onClose: v => {
+                  onCloseSubject.next(v);
+
+                  return EMPTY;
+                },
+                title: 'title',
+              })),
+          )
+          .subscribe();
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       $dialogState.get(tester.vine).subscribe(stateSubject);
@@ -172,22 +183,25 @@ test('section.Dialog', () => {
     should(`close the dialog correctly if OK'd`, async () => {
       const onCloseSubject = createSpySubject<boolean>();
       $dialogService.get(tester.vine)
-          .pipe(take(1))
-          .subscribe(dialogService => {
-            dialogService.open({
-              cancelable: true,
-              content: {tag: 'div'},
-              onClose: v => onCloseSubject.next(v),
-              title: 'title',
-            });
-          });
+          .pipe(
+              take(1),
+              switchMap(dialogService => dialogService.open({
+                cancelable: true,
+                content: {tag: 'div'},
+                onClose: v => {
+                  onCloseSubject.next(v);
+
+                  return EMPTY;
+                },
+                title: 'title',
+              })),
+          )
+          .subscribe();
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       $dialogState.get(tester.vine).subscribe(stateSubject);
 
-      tester.getElement(el, $.okButton)
-          .pipe(take(1))
-          .subscribe(el => el.click());
+      tester.dispatchEvent(el, $.okButton._.onAction, new ActionEvent()).subscribe();
 
       await assert(onCloseSubject).to.emitWith(false);
 

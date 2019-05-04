@@ -23,6 +23,7 @@ import textButtonTemplate from './text-icon-button.html';
 const THROTTLE_MS = 500;
 
 export const $$ = {
+  // TODO: Add autocomplete option.
   actionEvent: dispatcher(ACTION_EVENT),
   active: hasAttribute('active'),
   ariaLabelIn: attributeIn('aria-label', stringParser(), ''),

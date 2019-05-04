@@ -3,7 +3,7 @@ import { $pipe, $push, asImmutableMap, createImmutableSet, ImmutableSet } from '
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { classlist, element, InitFn, onDom, single, SingleRenderSpec, textContent } from '@persona';
 import { merge, Observable } from '@rxjs';
-import { filter, map, mapTo, take, tap, withLatestFrom } from '@rxjs/operators';
+import { filter, map, mapTo, switchMap, take, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import * as dialogCloseSvg from '../asset/dialog_close.svg';
 import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
@@ -128,7 +128,7 @@ export class Dialog extends ThemedCustomElementCtrl {
     .pipe(
         withLatestFrom($dialogState.get(vine)),
         filter((pair): pair is [boolean, OpenState] => pair[1].isOpen),
-        tap(([isCanceled, state]) => state.closeFn(isCanceled)),
+        switchMap(([isCanceled, state]) => state.closeFn(isCanceled)),
     );
   }
 }
