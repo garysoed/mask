@@ -16,19 +16,19 @@ test('layout.RootLayout', () => {
 
   test('handleDrawerExpandCollapse', () => {
     should(`open the drawer if hovered`, async () => {
-      tester.dispatchEvent(el, $.drawer, new CustomEvent('mouseover')).subscribe();
+      tester.dispatchEvent(el, $.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
 
       await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(true);
       await assert(tester.getAttribute(el, $.host._.drawerExpanded)).to.emitWith(true);
     });
 
     should(`collapse the drawer if not hovered and is not desktop`, async () => {
-      tester.dispatchEvent(el, $.drawer, new CustomEvent('mouseover')).subscribe();
+      tester.dispatchEvent(el, $.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
 
       // Wait for the drawer to be expanded.
       await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(true);
 
-      tester.dispatchEvent(el, $.drawer, new CustomEvent('mouseout')).subscribe();
+      tester.dispatchEvent(el, $.drawer._.onMouseOut, new CustomEvent('mouseout')).subscribe();
       await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(false);
       await assert(tester.getAttribute(el, $.host._.drawerExpanded)).to.emitWith(false);
     });

@@ -113,7 +113,7 @@ test('component.TextIconButton', () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
       tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
-      tester.dispatchEvent(el, $.host, new CustomEvent('mouseenter')).subscribe();
+      tester.dispatchEvent(el, $.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('focus');
     });
@@ -122,7 +122,7 @@ test('component.TextIconButton', () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, false).subscribe();
       tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
-      tester.dispatchEvent(el, $.host, new CustomEvent('focus')).subscribe();
+      tester.dispatchEvent(el, $.host._.onFocus, new CustomEvent('focus')).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('focus');
     });
@@ -131,7 +131,7 @@ test('component.TextIconButton', () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
       tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
-      tester.dispatchEvent(el, $.host, new CustomEvent('mouseenter')).subscribe();
+      tester.dispatchEvent(el, $.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('primaryFocus');
     });
@@ -140,7 +140,7 @@ test('component.TextIconButton', () => {
       tester.setHasAttribute(el, $.host._.hasMkPrimary, true).subscribe();
       tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
       tester.setHasAttribute(el, $.host._.active, false).subscribe();
-      tester.dispatchEvent(el, $.host, new CustomEvent('focus')).subscribe();
+      tester.dispatchEvent(el, $.host._.onFocus, new CustomEvent('focus')).subscribe();
 
       await assert(tester.getAttribute(el, $.iconWithText._.mode)).to.emitWith('primaryFocus');
     });

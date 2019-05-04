@@ -27,7 +27,7 @@ test('display.CroppedLine', () => {
       );
       const preventDefaultSpy = spy(event, 'preventDefault');
       const stopPropagationSpy = spy(event, 'stopPropagation');
-      tester.dispatchEvent(el, $.container, event).subscribe();
+      tester.dispatchEvent(el, $.container._.onCopy, event).subscribe();
 
       assert(preventDefaultSpy).to.haveBeenCalledWith();
       assert(stopPropagationSpy).to.haveBeenCalledWith();
