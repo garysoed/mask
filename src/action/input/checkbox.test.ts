@@ -6,9 +6,10 @@ import { $, Checkbox } from './checkbox';
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/checkbox', () => {
+  runEnvironment(new PersonaTesterEnvironment());
+
   let el: HTMLElement;
   let tester: PersonaTester;
-  runEnvironment(new PersonaTesterEnvironment());
 
   setup(() => {
     tester = testerFactory.build([Checkbox]);
