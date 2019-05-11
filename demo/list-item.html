@@ -4,6 +4,7 @@
     <style id="globalStyle"></style>
     <style>
       #list {
+        max-width: 40rem;
         padding: 4rem 0;
       }
     </style>
@@ -12,15 +13,23 @@
     <section>
       <mk-demo mk-theme="light">
         <div id="list">
-          <mk-list-item icon="highlight" item-name="Name" item-detail="Item details"></mk-list-item>
+          <mk-list-item
+              icon="highlight"
+              item-name="Name"
+              item-detail="Item details"
+              theme="light"
+              tool-width="4rem"
+          >
+            <mk-text-icon-button icon="highlight"></mk-text-icon-button>
+          </mk-list-item>
 
-          <mk-list-item item-name="Name" item-detail="Item details"></mk-list-item>
-          <mk-list-item icon="highlight" item-detail="Item details"></mk-list-item>
-          <mk-list-item icon="highlight" item-name="Name"></mk-list-item>
+          <mk-list-item item-name="Name" item-detail="Item details" theme="light"></mk-list-item>
+          <mk-list-item icon="highlight" item-detail="Item details" theme="light"></mk-list-item>
+          <mk-list-item icon="highlight" item-name="Name" theme="light"></mk-list-item>
 
-          <mk-list-item icon="highlight"></mk-list-item>
-          <mk-list-item item-name="Name"></mk-list-item>
-          <mk-list-item item-detail="Item details"></mk-list-item>
+          <mk-list-item icon="highlight" theme="light"></mk-list-item>
+          <mk-list-item item-name="Name" theme="light"></mk-list-item>
+          <mk-list-item item-detail="Item details" theme="light"></mk-list-item>
         </div>
       </mk-demo>
     </section>

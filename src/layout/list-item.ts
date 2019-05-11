@@ -1,7 +1,7 @@
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, attributeIn, classToggle, element, InitFn, innerHtml } from '@persona';
-import { Observable } from '@rxjs';
-import { map } from '@rxjs/operators';
+import { api, attributeIn, attributeOut, classToggle, element, InitFn, innerHtml, onDom, style } from '@persona';
+import { combineLatest, merge, Observable } from '@rxjs';
+import { map, mapTo, startWith } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -12,10 +12,17 @@ export const $$ = {
   icon: attributeIn('icon', stringParser()),
   itemDetail: attributeIn('item-detail', stringParser()),
   itemName: attributeIn('item-name', stringParser()),
+  // TODO: theme shouldn't be required.
+  theme: attributeIn('theme', stringParser()),
+  toolWidth: attributeIn('tool-width', stringParser()),
 };
 
 export const $ = {
-  host: element($$),
+  host: element({
+    ...$$,
+    onMouseOut: onDom('mouseout'),
+    onMouseOver: onDom('mouseover'),
+  }),
   icon: element('icon', ElementWithTagType('mk-icon'), api($icon)),
   iconContainer: element('iconContainer', InstanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
@@ -32,6 +39,12 @@ export const $ = {
   itemNameContainer: element('itemNameContainer', InstanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
   }),
+  root: element('root', InstanceofType(HTMLDivElement), {
+    theme: attributeOut('mk-theme', stringParser()),
+  }),
+  tool: element('tool', InstanceofType(HTMLDivElement), {
+    width: style('width'),
+  }),
 };
 
 @_p.customElement({
@@ -43,6 +56,11 @@ export class ListItem extends ThemedCustomElementCtrl {
   private readonly iconObs = _p.input($.host._.icon, this);
   private readonly itemDetailObs = _p.input($.host._.itemDetail, this);
   private readonly itemNameObs = _p.input($.host._.itemName, this);
+  // TODO: On hover
+  private readonly onMouseOutObs = _p.input($.host._.onMouseOut, this);
+  private readonly onMouseOverObs = _p.input($.host._.onMouseOver, this);
+  private readonly themeObs = _p.input($.host._.theme, this);
+  private readonly toolWidthObs = _p.input($.host._.toolWidth, this);
 
   getInitFunctions(): InitFn[] {
     return [
@@ -56,18 +74,31 @@ export class ListItem extends ThemedCustomElementCtrl {
           .withVine(_v.stream(this.renderItemDetailContainerDisplayed, this)),
       _p.render($.itemNameContainer._.displayed)
           .withVine(_v.stream(this.renderItemNameContainerDisplayed, this)),
+      _p.render($.root._.theme).withObservable(this.themeObs),
+      _p.render($.tool._.width).withVine(_v.stream(this.renderToolWidth, this)),
     ];
   }
 
-  renderIconContainerDisplayed(): Observable<boolean> {
+  private renderIconContainerDisplayed(): Observable<boolean> {
     return this.iconObs.pipe(map(icon => !!icon));
   }
 
-  renderItemDetailContainerDisplayed(): Observable<boolean> {
+  private renderItemDetailContainerDisplayed(): Observable<boolean> {
     return this.itemDetailObs.pipe(map(itemDetail => !!itemDetail));
   }
 
-  renderItemNameContainerDisplayed(): Observable<boolean> {
+  private renderItemNameContainerDisplayed(): Observable<boolean> {
     return this.itemNameObs.pipe(map(itemName => !!itemName));
+  }
+
+  private renderToolWidth(): Observable<string> {
+    const hoverObs = merge(
+        this.onMouseOutObs.pipe(mapTo(false)),
+        this.onMouseOverObs.pipe(mapTo(true)),
+    )
+    .pipe(startWith(false));
+
+    return combineLatest(hoverObs, this.toolWidthObs)
+        .pipe(map(([mouseHover, toolWidth]) => mouseHover ? toolWidth : '0'));
   }
 }

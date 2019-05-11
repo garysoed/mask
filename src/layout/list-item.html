@@ -14,16 +14,27 @@
     width: 4rem;
   }
 
+  #iconContainer, #textContainer {
+    background-color: var(--mkThemeActionBG);
+  }
+
   #root {
     height: 4rem;
+    position: relative;
+  }
+
+  #tool {
+    overflow: hidden;
+    width: 0;
+    transition: width var(--mkAnimationTime);
   }
 </style>
 
-<div id="root" layout="row">
+<div fill-parent id="root" layout="row">
   <div flex-align="center" flex-justify="center" id="iconContainer" layout="row">
     <mk-icon id="icon"></mk-icon>
   </div>
-  <div flex layout="column">
+  <div flex id="textContainer" layout="column">
     <div flex flex-justify="center" id="itemNameContainer" layout="column" mk-body-2>
       <div id="itemName"></div>
     </div>
@@ -31,4 +42,8 @@
       <div id="itemDetail"></div>
     </div>
   </div>
+  <div flex-justify="flex-end" id="tool" layout="row" mk-theme-highlight shadow="down">
+    <slot></slot>
+  </div>
 </div>
+

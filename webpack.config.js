@@ -2,7 +2,8 @@ const glob = require("glob");
 const path = require("path");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const smp = new SpeedMeasurePlugin();
-const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = smp.wrap({
   entry: {
@@ -67,5 +68,11 @@ module.exports = smp.wrap({
 
   watch: true,
 
-  plugins: [ new CheckerPlugin() ]
+  plugins: [
+    new WebpackNotifierPlugin({
+      alwaysNotify: true,
+      contentImage: '',
+      title: 'Mask',
+    }),
+  ]
 });

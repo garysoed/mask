@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@types/jasmine": "^2.8.8",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "webpack-notifier": "^1.7.0"
   }
 }
