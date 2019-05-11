@@ -2,12 +2,13 @@ import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmu
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, element, InitFn, onDom, repeated } from '@persona';
+import { api, attributeOut, element, InitFn, onDom, repeated } from '@persona';
 import { concat, Observable, of as observableOf } from '@rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from '@rxjs/operators';
+import { stringParser } from 'export';
 import { $$ as $checkbox, Checkbox } from '../src/action/input/checkbox';
 import { _p, _v } from '../src/app/app';
-import { $$ as $rootLayout, RootLayout } from '../src/layout/root-layout';
+import { RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import demoTemplate from './demo.html';
@@ -22,7 +23,9 @@ const $ = {
     onClick: onDom<MouseEvent>('click'),
   }),
   darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
-  root: element('root', ElementWithTagType('mk-root-layout'), api($rootLayout)),
+  root: element('root', ElementWithTagType('section'), {
+    theme: attributeOut('mk-theme', stringParser()),
+  }),
 };
 
 export const TAG = 'mk-demo';
@@ -47,7 +50,6 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
       this.setupHandleBasePaletteClick,
       _p.render($.accentPalette._.colorlist).withVine(_v.stream(this.renderAccentPalette, this)),
       _p.render($.basePalette._.colorlist).withVine(_v.stream(this.renderBasePalette, this)),
-      _p.render($.root._.theme).withVine(_v.stream(this.renderTheme, this)),
       _p.render($.root._.theme).withVine(_v.stream(this.renderTheme, this)),
     ];
   }

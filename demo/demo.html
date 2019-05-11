@@ -10,8 +10,8 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #root[drawer-expanded="T"] #accentPalette,
-  #root[drawer-expanded="T"] #basePalette {
+  #pageRoot[drawer-expanded="T"] #accentPalette,
+  #pageRoot[drawer-expanded="T"] #basePalette {
     height: 16rem;
     transition: height var(--mkAnimationTime);
   }
@@ -29,8 +29,8 @@
   }
 </style>
 <style id="globalStyle"></style>
-<section layout="row" mk-theme="light" fill-parent>
-  <mk-root-layout icon="logo" id="root" label="Demo">
+<section id="root" layout="row" mk-theme="light" fill-parent>
+  <mk-root-layout icon="logo" id="pageRoot" label="Demo">
     <div id="drawerRoot" slot="drawer">
       <div id="basePaletteSection">
         <mk-icon-with-text icon="palette" label="Base Palette"></mk-icon-with-text>

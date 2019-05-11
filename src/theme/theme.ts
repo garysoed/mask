@@ -10,12 +10,21 @@ import * as variablesCssTemplate from './variables.css';
 
 
 function generateColorCss_(
-    colorMap: ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}>): string {
+    colorMap: ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}>,
+    highlightColorMap: ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}>,
+): string {
   const lines = [];
   for (const [section, {alpha, bg, fg}] of colorMap) {
     lines.push(`--mkTheme${section}BG: rgb(${bg.getRed()},${bg.getGreen()},${bg.getBlue()});`);
     lines.push(
         `--mkTheme${section}FG: rgba(${fg.getRed()},${fg.getGreen()},${fg.getBlue()},${alpha});`);
+  }
+
+  for (const [section, {alpha, bg, fg}] of highlightColorMap) {
+    lines.push(
+        `--mkThemeHighlight${section}BG: rgb(${bg.getRed()},${bg.getGreen()},${bg.getBlue()});`);
+    lines.push(`--mkThemeHighlight${section}FG:` +
+        ` rgba(${fg.getRed()},${fg.getGreen()},${fg.getBlue()},${alpha});`);
   }
 
   return lines.join('\n');
@@ -172,10 +181,20 @@ export class Theme {
         contrastAccentShade,
     );
     const cssContent = variablesCssTemplate
-        .replace('/*{themeLight}*/', generateColorCss_(lightColorMap))
-        .replace('/*{themeDark}*/', generateColorCss_(darkColorMap))
-        .replace('/*{themeHighlightLight}*/', generateColorCss_(highlightLightColorMap))
-        .replace('/*{themeHighlightDark}*/', generateColorCss_(highlightDarkColorMap));
+        .replace('/*{themeLight}*/', generateColorCss_(lightColorMap, highlightLightColorMap))
+        .replace('/*{themeDark}*/', generateColorCss_(darkColorMap, highlightDarkColorMap))
+        .replace(
+            '/*{themeHighlightLight}*/',
+            generateColorCss_(highlightLightColorMap, lightColorMap),
+        )
+        .replace(
+            '/*{themeHighlightDark}*/',
+            generateColorCss_(highlightDarkColorMap, darkColorMap),
+        )
+        .replace(
+            '/*{themeHighlightSwitch}*/',
+            generateHighlightSwitch(),
+        );
 
     styleEl.innerHTML = `${cssContent}\n${generalCss}`;
   }
@@ -187,4 +206,15 @@ export class Theme {
   setHighlightColor(color: Color): Theme {
     return new Theme(this.baseColor, color);
   }
+}
+
+function generateHighlightSwitch(): string {
+  const sections: string[] = [];
+  for (const key of Object.keys(ColorSection)) {
+    const section = ColorSection[key as any];
+    sections.push(`--mkTheme${section}FG: var(--mkThemeHighlight${section}FG);`);
+    sections.push(`--mkTheme${section}BG: var(--mkThemeHighlight${section}BG);`);
+  }
+
+  return sections.join('\n');
 }

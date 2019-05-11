@@ -12,8 +12,6 @@ export const $$ = {
   icon: attributeIn('icon', stringParser()),
   itemDetail: attributeIn('item-detail', stringParser()),
   itemName: attributeIn('item-name', stringParser()),
-  // TODO: theme shouldn't be required.
-  theme: attributeIn('theme', stringParser()),
   toolWidth: attributeIn('tool-width', stringParser()),
 };
 
@@ -59,7 +57,6 @@ export class ListItem extends ThemedCustomElementCtrl {
   // TODO: On hover
   private readonly onMouseOutObs = _p.input($.host._.onMouseOut, this);
   private readonly onMouseOverObs = _p.input($.host._.onMouseOver, this);
-  private readonly themeObs = _p.input($.host._.theme, this);
   private readonly toolWidthObs = _p.input($.host._.toolWidth, this);
 
   getInitFunctions(): InitFn[] {
@@ -74,7 +71,6 @@ export class ListItem extends ThemedCustomElementCtrl {
           .withVine(_v.stream(this.renderItemDetailContainerDisplayed, this)),
       _p.render($.itemNameContainer._.displayed)
           .withVine(_v.stream(this.renderItemNameContainerDisplayed, this)),
-      _p.render($.root._.theme).withObservable(this.themeObs),
       _p.render($.tool._.width).withVine(_v.stream(this.renderToolWidth, this)),
     ];
   }

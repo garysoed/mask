@@ -26,9 +26,6 @@ export const $ = {
     onMouseOver: onDom('mouseover'),
   }),
   host: element($$),
-  root: element('root', ElementWithTagType('section'), {
-    theme: attributeOut('mk-theme', stringParser()),
-  }),
   title: element('title', ElementWithTagType('mk-text-icon-button'), api($textIconButton)),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
@@ -55,7 +52,6 @@ export class RootLayout extends ThemedCustomElementCtrl {
       ...super.getInitFunctions(),
       this.setupHandleDrawerExpandCollapse,
       _p.render($.host._.drawerExpanded).withObservable(this.isDrawerOpenSbj),
-      _p.render($.root._.theme).withObservable(this.hostThemeObs),
       _p.render($.drawer._.expanded).withObservable(this.isDrawerOpenSbj),
       _p.render($.title._.label).withObservable(this.hostLabelObs),
       _p.render($.title._.icon).withObservable(this.hostIconObs),
