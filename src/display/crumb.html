@@ -3,18 +3,25 @@
   :host {
     --mkCrumbInnerArrowColor: transparent;
     --mkCrumbTextLeftPadding: 1rem;
-    --mkCrumbBackgroundColor: var(--mkThemeActionPrimaryBG);
-    --mkCrumbForegroundColor: var(--mkThemeActionPrimaryFG);
+    --mkCrumbBackgroundColor: var(--mkThemeActionBG);
+    --mkCrumbBackTriangleLeft: -2rem;
+    --mkCrumbForegroundColor: var(--mkThemeActionFG);
+    --mkCrumbSeparatorDisplay: block;
   }
 
   :host(:first-child) {
+    --mkCrumbBackTriangleLeft: 0;
     --mkCrumbInnerArrowColor: var(--mkCrumbBackgroundColor);
     --mkCrumbTextLeftPadding: 0;
   }
 
+  :host(:last-child) {
+    --mkCrumbSeparatorDisplay: none;
+  }
+
   :host(:hover) {
-    --mkCrumbBackgroundColor: var(--mkThemeActionPrimaryFocusBG);
-    --mkCrumbForegroundColor: var(--mkThemeActionPrimaryFocusFG);
+    --mkCrumbBackgroundColor: var(--mkThemeActionFocusBG);
+    --mkCrumbForegroundColor: var(--mkThemeActionFocusFG);
   }
 
   #root {
@@ -24,12 +31,11 @@
   #text {
     background-color: var(--mkCrumbBackgroundColor);
     color: var(--mkCrumbForegroundColor);
-    line-height: 2rem;
     padding: 1rem .5rem 1rem var(--mkCrumbTextLeftPadding);
   }
 
   #backTriangle {
-    margin-left: -1rem;
+    margin-left: var(--mkCrumbBackTriangleLeft);
   }
 
   #backTriangleBottom,
@@ -48,6 +54,15 @@
     border-left: 2rem solid var(--mkCrumbInnerArrowColor);
   }
 
+  #svg {
+    display: var(--mkCrumbSeparatorDisplay);
+    margin-left: -2rem;
+  }
+
+  #svg > svg #foreground {
+    fill: var(--mkThemePassiveFG);
+  }
+
   #triangle {
     width: 0;
     height: 0;
@@ -61,6 +76,7 @@
     <div id="backTriangleTop"></div>
     <div id="backTriangleBottom"></div>
   </div>
-  <div id="text"></div>
+  <div id="text" mk-body-1></div>
   <div id="triangle"></div>
+  <div id="svg"></div>
 </div>
