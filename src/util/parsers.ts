@@ -1,9 +1,7 @@
 import { ImmutableList } from '@gs-tools/collect';
 import { integerConverter, listConverter, typeBased } from '@gs-tools/serializer';
 import { BooleanType } from '@gs-types';
-import { human } from '@nabu/grammar';
-import { Converter, Serializable } from '@nabu/main';
-import { compose, identity } from '@nabu/util';
+import { compose, Converter, human, identity, Serializable } from '@nabu';
 
 export function booleanParser(): Converter<boolean, string> {
   return compose(typeBased(BooleanType), human());

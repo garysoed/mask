@@ -1,10 +1,10 @@
 import { $declareKeyed, $getKey, $head, $map, $pick, $pipe, asImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { Color, Colors } from '@gs-tools/color';
-import { assertUnreachable } from '@gs-tools/typescript';
+import { assertUnreachable, Enums } from '@gs-tools/typescript';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import * as generalCss from './general.css';
-import { B010, B100, B190, B200, BASE_SHADES, createColor, Shade } from './shade';
+import { B010, B100, B190, BASE_SHADES, createColor, Shade } from './shade';
 import { DARK_SHADING, HIGHLIGHT_DARK_SHADING, HIGHLIGHT_LIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
 import * as variablesCssTemplate from './variables.css';
 
@@ -210,8 +210,7 @@ export class Theme {
 
 function generateHighlightSwitch(): string {
   const sections: string[] = [];
-  for (const key of Object.keys(ColorSection)) {
-    const section = ColorSection[key as any];
+  for (const section of Enums.getAllValues(ColorSection)) {
     sections.push(`--mkTheme${section}FG: var(--mkThemeHighlight${section}FG);`);
     sections.push(`--mkTheme${section}BG: var(--mkThemeHighlight${section}BG);`);
   }

@@ -10,9 +10,7 @@
 import { Vine } from '@grapevine';
 import { typeBased } from '@gs-tools/serializer';
 import { BooleanType, InstanceofType } from '@gs-types';
-import { json } from '@nabu/grammar';
-import { Serializable } from '@nabu/main';
-import { compose } from '@nabu/util';
+import { compose, json, Serializable } from '@nabu';
 import { AriaRole, attributeIn, attributeOut, element, InitFn, innerHtml } from '@persona';
 import { combineLatest, Observable } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
