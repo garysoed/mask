@@ -14,25 +14,27 @@ import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
 import { Crumb } from './crumb';
 
-interface CrumbData {
-  'display': string;
-  'key': string;
+export interface CrumbData {
+  display: string;
+  key: string;
 }
 
+export const $$ = {
+  dispatch: dispatcher(ACTION_EVENT),
+  path: attributeIn<ImmutableList<CrumbData>>(
+      'path',
+      listParser(
+          objectConverter<CrumbData>({
+            display: stringParser(),
+            key: stringParser(),
+          }),
+      ),
+      createImmutableList([]),
+  ),
+};
+
 export const $ = {
-  host: element({
-    dispatch: dispatcher(ACTION_EVENT),
-    path: attributeIn<ImmutableList<CrumbData>>(
-        'path',
-        listParser(
-            objectConverter<CrumbData>({
-              display: stringParser(),
-              key: stringParser(),
-            }),
-        ),
-        createImmutableList([]),
-    ),
-  }),
+  host: element($$),
   row: element('row', InstanceofType(HTMLDivElement), {
     crumbsSlot: repeated('crumbs', 'mk-crumb'),
     onAction: onDom(ACTION_EVENT),
