@@ -13,6 +13,8 @@ export const $theme = _v.source(
     globalThis,
 );
 
+export const $window = _v.source(() => new BehaviorSubject(window), globalThis);
+
 export function start(
     appName: string,
     rootCtrls: CustomElementCtrlCtor[],

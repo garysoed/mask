@@ -1,4 +1,4 @@
-export { _p, _v } from '../src/app/app';
+export { _p, _v, $window } from '../src/app/app';
 export { $svgConfig } from '../src/display/svg-service';
 export { Breadcrumb, $$ as $breadcrumb, CrumbData } from '../src/display/breadcrumb';
 export { ActionEvent, ACTION_EVENT } from '../src/event/action-event';
