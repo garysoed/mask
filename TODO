@@ -3,7 +3,7 @@ mask
     ✔ Icons use SVGs now. @done(18-12-22 18:32)
     ☐ Update all the docs.
     ☐ Make onDom and other listeners injectable
-    ☐ Use new Persona API.
+    ✔ Use new Persona API.
     ☐ Release as 1.0
     ☐ Differentiate color between hover vs focus.
 
@@ -14,5 +14,8 @@ mask
 
   bugs:
     ☐ Dialog, clicking on the button the second time doesn't work. Event dispatch doesn't seem to work.
+
+  features:
+    ☐ Add autocomplete option to `mk-text-input`.
 
   ☐ Gather TODOs

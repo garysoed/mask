@@ -22,4 +22,4 @@ export { Theme } from '../src/theme/theme';
 export { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 
 // Parsers
-export { booleanParser, integerParser, listParser, stringParser } from '../src/util/parsers';
+export { booleanParser, enumParser, integerParser, listParser, stringParser } from '../src/util/parsers';

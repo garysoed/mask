@@ -3,7 +3,7 @@ import { Errors } from '@gs-tools/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs-tools/rxjs';
 import { objectConverter } from '@gs-tools/serializer';
 import { InstanceofType } from '@gs-types';
-import { attributeIn, dispatcher, element, InitFn, onDom, repeated } from '@persona';
+import { attributeIn, dispatcher, element, InitFn, onDom, repeated, RepeatedSpec } from '@persona';
 import { Observable } from '@rxjs';
 import { map, tap, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
@@ -61,7 +61,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
     ];
   }
 
-  renderCrumbs(): Observable<ArrayDiff<Map<string, string>>> {
+  renderCrumbs(): Observable<ArrayDiff<RepeatedSpec>> {
     return this.pathKeySubject.getDiffs()
         .pipe(
             withLatestFrom(this.pathDataSubject.getDiffs().pipe(scanMap())),
@@ -79,7 +79,10 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
                       asImmutableList(),
                   );
 
-                  return {type: 'init' as 'init', value: [...crumbDataList]};
+                  return {
+                    type: 'init' as 'init',
+                    value: [...crumbDataList],
+                  };
                 case 'insert':
                   const insertData = $pipe(immutableMap, $getKey(diff.value), $pick(1), $head());
                   if (!insertData) {
@@ -104,7 +107,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
                   };
               }
             }),
-            filterNonNull<ArrayDiff<Map<string, string>>|null>(),
+            filterNonNull<ArrayDiff<RepeatedSpec>|null>(),
         );
   }
 
@@ -148,9 +151,8 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   }
 }
 
-function renderCrumbData(data: CrumbData): Map<string, string> {
-  return new Map([
-    ['display', data.display],
-    ['key', data.key],
-  ]);
+function renderCrumbData(data: CrumbData): RepeatedSpec {
+  return {
+    attr: new Map([['display', data.display], ['key', data.key]]),
+  };
 }
