@@ -2,7 +2,7 @@ import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmu
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, attributeOut, element, InitFn, onDom, repeated } from '@persona';
+import { api, attributeOut, element, InitFn, onDom, repeated, RepeatedSpec } from '@persona';
 import { concat, Observable, of as observableOf } from '@rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from '@rxjs/operators';
 import { stringParser } from 'export';
@@ -78,7 +78,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderAccentPalette(): Observable<ArrayDiff<Map<string, string>>> {
+  private renderAccentPalette(): Observable<ArrayDiff<RepeatedSpec>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -89,7 +89,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
 
     return concat(
-        observableOf<ArrayDiff<Map<string, string>>>({
+        observableOf<ArrayDiff<RepeatedSpec>>({
           type: 'init' as 'init',
           value: initPaletteData,
         }),
@@ -97,7 +97,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderBasePalette(): Observable<ArrayDiff<Map<string, string>>> {
+  private renderBasePalette(): Observable<ArrayDiff<RepeatedSpec>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -108,7 +108,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
 
     return concat(
-        observableOf<ArrayDiff<Map<string, string>>>({
+        observableOf<ArrayDiff<RepeatedSpec>>({
           type: 'init' as 'init',
           value: initPaletteData,
         }),
@@ -131,8 +131,8 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 }
 
 function createDiffObs(oldColor: Color, newColor: Color):
-    Observable<ArrayDiff<Map<string, string>>> {
-  const diffs: Array<ArrayDiff<Map<string, string>>> = [];
+    Observable<ArrayDiff<RepeatedSpec>> {
+  const diffs: Array<ArrayDiff<RepeatedSpec>> = [];
 
   const oldIndex = COLOR_TO_INDEX.get(oldColor);
   const oldName = COLOR_TO_NAME.get(oldColor);
@@ -204,7 +204,7 @@ const COLOR_TO_NAME = new Map<Color, string>([...$pipe(
 )]);
 
 function createPaletteData(colorName: string, color: Color, selected: boolean):
-    Map<string, string> {
+    RepeatedSpec {
   const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
 
   const classes = ['palette'];
@@ -212,9 +212,11 @@ function createPaletteData(colorName: string, color: Color, selected: boolean):
     classes.push('selected');
   }
 
-  return new Map([
-    ['class', classes.join(' ')],
-    ['color', colorName],
-    ['style', `background-color: ${colorCss};`],
-  ]);
+  return {
+    attr: new Map([
+      ['class', classes.join(' ')],
+      ['color', colorName],
+      ['style', `background-color: ${colorCss};`],
+    ]),
+  };
 }
