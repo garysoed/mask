@@ -26,7 +26,7 @@ export const $ = {
   }),
 };
 
-const DEBOUNCE_MS = 250;
+export const DEBOUNCE_MS = 250;
 export const $debounceMs = _v.source(() => new BehaviorSubject(DEBOUNCE_MS), globalThis);
 
 @_p.customElement({

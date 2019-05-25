@@ -1,15 +1,17 @@
-import { assert, createSpySubject, match, should, test } from '@gs-testing';
+import { assert, createSpySubject, match, runEnvironment, should, test } from '@gs-testing';
 import { createImmutableList } from '@gs-tools/collect';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { fromEvent } from '@rxjs';
-import { filter, take } from '@rxjs/operators';
+import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { fromEvent, of as observableOf } from '@rxjs';
+import { map, switchMap } from '@rxjs/operators';
 import { _p } from '../app/app';
 import { $, Breadcrumb } from './breadcrumb';
-import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
+import { BreadcrumbClickEvent, BREADCRUMB_CLICK_EVENT } from './breadcrumb-event';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.Breadcrumb', () => {
+  runEnvironment(new PersonaTesterEnvironment());
+
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -21,7 +23,7 @@ test('display.Breadcrumb', () => {
   });
 
   test('onRowAction', () => {
-    should(`dispatch the correct event`, async () => {
+    should(`dispatch the correct event`, () => {
       const data = createImmutableList([
         {
           display: 'displayA',
@@ -43,23 +45,18 @@ test('display.Breadcrumb', () => {
       tester.setAttribute(el, $.host._.path, data).subscribe();
 
       // Wait until all the crumbs are rendered.
-      const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
-          .pipe(
-              filter(children => children.length >= 3),
-              take(1),
-          )
-          .toPromise();
-      (childrenNodes[0] as HTMLElement).click();
+      tester.getNodesAfter(el, $.row._.crumbsSlot)
+          .subscribe(childrenNodes => (childrenNodes![0] as HTMLElement).click());
 
       const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
-      await assert(actionSubject).to.emitWith(eventMatcher);
+      assert(actionSubject).to.emitWith(eventMatcher);
       assert(eventMatcher.getLastMatch().crumbKey).to.equal('a');
     });
   });
 
   test('renderCrumbs_', () => {
-    should(`render the crumbs correctly`, async () => {
+    should(`render the crumbs correctly`, () => {
       const data = createImmutableList([
         {
           display: 'displayA',
@@ -78,27 +75,25 @@ test('display.Breadcrumb', () => {
       tester.setAttribute(el, $.host._.path, data).subscribe();
 
       // Wait until all the crumbs are rendered.
-      const childrenNodes = await tester.getNodesAfter(el, $.row._.crumbsSlot)
+      const elementsObs = tester.getNodesAfter(el, $.row._.crumbsSlot)
           .pipe(
-              filter(children => children.length >= 3),
-              take(1),
-          )
-          .toPromise();
+              map(nodes => {
+                return nodes.filter((item): item is HTMLElement => item instanceof HTMLElement);
+              }),
+              switchMap(els => observableOf(...els)),
+          );
 
-      const elements = childrenNodes
-          .filter((item): item is HTMLElement => item instanceof HTMLElement);
-
-      assert([...elements.map(el => el.tagName.toLowerCase())]).to.haveExactElements([
+      assert(elementsObs.pipe(map(el => el.tagName.toLowerCase()))).to.emitSequence([
         'mk-crumb',
         'mk-crumb',
         'mk-crumb',
       ]);
-      assert([...elements.map(el => el.getAttribute('display'))]).to.haveExactElements([
+      assert(elementsObs.pipe(map(el => el.getAttribute('display')))).to.emitSequence([
         'displayA',
         'displayB',
         'displayC',
       ]);
-      assert([...elements.map(el => el.getAttribute('key'))]).to.haveExactElements([
+      assert(elementsObs.pipe(map(el => el.getAttribute('key')))).to.emitSequence([
         'a',
         'b',
         'c',

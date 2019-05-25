@@ -1,6 +1,7 @@
 import { Source, Vine } from '@grapevine';
 import { assert, createSpy, fake, match, setup, should, test } from '@gs-testing';
 import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
+import { switchMap } from '@rxjs/operators';
 import { _v } from '../app/app';
 import { DialogService, DialogState, OpenState } from './dialog-service';
 
@@ -27,10 +28,10 @@ test('@mask/section/dialog-service', () => {
           .open({
             cancelable: true,
             content: {tag: 'div'},
-            onClose: mockCloseHandler,
             source,
             title: 'title',
           })
+          .pipe(switchMap(({canceled, value}) => mockCloseHandler(canceled, value)))
           .subscribe();
 
       const newState = stateSubject.getValue() as OpenState;
@@ -41,21 +42,18 @@ test('@mask/section/dialog-service', () => {
 
       // Close the dialog.
       newState.closeFn(true).subscribe();
-      assert(mockCloseHandler).to.haveBeenCalledWith(true, value, vine);
+      assert(mockCloseHandler).to.haveBeenCalledWith(true, value);
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();
     });
 
     should(`throw error if already opening a dialog`, () => {
-      const mockCloseHandler = createSpy<Observable<unknown>>('CloseHandler');
-
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       service.getStateObs().subscribe(stateSubject);
 
       const spec = {
         cancelable: true,
         content: {tag: 'div'},
-        onClose: mockCloseHandler,
         title: 'title',
       };
       service.open(spec).subscribe();

@@ -1,6 +1,6 @@
 import { Source, Vine } from '@grapevine';
 import { Errors } from '@gs-tools/error';
-import { BehaviorSubject, Observable } from '@rxjs';
+import { BehaviorSubject, Observable, Subject } from '@rxjs';
 import { switchMap, take, tap } from '@rxjs/operators';
 import { _v } from '../app/app';
 
@@ -18,13 +18,17 @@ interface DialogSpec<T> {
   };
   source?: Source<T|null, any>;
   title: string;
-  onClose(canceled: boolean, sourceValue: T|null, vine: Vine): Observable<unknown>;
 }
 
 export interface OpenState {
   isOpen: true;
   spec: DialogSpec<any>;
   closeFn(canceled: boolean): Observable<unknown>;
+}
+
+export interface DialogResult<T> {
+  canceled: boolean;
+  value: T|null;
 }
 
 export class DialogService {
@@ -36,11 +40,11 @@ export class DialogService {
     return this.stateObs;
   }
 
-  open<T>(spec: DialogSpec<T>): Observable<unknown> {
+  open<T>(spec: DialogSpec<T>): Observable<DialogResult<T>> {
     return this.stateObs
         .pipe(
             take(1),
-            tap(latestState => {
+            switchMap(latestState => {
               if (latestState.isOpen) {
                 throw Errors.assert('State of dialog service').shouldBe('closed').butWas('opened');
               }
@@ -51,17 +55,23 @@ export class DialogService {
                   new BehaviorSubject<T|null>(null);
               sourceSubject.next(null);
 
+              const onCloseSubject = new Subject<DialogResult<T>>();
+
               this.stateObs.next({
                 closeFn: (canceled: boolean) => {
                   return sourceSubject.pipe(
                       take(1),
-                      tap(() => this.close()),
-                      switchMap(value => spec.onClose(canceled, value, this.vine)),
+                      tap(value => {
+                        onCloseSubject.next({canceled, value});
+                        this.close();
+                      }),
                   );
                 },
                 isOpen: true,
                 spec: {...spec},
               });
+
+              return onCloseSubject;
             }),
         );
   }

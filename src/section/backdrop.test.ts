@@ -20,27 +20,26 @@ test('@mask/section/backdrop', () => {
   });
 
   test('renderRootClasslist', () => {
-    should(`render correctly when dialog is open`, async () => {
+    should(`render correctly when dialog is open`, () => {
       $dialogService.get(tester.vine)
           .pipe(
               take(1),
               switchMap(dialogService => dialogService.open({
                 cancelable: false,
                 content: {tag: 'div'},
-                onClose: () => EMPTY,
                 title: 'title',
               })),
           )
           .subscribe();
 
-      await assert(tester.getClassList(el, $.root)).to.emitWith(
-          match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
+      assert(tester.getClassList(el, $.root)).to.emitWith(
+          match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
       );
     });
 
-    should(`render correctly when dialog is not open`, async () => {
-      await assert(tester.getClassList(el, $.root)).to.emitWith(
-          match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
+    should(`render correctly when dialog is not open`, () => {
+      assert(tester.getClassList(el, $.root)).to.emitWith(
+          match.anyIterableThat<string, Set<string>>().beEmpty(),
       );
     });
   });

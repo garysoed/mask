@@ -1,11 +1,13 @@
-import { assert, setup, should, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { _p, _v } from '../app/app';
+import { assert, runEnvironment, setup, should, test } from '@gs-testing';
+import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { _p } from '../app/app';
 import { $, Drawer, Mode } from './drawer';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('section.Drawer', () => {
+  runEnvironment(new PersonaTesterEnvironment());
+
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -15,58 +17,58 @@ test('section.Drawer', () => {
   });
 
   test('renderStyleHeight_', () => {
-    should(`render the max size if horizontal and expanded`, async () => {
+    should(`render the max size if horizontal and expanded`, () => {
       const size = '123px';
       tester.setAttribute(el, $.host._.mode, Mode.HORIZONTAL).subscribe();
       tester.setAttribute(el, $.host._.maxSize, size).subscribe();
       tester.setAttribute(el, $.host._.expanded, true).subscribe();
 
-      await assert(tester.getStyle(el, $.host._.styleHeight)).to.emitWith(size);
+      assert(tester.getStyle(el, $.host._.styleHeight)).to.emitWith(size);
     });
 
-    should(`render the min size if horizontal and collapsed`, async () => {
+    should(`render the min size if horizontal and collapsed`, () => {
       const size = '123px';
       tester.setAttribute(el, $.host._.mode, Mode.HORIZONTAL).subscribe();
       tester.setAttribute(el, $.host._.minSize, size).subscribe();
       tester.setAttribute(el, $.host._.expanded, false).subscribe();
 
-      await assert(tester.getStyle(el, $.host._.styleHeight)).to.emitWith(size);
+      assert(tester.getStyle(el, $.host._.styleHeight)).to.emitWith(size);
     });
 
-    should(`render '' if vertical`, async () => {
+    should(`render '' if vertical`, () => {
       tester.setAttribute(el, $.host._.mode, Mode.VERTICAL).subscribe();
       tester.setAttribute(el, $.host._.minSize, '123px').subscribe();
       tester.setAttribute(el, $.host._.expanded, true).subscribe();
 
-      await assert(tester.getStyle(el, $.host._.styleHeight)).to.emitWith('');
+      assert(tester.getStyle(el, $.host._.styleHeight)).to.emitWith('');
     });
   });
 
   test('renderStyleWidth_', () => {
-    should(`render the max size if vertical and expanded`, async () => {
+    should(`render the max size if vertical and expanded`, () => {
       const size = '123px';
       tester.setAttribute(el, $.host._.mode, Mode.VERTICAL).subscribe();
       tester.setAttribute(el, $.host._.maxSize, size).subscribe();
       tester.setAttribute(el, $.host._.expanded, true).subscribe();
 
-      await assert(tester.getStyle(el, $.host._.styleWidth)).to.emitWith(size);
+      assert(tester.getStyle(el, $.host._.styleWidth)).to.emitWith(size);
     });
 
-    should(`render the min size if vertical and collapsed`, async () => {
+    should(`render the min size if vertical and collapsed`, () => {
       const size = '123px';
       tester.setAttribute(el, $.host._.mode, Mode.VERTICAL).subscribe();
       tester.setAttribute(el, $.host._.minSize, size).subscribe();
       tester.setAttribute(el, $.host._.expanded, false).subscribe();
 
-      await assert(tester.getStyle(el, $.host._.styleWidth)).to.emitWith(size);
+      assert(tester.getStyle(el, $.host._.styleWidth)).to.emitWith(size);
     });
 
-    should(`render '' if horizontal`, async () => {
+    should(`render '' if horizontal`, () => {
       tester.setAttribute(el, $.host._.mode, Mode.HORIZONTAL).subscribe();
       tester.setAttribute(el, $.host._.minSize, '123px').subscribe();
       tester.setAttribute(el, $.host._.expanded, true).subscribe();
 
-      await assert(tester.getStyle(el, $.host._.styleWidth)).to.emitWith('');
+      assert(tester.getStyle(el, $.host._.styleWidth)).to.emitWith('');
     });
   });
 });

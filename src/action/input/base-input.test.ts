@@ -1,8 +1,8 @@
-import { assert, setup, should, test } from '@gs-testing';
+import { assert, setup, should, test, runEnvironment } from '@gs-testing';
 import { attributeIn, attributeOut, element } from '@persona';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { InstanceofType } from 'gs-types/export';
+import { PersonaTester, PersonaTesterFactory, PersonaTesterEnvironment } from '@persona/testing';
 import { Observable, of as observableOf } from '@rxjs';
+import { InstanceofType } from 'gs-types/export';
 import { _p } from '../../app/app';
 import { booleanParser, integerParser, stringParser } from '../../util/parsers';
 import { $$ as $baseInput, BaseInput } from './base-input';
@@ -53,6 +53,7 @@ class TestInput extends BaseInput<number> {
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/base-input', () => {
+  runEnvironment(new PersonaTesterEnvironment());
   let el: HTMLElement;
   let tester: PersonaTester;
 
@@ -62,13 +63,13 @@ test('@mask/input/base-input', () => {
   });
 
   test('providesInitValue', () => {
-    should(`set the initial value at the start`, async () => {
+    should(`set the initial value at the start`, () => {
       tester.setAttribute(el, $.host._.initValue, 123).subscribe();
 
-      await assert(tester.getAttribute(el, $.div._.valueOut)).to.emitWith(123);
+      assert(tester.getAttribute(el, $.div._.valueOut)).to.emitWith(123);
     });
 
-    should(`set the initial value after calling clear`, async () => {
+    should(`set the initial value after calling clear`, () => {
       tester.setAttribute(el, $.host._.initValue, 123).subscribe();
 
       // Set the dirty value.
@@ -76,20 +77,20 @@ test('@mask/input/base-input', () => {
 
       // Clear the value
       tester.callFunction(el, $.host._.clearFn, []).subscribe();
-      await assert(tester.getAttribute(el, $.div._.valueOut)).to.emitWith(123);
+      assert(tester.getAttribute(el, $.div._.valueOut)).to.emitWith(123);
     });
   });
 
-  should(`render disabled status correctly`, async () => {
+  should(`render disabled status correctly`, () => {
     tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
 
-    await assert(tester.getAttribute(el, $.div._.disabled)).to.emitWith(true);
+    assert(tester.getAttribute(el, $.div._.disabled)).to.emitWith(true);
   });
 
-  should(`render the label correctly`, async () => {
+  should(`render the label correctly`, () => {
     const label = 'label';
     tester.setAttribute(el, $.host._.label, label).subscribe();
 
-    await assert(tester.getAttribute(el, $.div._.label)).to.emitWith(label);
+    assert(tester.getAttribute(el, $.div._.label)).to.emitWith(label);
   });
 });

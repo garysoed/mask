@@ -1,3 +1,4 @@
+import { debug } from '@gs-tools/rxjs';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, dispatcher, element, InitFn, innerHtml, onDom, textContent } from '@persona';
 import { Observable } from '@rxjs';

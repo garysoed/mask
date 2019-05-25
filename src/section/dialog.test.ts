@@ -1,8 +1,7 @@
 
-import { assert, createSpy, createSpySubject, match, setup, should, test } from '@gs-testing';
-import { $pipe, ImmutableSet } from '@gs-tools/collect';
+import { assert, createSpySubject, match, setup, should, test } from '@gs-testing';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
+import { BehaviorSubject, EMPTY } from '@rxjs';
 import { map, switchMap, take } from '@rxjs/operators';
 import { TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';
@@ -23,47 +22,43 @@ test('@mask/section/dialog', () => {
   });
 
   test('renderCancelButtonClasses', () => {
-    should(`display the cancel button if cancelable`, async () => {
-      const mockOnClose = createSpy<Observable<unknown>>('OnClose');
+    should(`display the cancel button if cancelable`, () => {
       $dialogService.get(tester.vine)
           .pipe(
               take(1),
               switchMap(dialogService => dialogService.open({
                 cancelable: true,
                 content: {tag: 'div'},
-                onClose: mockOnClose,
                 title: 'title',
               })),
           )
           .subscribe();
 
-      await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
-          match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
+      assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
+          match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
       );
     });
 
-    should(`not display the cancel button if not cancelable`, async () => {
-      const mockOnClose = createSpy<Observable<unknown>>('OnClose');
+    should(`not display the cancel button if not cancelable`, () => {
       $dialogService.get(tester.vine)
           .pipe(
               take(1),
               switchMap(dialogService => dialogService.open({
                 cancelable: false,
                 content: {tag: 'div'},
-                onClose: mockOnClose,
                 title: 'title',
               })),
           )
           .subscribe();
 
-      await assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
-        match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
+      assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
+        match.anyIterableThat<string, Set<string>>().beEmpty(),
       );
     });
   });
 
   test('renderContent', () => {
-    should(`render the content correctly`, async () => {
+    should(`render the content correctly`, () => {
       $dialogService.get(tester.vine)
           .pipe(
               take(1),
@@ -73,60 +68,57 @@ test('@mask/section/dialog', () => {
                   attr: new Map([['a', '1'], ['b', '2']]),
                   tag: 'mk-content',
                 },
-                onClose: () => EMPTY,
                 title: 'title',
               })),
           )
           .subscribe();
 
-      const node = await tester.getNodesAfter(el, $.content._.single)
+      const nodeObs = tester.getNodesAfter(el, $.content._.single)
           .pipe(
               take(1),
-              map(nodes => nodes[0]),
-          )
-          .toPromise() as HTMLElement;
-      assert(node.tagName).to.equal('MK-CONTENT');
-      assert(node.getAttribute('a')).to.equal('1');
-      assert(node.getAttribute('b')).to.equal('2');
+              map(nodes => nodes[0] as HTMLElement),
+          );
+      assert(nodeObs.pipe(map(node => node.tagName))).to.emitWith('MK-CONTENT');
+      assert(nodeObs.pipe(map(node => node.getAttribute('a')))).to.emitWith('1');
+      assert(nodeObs.pipe(map(node => node.getAttribute('b')))).to.emitWith('2');
     });
 
-    should(`render nothing if dialog is not open`, async () => {
+    should(`render nothing if dialog is not open`, () => {
       const elementsObs = tester.getNodesAfter(el, $.content._.single)
           .pipe(map(nodes => nodes.filter(node => node.nodeType === Node.ELEMENT_NODE)));
-      await assert(elementsObs).to.emitWith(
+      assert(elementsObs).to.emitWith(
           match.anyIterableThat<Node, Node[]>().beEmpty(),
       );
     });
   });
 
   test('renderRootClasses', () => {
-    should(`render correctly when dialog is displayed`, async () => {
+    should(`render correctly when dialog is displayed`, () => {
       $dialogService.get(tester.vine)
           .pipe(
               take(1),
               switchMap(dialogService => dialogService.open({
                 cancelable: false,
                 content: {tag: 'div'},
-                onClose: () => EMPTY,
                 title: 'title',
               })),
           )
           .subscribe();
 
-      await assert(tester.getClassList(el, $.root)).to.emitWith(
-        match.anyIterableThat<string, ImmutableSet<string>>().haveElements(['isVisible']),
+      assert(tester.getClassList(el, $.root)).to.emitWith(
+        match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
       );
     });
 
-    should(`render correctly when dialog is hidden`, async () => {
-      await assert(tester.getClassList(el, $.root)).to.emitWith(
-        match.anyIterableThat<string, ImmutableSet<string>>().beEmpty(),
+    should(`render correctly when dialog is hidden`, () => {
+      assert(tester.getClassList(el, $.root)).to.emitWith(
+        match.anyIterableThat<string, Set<string>>().beEmpty(),
       );
     });
   });
 
   test('renderTitle', () => {
-    should(`render the title correctly`, async () => {
+    should(`render the title correctly`, () => {
       const title = 'title';
       $dialogService.get(tester.vine)
           .pipe(
@@ -134,22 +126,21 @@ test('@mask/section/dialog', () => {
               switchMap(dialogService => dialogService.open({
                 cancelable: false,
                 content: {tag: 'div'},
-                onClose: () => EMPTY,
                 title,
               })),
           )
           .subscribe();
 
-      await assert(tester.getTextContent(el, $.title)).to.emitWith(title);
+      assert(tester.getTextContent(el, $.title)).to.emitWith(title);
     });
 
-    should(`render empty string when dialog is hidden`, async () => {
-      await assert(tester.getTextContent(el, $.title)).to.emitWith('');
+    should(`render empty string when dialog is hidden`, () => {
+      assert(tester.getTextContent(el, $.title)).to.emitWith('');
     });
   });
 
   test('setupOnCloseOrCancel', () => {
-    should(`close the dialog correctly if canceled`, async () => {
+    should(`close the dialog correctly if canceled`, () => {
       const onCloseSubject = createSpySubject<boolean>();
       $dialogService.get(tester.vine)
           .pipe(
@@ -157,14 +148,14 @@ test('@mask/section/dialog', () => {
               switchMap(dialogService => dialogService.open({
                 cancelable: true,
                 content: {tag: 'div'},
-                onClose: v => {
-                  onCloseSubject.next(v);
-
-                  return EMPTY;
-                },
                 title: 'title',
               })),
           )
+          .pipe(switchMap(({canceled}) => {
+            onCloseSubject.next(canceled);
+
+            return EMPTY;
+          }))
           .subscribe();
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
@@ -174,13 +165,13 @@ test('@mask/section/dialog', () => {
           .pipe(take(1))
           .subscribe(el => el.click());
 
-      await assert(onCloseSubject).to.emitWith(true);
+      assert(onCloseSubject).to.emitWith(true);
 
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();
     });
 
-    should(`close the dialog correctly if OK'd`, async () => {
+    should(`close the dialog correctly if OK'd`, () => {
       const onCloseSubject = createSpySubject<boolean>();
       $dialogService.get(tester.vine)
           .pipe(
@@ -188,14 +179,14 @@ test('@mask/section/dialog', () => {
               switchMap(dialogService => dialogService.open({
                 cancelable: true,
                 content: {tag: 'div'},
-                onClose: v => {
-                  onCloseSubject.next(v);
-
-                  return EMPTY;
-                },
                 title: 'title',
               })),
           )
+          .pipe(switchMap(({canceled}) => {
+            onCloseSubject.next(canceled);
+
+            return EMPTY;
+          }))
           .subscribe();
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
@@ -203,7 +194,7 @@ test('@mask/section/dialog', () => {
 
       tester.dispatchEvent(el, $.okButton._.onAction, new ActionEvent()).subscribe();
 
-      await assert(onCloseSubject).to.emitWith(false);
+      assert(onCloseSubject).to.emitWith(false);
 
       // tslint:disable-next-line:no-non-null-assertion
       assert(stateSubject.getValue()!.isOpen).to.beFalse();

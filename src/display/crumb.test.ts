@@ -1,6 +1,6 @@
-import { assert, createSpySubject, match, should, test } from '@gs-testing';
+import { assert, match, should, test } from '@gs-testing';
 import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { fromEvent } from '@rxjs';
+import { fromEvent, ReplaySubject } from '@rxjs';
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { Crumb } from './crumb';
@@ -17,13 +17,13 @@ test('@mask/display/crumb', () => {
   });
 
   test('renderDispatchAction', () => {
-    should(`emit correct event if clicked`, async () => {
-      const actionSubject = createSpySubject();
+    should(`emit correct event if clicked`, () => {
+      const actionSubject = new ReplaySubject(1);
       fromEvent(el, ACTION_EVENT).subscribe(actionSubject);
 
       el.click();
 
-      await assert(actionSubject).to.emitWith(
+      assert(actionSubject).to.emitWith(
           match.anyObjectThat<ActionEvent>().beAnInstanceOf(ActionEvent));
     });
   });
