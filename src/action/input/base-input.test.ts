@@ -1,6 +1,6 @@
-import { assert, setup, should, test, runEnvironment } from '@gs-testing';
+import { assert, runEnvironment, setup, should, test } from '@gs-testing';
 import { attributeIn, attributeOut, element } from '@persona';
-import { PersonaTester, PersonaTesterFactory, PersonaTesterEnvironment } from '@persona/testing';
+import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { Observable, of as observableOf } from '@rxjs';
 import { InstanceofType } from 'gs-types/export';
 import { _p } from '../../app/app';
