@@ -1,18 +1,18 @@
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, attributeIn, attributeOut, classToggle, element, InitFn, innerHtml, onDom, style } from '@persona';
+import { api, attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from '@persona';
 import { combineLatest, merge, Observable } from '@rxjs';
 import { map, mapTo, startWith } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../util/parsers';
+import { stringParser } from '../util/parsers';
 import template from './list-item.html';
 
 export const $$ = {
   icon: attributeIn('icon', stringParser()),
   itemDetail: attributeIn('item-detail', stringParser()),
   itemName: attributeIn('item-name', stringParser()),
-  selected: attributeIn('selected', booleanParser()),
+  selected: hasAttribute('selected'),
   toolWidth: attributeIn('tool-width', stringParser()),
 };
 
