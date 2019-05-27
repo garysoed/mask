@@ -6,7 +6,7 @@ import { classlist, element, InitFn, style } from '@persona';
 import { BehaviorSubject, Observable } from '@rxjs';
 import { map, switchMap, take } from '@rxjs/operators';
 import { _p, _v } from '../../app/app';
-import * as layoutOverlaySvg from '../../asset/layout_overlay.svg';
+import layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import { SvgConfig } from '../../display/svg-config';
 import { $svgConfig, $svgService } from '../../display/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';

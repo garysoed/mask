@@ -2,15 +2,14 @@ import { Vine } from '@grapevine';
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { stringMatchConverter } from '@gs-tools/serializer';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { Converter, Result } from '@nabu';
-import { compose, firstSuccess } from '@nabu';
+import { compose, Converter, firstSuccess, Result } from '@nabu';
 import { api, attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
 import { combineLatest, merge, Observable, of as observableOf } from '@rxjs';
 import { filter, map, mapTo, startWith, take, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../../app/app';
-import * as checkboxChecked from '../../asset/checkbox_checked.svg';
-import * as checkboxEmpty from '../../asset/checkbox_empty.svg';
-import * as checkboxUnknown from '../../asset/checkbox_unknown.svg';
+import checkboxChecked from '../../asset/checkbox_checked.svg';
+import checkboxEmpty from '../../asset/checkbox_empty.svg';
+import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import { $$ as $iconWithText, IconWithText } from '../../display/icon-with-text';
 import { SvgConfig } from '../../display/svg-config';
 import { $svgConfig } from '../../display/svg-service';
@@ -157,11 +156,11 @@ export class Checkbox extends BaseInput<CheckedValue> {
     )
     .pipe(startWith(false));
 
-    return combineLatest(
-        this.disabledObs,
-        focusedObs,
-        hoverObs,
-    )
+    return combineLatest([
+      this.disabledObs,
+      focusedObs,
+      hoverObs,
+    ])
     .pipe(
         map(([disabled, focused, hover]) => {
           if (disabled) {

@@ -5,8 +5,8 @@ import { classlist, element, InitFn, onDom, single, SingleRenderSpec, textConten
 import { merge, Observable } from '@rxjs';
 import { filter, map, mapTo, switchMap, take, withLatestFrom } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
-import * as dialogCloseSvg from '../asset/dialog_close.svg';
-import * as dialogConfirmSvg from '../asset/dialog_confirm.svg';
+import dialogCloseSvg from '../asset/dialog_close.svg';
+import dialogConfirmSvg from '../asset/dialog_confirm.svg';
 import { SvgConfig } from '../display/svg-config';
 import { $svgConfig } from '../display/svg-service';
 import { ACTION_EVENT } from '../event/action-event';

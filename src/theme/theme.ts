@@ -3,7 +3,7 @@ import { Color, Colors } from '@gs-tools/color';
 import { assertUnreachable, Enums } from '@gs-tools/typescript';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
-import * as generalCss from './general.css';
+import generalCss from './general.css';
 import { B010, B100, B190, BASE_SHADES, createColor, Shade } from './shade';
 import { DARK_SHADING, HIGHLIGHT_DARK_SHADING, HIGHLIGHT_LIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
 import variablesCssTemplate from './variables.css';

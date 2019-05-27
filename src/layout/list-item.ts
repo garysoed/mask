@@ -5,13 +5,14 @@ import { map, mapTo, startWith } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
+import { booleanParser, stringParser } from '../util/parsers';
 import template from './list-item.html';
 
 export const $$ = {
   icon: attributeIn('icon', stringParser()),
   itemDetail: attributeIn('item-detail', stringParser()),
   itemName: attributeIn('item-name', stringParser()),
+  selected: attributeIn('selected', booleanParser()),
   toolWidth: attributeIn('tool-width', stringParser()),
 };
 
@@ -94,7 +95,7 @@ export class ListItem extends ThemedCustomElementCtrl {
     )
     .pipe(startWith(false));
 
-    return combineLatest(hoverObs, this.toolWidthObs)
+    return combineLatest([hoverObs, this.toolWidthObs])
         .pipe(map(([mouseHover, toolWidth]) => mouseHover ? toolWidth : '0'));
   }
 }

@@ -1,10 +1,9 @@
-import { debug } from '@gs-tools/rxjs';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, dispatcher, element, InitFn, innerHtml, onDom, textContent } from '@persona';
 import { Observable } from '@rxjs';
 import { map } from '@rxjs/operators';
 import { _p, _v } from '../app/app';
-import * as separatorSvg from '../asset/separator.svg';
+import separatorSvg from '../asset/separator.svg';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
