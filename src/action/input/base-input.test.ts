@@ -2,7 +2,7 @@ import { assert, runEnvironment, setup, should, test } from '@gs-testing';
 import { attributeIn, attributeOut, element } from '@persona';
 import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { Observable, of as observableOf } from '@rxjs';
-import { InstanceofType } from 'gs-types/export';
+import { InstanceofType } from '@gs-types';
 import { _p } from '../../app/app';
 import { booleanParser, integerParser, stringParser } from '../../util/parsers';
 import { $$ as $baseInput, BaseInput } from './base-input';
