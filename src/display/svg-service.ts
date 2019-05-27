@@ -41,7 +41,7 @@ function createSvgObs(
               return observableOf(config.content);
             } else {
               // TODO: Retry with exponential backoff.
-              return observableFrom<Response>(fetch(config.url))
+              return observableFrom<Promise<Response>>(fetch(config.url))
                   .pipe(
                       switchMap(response => observableFrom(response.text())),
                       retry(3),

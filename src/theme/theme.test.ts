@@ -2,7 +2,7 @@ import { assert, should, test } from '@gs-testing';
 import { HslColor } from '@gs-tools/color';
 import { Theme } from './theme';
 
-test('theme.Theme', () => {
+test('@mask/theme/theme', () => {
   test('inject', () => {
     should(`not throw`, () => {
       const styleEl = document.createElement('style');

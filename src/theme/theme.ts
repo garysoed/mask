@@ -6,7 +6,7 @@ import { ColorSection } from './color-section';
 import * as generalCss from './general.css';
 import { B010, B100, B190, BASE_SHADES, createColor, Shade } from './shade';
 import { DARK_SHADING, HIGHLIGHT_DARK_SHADING, HIGHLIGHT_LIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
-import * as variablesCssTemplate from './variables.css';
+import variablesCssTemplate from './variables.css';
 
 
 function generateColorCss_(
