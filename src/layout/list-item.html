@@ -1,5 +1,17 @@
 <style id="theme"></style>
 <style>
+  :host {
+    --mkListItemColorPrimary: var(--mkThemePassiveFG1);
+    --mkListItemColorSecondary: var(--mkThemePassiveFG2);
+    --mkListItemColorBackground: var(--mkThemePassiveBG);
+  }
+
+  :host([selected]) {
+    --mkListItemColorPrimary: var(--mkThemeActiveFG1);
+    --mkListItemColorSecondary: var(--mkThemeActiveFG2);
+    --mkListItemColorBackground: var(--mkThemeActiveBG);
+  }
+
   #iconContainer, #itemNameContainer, #itemDetailContainer {
     display: none;
   }
@@ -15,8 +27,8 @@
   }
 
   #iconContainer, #textContainer {
-    background-color: var(--mkThemePassiveBG);
-    color: var(--mkThemePassiveFG1);
+    background-color: var(--mkListItemColorBackground);
+    color: var(--mkListItemColorPrimary);
   }
 
   #root {
@@ -28,6 +40,10 @@
     overflow: hidden;
     width: 0;
     transition: width var(--mkAnimationTime);
+  }
+
+  [mk-secondary] {
+    color: var(--mkListItemColorSecondary);
   }
 </style>
 
