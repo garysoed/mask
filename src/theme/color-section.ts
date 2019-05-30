@@ -1,6 +1,5 @@
 export enum ColorSection {
   PASSIVE = 'Passive',
-  SECONDARY = 'Secondary',
   ACTION = 'Action',
   ACTION_FOCUS = 'ActionFocus',
   ACTION_DISABLED = 'ActionDisabled',

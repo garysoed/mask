@@ -1,0 +1,210 @@
+<html>
+  <head>
+    <script src="/bin/bundle-demo.js"></script>
+    <style id="globalStyle"></style>
+    <style>
+      thead {
+        color: var(--mkThemePassiveFG1);
+      }
+
+      td.cell {
+        height: 8rem;
+        width: 8rem;
+        padding: 0;
+      }
+
+      .cell > div {
+        height: 100%;
+      }
+
+      .cell h3 {
+        line-height: 6rem;
+      }
+
+      .label {
+        height: 2rem;
+      }
+
+      tbody [mk-body-2] {
+        color: var(--mkThemePassiveFG1);
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <mk-demo>
+        <table>
+          <thead mk-body-2>
+            <tr>
+              <th></th>
+              <th>normal</th>
+              <th>highlight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td mk-body-2>passive</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemePassiveBG)">
+                  <h3 flex style="color: var(--mkThemePassiveFG1)">
+                    A<span style="color: var(--mkThemePassiveFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">10-10.M-200</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemePassiveBG)">
+                  <h3 flex style="color: var(--mkThemePassiveFG1)">
+                    A<span style="color: var(--mkThemePassiveFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">10-10.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>action</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionBG)">
+                  <h3 flex style="color: var(--mkThemeActionFG1)">
+                    A<span style="color: var(--mkThemeActionFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">50-50.M-200</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionBG)">
+                  <h3 flex style="color: var(--mkThemeActionFG1)">
+                    A<span style="color: var(--mkThemeActionFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>action focus</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionFocusBG)">
+                  <h3 flex style="color: var(--mkThemeActionFocusFG1)">
+                    A<span style="color: var(--mkThemeActionFocusFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActionFocusFG2)">50-50.M-175</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionFocusBG)">
+                  <h3 flex style="color: var(--mkThemeActionFocusFG1)">
+                    A<span style="color: var(--mkThemeActionFocusFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActionFocusFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>action disabled</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionDisabledBG)">
+                  <h3 flex style="color: var(--mkThemeActionDisabledFG1)">
+                    A<span style="color: var(--mkThemeActionDisabledFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">10.L-10.L-200</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionDisabledBG)">
+                  <h3 flex style="color: var(--mkThemeActionDisabledFG1)">
+                    A<span style="color: var(--mkThemeActionDisabledFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>active</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActiveBG)">
+                  <h3 flex style="color: var(--mkThemeActiveFG1)">
+                    A<span style="color: var(--mkThemeActiveFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActiveFG2)">50-50.M-175</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActiveBG)">
+                  <h3 flex style="color: var(--mkThemeActiveFG1)">
+                    A<span style="color: var(--mkThemeActiveFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActiveFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>action primary</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionPrimaryBG)">
+                  <h3 flex style="color: var(--mkThemeActionPrimaryFG1)">
+                    A<span style="color: var(--mkThemeActionPrimaryFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActionPrimaryFG2)">50-50.M-175</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionPrimaryBG)">
+                  <h3 flex style="color: var(--mkThemeActionPrimaryFG1)">
+                    A<span style="color: var(--mkThemeActionPrimaryFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActionPrimaryFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>action primary focus</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionPrimaryFocusBG)">
+                  <h3 flex style="color: var(--mkThemeActionPrimaryFocusFG1)">
+                    A<span style="color: var(--mkThemeActionPrimaryFocusFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActionPrimaryFocusFG2)">50-50.M-175</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionPrimaryFocusBG)">
+                  <h3 flex style="color: var(--mkThemeActionPrimaryFocusFG1)">
+                    A<span style="color: var(--mkThemeActionPrimaryFocusFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemeActionPrimaryFocusFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td mk-body-2>action primary disabled</td>
+              <td class="cell">
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionPrimaryDisabledBG)">
+                  <h3 flex style="color: var(--mkThemeActionPrimaryDisabledFG1)">
+                    A<span style="color: var(--mkThemeActionPrimaryDisabledFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">50-50.M-175</div>
+                </div>
+              </td>
+              <td class="cell" mk-theme-highlight>
+                <div flex-align="center" layout="column" style="background-color: var(--mkThemeActionPrimaryDisabledBG)">
+                  <h3 flex style="color: var(--mkThemeActionPrimaryDisabledFG1)">
+                    A<span style="color: var(--mkThemeActionPrimaryDisabledFG2)">a</span>
+                  </h3>
+                  <div class="label" style="color: var(--mkThemePassiveFG2)">50-50.M-175</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mk-demo>
+    </section>
+  </body>
+</html>

@@ -83,7 +83,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
     const diffObs = this.themeSbj.pipe(
-        map(theme => theme.highlightColor),
+        map(theme => theme.accentColor),
         pairwise(),
         switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
     );

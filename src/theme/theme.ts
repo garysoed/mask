@@ -1,111 +1,135 @@
-import { $declareKeyed, $getKey, $head, $map, $pick, $pipe, asImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { Color, Colors } from '@gs-tools/color';
 import { assertUnreachable, Enums } from '@gs-tools/typescript';
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
 import generalCss from './general.css';
-import { B010, B100, B190, BASE_SHADES, createColor, Shade } from './shade';
+import { B010, B100, B190, createColor, Shade, SHADES } from './shade';
 import { DARK_SHADING, HIGHLIGHT_DARK_SHADING, HIGHLIGHT_LIGHT_SHADING, LIGHT_SHADING, ShadingSpec } from './shading-spec';
 import variablesCssTemplate from './variables.css';
 
+interface RenderedColorSpec {
+  bg: Color;
+  fg: Color;
+  primary: number;
+  secondary: number;
+}
 
-function generateColorCss_(
-    colorMap: ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}>,
-    highlightColorMap: ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}>,
+function generateColorCss(
+    colorMap: Map<ColorSection, RenderedColorSpec>,
+    highlightColorMap: Map<ColorSection, RenderedColorSpec>,
 ): string {
   const lines = [];
-  for (const [section, {alpha, bg, fg}] of colorMap) {
+  for (const [section, {bg, fg, primary, secondary}] of colorMap) {
     lines.push(`--mkTheme${section}BG: rgb(${bg.getRed()},${bg.getGreen()},${bg.getBlue()});`);
-    lines.push(
-        `--mkTheme${section}FG: rgba(${fg.getRed()},${fg.getGreen()},${fg.getBlue()},${alpha});`);
+    lines.push([
+      `--mkTheme${section}FG1: `,
+      `rgba(${fg.getRed()},`,
+      `${fg.getGreen()},`,
+      `${fg.getBlue()},`,
+      `${primary});`,
+    ].join(''));
+    lines.push([
+      `--mkTheme${section}FG2: `,
+      `rgba(${fg.getRed()},`,
+      `${fg.getGreen()},`,
+      `${fg.getBlue()},`,
+      `${secondary});`,
+    ].join(''));
   }
 
-  for (const [section, {alpha, bg, fg}] of highlightColorMap) {
+  for (const [section, {bg, fg, primary, secondary}] of highlightColorMap) {
     lines.push(
         `--mkThemeHighlight${section}BG: rgb(${bg.getRed()},${bg.getGreen()},${bg.getBlue()});`);
-    lines.push(`--mkThemeHighlight${section}FG:` +
-        ` rgba(${fg.getRed()},${fg.getGreen()},${fg.getBlue()},${alpha});`);
+    lines.push([
+      `--mkThemeHighlight${section}FG1: `,
+      `rgba(${fg.getRed()},`,
+      `${fg.getGreen()},`,
+      `${fg.getBlue()},`,
+      `${primary});`,
+    ].join(''));
+    lines.push([
+      `--mkThemeHighlight${section}FG2: `,
+      `rgba(${fg.getRed()},`,
+      `${fg.getGreen()},`,
+      `${fg.getBlue()},`,
+      `${secondary});`,
+    ].join(''));
   }
 
   return lines.join('\n');
 }
 
-function generateColorMap_(
-    map: ImmutableMap<ColorSection, ShadingSpec>,
-    baseColors: ImmutableMap<Shade, Color>,
-    accentColors: ImmutableMap<Shade, Color>,
+function generateColorMap(
+    map: Map<ColorSection, ShadingSpec>,
+    baseColors: Map<Shade, Color>,
+    accentColors: Map<Shade, Color>,
     contrastBaseShade: Shade,
     contrastAccentShade: Shade,
-): ImmutableMap<ColorSection, {alpha: number; bg: Color; fg: Color}> {
-  return $pipe(
-      map,
-      $map(
-          (([section, {alpha, bg, fg}]) => {
-            const useAccent = section === ColorSection.ACTION_FOCUS ||
-                section === ColorSection.ACTION_PRIMARY_FOCUS;
-            const map = useAccent ? accentColors : baseColors;
-            const contrast = useAccent ? contrastAccentShade : contrastBaseShade;
-            const normalizedFg = fg === 'contrast' ? contrast : fg;
+): Map<ColorSection, RenderedColorSpec> {
+  const colorMap = new Map<ColorSection, RenderedColorSpec>();
+  for (const [key, spec] of map) {
+    const useAccent = spec.accent;
+    const map = useAccent ? accentColors : baseColors;
+    const contrast = useAccent ? contrastAccentShade : contrastBaseShade;
+    const shade = spec.shade === 'contrast' ? contrast : spec.shade;
 
-            const fgColor = $pipe(map, $getKey(normalizedFg), $pick(1), $head());
-            if (!fgColor) {
-              throw new Error(`Color for shade ${normalizedFg} cannot be found`);
-            }
+    const fg = map.get(shade);
+    if (!fg) {
+      throw new Error(`Color for shade ${shade} cannot be found`);
+    }
 
-            const bgColor = $pipe(map, $getKey(bg), $pick(1), $head());
-            if (!bgColor) {
-              throw new Error(`Color for shade ${bg} cannot be found`);
-            }
+    const bg = map.get(spec.bg);
+    if (!bg) {
+      throw new Error(`Color for shade ${spec.bg} cannot be found`);
+    }
 
-            const numericAlpha = getAlphaValue_(alpha, normalizedFg);
+    colorMap.set(
+        key,
+        {
+          bg,
+          fg,
+          primary: getAlphaValue(spec.primary, shade),
+          secondary: getAlphaValue(spec.secondary, shade),
+        },
+    );
+  }
 
-            return [section, {
-              alpha: numericAlpha,
-              bg: bgColor,
-              fg: fgColor,
-            }] as [ColorSection, {alpha: number; bg: Color; fg: Color}];
-          }),
-      ),
-      asImmutableMap(),
-  );
+  return colorMap;
 }
 
-function getAlphaValue_(alpha: Alpha, colorShade: Shade): number {
+function getAlphaValue(alpha: Alpha, colorShade: Shade): number {
   if (alpha === Alpha.HIGH) {
     return 1;
   }
 
-  switch (colorShade) {
-    case B010:
-      switch (alpha) {
-        case Alpha.MEDIUM:
-          return 0.65;
-        case Alpha.LOW:
-          return 0.35;
-        default:
-          assertUnreachable(alpha);
-      }
-    case B190:
-      switch (alpha) {
-        case Alpha.MEDIUM:
-          return 0.75;
-        case Alpha.LOW:
-          return 0.45;
-        default:
-          assertUnreachable(alpha);
-      }
-    default:
-      throw new Error(`Unsupported color shade for alpha: ${colorShade}`);
+  if (colorShade.mixBG) {
+    switch (alpha) {
+      case Alpha.MEDIUM:
+        return 0.65;
+      case Alpha.LOW:
+        return 0.35;
+      default:
+        throw assertUnreachable(alpha);
+    }
+  } else {
+    switch (alpha) {
+      case Alpha.MEDIUM:
+        return 0.75;
+      case Alpha.LOW:
+        return 0.45;
+      default:
+        throw assertUnreachable(alpha);
+    }
   }
 }
 
-function getContrastForegroundShade_(
-    shadingMap: ImmutableMap<Shade, Color>,
+function getContrastForegroundShade(
+    shadingMap: Map<Shade, Color>,
     highlightBackground: Color): Shade {
   const darkShade = B010;
   const lightShade = B190;
-  const darkForeground = $pipe(shadingMap, $getKey(darkShade), $pick(1), $head());
-  const lightForeground = $pipe(shadingMap, $getKey(lightShade), $pick(1), $head());
+  const darkForeground = shadingMap.get(darkShade);
+  const lightForeground = shadingMap.get(lightShade);
 
   if (!darkForeground) {
     throw new Error(`Cannot find color for ${darkShade}`);
@@ -125,55 +149,49 @@ function getContrastForegroundShade_(
 export class Theme {
   constructor(
       readonly baseColor: Color,
-      readonly highlightColor: Color) { }
+      readonly accentColor: Color) { }
 
   injectCss(styleEl: HTMLStyleElement): void {
-    const baseColorPairs = $pipe(
-        BASE_SHADES,
-        $map(shade => [shade, createColor(shade, this.baseColor)] as [Shade, Color]),
-        $declareKeyed(([key]) => key),
-        asImmutableMap(),
-    );
-    const accentColorPairs = $pipe(
-        BASE_SHADES,
-        $map(shade => [shade, createColor(shade, this.highlightColor)] as [Shade, Color]),
-        $declareKeyed(([key]) => key),
-        asImmutableMap(),
-    );
+    const baseColorPairs = new Map<Shade, Color>();
+    const accentColorPairs = new Map<Shade, Color>();
+    for (const shade of SHADES) {
+      baseColorPairs.set(shade, createColor(shade, this.baseColor));
+      accentColorPairs.set(shade, createColor(shade, this.accentColor));
+    }
 
-    const baseB100 = $pipe(baseColorPairs, $getKey(B100), $pick(1), $head());
+    const baseB100 = baseColorPairs.get(B100);
     if (!baseB100) {
       throw new Error(`Base color does not exist`);
     }
-    const accentB100 = $pipe(accentColorPairs, $getKey(B100), $pick(1), $head());
+    const accentB100 = accentColorPairs.get(B100);
     if (!accentB100) {
       throw new Error('Accent color does not exist');
     }
 
-    const contrastBaseShade = getContrastForegroundShade_(baseColorPairs, baseB100);
-    const contrastAccentShade = getContrastForegroundShade_(accentColorPairs, accentB100);
-    const lightColorMap = generateColorMap_(
+    const contrastBaseShade = getContrastForegroundShade(baseColorPairs, baseB100);
+    const contrastAccentShade = getContrastForegroundShade(accentColorPairs, accentB100);
+    const lightColorMap = generateColorMap(
         LIGHT_SHADING,
         baseColorPairs,
         accentColorPairs,
         contrastBaseShade,
         contrastAccentShade,
     );
-    const darkColorMap = generateColorMap_(
+    const darkColorMap = generateColorMap(
         DARK_SHADING,
         baseColorPairs,
         accentColorPairs,
         contrastBaseShade,
         contrastAccentShade,
     );
-    const highlightLightColorMap = generateColorMap_(
+    const highlightLightColorMap = generateColorMap(
         HIGHLIGHT_LIGHT_SHADING,
         baseColorPairs,
         accentColorPairs,
         contrastBaseShade,
         contrastAccentShade,
     );
-    const highlightDarkColorMap = generateColorMap_(
+    const highlightDarkColorMap = generateColorMap(
         HIGHLIGHT_DARK_SHADING,
         baseColorPairs,
         accentColorPairs,
@@ -181,15 +199,15 @@ export class Theme {
         contrastAccentShade,
     );
     const cssContent = variablesCssTemplate
-        .replace('/*{themeLight}*/', generateColorCss_(lightColorMap, highlightLightColorMap))
-        .replace('/*{themeDark}*/', generateColorCss_(darkColorMap, highlightDarkColorMap))
+        .replace('/*{themeLight}*/', generateColorCss(lightColorMap, highlightLightColorMap))
+        .replace('/*{themeDark}*/', generateColorCss(darkColorMap, highlightDarkColorMap))
         .replace(
             '/*{themeHighlightLight}*/',
-            generateColorCss_(highlightLightColorMap, lightColorMap),
+            generateColorCss(highlightLightColorMap, lightColorMap),
         )
         .replace(
             '/*{themeHighlightDark}*/',
-            generateColorCss_(highlightDarkColorMap, darkColorMap),
+            generateColorCss(highlightDarkColorMap, darkColorMap),
         )
         .replace(
             '/*{themeHighlightSwitch}*/',
@@ -200,7 +218,7 @@ export class Theme {
   }
 
   setBaseColor(color: Color): Theme {
-    return new Theme(color, this.highlightColor);
+    return new Theme(color, this.accentColor);
   }
 
   setHighlightColor(color: Color): Theme {
@@ -211,7 +229,8 @@ export class Theme {
 function generateHighlightSwitch(): string {
   const sections: string[] = [];
   for (const section of Enums.getAllValues(ColorSection)) {
-    sections.push(`--mkTheme${section}FG: var(--mkThemeHighlight${section}FG);`);
+    sections.push(`--mkTheme${section}FG1: var(--mkThemeHighlight${section}FG1);`);
+    sections.push(`--mkTheme${section}FG2: var(--mkThemeHighlight${section}FG2);`);
     sections.push(`--mkTheme${section}BG: var(--mkThemeHighlight${section}BG);`);
   }
 

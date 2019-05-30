@@ -1,7 +1,7 @@
 <style id="theme"></style>
 <style>
   :host {
-    --mkInputLineColor: var(--mkThemeActionPrimaryBG);
+    --mkInputLineColor: var(--mkThemeActionPrimaryBG1);
     --mkInputLineWidth: 100%;
   }
 
@@ -25,7 +25,7 @@
   }
 
   :host([disabled]) {
-    --mkInputFG: var(--mkThemeActionDisabledFG);
+    --mkInputFG: var(--mkThemeActionDisabledFG1);
     --mkInputLineWidth: 0;
     cursor: default;
   }
@@ -44,7 +44,7 @@
 
   :host(:not([disabled]):focus),
   #input:not([disabled]):focus + * {
-    --mkInputLineColor: var(--mkThemeActionPrimaryFocusBG);
+    --mkInputLineColor: var(--mkThemeActionPrimaryFocusBG1);
   }
 </style>
 <div id="root" flex-justify="center" layout="column">

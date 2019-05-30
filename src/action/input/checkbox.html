@@ -7,20 +7,20 @@
 
   :host {
     --mkCheckboxBG: var(--mkThemeActionBG);
-    --mkCheckboxFG: var(--mkThemeActionFG);
+    --mkCheckboxFG: var(--mkThemeActionFG1);
     cursor: pointer;
   }
 
   :host([disabled]),
   :host([disabled]:focus) {
-    --mkCheckboxFG: var(--mkThemeActionDisabledFG);
+    --mkCheckboxFG: var(--mkThemeActionDisabledFG1);
     cursor: default;
   }
 
   :host(:not([disabled]):hover),
   :host(:not([disabled]):focus) {
     --mkCheckboxBG: var(--mkThemeActionFocusBG);
-    --mkCheckboxFG: var(--mkThemeActionFocusFG);
+    --mkCheckboxFG: var(--mkThemeActionFocusFG1);
   }
 </style>
 <div id="root">

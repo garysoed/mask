@@ -27,19 +27,19 @@ code {
 }
 
 [mk-secondary] {
-  color: var(--mkThemeSecondaryFG);
+  color: var(--mkThemePassiveFG2);
   font-size: 1rem;
   line-height: 1.5rem;
 }
 
 a {
-  color: var(--mkThemeActionFG);
+  color: var(--mkThemeActionFG1);
   font-weight: var(--mkFontWeightBold);
   text-decoration: none;
 }
 
 a:hover, a:focus {
-  color: var(--mkThemeActionFocusFG);
+  color: var(--mkThemeActionFocusFG1);
   cursor: pointer;
   text-decoration: underline;
 }
@@ -49,7 +49,7 @@ a:focus {
 }
 
 a[disabled] {
-  color: var(--mkThemeActionDisabledFG);
+  color: var(--mkThemeActionDisabledFG1);
   cursor: default;
 }
 
@@ -108,7 +108,7 @@ h6[mk-display] {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--mkThemePassiveFG);
+  color: var(--mkThemePassiveFG1);
   font-family: var(--mkFontFamilyHeader);
   margin: 0;
 }
@@ -116,18 +116,18 @@ h1, h2, h3, h4, h5, h6 {
 code {
   background-color: var(--mkThemeActiveBG);
   border-radius: .4rem;
-  color: var(--mkThemeActiveFG);
+  color: var(--mkThemeActiveFG1);
   font-family: var(--mkFontFamilyMono);
   padding: .2rem;
 }
 
 fieldset {
-  border: 2px solid var(--mkThemeActionFG);
+  border: 2px solid var(--mkThemeActionFG1);
   padding: 1rem 1rem 2rem 1rem;
 }
 
 fieldset:hover, fieldset:focus {
-  border-color: var(--mkThemeActionFocusFG);
+  border-color: var(--mkThemeActionFocusFG1);
 }
 
 input {
@@ -135,18 +135,18 @@ input {
 }
 
 label {
-  color: var(--mkThemeSecondaryFG);
+  color: var(--mkThemePassiveFG2);
   font-size: .75rem;
   line-height: 1rem;
   text-transform: uppercase;
 }
 
 legend {
-  color: var(--mkThemeActionFG);
+  color: var(--mkThemeActionFG1);
 }
 
 fieldset:hover > legend, fieldset:focus > legend {
-  color: var(--mkThemeActionFocusFG);
+  color: var(--mkThemeActionFocusFG1);
 }
 
 p {
@@ -165,7 +165,7 @@ table tr:nth-child(2n) {
 }
 
 td {
-  border: 1px solid var(--mkThemePassiveFG);
+  border: 1px solid var(--mkThemePassiveFG1);
   padding: .5rem;
 }
 
@@ -266,5 +266,5 @@ td {
 [mk-theme="light"],
 [mk-theme="dark"] {
   background: var(--mkThemePassiveBG);
-  color: var(--mkThemePassiveFG);
+  color: var(--mkThemePassiveFG1);
 }
