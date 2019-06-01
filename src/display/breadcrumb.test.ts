@@ -1,18 +1,18 @@
 import { assert, createSpySubject, match, runEnvironment, should, test } from '@gs-testing';
 import { createImmutableList } from '@gs-tools/collect';
-import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, of as observableOf } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
 import { _p } from '../app/app';
 import { $, Breadcrumb } from './breadcrumb';
-import { BreadcrumbClickEvent, BREADCRUMB_CLICK_EVENT } from './breadcrumb-event';
+import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.Breadcrumb', () => {
   runEnvironment(new PersonaTesterEnvironment());
 
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   beforeEach(() => {
@@ -40,12 +40,12 @@ test('display.Breadcrumb', () => {
       ]);
 
       const actionSubject = createSpySubject();
-      fromEvent(el, BREADCRUMB_CLICK_EVENT).subscribe(actionSubject);
+      fromEvent(el.element, BREADCRUMB_CLICK_EVENT).subscribe(actionSubject);
 
-      tester.setAttribute(el, $.host._.path, data).subscribe();
+      el.setAttribute($.host._.path, data).subscribe();
 
       // Wait until all the crumbs are rendered.
-      tester.getNodesAfter(el, $.row._.crumbsSlot)
+      el.getNodesAfter($.row._.crumbsSlot)
           .subscribe(childrenNodes => (childrenNodes![0] as HTMLElement).click());
 
       const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
@@ -72,10 +72,10 @@ test('display.Breadcrumb', () => {
         },
       ]);
 
-      tester.setAttribute(el, $.host._.path, data).subscribe();
+      el.setAttribute($.host._.path, data).subscribe();
 
       // Wait until all the crumbs are rendered.
-      const elementsObs = tester.getNodesAfter(el, $.row._.crumbsSlot)
+      const elementsObs = el.getNodesAfter($.row._.crumbsSlot)
           .pipe(
               map(nodes => {
                 return nodes.filter((item): item is HTMLElement => item instanceof HTMLElement);

@@ -1,6 +1,6 @@
 import { assert, FakeFetch, runEnvironment, setup, should, test } from '@gs-testing';
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
-import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { map, take } from '@rxjs/operators';
 import { _p } from '../app/app';
 import { $, Icon } from './icon';
@@ -17,7 +17,7 @@ test('display.Icon', () => {
 
   const SVG_CONTENT = 'svgContent';
 
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
   let fakeFetch: FakeFetch;
 
@@ -48,13 +48,13 @@ test('display.Icon', () => {
     should(`set the innerHTML correctly`, () => {
       const svgContent = 'svgContent';
 
-      tester.setAttribute(el, $.host._.icon, SVG_NAME).subscribe();
+      el.setAttribute($.host._.icon, SVG_NAME).subscribe();
 
-      assert(tester.getElement(el, $.root).pipe(map(el => el.innerHTML))).to.emitWith(svgContent);
+      assert(el.getElement($.root).pipe(map(el => el.innerHTML))).to.emitWith(svgContent);
     });
 
     should(`set the innerHTML correctly if there are no SVG names specified`, () => {
-      assert(tester.getElement(el, $.root).pipe(map(el => el.innerHTML))).to.emitWith('');
+      assert(el.getElement($.root).pipe(map(el => el.innerHTML))).to.emitWith('');
     });
   });
 });

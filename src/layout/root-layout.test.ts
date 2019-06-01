@@ -1,12 +1,12 @@
 import { assert, setup, should, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p, _v } from '../app/app';
 import { $, $qIsDesktop, RootLayout } from './root-layout';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('layout.RootLayout', () => {
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   setup(() => {
@@ -15,29 +15,29 @@ test('layout.RootLayout', () => {
   });
 
   test('handleDrawerExpandCollapse', () => {
-    should(`open the drawer if hovered`, async () => {
-      tester.dispatchEvent(el, $.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
+    should(`open the drawer if hovered`, () => {
+      el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
 
-      await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(true);
-      await assert(tester.getAttribute(el, $.host._.drawerExpanded)).to.emitWith(true);
+      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(true);
+      assert(el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
     });
 
-    should(`collapse the drawer if not hovered and is not desktop`, async () => {
-      tester.dispatchEvent(el, $.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
+    should(`collapse the drawer if not hovered and is not desktop`, () => {
+      el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
 
       // Wait for the drawer to be expanded.
-      await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(true);
+      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(true);
 
-      tester.dispatchEvent(el, $.drawer._.onMouseOut, new CustomEvent('mouseout')).subscribe();
-      await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(false);
-      await assert(tester.getAttribute(el, $.host._.drawerExpanded)).to.emitWith(false);
+      el.dispatchEvent($.drawer._.onMouseOut, new CustomEvent('mouseout')).subscribe();
+      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(false);
+      assert(el.getAttribute($.host._.drawerExpanded)).to.emitWith(false);
     });
 
-    should(`open the drawer if destop sized`, async () => {
+    should(`open the drawer if destop sized`, () => {
       tester.setMedia($qIsDesktop, true);
 
-      await assert(tester.getAttribute(el, $.drawer._.expanded)).to.emitWith(true);
-      await assert(tester.getAttribute(el, $.host._.drawerExpanded)).to.emitWith(true);
+      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(true);
+      assert(el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
     });
   });
 });

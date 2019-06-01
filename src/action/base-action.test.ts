@@ -1,7 +1,7 @@
 import { assert, runEnvironment, setup, should, test } from '@gs-testing';
 import { InstanceofType } from '@gs-types';
 import { attributeOut, element } from '@persona';
-import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../app/app';
 import { booleanParser } from '../util/parsers';
 import { $ as $baseAction, $$ as $$baseAction, BaseAction } from './base-action';
@@ -29,7 +29,7 @@ const factory = new PersonaTesterFactory(_p);
 test('@mask/action/base-action', () => {
   runEnvironment(new PersonaTesterEnvironment());
 
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   setup(() => {
@@ -39,13 +39,13 @@ test('@mask/action/base-action', () => {
 
   test('renderAriaDisabled', () => {
     should(`set the aria value correctly`, () => {
-      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
+      el.setHasAttribute($.host._.disabled, true).subscribe();
 
-      assert(tester.getAttribute(el, $baseAction.host._.ariaDisabled)).to.emitWith('true');
+      assert(el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('true');
 
-      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
+      el.setHasAttribute($.host._.disabled, false).subscribe();
 
-      assert(tester.getAttribute(el, $baseAction.host._.ariaDisabled)).to.emitWith('');
+      assert(el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('');
     });
   });
 });

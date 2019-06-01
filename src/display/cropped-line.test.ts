@@ -1,13 +1,14 @@
-import { assert, createSpyInstance, should, spy, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { assert, createSpyInstance, runEnvironment, should, spy, test } from '@gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../app/app';
 import { $, CroppedLine } from './cropped-line';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.CroppedLine', () => {
+  runEnvironment(new PersonaTesterEnvironment());
   let tester: PersonaTester;
-  let el: HTMLElement;
+  let el: ElementTester;
 
   beforeEach(() => {
     tester = testerFactory.build([CroppedLine]);
@@ -15,10 +16,10 @@ test('display.CroppedLine', () => {
   });
 
   test('onContainerCopy', () => {
-    should(`set the clipboard data correctly`, async () => {
+    should(`set the clipboard data correctly`, () => {
       const value = 'value';
 
-      await tester.setAttribute(el, $.host._.text, value).toPromise();
+      el.setAttribute($.host._.text, value).subscribe();
 
       const mockDataTransfer = createSpyInstance(DataTransfer);
       const event = Object.assign(
@@ -27,7 +28,7 @@ test('display.CroppedLine', () => {
       );
       const preventDefaultSpy = spy(event, 'preventDefault');
       const stopPropagationSpy = spy(event, 'stopPropagation');
-      tester.dispatchEvent(el, $.container._.onCopy, event).subscribe();
+      el.dispatchEvent($.container._.onCopy, event).subscribe();
 
       assert(preventDefaultSpy).to.haveBeenCalledWith();
       assert(stopPropagationSpy).to.haveBeenCalledWith();
@@ -36,18 +37,18 @@ test('display.CroppedLine', () => {
   });
 
   test('providesPostfixTextContent', () => {
-    should(`set the postfix text correctly`, async () => {
-      await tester.setAttribute(el, $.host._.text, 'abcde').toPromise();
+    should(`set the postfix text correctly`, () => {
+      el.setAttribute($.host._.text, 'abcde').subscribe();
 
-      await assert(tester.getTextContent(el, $.postfix)).to.emitWith('cde');
+      assert(el.getTextContent($.postfix)).to.emitWith('cde');
     });
   });
 
   test('providesPrefixTextContent', () => {
-    should(`set the prefix text correctly`, async () => {
-      await tester.setAttribute(el, $.host._.text, 'abcde').toPromise();
+    should(`set the prefix text correctly`, () => {
+      el.setAttribute($.host._.text, 'abcde').subscribe();
 
-      await assert(tester.getTextContent(el, $.prefix)).to.emitWith('ab');
+      assert(el.getTextContent($.prefix)).to.emitWith('ab');
     });
   });
 });

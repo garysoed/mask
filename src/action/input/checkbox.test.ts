@@ -1,5 +1,5 @@
 import { assert, runEnvironment, setup, should, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../../app/app';
 import { $, Checkbox } from './checkbox';
 
@@ -8,7 +8,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/input/checkbox', () => {
   runEnvironment(new PersonaTesterEnvironment());
 
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   setup(() => {
@@ -17,62 +17,62 @@ test('@mask/input/checkbox', () => {
   });
 
   test('renderIconMode', () => {
-    should(`render action`, async () => {
-      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
+    should(`render action`, () => {
+      el.setHasAttribute($.host._.disabled, false).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.mode)).to.emitWith('action');
+      assert(el.getAttribute($.text._.mode)).to.emitWith('action');
     });
 
-    should(`render focus if hovered`, async () => {
-      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
-      tester.dispatchEvent(el, $.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
+    should(`render focus if hovered`, () => {
+      el.setHasAttribute($.host._.disabled, false).subscribe();
+      el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.mode)).to.emitWith('focus');
+      assert(el.getAttribute($.text._.mode)).to.emitWith('focus');
     });
 
-    should(`render focus if focused`, async () => {
-      tester.setHasAttribute(el, $.host._.disabled, false).subscribe();
-      tester.dispatchEvent(el, $.host._.onFocus, new CustomEvent('focus')).subscribe();
+    should(`render focus if focused`, () => {
+      el.setHasAttribute($.host._.disabled, false).subscribe();
+      el.dispatchEvent($.host._.onFocus, new CustomEvent('focus')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.mode)).to.emitWith('focus');
+      assert(el.getAttribute($.text._.mode)).to.emitWith('focus');
     });
 
-    should(`render disabled if disabled`, async () => {
-      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
-      tester.dispatchEvent(el, $.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
+    should(`render disabled if disabled`, () => {
+      el.setHasAttribute($.host._.disabled, true).subscribe();
+      el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.mode)).to.emitWith('disabled');
+      assert(el.getAttribute($.text._.mode)).to.emitWith('disabled');
     });
   });
 
   test('setupOnClickHandler', () => {
-    should(`toggle the icon on click`, async () => {
-      tester.dispatchEvent(el, $.root._.onClick, new CustomEvent('click')).subscribe();
+    should(`toggle the icon on click`, () => {
+      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.iconOut)).to.emitWith(true);
-      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(true);
+      assert(el.getAttribute($.text._.iconOut)).to.emitWith(true);
+      assert(el.getAttribute($.host._.value)).to.emitWith(true);
 
-      tester.dispatchEvent(el, $.root._.onClick, new CustomEvent('click')).subscribe();
+      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.iconOut)).to.emitWith(false);
-      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(false);
+      assert(el.getAttribute($.text._.iconOut)).to.emitWith(false);
+      assert(el.getAttribute($.host._.value)).to.emitWith(false);
     });
 
-    should(`change to true if unknown`, async () => {
+    should(`change to true if unknown`, () => {
       // Set the init value to unknown, then click it.
-      tester.setAttribute(el, $.host._.initValue, 'unknown').subscribe();
-      tester.dispatchEvent(el, $.root._.onClick, new CustomEvent('click')).subscribe();
+      el.setAttribute($.host._.initValue, 'unknown').subscribe();
+      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.iconOut)).to.emitWith(true);
-      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(true);
+      assert(el.getAttribute($.text._.iconOut)).to.emitWith(true);
+      assert(el.getAttribute($.host._.value)).to.emitWith(true);
     });
 
-    should(`do nothing on click if disabled`, async () => {
-      tester.setHasAttribute(el, $.host._.disabled, true).subscribe();
-      tester.dispatchEvent(el, $.root._.onClick, new CustomEvent('click')).subscribe();
+    should(`do nothing on click if disabled`, () => {
+      el.setHasAttribute($.host._.disabled, true).subscribe();
+      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
 
-      await assert(tester.getAttribute(el, $.text._.iconOut)).to.emitWith(false);
-      await assert(tester.getAttribute(el, $.host._.value)).to.emitWith(false);
+      assert(el.getAttribute($.text._.iconOut)).to.emitWith(false);
+      assert(el.getAttribute($.host._.value)).to.emitWith(false);
     });
   });
 });

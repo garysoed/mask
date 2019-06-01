@@ -1,5 +1,5 @@
 import { assert, match, should, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, ReplaySubject } from '@rxjs';
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
@@ -8,7 +8,7 @@ import { Crumb } from './crumb';
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/display/crumb', () => {
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   beforeEach(() => {
@@ -19,9 +19,9 @@ test('@mask/display/crumb', () => {
   test('renderDispatchAction', () => {
     should(`emit correct event if clicked`, () => {
       const actionSubject = new ReplaySubject(1);
-      fromEvent(el, ACTION_EVENT).subscribe(actionSubject);
+      fromEvent(el.element, ACTION_EVENT).subscribe(actionSubject);
 
-      el.click();
+      el.element.click();
 
       assert(actionSubject).to.emitWith(
           match.anyObjectThat<ActionEvent>().beAnInstanceOf(ActionEvent));

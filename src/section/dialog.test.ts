@@ -1,6 +1,6 @@
 
 import { assert, createSpySubject, match, setup, should, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { BehaviorSubject, EMPTY } from '@rxjs';
 import { map, switchMap, take } from '@rxjs/operators';
 import { TextIconButton } from '../action/text-icon-button';
@@ -12,7 +12,7 @@ import { $dialogService, $dialogState, DialogService, DialogState } from './dial
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/section/dialog', () => {
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   setup(() => {
@@ -34,7 +34,7 @@ test('@mask/section/dialog', () => {
           )
           .subscribe();
 
-      assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
+      assert(el.getClassList($.cancelButton)).to.emitWith(
           match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
       );
     });
@@ -51,7 +51,7 @@ test('@mask/section/dialog', () => {
           )
           .subscribe();
 
-      assert(tester.getClassList(el, $.cancelButton)).to.emitWith(
+      assert(el.getClassList($.cancelButton)).to.emitWith(
         match.anyIterableThat<string, Set<string>>().beEmpty(),
       );
     });
@@ -73,7 +73,7 @@ test('@mask/section/dialog', () => {
           )
           .subscribe();
 
-      const nodeObs = tester.getNodesAfter(el, $.content._.single)
+      const nodeObs = el.getNodesAfter($.content._.single)
           .pipe(
               take(1),
               map(nodes => nodes[0] as HTMLElement),
@@ -84,7 +84,7 @@ test('@mask/section/dialog', () => {
     });
 
     should(`render nothing if dialog is not open`, () => {
-      const elementsObs = tester.getNodesAfter(el, $.content._.single)
+      const elementsObs = el.getNodesAfter($.content._.single)
           .pipe(map(nodes => nodes.filter(node => node.nodeType === Node.ELEMENT_NODE)));
       assert(elementsObs).to.emitWith(
           match.anyIterableThat<Node, Node[]>().beEmpty(),
@@ -105,13 +105,13 @@ test('@mask/section/dialog', () => {
           )
           .subscribe();
 
-      assert(tester.getClassList(el, $.root)).to.emitWith(
+      assert(el.getClassList($.root)).to.emitWith(
         match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
       );
     });
 
     should(`render correctly when dialog is hidden`, () => {
-      assert(tester.getClassList(el, $.root)).to.emitWith(
+      assert(el.getClassList($.root)).to.emitWith(
         match.anyIterableThat<string, Set<string>>().beEmpty(),
       );
     });
@@ -131,11 +131,11 @@ test('@mask/section/dialog', () => {
           )
           .subscribe();
 
-      assert(tester.getTextContent(el, $.title)).to.emitWith(title);
+      assert(el.getTextContent($.title)).to.emitWith(title);
     });
 
     should(`render empty string when dialog is hidden`, () => {
-      assert(tester.getTextContent(el, $.title)).to.emitWith('');
+      assert(el.getTextContent($.title)).to.emitWith('');
     });
   });
 
@@ -161,7 +161,7 @@ test('@mask/section/dialog', () => {
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       $dialogState.get(tester.vine).subscribe(stateSubject);
 
-      tester.getElement(el, $.cancelButton)
+      el.getElement($.cancelButton)
           .pipe(take(1))
           .subscribe(el => el.click());
 
@@ -192,7 +192,7 @@ test('@mask/section/dialog', () => {
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
       $dialogState.get(tester.vine).subscribe(stateSubject);
 
-      tester.dispatchEvent(el, $.okButton._.onAction, new ActionEvent()).subscribe();
+      el.dispatchEvent($.okButton._.onAction, new ActionEvent()).subscribe();
 
       assert(onCloseSubject).to.emitWith(false);
 

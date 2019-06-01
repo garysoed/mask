@@ -1,16 +1,14 @@
 import { assert, match, setup, should, test } from '@gs-testing';
-import { ImmutableSet } from '@gs-tools/collect';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { EMPTY } from '@rxjs';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { switchMap, take } from '@rxjs/operators';
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { $, Backdrop } from './backdrop';
 import { $dialogService, DialogService } from './dialog-service';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/section/backdrop', () => {
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   setup(() => {
@@ -32,13 +30,13 @@ test('@mask/section/backdrop', () => {
           )
           .subscribe();
 
-      assert(tester.getClassList(el, $.root)).to.emitWith(
+      assert(el.getClassList($.root)).to.emitWith(
           match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
       );
     });
 
     should(`render correctly when dialog is not open`, () => {
-      assert(tester.getClassList(el, $.root)).to.emitWith(
+      assert(el.getClassList($.root)).to.emitWith(
           match.anyIterableThat<string, Set<string>>().beEmpty(),
       );
     });

@@ -1,12 +1,12 @@
 import { assert, setup, should, test } from '@gs-testing';
-import { PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../../app/app';
 import { $, $debounceMs, DEBOUNCE_MS, TextInput } from './text-input';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/TextInput', () => {
-  let el: HTMLElement;
+  let el: ElementTester;
   let tester: PersonaTester;
 
   setup(() => {
@@ -18,11 +18,11 @@ test('@mask/input/TextInput', () => {
   test('getCurrentValueObs', () => {
     should(`update the host value when typing`, () => {
       const value1 = 'value1';
-      tester.setInputValue(el, $.input, value1).subscribe();
+      el.setInputValue($.input, value1).subscribe();
 
       tester.time.tick(DEBOUNCE_MS);
 
-      assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
+      assert(el.getAttribute($.host._.value)).to.emitWith(value1);
     });
   });
 
@@ -30,14 +30,14 @@ test('@mask/input/TextInput', () => {
     should(`set the initial value correctly`, () => {
       // Change the input and wait for the value to update.
       const value1 = 'value1';
-      tester.setInputValue(el, $.input, value1).subscribe();
+      el.setInputValue($.input, value1).subscribe();
       tester.time.tick(DEBOUNCE_MS);
 
-      assert(tester.getAttribute(el, $.host._.value)).to.emitWith(value1);
+      assert(el.getAttribute($.host._.value)).to.emitWith(value1);
 
       // Clear the input.
-      tester.callFunction(el, $.host._.clearFn, []).subscribe();
-      assert(tester.getAttribute(el, $.host._.value)).to.emitWith('');
+      el.callFunction($.host._.clearFn, []).subscribe();
+      assert(el.getAttribute($.host._.value)).to.emitWith('');
     });
   });
 });
