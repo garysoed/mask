@@ -1,13 +1,11 @@
-import { assert, match, runEnvironment, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { assert, match, setup, should, test } from '@gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../app/app';
 import { $, IconWithText } from './icon-with-text';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.IconWithText', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   let el: ElementTester;
   let tester: PersonaTester;
 

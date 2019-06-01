@@ -1,13 +1,11 @@
-import { assert, runEnvironment, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { assert, setup, should, test } from '@gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../../app/app';
 import { $, Checkbox } from './checkbox';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/checkbox', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   let el: ElementTester;
   let tester: PersonaTester;
 

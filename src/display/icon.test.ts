@@ -1,6 +1,6 @@
-import { assert, FakeFetch, runEnvironment, setup, should, test } from '@gs-testing';
+import { assert, FakeFetch, setup, should, test } from '@gs-testing';
 import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { map, take } from '@rxjs/operators';
 import { _p } from '../app/app';
 import { $, Icon } from './icon';
@@ -13,8 +13,6 @@ const SVG_URL = 'http://svgUrl';
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.Icon', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   const SVG_CONTENT = 'svgContent';
 
   let el: ElementTester;

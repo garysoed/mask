@@ -1,7 +1,7 @@
-import { assert, runEnvironment, setup, should, test } from '@gs-testing';
+import { assert, setup, should, test } from '@gs-testing';
 import { InstanceofType } from '@gs-types';
 import { attributeOut, element } from '@persona';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../app/app';
 import { booleanParser } from '../util/parsers';
 import { $ as $baseAction, $$ as $$baseAction, BaseAction } from './base-action';
@@ -27,8 +27,6 @@ class TestAction extends BaseAction {
 
 const factory = new PersonaTesterFactory(_p);
 test('@mask/action/base-action', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   let el: ElementTester;
   let tester: PersonaTester;
 

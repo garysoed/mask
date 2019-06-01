@@ -1,7 +1,7 @@
-import { assert, runEnvironment, setup, should, test } from '@gs-testing';
+import { assert, setup, should, test } from '@gs-testing';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, element } from '@persona';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { Observable, of as observableOf } from '@rxjs';
 import { _p } from '../../app/app';
 import { booleanParser, integerParser, stringParser } from '../../util/parsers';
@@ -53,7 +53,6 @@ class TestInput extends BaseInput<number> {
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/base-input', () => {
-  runEnvironment(new PersonaTesterEnvironment());
   let el: ElementTester;
   let tester: PersonaTester;
 

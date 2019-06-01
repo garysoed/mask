@@ -1,13 +1,11 @@
-import { assert, runEnvironment, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
-import { _p, _v } from '../app/app';
+import { assert, setup, should, test } from '@gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { _p } from '../app/app';
 import { $, ListItem } from './list-item';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('mask.layout.ListItem', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   let el: ElementTester;
   let tester: PersonaTester;
 

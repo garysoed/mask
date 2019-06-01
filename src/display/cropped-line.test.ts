@@ -1,12 +1,11 @@
-import { assert, createSpyInstance, runEnvironment, should, spy, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { assert, createSpyInstance, should, spy, test } from '@gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { _p } from '../app/app';
 import { $, CroppedLine } from './cropped-line';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.CroppedLine', () => {
-  runEnvironment(new PersonaTesterEnvironment());
   let tester: PersonaTester;
   let el: ElementTester;
 

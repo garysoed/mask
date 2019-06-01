@@ -1,17 +1,15 @@
-import { assert, createSpySubject, match, runEnvironment, should, test } from '@gs-testing';
+import { assert, createSpySubject, match, should, test } from '@gs-testing';
 import { createImmutableList } from '@gs-tools/collect';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, of as observableOf } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
 import { _p } from '../app/app';
 import { $, Breadcrumb } from './breadcrumb';
-import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
+import { BreadcrumbClickEvent, BREADCRUMB_CLICK_EVENT } from './breadcrumb-event';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('display.Breadcrumb', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   let el: ElementTester;
   let tester: PersonaTester;
 

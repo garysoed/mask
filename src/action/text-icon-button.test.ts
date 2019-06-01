@@ -1,5 +1,5 @@
-import { assert, createSpySubject, match, runEnvironment, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterEnvironment, PersonaTesterFactory } from '@persona/testing';
+import { assert, createSpySubject, match, setup, should, test } from '@gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, Subject } from '@rxjs';
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
@@ -8,8 +8,6 @@ import { $, TextIconButton } from './text-icon-button';
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('component.TextIconButton', () => {
-  runEnvironment(new PersonaTesterEnvironment());
-
   let el: ElementTester;
   let tester: PersonaTester;
 
