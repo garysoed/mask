@@ -62,9 +62,9 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   }
 
   renderCrumbs(): Observable<ArrayDiff<RepeatedSpec>> {
-    return this.pathKeySubject.getDiffs()
+    return this.pathKeySubject
         .pipe(
-            withLatestFrom(this.pathDataSubject.getDiffs().pipe(scanMap())),
+            withLatestFrom(this.pathDataSubject.pipe(scanMap())),
             map(([diff, map]) => {
               const immutableMap = createImmutableMap(map);
               switch (diff.type) {

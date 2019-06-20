@@ -1,4 +1,4 @@
-import { $getKey, $head, $mapPick, $pick, $pipe, asImmutableMap, createImmutableMap, ImmutableMap, ImmutableMapType } from '@gs-tools/collect';
+import { createImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { BaseDisposable } from '@gs-tools/dispose';
 import { BehaviorSubject, from as observableFrom, Observable, of as observableOf } from '@rxjs';
 import { map, retry, shareReplay, switchMap } from '@rxjs/operators';
@@ -8,11 +8,11 @@ import { SvgConfig } from './svg-config';
 const __run = Symbol('SvgService.run');
 
 export class SvgService extends BaseDisposable {
-  private readonly svgObs: ImmutableMap<string, Observable<string>>;
+  private readonly svgObsMap: Map<string, Observable<string>>;
 
   constructor(svgConfig: ImmutableMap<string, SvgConfig>) {
     super();
-    this.svgObs = createSvgObs(svgConfig);
+    this.svgObsMap = createSvgObs(new Map([...svgConfig]));
   }
 
   [__run](): void {
@@ -20,38 +20,33 @@ export class SvgService extends BaseDisposable {
   }
 
   getSvg(name: string): Observable<string|null> {
-    return $pipe(
-        this.svgObs,
-        $getKey(name),
-        $pick(1),
-        $head(),
-    ) || observableOf(null);
+    return this.svgObsMap.get(name) || observableOf(null);
   }
 }
 
 function createSvgObs(
-    configs: ImmutableMap<string, SvgConfig>,
-): ImmutableMap<string, Observable<string>> {
-  return $pipe(
-      configs,
-      $mapPick(
-          1,
-          (config): Observable<string> => {
-            if (config.type === 'embed') {
-              return observableOf(config.content);
-            } else {
-              // TODO: Retry with exponential backoff.
-              return observableFrom<Promise<Response>>(fetch(config.url))
-                  .pipe(
-                      switchMap(response => observableFrom(response.text())),
-                      retry(3),
-                      shareReplay(1),
-                  );
-            }
-          },
-      ),
-      asImmutableMap(),
-  );
+    configs: Map<string, SvgConfig>,
+): Map<string, Observable<string>> {
+  const obsMap = new Map<string, Observable<string>>();
+  for (const [key, config] of configs) {
+    obsMap.set(key, loadSvg(config));
+  }
+
+  return obsMap;
+}
+
+function loadSvg(config: SvgConfig): Observable<string> {
+  if (config.type === 'embed') {
+    return observableOf(config.content);
+  } else {
+    // TODO: Retry with exponential backoff.
+    return observableFrom<Promise<Response>>(fetch(config.url))
+        .pipe(
+            switchMap(response => observableFrom(response.text())),
+            retry(3),
+            shareReplay(1),
+        );
+  }
 }
 
 export const $svgConfig = _v.source(

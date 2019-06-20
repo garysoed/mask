@@ -41,7 +41,6 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
 export class RootLayout extends ThemedCustomElementCtrl {
   private readonly hostIconObs = _p.input($.host._.icon, this);
   private readonly hostLabelObs = _p.input($.host._.label, this);
-  private readonly hostThemeObs = _p.input($.host._.theme, this);
   private readonly isDrawerOpenSbj = _v.source(() => new BehaviorSubject(false), this).asSubject();
   private readonly onMouseOutObs = _p.input($.drawer._.onMouseOut, this);
   private readonly onMouseOverObs = _p.input($.drawer._.onMouseOver, this);
