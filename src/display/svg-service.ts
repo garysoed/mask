@@ -1,6 +1,6 @@
-import { createImmutableMap, ImmutableMap } from '@gs-tools/collect';
 import { BaseDisposable } from '@gs-tools/dispose';
-import { BehaviorSubject, from as observableFrom, Observable, of as observableOf } from '@rxjs';
+import { MapSubject, scanMap } from '@gs-tools/rxjs';
+import { from as observableFrom, Observable, of as observableOf } from '@rxjs';
 import { map, retry, shareReplay, switchMap } from '@rxjs/operators';
 import { _v } from '../app/app';
 import { SvgConfig } from './svg-config';
@@ -10,9 +10,9 @@ const __run = Symbol('SvgService.run');
 export class SvgService extends BaseDisposable {
   private readonly svgObsMap: Map<string, Observable<string>>;
 
-  constructor(svgConfig: ImmutableMap<string, SvgConfig>) {
+  constructor(svgConfig: Map<string, SvgConfig>) {
     super();
-    this.svgObsMap = createSvgObs(new Map([...svgConfig]));
+    this.svgObsMap = createSvgObs(svgConfig);
   }
 
   [__run](): void {
@@ -50,13 +50,14 @@ function loadSvg(config: SvgConfig): Observable<string> {
 }
 
 export const $svgConfig = _v.source(
-    () => new BehaviorSubject(createImmutableMap<string, SvgConfig>()),
+    () => new MapSubject<string, SvgConfig>(),
     globalThis,
 );
 
 export const $svgService = _v.stream(
     vine => $svgConfig.get(vine)
         .pipe(
+          scanMap(),
           map(config => {
             const service = new SvgService(config);
             service[__run]();

@@ -83,21 +83,21 @@ export const $ = {
 @_p.customElement({
   configure(vine: Vine): void {
     const svgConfigSbj = $svgConfig.get(vine);
-    svgConfigSbj
-        .pipe(take(1))
-        .subscribe(svgConfig => {
-          const newConfig = $pipe(
-              svgConfig,
-              $push<[string, SvgConfig], string>(
-                  ['checkbox_checked', {type: 'embed', content: checkboxChecked}],
-                  ['checkbox_unchecked', {type: 'embed', content: checkboxEmpty}],
-                  ['checkbox_unknown', {type: 'embed', content: checkboxUnknown}],
-              ),
-              asImmutableMap(),
-          );
-
-          svgConfigSbj.next(newConfig);
-        });
+    svgConfigSbj.next({
+      key: 'checkbox_checked',
+      type: 'set',
+      value: {type: 'embed', content: checkboxChecked}},
+    );
+    svgConfigSbj.next({
+      key: 'checkbox_unchecked',
+      type: 'set',
+      value: {type: 'embed', content: checkboxEmpty}},
+    );
+    svgConfigSbj.next({
+      key: 'checkbox_unknown',
+      type: 'set',
+      value: {type: 'embed', content: checkboxUnknown}},
+    );
   },
   dependencies: [
     IconWithText,

@@ -36,20 +36,16 @@ export const $ = {
 @_p.customElement({
   configure(vine: Vine): void {
     const svgSubject = $svgConfig.get(vine);
-    svgSubject
-        .pipe(take(1))
-        .subscribe(svgConfig => {
-          const newConfig = $pipe(
-              svgConfig,
-              $push<[string, SvgConfig], string>(
-                  ['dialog_close', {type: 'embed', content: dialogCloseSvg}],
-                  ['dialog_confirm', {type: 'embed', content: dialogConfirmSvg}],
-              ),
-              asImmutableMap(),
-          );
-
-          svgSubject.next(newConfig);
-        });
+    svgSubject.next({
+      key: 'dialog_close',
+      type: 'set',
+      value: {type: 'embed', content: dialogCloseSvg},
+    });
+    svgSubject.next({
+      key: 'dialog_confirm',
+      type: 'set',
+      value: {type: 'embed', content: dialogConfirmSvg},
+    });
   },
   tag: 'mk-dialog',
   template: dialogTemplate,

@@ -1,13 +1,11 @@
 import { Vine } from '@grapevine';
-import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { Jsons } from '@gs-tools/data';
 import { InstanceofType } from '@gs-types';
 import { classlist, element, InitFn, style } from '@persona';
 import { BehaviorSubject, Observable } from '@rxjs';
-import { map, switchMap, take } from '@rxjs/operators';
+import { map, switchMap } from '@rxjs/operators';
 import { _p, _v } from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
-import { SvgConfig } from '../../display/svg-config';
 import { $svgConfig, $svgService } from '../../display/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 import layoutOverlayTemplate from './layout-overlay.html';
@@ -29,19 +27,11 @@ const $ = {
 @_p.customElement({
   configure(vine: Vine): void {
     const svgConfigSubject = $svgConfig.get(vine);
-    svgConfigSubject
-        .pipe(take(1))
-        .subscribe(svgConfig => {
-          const newConfig = $pipe(
-              svgConfig,
-              $push<[string, SvgConfig], string>(
-                  ['layout_overlay', {type: 'embed', content: layoutOverlaySvg}],
-              ),
-              asImmutableMap(),
-          );
-
-          svgConfigSubject.next(newConfig);
-        });
+    svgConfigSubject.next({
+      key: 'layout_overlay',
+      type: 'set',
+      value: {type: 'embed', content: layoutOverlaySvg},
+    });
   },
   tag: 'mk-layout-overlay',
   template: layoutOverlayTemplate,

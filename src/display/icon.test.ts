@@ -22,18 +22,11 @@ test('display.Icon', () => {
   setup(() => {
     tester = testerFactory.build([Icon]);
     const svgSbj = $svgConfig.get(tester.vine);
-    svgSbj
-        .pipe(take(1))
-        .subscribe(config => {
-          const newConfig = $pipe(
-              config,
-              $push<[string, SvgConfig], string>(
-                  [SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL}],
-              ),
-              asImmutableMap(),
-          );
-          svgSbj.next(newConfig);
-        });
+    svgSbj.next({
+      key: SVG_NAME,
+      type: 'set',
+      value: {type: 'remote' as 'remote', url: SVG_URL},
+    });
 
     fakeFetch = new FakeFetch();
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);

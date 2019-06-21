@@ -42,7 +42,7 @@ export const $ = {
   template: iconTemplate,
 })
 export class Icon extends ThemedCustomElementCtrl {
-  private readonly iconObs = _p.input($.host._.icon, this);
+  private readonly icon$ = _p.input($.host._.icon, this);
 
   getInitFunctions(): InitFn[] {
     return [
@@ -56,7 +56,7 @@ export class Icon extends ThemedCustomElementCtrl {
   renderRootInnerHtml_(
       vine: Vine,
   ): Observable<string> {
-    return combineLatest($svgService.get(vine), this.iconObs)
+    return combineLatest([$svgService.get(vine), this.icon$])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
             map(svg => svg || ''),
