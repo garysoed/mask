@@ -262,8 +262,7 @@ td {
 
 /* Themes */
 [mk-theme-highlight],
-[mk-theme="light"],
-[mk-theme="dark"] {
+[mk-theme] {
   background: var(--mkThemePassiveBG);
   color: var(--mkThemePassiveFG1);
 }

@@ -199,8 +199,8 @@ export class Theme {
         contrastAccentShade,
     );
     const cssContent = variablesCssTemplate
-        .replace('/*{themeLight}*/', generateColorCss(lightColorMap, highlightLightColorMap))
-        .replace('/*{themeDark}*/', generateColorCss(darkColorMap, highlightDarkColorMap))
+        .replace(/\/\*{themeLight}\*\//g, generateColorCss(lightColorMap, highlightLightColorMap))
+        .replace(/\/\*{themeDark}\*\//g, generateColorCss(darkColorMap, highlightDarkColorMap))
         .replace(
             '/*{themeHighlightLight}*/',
             generateColorCss(highlightLightColorMap, lightColorMap),
