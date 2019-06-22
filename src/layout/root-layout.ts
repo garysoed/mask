@@ -1,9 +1,7 @@
 import { ElementWithTagType } from '@gs-types';
-import { api, attributeIn, attributeOut, element, mediaQuery, onDom } from '@persona';
+import { api, attributeIn, attributeOut, element, InitFn, mediaQuery, onDom } from '@persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from '@rxjs';
 import { map, mapTo, startWith, tap } from '@rxjs/operators';
-import { Vine } from 'grapevine/export';
-import { InitFn } from 'persona/export';
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';
 import { $$ as $drawer, Drawer } from '../section/drawer';
@@ -16,7 +14,6 @@ export const $$ = {
   drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
   icon: attributeIn('icon', stringParser()),
   label: attributeIn('label', stringParser()),
-  theme: attributeIn('theme', stringParser()),
 };
 
 export const $ = {
@@ -57,14 +54,14 @@ export class RootLayout extends ThemedCustomElementCtrl {
     ];
   }
 
-  private setupHandleDrawerExpandCollapse(vine: Vine): Observable<unknown> {
-    return combineLatest(
-        merge(
-            this.onMouseOutObs.pipe(mapTo(false)),
-            this.onMouseOverObs.pipe(mapTo(true)),
-        ).pipe(startWith(false)),
-        this.qIsDesktopObs,
-    )
+  private setupHandleDrawerExpandCollapse(): Observable<unknown> {
+    return combineLatest([
+      merge(
+          this.onMouseOutObs.pipe(mapTo(false)),
+          this.onMouseOverObs.pipe(mapTo(true)),
+      ).pipe(startWith(false)),
+      this.qIsDesktopObs,
+    ])
     .pipe(
         map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
         tap(showDrawer => this.isDrawerOpenSbj.next(showDrawer)),
