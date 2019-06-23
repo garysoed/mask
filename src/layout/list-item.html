@@ -26,6 +26,14 @@
     width: 4rem;
   }
 
+  #iconContainer + #textContainer {
+    padding-left: 1rem;
+  }
+
+  #iconContainer.displayed + #textContainer {
+    padding-left: 0;
+  }
+
   #iconContainer, #textContainer {
     background-color: var(--mkListItemColorBackground);
     color: var(--mkListItemColorPrimary);
