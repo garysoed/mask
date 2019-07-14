@@ -1,7 +1,7 @@
 <style id="theme"></style>
 <style>
   :host {
-    --mkInputLineColor: var(--mkThemeActionPrimaryBG1);
+    --mkInputLineColor: var(--mkThemeActionFG2);
     --mkInputLineWidth: 100%;
   }
 
@@ -39,12 +39,18 @@
 
   :host(:not([disabled]):hover),
   #input:not([disabled]):hover + * {
-    --mkInputLineColor: var(--mkThemeActionPrimaryBG);
+    --mkInputLineColor: var(--mkThemeActionFocusFG2);
   }
 
   :host(:not([disabled]):focus),
   #input:not([disabled]):focus + * {
-    --mkInputLineColor: var(--mkThemeActionPrimaryFocusBG1);
+    --mkInputLineColor: var(--mkThemeActionFocusFG1);
+  }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 </style>
 <div id="root" flex-justify="center" layout="column">
