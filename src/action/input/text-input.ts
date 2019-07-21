@@ -15,8 +15,28 @@ enum InputType {
   TEXT = 'text',
 }
 
+enum AutocompleteType {
+  ADDITIONAL_NAME = 'additional-name',
+  CURRENT_PASSWORD = 'current-password',
+  EMAIL = 'email',
+  FAMILY_NAME = 'family-name',
+  GIVEN_NAME = 'given-name',
+  HONORIFIC_PREFIX = 'honorific-prefix',
+  HONORIFIC_SUFFIX = 'honorific-suffix',
+  NAME = 'name',
+  NEW_PASSWORD = 'new-password',
+  NICKNAME = 'nickname',
+  OFF = 'off',
+  ON = 'on',
+  ONE_TIME_CODE = 'one-time-code',
+  ORGANIZATION = 'organization',
+  ORGANIZATTION_TITLE = 'organization-title',
+  USERNAME = 'username',
+}
+
 export const $$ = {
   ...$baseInput,
+  autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
   initValue: attributeIn('init-value', stringParser(), ''),
   type: attributeIn('type', enumParser(InputType), InputType.TEXT),
   value: attributeOut('value', stringParser()),
@@ -25,6 +45,7 @@ export const $$ = {
 export const $ = {
   host: element($$),
   input: element('input', InstanceofType(HTMLInputElement), {
+    autocomplete: attributeOut('autocomplete', stringParser()),
     disabled: attributeOut('disabled', booleanParser(), false),
     // TODO: This should cause compile error if the Element type is not InputElement.
     onInput: onInput(),
@@ -43,6 +64,7 @@ export const $debounceMs = _v.source(() => new BehaviorSubject(DEBOUNCE_MS), glo
   template,
 })
 export class TextInput extends BaseInput<string> {
+  private readonly autocomplete$ = _p.input($.host._.autocomplete, this);
   private readonly initValue$ = _p.input($.host._.initValue, this);
   private readonly inputEl$ = _p.input($.input, this);
   private readonly onInput$ = _p.input($.input._.onInput, this);
@@ -61,6 +83,7 @@ export class TextInput extends BaseInput<string> {
     return [
       ...super.getInitFunctions(),
       _p.render($.input._.type).withObservable(this.type$),
+      _p.render($.input._.autocomplete).withObservable(this.autocomplete$),
     ];
   }
 

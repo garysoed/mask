@@ -8,20 +8,20 @@ export function booleanParser(): Converter<boolean, string> {
   return compose(typeBased(BooleanType), human());
 }
 
-export function enumParser<E extends string>(enumSet: any): Converter<string, E> {
+export function enumParser<E extends string>(enumSet: any): Converter<E, string> {
   const values = new Set(Enums.getAllValues(enumSet));
 
   return {
-    convertBackward(value: E): Result<string> {
-      return {success: true, result: value};
-    },
-
-    convertForward(value: string): Result<E> {
+    convertBackward(value: string): Result<E> {
       if (values.has(value)) {
         return {success: true, result: value as E};
       }
 
       return {success: false};
+    },
+
+    convertForward(value: E): Result<string> {
+      return {success: true, result: value};
     },
   };
 }

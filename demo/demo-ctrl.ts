@@ -6,11 +6,13 @@ import { api, attributeOut, element, InitFn, onDom, repeated, RepeatedSpec } fro
 import { concat, Observable, of as observableOf } from '@rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from '@rxjs/operators';
 import { stringParser } from 'export';
+
 import { $$ as $checkbox, Checkbox } from '../src/action/input/checkbox';
 import { _p, _v } from '../src/app/app';
 import { RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
+
 import demoTemplate from './demo.html';
 
 const $ = {
@@ -59,9 +61,9 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
-            withLatestFrom(this.themeSbj),
+            withLatestFrom(this.theme$),
             tap(([color, theme]) => {
-              this.themeSbj.next(theme.setHighlightColor(color));
+              this.theme$.next(theme.setHighlightColor(color));
             }),
         );
   }
@@ -71,9 +73,9 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
-            withLatestFrom(this.themeSbj),
+            withLatestFrom(this.theme$),
             tap(([color, theme]) => {
-              this.themeSbj.next(theme.setBaseColor(color));
+              this.theme$.next(theme.setBaseColor(color));
             }),
         );
   }
@@ -82,7 +84,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
-    const diffObs = this.themeSbj.pipe(
+    const diffObs = this.theme$.pipe(
         map(theme => theme.accentColor),
         pairwise(),
         switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
@@ -101,7 +103,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
-    const diffObs = this.themeSbj.pipe(
+    const diffObs = this.theme$.pipe(
         map(theme => theme.baseColor),
         pairwise(),
         switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),

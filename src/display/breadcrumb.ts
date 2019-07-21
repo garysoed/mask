@@ -6,10 +6,12 @@ import { InstanceofType } from '@gs-types';
 import { attributeIn, dispatcher, element, InitFn, onDom, repeated, RepeatedSpec } from '@persona';
 import { Observable } from '@rxjs';
 import { map, tap, withLatestFrom } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { listParser, stringParser } from '../util/parsers';
+
 import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
 import { Crumb } from './crumb';
