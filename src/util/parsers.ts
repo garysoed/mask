@@ -1,5 +1,5 @@
-import { ImmutableList } from '@gs-tools/collect';
-import { integerConverter, listConverter, typeBased } from '@gs-tools/serializer';
+import { ImmutableList, ImmutableMap } from '@gs-tools/collect';
+import { integerConverter, listConverter, mapConverter, typeBased } from '@gs-tools/serializer';
 import { Enums } from '@gs-tools/typescript';
 import { BooleanType } from '@gs-types';
 import { compose, Converter, human, identity, Result, Serializable } from '@nabu';
@@ -37,6 +37,13 @@ export function listParser<T>(
       listConverter(itemParser),
       human(),
   );
+}
+
+export function mapParser<K, V>(
+    keyParser: Converter<K, string>,
+    valueParser: Converter<V, string>,
+): Converter<ImmutableMap<K, V>, string> {
+  return compose(mapConverter(keyParser, valueParser), human());
 }
 
 export function stringParser(): Converter<string, string> {

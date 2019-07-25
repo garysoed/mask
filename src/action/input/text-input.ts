@@ -1,8 +1,9 @@
 import { Vine } from '@grapevine';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from '@persona';
-import { BehaviorSubject, Observable } from '@rxjs';
+import { BehaviorSubject, Observable, Subject } from '@rxjs';
 import { debounceTime, startWith, switchMap, take, tap, withLatestFrom } from '@rxjs/operators';
+import { debug } from 'gs-tools/export/rxjs';
 
 import { _p, _v } from '../../app/app';
 import { booleanParser, enumParser, stringParser } from '../../util/parsers';
@@ -65,15 +66,15 @@ export const $debounceMs = _v.source(() => new BehaviorSubject(DEBOUNCE_MS), glo
 })
 export class TextInput extends BaseInput<string> {
   private readonly autocomplete$ = _p.input($.host._.autocomplete, this);
-  private readonly initValue$ = _p.input($.host._.initValue, this);
   private readonly inputEl$ = _p.input($.input, this);
   private readonly onInput$ = _p.input($.input._.onInput, this);
   private readonly type$ = _p.input($.host._.type, this);
 
   constructor(root: ShadowRoot) {
     super(
-        $.label._.innerHtml,
+        $.host._.initValue,
         $.host._.value,
+        $.label._.innerHtml,
         $.input._.disabled,
         root,
     );
@@ -84,26 +85,28 @@ export class TextInput extends BaseInput<string> {
       ...super.getInitFunctions(),
       _p.render($.input._.type).withObservable(this.type$),
       _p.render($.input._.autocomplete).withObservable(this.autocomplete$),
+      vine => this.setupHandleInput(vine),
     ];
   }
 
-  protected getCurrentValueObs(vine: Vine): Observable<string> {
+  protected setupUpdateValue(value$: Observable<string>): Observable<unknown> {
+    return value$.pipe(
+        withLatestFrom(this.inputEl$),
+        tap(([value, el]) => {
+          el.value = value;
+        }),
+    );
+  }
+
+  private setupHandleInput(vine: Vine): Observable<string> {
     return this.inputEl$
         .pipe(
             withLatestFrom($debounceMs.get(vine)),
             switchMap(([el, debounceMs]) => this.onInput$
                 .pipe(
                     debounceTime(debounceMs),
-                    startWith(el.value),
+                    tap(value => this.dirtyValue$.next(value)),
                 )),
         );
-  }
-
-  protected getInitValueObs(): Observable<string> {
-    return this.initValue$;
-  }
-
-  protected updateCurrentValue(value: string): Observable<unknown> {
-    return this.inputEl$.pipe(take(1), tap(el => el.value = value));
   }
 }

@@ -1,16 +1,17 @@
 import { Vine } from '@grapevine';
-import { $pipe, $push, asImmutableMap, createImmutableSet, ImmutableSet } from '@gs-tools/collect';
+import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { classlist, element, InitFn, onDom, single, SingleRenderSpec, textContent } from '@persona';
 import { merge, Observable } from '@rxjs';
-import { filter, map, mapTo, switchMap, take, withLatestFrom } from '@rxjs/operators';
+import { filter, map, mapTo, switchMap, withLatestFrom } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import dialogCloseSvg from '../asset/dialog_close.svg';
 import dialogConfirmSvg from '../asset/dialog_confirm.svg';
-import { SvgConfig } from '../display/svg-config';
 import { $svgConfig } from '../display/svg-service';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+
 import { $dialogState, OpenState } from './dialog-service';
 import dialogTemplate from './dialog.html';
 

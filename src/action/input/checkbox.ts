@@ -3,8 +3,8 @@ import { stringMatchConverter } from '@gs-tools/serializer';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { compose, Converter, firstSuccess, Result } from '@nabu';
 import { api, attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
-import { combineLatest, merge, Observable, of as observableOf } from '@rxjs';
-import { filter, map, mapTo, startWith, withLatestFrom } from '@rxjs/operators';
+import { combineLatest, merge, Observable } from '@rxjs';
+import { filter, map, mapTo, startWith, tap, withLatestFrom } from '@rxjs/operators';
 
 import { _p, _v } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
@@ -106,18 +106,18 @@ export const $ = {
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue> {
-  private readonly initValueObs = _p.input($.host._.initValue, this);
   private readonly onBlurObs = _p.input($.host._.onBlur, this);
   private readonly onClickObs = _p.input($.root._.onClick, this);
   private readonly onFocusObs = _p.input($.host._.onFocus, this);
   private readonly onMouseEnterObs = _p.input($.host._.onMouseEnter, this);
   private readonly onMouseLeaveObs = _p.input($.host._.onMouseLeave, this);
-  private readonly textIconIn = _p.input($.text._.iconIn, this);
+  private readonly textIconIn$ = _p.input($.text._.iconIn, this);
 
   constructor(shadowRoot: ShadowRoot) {
     super(
-        $.text._.label,
+        $.host._.initValue,
         $.host._.value,
+        $.text._.label,
         $.text._.disabledClass,
         shadowRoot,
     );
@@ -132,15 +132,11 @@ export class Checkbox extends BaseInput<CheckedValue> {
   }
 
   protected getCurrentValueObs(): Observable<CheckedValue> {
-    return this.textIconIn;
+    return this.textIconIn$;
   }
 
-  protected getInitValueObs(): Observable<CheckedValue> {
-    return this.initValueObs;
-  }
-
-  protected updateCurrentValue(value: CheckedValue): Observable<unknown> {
-    return $.text._.iconOut.output(this.shadowRoot, observableOf(value));
+  protected setupUpdateValue(value$: Observable<CheckedValue>): Observable<unknown> {
+    return $.text._.iconOut.output(this.shadowRoot, value$);
   }
 
   private renderIconMode(): Observable<string> {
@@ -157,7 +153,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     .pipe(startWith(false));
 
     return combineLatest([
-      this.disabledObs,
+      this.disabled$,
       focusedObs,
       hoverObs,
     ])
@@ -177,22 +173,20 @@ export class Checkbox extends BaseInput<CheckedValue> {
   }
 
   private setupOnClickHandler(): Observable<unknown> {
-    return $.text._.iconOut.output(
-        this.shadowRoot,
-        this.onClickObs
-            .pipe(
-                withLatestFrom(this.textIconIn, this.disabledObs),
-                filter(([, , disabled]) => !disabled),
-                map(([, currentValue]) => {
-                  switch (currentValue) {
-                    case 'unknown':
-                    case false:
-                      return true;
-                    case true:
-                      return false;
-                  }
-                }),
-        ),
+    return this.onClickObs
+        .pipe(
+            withLatestFrom(this.disabled$, this.value$),
+            filter(([, disabled]) => !disabled),
+            map(([, , currentValue]) => {
+              switch (currentValue) {
+                case 'unknown':
+                case false:
+                  return true;
+                case true:
+                  return false;
+              }
+            }),
+            tap(newValue => this.dirtyValue$.next(newValue)),
     );
   }
 }

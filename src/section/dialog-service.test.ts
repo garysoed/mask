@@ -2,7 +2,9 @@ import { Source, Vine } from '@grapevine';
 import { assert, createSpy, fake, match, setup, should, test } from '@gs-testing';
 import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
 import { switchMap } from '@rxjs/operators';
+
 import { _v } from '../app/app';
+
 import { DialogService, DialogState, OpenState } from './dialog-service';
 
 test('@mask/section/dialog-service', () => {

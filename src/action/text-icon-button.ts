@@ -102,7 +102,7 @@ export class TextIconButton extends BaseAction {
         )
         .pipe(
             throttleTime(THROTTLE_MS),
-            withLatestFrom(this.disabledObs),
+            withLatestFrom(this.disabled$),
             filter(([, disabled]) => !disabled),
             map(() => new ActionEvent()),
         );
@@ -128,7 +128,7 @@ export class TextIconButton extends BaseAction {
 
     return combineLatest(
         this.activeObs,
-        this.disabledObs,
+        this.disabled$,
         focusedObs,
         hoverObs,
         this.hasPrimaryObs,
@@ -153,6 +153,6 @@ export class TextIconButton extends BaseAction {
   }
 
   private renderTabIndex(): Observable<number> {
-    return this.disabledObs.pipe(map(disabled => disabled ? -1 : 0));
+    return this.disabled$.pipe(map(disabled => disabled ? -1 : 0));
   }
 }

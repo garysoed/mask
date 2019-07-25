@@ -15,9 +15,11 @@ import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from '@persona';
 import { Observable } from '@rxjs';
 import { map } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
+
 import { Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
 

@@ -1,11 +1,13 @@
 import { assert, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+
 import { _p } from '../../app/app';
+
 import { $, $debounceMs, DEBOUNCE_MS, TextInput } from './text-input';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('@mask/input/TextInput', () => {
+test('@mask/input/text-input', () => {
   let el: ElementTester;
   let tester: PersonaTester;
 

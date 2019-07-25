@@ -17,11 +17,11 @@ export class DialogTester {
     this.dialogEl = personaTester.createElement('mk-dialog', parent);
   }
 
-  clickCancel(): Observable<unknown> {
+  clickCancel(): Observable<textIconIn$> {
     return this.dialogEl.dispatchEvent($dialog.cancelButton._.onAction, new ActionEvent());
   }
 
-  clickOk(): Observable<unknown> {
+  clickOk(): Observable<textIconIn$> {
     return this.dialogEl.dispatchEvent($dialog.okButton._.onAction, new ActionEvent());
   }
 

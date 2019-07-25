@@ -1,10 +1,13 @@
 import { assert, setup, should, test } from '@gs-testing';
 import { InstanceofType } from '@gs-types';
-import { attributeIn, attributeOut, element } from '@persona';
+import { attributeIn, attributeOut, element, InitFn } from '@persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { Observable, of as observableOf } from '@rxjs';
+import { fromEvent, Observable } from '@rxjs';
+import { switchMap, tap, withLatestFrom } from '@rxjs/operators';
+
 import { _p } from '../../app/app';
 import { booleanParser, integerParser, stringParser } from '../../util/parsers';
+
 import { $$ as $baseInput, BaseInput } from './base-input';
 
 const $ = {
@@ -17,6 +20,7 @@ const $ = {
   host: element({
     ...$baseInput,
     initValue: attributeIn('init-value', integerParser(), 0),
+    value: attributeOut('value', integerParser(), 0),
   }),
 };
 
@@ -25,28 +29,36 @@ const $ = {
   template: '<style id="theme"></style><div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
-  private readonly initValue = _p.input($.host._.initValue, this);
-  private readonly valueIn = _p.input($.div._.valueIn, this);
+  private readonly divEl$ = _p.input($.div, this);
+  private readonly valueIn$ = _p.input($.div._.valueIn, this);
 
   constructor(root: ShadowRoot) {
     super(
+        $.host._.initValue,
+        $.host._.value,
         $.div._.label,
-        $.div._.valueOut,
         $.div._.disabled,
         root,
     );
   }
 
-  getCurrentValueObs(): Observable<number> {
-    return this.valueIn;
+  getInitFunctions(): InitFn[] {
+    return [
+      ...super.getInitFunctions(),
+      () => this.setupHandleValueInChange(),
+    ];
   }
 
-  getInitValueObs(): Observable<number> {
-    return this.initValue;
+  protected setupHandleValueInChange(): Observable<unknown> {
+    return this.divEl$.pipe(
+        switchMap(el => fromEvent(el, 'input')),
+        withLatestFrom(this.valueIn$),
+        tap(([, v]) => this.dirtyValue$.next(v)),
+    );
   }
 
-  updateCurrentValue(value: number): Observable<unknown> {
-    return $.div._.valueOut.output(this.shadowRoot, observableOf(value));
+  protected setupUpdateValue(value$: Observable<number>): Observable<unknown> {
+    return $.div._.valueOut.output(this.shadowRoot, value$);
   }
 }
 

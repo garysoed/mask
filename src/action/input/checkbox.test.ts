@@ -1,6 +1,8 @@
 import { assert, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+
 import { _p } from '../../app/app';
+
 import { $, Checkbox } from './checkbox';
 
 const testerFactory = new PersonaTesterFactory(_p);

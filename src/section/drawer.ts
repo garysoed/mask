@@ -15,9 +15,11 @@ import { InstanceofType } from '@gs-types';
 import { attributeIn, element, InitFn, style } from '@persona';
 import { BehaviorSubject, combineLatest, Observable } from '@rxjs';
 import { map } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
+
 import drawerTemplate from './drawer.html';
 
 export enum Mode {
@@ -67,12 +69,12 @@ export class Drawer extends ThemedCustomElementCtrl {
   }
 
   private renderStyleHeight(): Observable<string> {
-    return combineLatest(
-        this.expandedObs,
-        this.maxSizeObs,
-        this.minSizeObs,
-        this.modeObs,
-        )
+    return combineLatest([
+          this.expandedObs,
+          this.maxSizeObs,
+          this.minSizeObs,
+          this.modeObs,
+        ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
               if (mode === Mode.VERTICAL) {
