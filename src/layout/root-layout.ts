@@ -2,6 +2,7 @@ import { ElementWithTagType } from '@gs-types';
 import { api, attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from '@persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from '@rxjs';
 import { map, mapTo, startWith, tap } from '@rxjs/operators';
+
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
@@ -9,6 +10,7 @@ import { $$ as $drawer, Drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
+
 import template from './root-layout.html';
 
 export const $$ = {

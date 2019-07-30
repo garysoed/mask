@@ -2,10 +2,12 @@ import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { api, attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from '@persona';
 import { combineLatest, merge, Observable } from '@rxjs';
 import { map, mapTo, startWith } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
+
 import template from './list-item.html';
 
 export const $$ = {

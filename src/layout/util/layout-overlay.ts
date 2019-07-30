@@ -4,10 +4,12 @@ import { InstanceofType } from '@gs-types';
 import { classlist, element, InitFn, style } from '@persona';
 import { BehaviorSubject, Observable } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
+
 import { _p, _v } from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import { $svgConfig, $svgService } from '../../display/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
+
 import layoutOverlayTemplate from './layout-overlay.html';
 
 const $isActive = _v.source(() => new BehaviorSubject(false), globalThis);

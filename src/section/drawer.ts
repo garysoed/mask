@@ -87,12 +87,12 @@ export class Drawer extends ThemedCustomElementCtrl {
   }
 
   private renderStyleWidth(): Observable<string> {
-    return combineLatest(
+    return combineLatest([
         this.expandedObs,
         this.maxSizeObs,
         this.minSizeObs,
         this.modeObs,
-        )
+    ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
               if (mode === Mode.HORIZONTAL) {

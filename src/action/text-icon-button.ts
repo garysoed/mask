@@ -13,10 +13,12 @@ import { ElementWithTagType } from '@gs-types';
 import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, noop, onDom, onKeydown } from '@persona';
 import { combineLatest, merge, Observable, of as observableOf } from '@rxjs';
 import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { integerParser, stringParser } from '../util/parsers';
+
 import { BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';
 
@@ -109,7 +111,7 @@ export class TextIconButton extends BaseAction {
   }
 
   private renderHostAriaLabel(): Observable<string> {
-    return combineLatest(this.ariaLabelObs, this.labelObs)
+    return combineLatest([this.ariaLabelObs, this.labelObs])
         .pipe(map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel));
   }
 
@@ -126,13 +128,13 @@ export class TextIconButton extends BaseAction {
     )
     .pipe(startWith(false));
 
-    return combineLatest(
-        this.activeObs,
-        this.disabled$,
-        focusedObs,
-        hoverObs,
-        this.hasPrimaryObs,
-    )
+    return combineLatest([
+      this.activeObs,
+      this.disabled$,
+      focusedObs,
+      hoverObs,
+      this.hasPrimaryObs,
+    ])
     .pipe(
         map(([active, disabled, focused, hover, primary]) => {
           if (disabled) {

@@ -1,15 +1,15 @@
 import { Vine } from '@grapevine';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from '@persona';
-import { BehaviorSubject, Observable, Subject } from '@rxjs';
-import { debounceTime, startWith, switchMap, take, tap, withLatestFrom } from '@rxjs/operators';
-import { debug } from 'gs-tools/export/rxjs';
+import { BehaviorSubject, combineLatest, Observable } from '@rxjs';
+import { debounceTime, switchMap, tap, withLatestFrom } from '@rxjs/operators';
 
 import { _p, _v } from '../../app/app';
 import { booleanParser, enumParser, stringParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
 import template from './text-input.html';
+
 
 enum InputType {
   NUMBER = 'number',
@@ -90,8 +90,7 @@ export class TextInput extends BaseInput<string> {
   }
 
   protected setupUpdateValue(value$: Observable<string>): Observable<unknown> {
-    return value$.pipe(
-        withLatestFrom(this.inputEl$),
+    return combineLatest([value$, this.inputEl$]).pipe(
         tap(([value, el]) => {
           el.value = value;
         }),

@@ -14,9 +14,11 @@ import { compose, json, Serializable } from '@nabu';
 import { AriaRole, attributeIn, attributeOut, element, InitFn, innerHtml } from '@persona';
 import { combineLatest, Observable } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
+
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
+
 import iconTemplate from './icon.html';
 import { $svgService } from './svg-service';
 
