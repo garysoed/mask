@@ -1,7 +1,7 @@
 import { Vine } from '@grapevine';
 import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { classlist, element, InitFn, onDom, single, SingleRenderSpec, textContent } from '@persona';
+import { classlist, element, InitFn, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from '@persona';
 import { merge, Observable } from '@rxjs';
 import { filter, map, mapTo, switchMap, withLatestFrom } from '@rxjs/operators';
 
@@ -81,7 +81,7 @@ export class Dialog extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderContent(vine: Vine): Observable<SingleRenderSpec|null> {
+  private renderContent(vine: Vine): Observable<RenderSpec|null> {
     return $dialogState.get(vine)
         .pipe(
             map(state => {
@@ -89,10 +89,10 @@ export class Dialog extends ThemedCustomElementCtrl {
                 return null;
               }
 
-              return {
-                attr: state.spec.content.attr || new Map(),
-                tag: state.spec.content.tag,
-              };
+              return new SimpleElementRenderSpec(
+                  state.spec.content.tag,
+                  state.spec.content.attr || new Map(),
+              );
             }),
         );
   }
