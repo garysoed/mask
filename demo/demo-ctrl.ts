@@ -2,26 +2,26 @@ import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmu
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, attributeOut, element, InitFn, onDom, repeated, RepeatedSpec } from '@persona';
+import { api, attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
 import { concat, Observable, of as observableOf } from '@rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from '@rxjs/operators';
-import { stringParser } from 'export';
 
 import { $$ as $checkbox, Checkbox } from '../src/action/input/checkbox';
 import { _p, _v } from '../src/app/app';
 import { RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
+import { stringParser } from '../src/util/parsers';
 
 import demoTemplate from './demo.html';
 
 const $ = {
   accentPalette: element('accentPalette', InstanceofType(HTMLDivElement), {
-    colorlist: repeated('accentPalette', 'div'),
+    colorlist: repeated('accentPalette'),
     onClick: onDom<MouseEvent>('click'),
   }),
   basePalette: element('basePalette', InstanceofType(HTMLDivElement), {
-    colorlist: repeated('basePalette', 'div'),
+    colorlist: repeated('basePalette'),
     onClick: onDom<MouseEvent>('click'),
   }),
   darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
@@ -80,7 +80,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderAccentPalette(): Observable<ArrayDiff<RepeatedSpec>> {
+  private renderAccentPalette(): Observable<ArrayDiff<RenderSpec>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -91,7 +91,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
 
     return concat(
-        observableOf<ArrayDiff<RepeatedSpec>>({
+        observableOf<ArrayDiff<RenderSpec>>({
           type: 'init' as 'init',
           value: initPaletteData,
         }),
@@ -99,7 +99,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderBasePalette(): Observable<ArrayDiff<RepeatedSpec>> {
+  private renderBasePalette(): Observable<ArrayDiff<RenderSpec>> {
     const initPaletteData = ORDERED_PALETTES
         .map(([colorName, color]) => createPaletteData(colorName, color, false));
 
@@ -110,7 +110,7 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
     );
 
     return concat(
-        observableOf<ArrayDiff<RepeatedSpec>>({
+        observableOf<ArrayDiff<RenderSpec>>({
           type: 'init' as 'init',
           value: initPaletteData,
         }),
@@ -133,8 +133,8 @@ export class DemoCtrl extends ThemedCustomElementCtrl {
 }
 
 function createDiffObs(oldColor: Color, newColor: Color):
-    Observable<ArrayDiff<RepeatedSpec>> {
-  const diffs: Array<ArrayDiff<RepeatedSpec>> = [];
+    Observable<ArrayDiff<RenderSpec>> {
+  const diffs: Array<ArrayDiff<RenderSpec>> = [];
 
   const oldIndex = COLOR_TO_INDEX.get(oldColor);
   const oldName = COLOR_TO_NAME.get(oldColor);
@@ -206,7 +206,7 @@ const COLOR_TO_NAME = new Map<Color, string>([...$pipe(
 )]);
 
 function createPaletteData(colorName: string, color: Color, selected: boolean):
-    RepeatedSpec {
+    RenderSpec {
   const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
 
   const classes = ['palette'];
@@ -214,11 +214,12 @@ function createPaletteData(colorName: string, color: Color, selected: boolean):
     classes.push('selected');
   }
 
-  return {
-    attr: new Map([
-      ['class', classes.join(' ')],
-      ['color', colorName],
-      ['style', `background-color: ${colorCss};`],
-    ]),
-  };
+  return new SimpleElementRenderSpec(
+      'div',
+      new Map([
+        ['class', classes.join(' ')],
+        ['color', colorName],
+        ['style', `background-color: ${colorCss};`],
+      ]),
+  );
 }

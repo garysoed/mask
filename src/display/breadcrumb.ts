@@ -3,7 +3,7 @@ import { Errors } from '@gs-tools/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs-tools/rxjs';
 import { objectConverter } from '@gs-tools/serializer';
 import { InstanceofType } from '@gs-types';
-import { attributeIn, dispatcher, element, InitFn, onDom, repeated, RepeatedSpec } from '@persona';
+import { attributeIn, dispatcher, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
 import { Observable } from '@rxjs';
 import { map, tap, withLatestFrom } from '@rxjs/operators';
 
@@ -38,7 +38,7 @@ export const $$ = {
 export const $ = {
   host: element($$),
   row: element('row', InstanceofType(HTMLDivElement), {
-    crumbsSlot: repeated('crumbs', 'mk-crumb'),
+    crumbsSlot: repeated('crumbs'),
     onAction: onDom(ACTION_EVENT),
   }),
 };
@@ -63,7 +63,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
     ];
   }
 
-  renderCrumbs(): Observable<ArrayDiff<RepeatedSpec>> {
+  renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
     return this.pathKeySubject
         .pipe(
             withLatestFrom(this.pathDataSubject.pipe(scanMap())),
@@ -109,7 +109,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
                   };
               }
             }),
-            filterNonNull<ArrayDiff<RepeatedSpec>|null>(),
+            filterNonNull<ArrayDiff<RenderSpec>|null>(),
         );
   }
 
@@ -153,8 +153,9 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   }
 }
 
-function renderCrumbData(data: CrumbData): RepeatedSpec {
-  return {
-    attr: new Map([['display', data.display], ['key', data.key]]),
-  };
+function renderCrumbData(data: CrumbData): RenderSpec {
+  return new SimpleElementRenderSpec(
+      'mk-crumb',
+      new Map([['display', data.display], ['key', data.key]]),
+  );
 }
