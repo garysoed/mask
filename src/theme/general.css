@@ -169,6 +169,7 @@ p {
 /* Table styling */
 table {
   border-collapse: collapse;
+  color: var(--mkThemePassiveFG1);
   font-size: var(--gsFontSizeRoot);
 }
 
@@ -176,9 +177,13 @@ table tr:nth-child(2n) {
   background-color: var(--mkThemePassiveBG);
 }
 
+th {
+  padding: 1rem;
+}
+
 td {
   border: 1px solid var(--mkThemePassiveFG1);
-  padding: .5rem;
+  padding: 1rem;
 }
 
 /* Layouts */
