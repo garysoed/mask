@@ -1,4 +1,4 @@
-import { ImmutableList, ImmutableMap } from '@gs-tools/collect';
+import { ImmutableMap } from '@gs-tools/collect';
 import { integerConverter, listConverter, mapConverter, typeBased } from '@gs-tools/serializer';
 import { Enums } from '@gs-tools/typescript';
 import { BooleanType } from '@gs-types';
@@ -32,7 +32,7 @@ export function integerParser(): Converter<number, string> {
 
 export function listParser<T>(
     itemParser: Converter<T, Serializable>,
-): Converter<ImmutableList<T>, string> {
+): Converter<T[], string> {
   return compose(
       listConverter(itemParser),
       human(),

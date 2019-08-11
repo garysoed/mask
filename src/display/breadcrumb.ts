@@ -23,7 +23,7 @@ export interface CrumbData {
 
 export const $$ = {
   dispatch: dispatcher(ACTION_EVENT),
-  path: attributeIn<ImmutableList<CrumbData>>(
+  path: attributeIn<CrumbData[]>(
       'path',
       listParser(
           objectConverter<CrumbData>({
@@ -31,7 +31,7 @@ export const $$ = {
             key: stringParser(),
           }),
       ),
-      createImmutableList([]),
+      [],
   ),
 };
 
@@ -146,8 +146,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
               }
               this.pathDataSubject.setAll(map);
 
-              const keys = [...$pipe(path, $pick('key'), asImmutableList())];
-              this.pathKeySubject.setAll(keys);
+              this.pathKeySubject.setAll(path.map(({key}) => key));
             }),
         );
   }

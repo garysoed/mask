@@ -1,11 +1,13 @@
 import { assert, createSpySubject, match, should, test } from '@gs-testing';
-import { createImmutableList } from '@gs-tools/collect';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, of as observableOf } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
+
 import { _p } from '../app/app';
+
 import { $, Breadcrumb } from './breadcrumb';
-import { BreadcrumbClickEvent, BREADCRUMB_CLICK_EVENT } from './breadcrumb-event';
+import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
+
 
 const testerFactory = new PersonaTesterFactory(_p);
 
@@ -22,7 +24,7 @@ test('display.Breadcrumb', () => {
 
   test('onRowAction', () => {
     should(`dispatch the correct event`, () => {
-      const data = createImmutableList([
+      const data = [
         {
           display: 'displayA',
           key: 'a',
@@ -35,7 +37,7 @@ test('display.Breadcrumb', () => {
           display: 'displayC',
           key: 'c',
         },
-      ]);
+      ];
 
       const actionSubject = createSpySubject();
       fromEvent(el.element, BREADCRUMB_CLICK_EVENT).subscribe(actionSubject);
@@ -55,7 +57,7 @@ test('display.Breadcrumb', () => {
 
   test('renderCrumbs_', () => {
     should(`render the crumbs correctly`, () => {
-      const data = createImmutableList([
+      const data = [
         {
           display: 'displayA',
           key: 'a',
@@ -68,7 +70,7 @@ test('display.Breadcrumb', () => {
           display: 'displayC',
           key: 'c',
         },
-      ]);
+      ];
 
       el.setAttribute($.host._.path, data).subscribe();
 
