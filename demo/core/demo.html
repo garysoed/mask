@@ -1,0 +1,19 @@
+<style id="theme"></style>
+<style>
+  #main {
+    padding: 1rem;
+  }
+</style>
+<style id="globalStyle"></style>
+<section id="root" layout="row" mk-theme="dark" fill-parent>
+  <mk-root-layout icon="logo" id="pageRoot" label="Mask Demo">
+    <div id="drawerRoot" slot="drawer">
+      <!-- componentButtons -->
+    </div>
+
+    <div id="main" slot="main">
+      <slot></slot>
+      <mk-layout-overlay></mk-layout-overlay>
+    </div>
+  </mk-root-layout>
+</section>

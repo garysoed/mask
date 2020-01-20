@@ -1,0 +1,5 @@
+{
+  "/bin/*": "../out/$0",
+  "/": "./main.html",
+  "/asset/:file": "asset/$file"
+}

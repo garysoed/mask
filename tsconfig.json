@@ -34,7 +34,8 @@
   },
   "include": [
     "demo/*",
+    "demo-old/*",
     "src/**/*.ts",
-    "typings/*.d.ts",
+    "typings/*.d.ts", "demo/core/demo.ts",
   ]
 }
