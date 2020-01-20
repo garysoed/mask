@@ -1,8 +1,10 @@
-import { assert, match, should, test } from '@gs-testing';
+import { assert, objectThat, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, ReplaySubject } from '@rxjs';
+
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
+
 import { Crumb } from './crumb';
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -24,7 +26,7 @@ test('@mask/display/crumb', () => {
       el.element.click();
 
       assert(actionSubject).to.emitWith(
-          match.anyObjectThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+          objectThat<ActionEvent>().beAnInstanceOf(ActionEvent));
     });
   });
 });

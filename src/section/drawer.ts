@@ -9,7 +9,6 @@
  * @slot The content of the drawer.
  */
 
-import { createImmutableSet } from '@gs-tools/collect';
 import { stringMatchConverter } from '@gs-tools/serializer';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, element, InitFn, style } from '@persona';
@@ -33,7 +32,7 @@ export const $$ = {
   minSize: attributeIn('min-size', stringParser(), '0'),
   mode: attributeIn(
       'mode',
-      stringMatchConverter(createImmutableSet([Mode.HORIZONTAL, Mode.VERTICAL])),
+      stringMatchConverter(new Set([Mode.HORIZONTAL, Mode.VERTICAL])),
       Mode.VERTICAL,
   ),
 };

@@ -1,4 +1,4 @@
-import { $declareKeyed, $map, $pipe, $zip, asImmutableMap, countable, createImmutableList } from '@gs-tools/collect';
+import { $asMap, $map, $pipe, $zip, countableIterable } from '@gs-tools/collect';
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
@@ -173,7 +173,7 @@ function getColor(event: MouseEvent): Color|null {
   return (Palette as any)[colorName] || null;
 }
 
-const ORDERED_PALETTES: Array<[string, Color]> = [
+const ORDERED_PALETTES: ReadonlyArray<[string, Color]> = [
   ['RED', Palette.RED],
   ['ORANGE', Palette.ORANGE],
   ['AMBER', Palette.AMBER],
@@ -191,19 +191,18 @@ const ORDERED_PALETTES: Array<[string, Color]> = [
   ['BROWN', Palette.BROWN],
   ['GREY', Palette.GREY],
 ];
-const COLOR_TO_INDEX = new Map<Color, number>([...$pipe(
-    createImmutableList(ORDERED_PALETTES),
+const COLOR_TO_INDEX: ReadonlyMap<Color, number> = $pipe(
+    ORDERED_PALETTES,
     $map(([, color]) => color),
-    $zip(countable()),
-    $declareKeyed(([color]) => color),
-    asImmutableMap<Color, number>(),
-)]);
-const COLOR_TO_NAME = new Map<Color, string>([...$pipe(
-    createImmutableList(ORDERED_PALETTES),
+    $zip(countableIterable()),
+    $asMap(),
+);
+
+const COLOR_TO_NAME: ReadonlyMap<Color, string> = $pipe(
+    ORDERED_PALETTES,
     $map(([colorName, color]) => [color, colorName] as [Color, string]),
-    $declareKeyed(([color]) => color),
-    asImmutableMap<Color, string>(),
-)]);
+    $asMap(),
+);
 
 function createPaletteData(colorName: string, color: Color, selected: boolean):
     RenderSpec {

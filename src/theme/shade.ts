@@ -1,5 +1,4 @@
-import { createImmutableList } from '@gs-tools/collect';
-import { Color, Colors, HslColor, RgbColor } from '@gs-tools/color';
+import { Color, Colors, RgbColor } from '@gs-tools/color';
 
 
 export interface Shade {
@@ -22,7 +21,7 @@ export const B175 = {mixBG: false, mixRatio: 0.25};
 export const B190 = {mixBG: false, mixRatio: 0.1 };
 export const B200 = {mixBG: false, mixRatio: 0   };
 
-export const SHADES = createImmutableList([
+export const SHADES: readonly Shade[] = [
   B000,
   B010,
   B025,
@@ -34,7 +33,7 @@ export const SHADES = createImmutableList([
   B175,
   B190,
   B200,
-]);
+];
 
 const BLACK = RgbColor.newInstance(0, 0, 0);
 const WHITE = RgbColor.newInstance(255, 255, 255);

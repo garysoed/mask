@@ -1,5 +1,4 @@
 import { Vine } from '@grapevine';
-import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { InstanceofType } from '@gs-types';
 import { classlist, element, InitFn } from '@persona';
 import { Observable } from '@rxjs';
@@ -29,13 +28,13 @@ export class Backdrop extends ThemedCustomElementCtrl {
     ];
   }
 
-  renderRootClasslist(vine: Vine): Observable<ImmutableSet<string>> {
+  renderRootClasslist(vine: Vine): Observable<ReadonlySet<string>> {
     return $dialogState.get(vine).pipe(
         map(dialogState => {
           if (dialogState.isOpen) {
-            return createImmutableSet(['isVisible']);
+            return new Set(['isVisible']);
           } else {
-            return createImmutableSet();
+            return new Set();
           }
         }),
     );

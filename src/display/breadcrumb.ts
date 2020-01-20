@@ -1,4 +1,4 @@
-import { $getKey, $head, $map, $pick, $pipe, asImmutableList, createImmutableList, createImmutableMap, ImmutableList } from '@gs-tools/collect';
+import { $ as $pipe, $asArray, $filter, $map } from '@gs-tools/collect';
 import { Errors } from '@gs-tools/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs-tools/rxjs';
 import { objectConverter } from '@gs-tools/serializer';
@@ -15,6 +15,7 @@ import { listParser, stringParser } from '../util/parsers';
 import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
 import { Crumb } from './crumb';
+
 
 export interface CrumbData {
   display: string;
@@ -68,43 +69,43 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
         .pipe(
             withLatestFrom(this.pathDataSubject.pipe(scanMap())),
             map(([diff, map]) => {
-              const immutableMap = createImmutableMap(map);
               switch (diff.type) {
                 case 'delete':
                   return diff;
                 case 'init':
+                  const valueSet = new Set(diff.value);
                   const crumbDataList = $pipe(
-                      immutableMap,
-                      $getKey(...diff.value),
-                      $pick(1),
+                      map,
+                      $filter(([key]) => valueSet.has(key)),
+                      $map(([, value]) => value),
                       $map(renderCrumbData),
-                      asImmutableList(),
+                      $asArray(),
                   );
 
                   return {
                     type: 'init' as 'init',
-                    value: [...crumbDataList],
+                    value: crumbDataList,
                   };
                 case 'insert':
-                  const insertData = $pipe(immutableMap, $getKey(diff.value), $pick(1), $head());
+                  const insertData = map.get(diff.value);
                   if (!insertData) {
                     return null;
                   }
 
                   return {
                     index: diff.index,
-                    type: 'insert',
+                    type: 'insert' as 'insert',
                     value: renderCrumbData(insertData),
                   };
                 case 'set':
-                  const setData = $pipe(immutableMap, $getKey(diff.value), $pick(1), $head());
+                  const setData = map.get(diff.value);
                   if (!setData) {
                     return null;
                   }
 
                   return {
                     index: diff.index,
-                    type: 'set',
+                    type: 'set' as 'set',
                     value: renderCrumbData(setData),
                   };
               }

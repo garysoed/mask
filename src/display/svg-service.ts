@@ -2,7 +2,9 @@ import { BaseDisposable } from '@gs-tools/dispose';
 import { MapSubject, scanMap } from '@gs-tools/rxjs';
 import { from as observableFrom, Observable, of as observableOf } from '@rxjs';
 import { map, retry, shareReplay, switchMap } from '@rxjs/operators';
+
 import { _v } from '../app/app';
+
 import { SvgConfig } from './svg-config';
 
 const __run = Symbol('SvgService.run');
@@ -10,7 +12,7 @@ const __run = Symbol('SvgService.run');
 export class SvgService extends BaseDisposable {
   private readonly svgObsMap: Map<string, Observable<string>>;
 
-  constructor(svgConfig: Map<string, SvgConfig>) {
+  constructor(svgConfig: ReadonlyMap<string, SvgConfig>) {
     super();
     this.svgObsMap = createSvgObs(svgConfig);
   }
@@ -25,7 +27,7 @@ export class SvgService extends BaseDisposable {
 }
 
 function createSvgObs(
-    configs: Map<string, SvgConfig>,
+    configs: ReadonlyMap<string, SvgConfig>,
 ): Map<string, Observable<string>> {
   const obsMap = new Map<string, Observable<string>>();
   for (const [key, config] of configs) {

@@ -1,6 +1,5 @@
-import { ImmutableMap } from '@gs-tools/collect';
 import { integerConverter, listConverter, mapConverter, typeBased } from '@gs-tools/serializer';
-import { Enums } from '@gs-tools/typescript';
+import { enums } from '@gs-tools/typescript';
 import { BooleanType } from '@gs-types';
 import { compose, Converter, human, identity, Result, Serializable } from '@nabu';
 
@@ -9,7 +8,7 @@ export function booleanParser(): Converter<boolean, string> {
 }
 
 export function enumParser<E extends string>(enumSet: any): Converter<E, string> {
-  const values = new Set(Enums.getAllValues(enumSet));
+  const values = new Set(enums.getAllValues(enumSet));
 
   return {
     convertBackward(value: string): Result<E> {
@@ -42,7 +41,7 @@ export function listParser<T>(
 export function mapParser<K, V>(
     keyParser: Converter<K, string>,
     valueParser: Converter<V, string>,
-): Converter<ImmutableMap<K, V>, string> {
+): Converter<ReadonlyMap<K, V>, string> {
   return compose(mapConverter(keyParser, valueParser), human());
 }
 

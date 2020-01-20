@@ -1,6 +1,6 @@
 import { Vine } from '@grapevine';
 import { Jsons } from '@gs-tools/data';
-import { InstanceofType } from '@gs-types';
+import { instanceofType } from '@gs-types';
 import { classlist, element, InitFn, style } from '@persona';
 import { BehaviorSubject, Observable } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
@@ -15,13 +15,13 @@ import layoutOverlayTemplate from './layout-overlay.html';
 const $isActive = _v.source(() => new BehaviorSubject(false), globalThis);
 
 const $ = {
-  gridLeft: element('gridLeft', InstanceofType(HTMLDivElement), {
+  gridLeft: element('gridLeft', instanceofType(HTMLDivElement), {
     backgroundImage: style('backgroundImage'),
   }),
-  gridRight: element('gridRight', InstanceofType(HTMLDivElement), {
+  gridRight: element('gridRight', instanceofType(HTMLDivElement), {
     backgroundImage: style('backgroundImage'),
   }),
-  root: element('root', InstanceofType(HTMLDivElement), {
+  root: element('root', instanceofType(HTMLDivElement), {
     classlist: classlist(),
   }),
 };
@@ -48,8 +48,8 @@ export class LayoutOverlay extends ThemedCustomElementCtrl {
     ];
   }
 
-  handleIsActiveChange(vine: Vine): Observable<string[]> {
-    return $isActive.get(vine).pipe(map(isActive => isActive ? ['active'] : []));
+  handleIsActiveChange(vine: Vine): Observable<ReadonlySet<string>> {
+    return $isActive.get(vine).pipe(map(isActive => isActive ? new Set(['active']) : new Set([])));
   }
 
   renderBackgroundImage(vine: Vine): Observable<string> {

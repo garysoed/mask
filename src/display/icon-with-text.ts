@@ -9,8 +9,6 @@
  * @slot The glyph of the icon to display.
  */
 
-import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
-import { debug } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from '@persona';
 import { Observable } from '@rxjs';
@@ -22,6 +20,7 @@ import { stringParser } from '../util/parsers';
 
 import { Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
+
 
 export const $$ = {
   icon: attributeIn('icon', stringParser(), ''),
@@ -64,26 +63,26 @@ export class IconWithText extends ThemedCustomElementCtrl {
     ];
   }
 
-  renderIconClasses(): Observable<ImmutableSet<string>> {
+  renderIconClasses(): Observable<ReadonlySet<string>> {
     return this.iconLigatureObs.pipe(
         map(iconLigature => {
           if (!iconLigature) {
-            return createImmutableSet();
+            return new Set();
           }
 
-          return createImmutableSet(['hasIcon']);
+          return new Set(['hasIcon']);
         }),
     );
   }
 
-  renderTextClasses(): Observable<ImmutableSet<string>> {
+  renderTextClasses(): Observable<ReadonlySet<string>> {
     return this.labelObs.pipe(
         map(label => {
           if (!label) {
-            return createImmutableSet();
+            return new Set();
           }
 
-          return createImmutableSet(['hasText']);
+          return new Set(['hasText']);
         }),
     );
   }

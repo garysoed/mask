@@ -1,5 +1,5 @@
 import { Source, Vine } from '@grapevine';
-import { assert, createSpy, fake, match, setup, should, test } from '@gs-testing';
+import { assert, createSpy, fake, setup, should, stringThat, test } from '@gs-testing';
 import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
 import { switchMap } from '@rxjs/operators';
 
@@ -20,7 +20,9 @@ test('@mask/section/dialog-service', () => {
 
   test('open', () => {
     should(`update the state correctly`, () => {
-      const mockCloseHandler = createSpy<Observable<unknown>>('CloseHandler');
+      const mockCloseHandler = createSpy<Observable<unknown>, [boolean, number|null]>(
+          'CloseHandler',
+      );
       fake(mockCloseHandler).always().return(EMPTY);
 
       const stateSubject = new BehaviorSubject<DialogState|null>(null);
@@ -62,9 +64,9 @@ test('@mask/section/dialog-service', () => {
 
       // Open the dialog again.
       const mockError = createSpy('error');
-      service.open(spec).subscribe(undefined, err => mockError(err.message));
+      service.open(spec).subscribe({error: err => mockError(err.message)});
       assert(mockError).to
-          .haveBeenCalledWith(match.anyStringThat().match(/State of dialog service/));
+          .haveBeenCalledWith(stringThat().match(/State of dialog service/));
     });
   });
 });

@@ -1,9 +1,11 @@
 import { Vine } from '@grapevine';
-import { assert, createSpyInstance, fake, match, should, spy, test } from '@gs-testing';
+import { arrayThat, assert, createSpyInstance, fake, should, spy, test } from '@gs-testing';
 import { CustomElementCtrl } from '@persona';
 import { BehaviorSubject } from '@rxjs';
-import { Palette } from 'export';
+
+import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
+
 import { $theme, _p, start } from './app';
 
 type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;
@@ -25,7 +27,7 @@ test('app.App', () => {
 
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
           'test',
-          match.anyIterableThat<CustomElementCtrlCtor, CustomElementCtrlCtor[]>().haveElements([]),
+          arrayThat<CustomElementCtrlCtor>().beEmpty(),
           window.customElements,
       );
       assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);

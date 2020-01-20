@@ -1,4 +1,4 @@
-import { assert, createSpySubject, match, should, test } from '@gs-testing';
+import { assert, createSpySubject, objectThat, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, of as observableOf } from '@rxjs';
 import { map, switchMap } from '@rxjs/operators';
@@ -48,7 +48,7 @@ test('display.Breadcrumb', () => {
       el.getNodesAfter($.row._.crumbsSlot)
           .subscribe(childrenNodes => (childrenNodes![0] as HTMLElement).click());
 
-      const eventMatcher = match.anyObjectThat<BreadcrumbClickEvent>()
+      const eventMatcher = objectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
       assert(actionSubject).to.emitWith(eventMatcher);
       assert(eventMatcher.getLastMatch().crumbKey).to.equal('a');

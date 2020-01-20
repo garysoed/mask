@@ -1,11 +1,13 @@
 
-import { assert, createSpySubject, match, setup, should, test } from '@gs-testing';
+import { arrayThat, assert, createSpySubject, setThat, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { BehaviorSubject, EMPTY } from '@rxjs';
 import { map, switchMap, take } from '@rxjs/operators';
+
 import { TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
+
 import { $, Dialog } from './dialog';
 import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
 
@@ -35,7 +37,7 @@ test('@mask/section/dialog', () => {
           .subscribe();
 
       assert(el.getClassList($.cancelButton)).to.emitWith(
-          match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
+          setThat<string>().haveExactElements(new Set(['isVisible'])),
       );
     });
 
@@ -52,7 +54,7 @@ test('@mask/section/dialog', () => {
           .subscribe();
 
       assert(el.getClassList($.cancelButton)).to.emitWith(
-        match.anyIterableThat<string, Set<string>>().beEmpty(),
+        setThat<string>().beEmpty(),
       );
     });
   });
@@ -86,9 +88,7 @@ test('@mask/section/dialog', () => {
     should(`render nothing if dialog is not open`, () => {
       const elementsObs = el.getNodesAfter($.content._.single)
           .pipe(map(nodes => nodes.filter(node => node.nodeType === Node.ELEMENT_NODE)));
-      assert(elementsObs).to.emitWith(
-          match.anyIterableThat<Node, Node[]>().beEmpty(),
-      );
+      assert(elementsObs).to.emitWith(arrayThat<Node>().beEmpty());
     });
   });
 
@@ -106,13 +106,13 @@ test('@mask/section/dialog', () => {
           .subscribe();
 
       assert(el.getClassList($.root)).to.emitWith(
-        match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
+        setThat<string>().haveExactElements(new Set(['isVisible'])),
       );
     });
 
     should(`render correctly when dialog is hidden`, () => {
       assert(el.getClassList($.root)).to.emitWith(
-        match.anyIterableThat<string, Set<string>>().beEmpty(),
+        setThat<string>().beEmpty(),
       );
     });
   });

@@ -1,7 +1,9 @@
-import { assert, match, setup, should, test } from '@gs-testing';
+import { assert, setThat, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { switchMap, take } from '@rxjs/operators';
+
 import { _p } from '../app/app';
+
 import { $, Backdrop } from './backdrop';
 import { $dialogService, DialogService } from './dialog-service';
 
@@ -31,14 +33,12 @@ test('@mask/section/backdrop', () => {
           .subscribe();
 
       assert(el.getClassList($.root)).to.emitWith(
-          match.anyIterableThat<string, Set<string>>().haveElements(['isVisible']),
+          setThat<string>().haveExactElements(new Set(['isVisible'])),
       );
     });
 
     should(`render correctly when dialog is not open`, () => {
-      assert(el.getClassList($.root)).to.emitWith(
-          match.anyIterableThat<string, Set<string>>().beEmpty(),
-      );
+      assert(el.getClassList($.root)).to.emitWith(setThat<string>().beEmpty());
     });
   });
 });

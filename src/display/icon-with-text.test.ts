@@ -1,6 +1,8 @@
-import { assert, match, setup, should, test } from '@gs-testing';
+import { assert, setThat, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+
 import { _p } from '../app/app';
+
 import { $, IconWithText } from './icon-with-text';
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -31,12 +33,12 @@ test('display.IconWithText', () => {
       el.setAttribute($.host._.icon, iconLigature).subscribe();
 
       assert(el.getClassList($.icon)).to
-          .emitWith(match.anyIterableThat<string, Set<string>>().haveElements(['hasIcon']));
+          .emitWith(setThat<string>().haveExactElements(new Set(['hasIcon'])));
     });
 
     should(`render nothing if the icon attribute is not set`, () => {
       assert(el.getClassList($.icon)).to
-          .emitWith(match.anyIterableThat<string, Set<string>>().beEmpty());
+          .emitWith(setThat<string>().beEmpty());
     });
   });
 
@@ -46,12 +48,12 @@ test('display.IconWithText', () => {
       el.setAttribute($.host._.label, label).subscribe();
 
       assert(el.getClassList($.text)).to
-          .emitWith(match.anyIterableThat<string, Set<string>>().haveElements(['hasText']));
+          .emitWith(setThat<string>().haveExactElements(new Set(['hasText'])));
     });
 
     should(`render nothing if the slot is empty`, () => {
       assert(el.getClassList($.text)).to
-          .emitWith(match.anyIterableThat<string, Set<string>>().beEmpty());
+          .emitWith(setThat<string>().beEmpty());
     });
   });
 });

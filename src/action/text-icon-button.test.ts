@@ -1,8 +1,10 @@
-import { assert, createSpySubject, match, setup, should, test } from '@gs-testing';
+import { anyThat, assert, createSpySubject, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
 import { fromEvent, Subject } from '@rxjs';
+
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
+
 import { $, TextIconButton } from './text-icon-button';
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -27,19 +29,19 @@ test('component.TextIconButton', () => {
     should(`fire the action event if clicked`, () => {
       el.element.click();
       assert(actionSubject).to
-          .emitWith(match.anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+          .emitWith(anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
     });
 
     should(`fire the action event on pressing Enter`, () => {
       el.simulateKeypress($.host, [{key: 'Enter'}]).subscribe();
       assert(actionSubject).to
-          .emitWith(match.anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+          .emitWith(anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
     });
 
     should(`fire the action event on pressing space`, () => {
       el.simulateKeypress($.host, [{key: ' '}]).subscribe();
       assert(actionSubject).to
-          .emitWith(match.anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+          .emitWith(anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
     });
 
     should(`not fire the action event if disabled`, () => {

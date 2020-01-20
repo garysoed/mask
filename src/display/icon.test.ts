@@ -1,10 +1,10 @@
 import { assert, FakeFetch, setup, should, test } from '@gs-testing';
-import { $pipe, $push, asImmutableMap } from '@gs-tools/collect';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { map, take } from '@rxjs/operators';
+import { map } from '@rxjs/operators';
+
 import { _p } from '../app/app';
+
 import { $, Icon } from './icon';
-import { SvgConfig } from './svg-config';
 import { $svgConfig } from './svg-service';
 
 const SVG_NAME = 'svgName';

@@ -1,5 +1,4 @@
 import { Vine } from '@grapevine';
-import { createImmutableSet, ImmutableSet } from '@gs-tools/collect';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
 import { classlist, element, InitFn, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from '@persona';
 import { merge, Observable } from '@rxjs';
@@ -67,16 +66,16 @@ export class Dialog extends ThemedCustomElementCtrl {
     ];
   }
 
-  private renderCancelButtonClasses(vine: Vine): Observable<ImmutableSet<string>> {
+  private renderCancelButtonClasses(vine: Vine): Observable<ReadonlySet<string>> {
     return $dialogState
         .get(vine)
         .pipe(
             map(dialogState => {
               if (!dialogState.isOpen || !dialogState.spec.cancelable) {
-                return createImmutableSet([]);
+                return new Set([]);
               }
 
-              return createImmutableSet(['isVisible']);
+              return new Set(['isVisible']);
             }),
         );
   }
@@ -97,12 +96,12 @@ export class Dialog extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderRootClasses(vine: Vine): Observable<ImmutableSet<string>> {
+  private renderRootClasses(vine: Vine): Observable<ReadonlySet<string>> {
     return $dialogState.get(vine).pipe(map(dialogState => {
       if (dialogState.isOpen) {
-        return createImmutableSet(['isVisible']);
+        return new Set(['isVisible']);
       } else {
-        return createImmutableSet();
+        return new Set();
       }
     }));
   }
