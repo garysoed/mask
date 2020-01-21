@@ -64,7 +64,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
     ];
   }
 
-  renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
+  private renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
     return this.pathKeySubject
         .pipe(
             withLatestFrom(this.pathDataSubject.pipe(scanMap())),
@@ -114,7 +114,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
         );
   }
 
-  renderDispatchAction(): Observable<BreadcrumbClickEvent> {
+  private renderDispatchAction(): Observable<BreadcrumbClickEvent> {
     return this.rowOnActionObs
         .pipe(
             map(event => {
@@ -136,7 +136,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
         );
   }
 
-  setupCrumbDataForwarding(): InitFn {
+  private setupCrumbDataForwarding(): InitFn {
     return () => this.pathObs
         .pipe(
             tap(path => {

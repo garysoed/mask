@@ -1,7 +1,7 @@
-import { $drawer, $textIconButton, _p, _v, Drawer, TextIconButton, ThemedCustomElementCtrl } from 'export';
+import { $drawer, $textIconButton, _p, _v, Drawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
 
 import { elementWithTagType } from '@gs-types';
-import { api, element, InitFn } from '@persona';
+import { api, attributeIn, element, InitFn } from '@persona';
 import { BehaviorSubject, Observable } from '@rxjs';
 import { map, tap, withLatestFrom } from '@rxjs/operators';
 
@@ -14,6 +14,9 @@ const $ = {
   detailsDrawer: element('detailsDrawer', elementWithTagType('mk-drawer'), {
     ...api($drawer),
   }),
+  host: element({
+    label: attributeIn('label', stringParser()),
+  }),
 };
 
 @_p.customElement({
@@ -25,6 +28,7 @@ const $ = {
   template,
 })
 export class DemoLayout extends ThemedCustomElementCtrl {
+  private readonly hostLabel$ = _p.input($.host._.label, this);
   private readonly isDrawerExpanded$ = new BehaviorSubject(false);
   private readonly onDetailsButtonClick$ = _p.input($.detailsButton._.actionEvent, this);
 
@@ -32,6 +36,7 @@ export class DemoLayout extends ThemedCustomElementCtrl {
     return [
       ...super.getInitFunctions(),
       _p.render($.detailsButton._.icon).withVine(_v.stream(this.renderDetailsButtonIcon, this)),
+      _p.render($.detailsButton._.label).withVine(_v.stream(this.renderDetailsButtonLabel, this)),
       _p.render($.detailsDrawer._.expanded)
           .withVine(_v.stream(this.renderDetailsDrawerExpanded, this)),
       this.setupOnDetailsButtonClick,
@@ -42,6 +47,10 @@ export class DemoLayout extends ThemedCustomElementCtrl {
     return this.isDrawerExpanded$.pipe(
         map(isExpanded => isExpanded ? 'chevrondown' : 'chevronup'),
     );
+  }
+
+  private renderDetailsButtonLabel(): Observable<string> {
+    return this.hostLabel$.pipe(map(label => `Details: ${label}`));
   }
 
   private renderDetailsDrawerExpanded(): Observable<boolean> {

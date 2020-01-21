@@ -5,21 +5,24 @@ import { BehaviorSubject } from '@rxjs';
 
 
 export enum Views {
-  ICON = 'ICON',
-  MAIN = 'MAIN',
+  BREADCRUMB = 'b',
+  ICON = 'i',
+  MAIN = 'm',
 }
 
 export interface Routes extends LocationSpec {
+  [Views.BREADCRUMB]: {};
   [Views.ICON]: {};
   [Views.MAIN]: {};
 }
 
 const ROUTE_SPEC: Array<RouteSpec<keyof Routes>> = [
   {path: '/', type: Views.MAIN},
+  {path: '/breadcrumb', type: Views.BREADCRUMB},
   {path: '/icon', type: Views.ICON},
 ];
 
-const DEFAULT_ROUTE: Route<Routes, 'MAIN'> = {payload: {}, type: Views.MAIN};
+const DEFAULT_ROUTE: Route<Routes, Views.MAIN> = {payload: {}, type: Views.MAIN};
 
 export const $locationService = _v.source(
     vine => new BehaviorSubject(

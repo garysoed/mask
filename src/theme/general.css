@@ -16,10 +16,14 @@ body {
 
 [mk-body-1],
 [mk-body-2],
-a,
-code {
+a {
   font-size: 1.25rem;
   line-height: 2rem;
+}
+
+code {
+  font-size: 1rem;
+  line-height: 1.5rem;
 }
 
 [mk-body-2] {
