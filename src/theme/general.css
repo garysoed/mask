@@ -178,12 +178,34 @@ table tr:nth-child(2n) {
 }
 
 th {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: start;
+}
+
+td, th {
+  border: 1px solid var(--mkThemeActionDisabledFG2);
   padding: 1rem;
 }
 
-td {
-  border: 1px solid var(--mkThemePassiveFG1);
-  padding: 1rem;
+tr:first-child th,
+tr:first-child td {
+  border-top: none;
+}
+
+th:first-child,
+td:first-child {
+  border-left: none;
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+tr:last-child th,
+tr:last-child td {
+  border-bottom: none;
 }
 
 /* Layouts */
