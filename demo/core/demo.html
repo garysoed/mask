@@ -1,8 +1,5 @@
 <style id="theme"></style>
 <style>
-  #main {
-    padding: 1rem;
-  }
 </style>
 <style id="globalStyle"></style>
 <section id="root" layout="row" mk-theme="dark" fill-parent>
@@ -11,8 +8,19 @@
       <!-- componentButtons -->
     </div>
 
-    <div id="main" slot="main">
-      <!-- content -->
+    <div id="main" layout="row" slot="main">
+      <div flex id="content">
+        <!-- content -->
+      </div>
+      <mk-drawer
+          id="settingsDrawer"
+          max-size="16rem"
+          min-size="4rem"
+          mk-theme-highlight
+          mode="vertical"
+      >
+        <mk-icon-with-text label="Settings" icon="settings"></mk-icon-with-text>
+      </mk-drawer>
       <mk-layout-overlay></mk-layout-overlay>
     </div>
   </mk-root-layout>

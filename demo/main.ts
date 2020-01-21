@@ -3,6 +3,7 @@ import { $svgConfig, Palette, start as startMask, Theme } from '../export';
 import highlightSvg from './asset/highlight.svg';
 import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
+import settingsSvg from './asset/settings.svg';
 import { Demo } from './core/demo';
 
 
@@ -12,6 +13,7 @@ const ICONS = new Map([
   ['logo', maskSvg],
   ['highlight', highlightSvg],
   ['palette', paletteSvg],
+  ['settings', settingsSvg],
 ]);
 
 window.addEventListener('load', () => {
