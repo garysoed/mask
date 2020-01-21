@@ -2,7 +2,8 @@ import { CustomElementCtrlCtor } from '@persona/internal';
 
 import { Icon, TAG as ICON_TAG } from '../component/icon';
 
-import { Routes, Views } from './location-service';
+import { Views } from './location-service';
+
 
 export interface ComponentSpec {
   readonly ctor: CustomElementCtrlCtor;
