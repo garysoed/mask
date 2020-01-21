@@ -1,7 +1,7 @@
 import { ElementWithTagType } from '@gs-types';
 import { api, attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from '@persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from '@rxjs';
-import { map, mapTo, startWith, tap } from '@rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from '@rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';
@@ -69,9 +69,13 @@ export class RootLayout extends ThemedCustomElementCtrl {
   private setupHandleDrawerExpandCollapse(): InitFn {
     return () => combineLatest([
           merge(
-              this.onMouseOut$.pipe(mapTo(false)),
-              this.onMouseOver$.pipe(mapTo(true)),
-          ).pipe(startWith(false)),
+              this.onMouseOut$.pipe(debounceTime(100), mapTo(false)),
+              this.onMouseOver$.pipe(debounceTime(100), mapTo(true)),
+          )
+          .pipe(
+              startWith(false),
+              distinctUntilChanged(),
+          ),
           this.qIsDesktop$,
         ])
         .pipe(

@@ -7,6 +7,26 @@
     transition: height var(--mkAnimationTime);
   }
 
+  #settingsDrawer[expanded="T"] #accentPalette,
+  #settingsDrawer[expanded="T"] #basePalette {
+    height: 16rem;
+    transition: height var(--mkAnimationTime);
+  }
+
+  #components {
+    overflow: hidden;
+  }
+
+  #components {
+    height: 0%;
+    transition: height var(--mkAnimationTime);
+  }
+
+  #rootLayout[drawer-expanded="T"] #components {
+    height: 100%;
+    transition: height var(--mkAnimationTime);
+  }
+
   #content {
     position: relative;
   }
@@ -14,12 +34,6 @@
   #drawerContent {
     overflow: hidden;
     width: 16rem;
-  }
-
-  #settingsDrawer[expanded="T"] #accentPalette,
-  #settingsDrawer[expanded="T"] #basePalette {
-    height: 16rem;
-    transition: height var(--mkAnimationTime);
   }
 
   .palette {

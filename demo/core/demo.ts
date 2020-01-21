@@ -1,4 +1,4 @@
-import { $checkbox, $drawer, $textIconButton, _p,  _v, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
+import { $checkbox, $drawer, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
 
 import { Vine } from '@grapevine';
 import { $asMap, $map, $pipe, $zip, countableIterable } from '@gs-tools/collect';
@@ -7,7 +7,7 @@ import { ArrayDiff, filterNonNull } from '@gs-tools/rxjs';
 import { elementWithTagType } from '@gs-types';
 import { api, attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single } from '@persona';
 import { merge, Observable, of as observableOf } from '@rxjs';
-import { distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, tap, withLatestFrom } from '@rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, tap, withLatestFrom } from '@rxjs/operators';
 
 import { COMPONENT_SPECS } from './component-spec';
 import template from './demo.html';
@@ -165,8 +165,8 @@ export class Demo extends ThemedCustomElementCtrl {
 
   private renderSettingsDrawerExpanded(): Observable<boolean> {
     return merge(
-        this.onSettingsDrawerMouseOut$.pipe(mapTo(false)),
-        this.onSettingsDrawerMouseOver$.pipe(mapTo(true)),
+        this.onSettingsDrawerMouseOut$.pipe(debounceTime(100), mapTo(false)),
+        this.onSettingsDrawerMouseOver$.pipe(debounceTime(100), mapTo(true)),
     )
     .pipe(
         distinctUntilChanged(),

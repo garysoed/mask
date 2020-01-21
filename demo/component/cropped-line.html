@@ -1,0 +1,22 @@
+<style id="theme"></style>
+<style>
+  #container {
+    width: 6rem;
+  }
+</style>
+
+<mkd-demo-layout label="Cropped Line">
+  <div slot="play">
+    <section id="container">
+      <mk-cropped-line text="short text"></mk-cropped-line>
+      <mk-cropped-line text="really really really really really really long text"></mk-cropped-line>
+    </section>
+  </div>
+  <div slot="docs">
+    <p>
+      Mask supports cropping texts. Unlike normal CSS cropping algorithm, Mask crops in the middle
+      of the text.
+    </p>
+  </div>
+</mkd-demo-layout>
+
