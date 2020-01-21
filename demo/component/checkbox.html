@@ -1,0 +1,26 @@
+<style id="theme"></style>
+<style>
+  #resetSection {
+    width: 8rem;
+  }
+</style>
+
+<mkd-demo-layout label="Checkbox">
+  <div slot="play">
+    <div layout="row">
+      <div flex>
+        <mk-checkbox id="unknownCheckbox" init-value="unknown" label="Initially unknown"></mk-checkbox>
+      </div>
+      <section id="resetSection">
+        <mk-text-icon-button id="resetButton" label="Reset"></mk-text-icon-button>
+      </section>
+    </div>
+    <mk-checkbox init-value="T" label="Disabled" disabled></mk-checkbox>
+  </div>
+  <div slot="docs">
+    <p>
+      Mask's checkboxes support 3 states: checked, unchecked, and unknown.
+    </p>
+  </div>
+</mkd-demo-layout>
+

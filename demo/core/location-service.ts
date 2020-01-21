@@ -6,12 +6,14 @@ import { BehaviorSubject } from '@rxjs';
 
 export enum Views {
   BREADCRUMB = 'b',
+  CHECKBOX = 'c',
   ICON = 'i',
   MAIN = 'm',
 }
 
 export interface Routes extends LocationSpec {
   [Views.BREADCRUMB]: {};
+  [Views.CHECKBOX]: {};
   [Views.ICON]: {};
   [Views.MAIN]: {};
 }
@@ -19,6 +21,7 @@ export interface Routes extends LocationSpec {
 const ROUTE_SPEC: Array<RouteSpec<keyof Routes>> = [
   {path: '/', type: Views.MAIN},
   {path: '/breadcrumb', type: Views.BREADCRUMB},
+  {path: '/checkbox', type: Views.CHECKBOX},
   {path: '/icon', type: Views.ICON},
 ];
 
