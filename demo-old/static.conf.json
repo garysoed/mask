@@ -1,5 +1,0 @@
-{
-  "/bin/*": "../out/$0",
-  "/:file": "$file",
-  "/asset/:file": "asset/$file"
-}

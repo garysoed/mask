@@ -192,8 +192,7 @@ td, th {
   padding: 1rem;
 }
 
-tr:first-child th,
-tr:first-child td {
+tr:first-child th {
   border-top: none;
 }
 

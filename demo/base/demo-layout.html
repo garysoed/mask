@@ -1,8 +1,20 @@
 <style id="theme"></style>
 <style>
+  #detailsDrawer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
   #docsContainer,
   #playContainer {
     padding: 1rem;
+  }
+
+  #drawerRoot {
+    background-color: var(--mkThemePassiveBG);
+    height: 32rem;
   }
 </style>
 
@@ -16,7 +28,7 @@
       min-size="4rem"
       mode="horizontal"
   >
-    <div layout="column">
+    <div id="drawerRoot" layout="column">
       <mk-text-icon-button
           id="detailsButton"
           label="Details"
