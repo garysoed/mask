@@ -1,0 +1,31 @@
+<style id="theme"></style>
+<style>
+  #docsContainer,
+  #playContainer {
+    padding: 1rem;
+  }
+</style>
+
+<div fill-parent layout="column">
+  <div flex id="playContainer">
+    <slot name="play"></slot>
+  </div>
+  <mk-drawer
+      id="detailsDrawer"
+      max-size="32rem"
+      min-size="4rem"
+      mode="horizontal"
+  >
+    <div layout="column">
+      <mk-text-icon-button
+          id="detailsButton"
+          label="Details"
+          mk-theme-highlight
+      >
+      </mk-text-icon-button>
+      <div flex id="docsContainer">
+        <slot name="docs"></slot>
+      </div>
+    </div>
+  </mk-drawer>
+</div>
