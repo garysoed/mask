@@ -1,5 +1,43 @@
 <style id="theme"></style>
 
+<style>
+  #passive {
+    background-color: var(--mkThemePassiveBG);
+  }
+
+  #secondary {
+    background-color: var(--mkThemePassiveBG);
+  }
+
+  #action {
+    background-color: var(--mkThemeActionBG);
+  }
+
+  #focus {
+    background-color: var(--mkThemeActionFocusBG);
+  }
+
+  #disabled {
+    background-color: var(--mkThemeActionDisabledBG);
+  }
+
+  #active {
+    background-color: var(--mkThemeActiveBG);
+  }
+
+  #actionPrimary {
+    background-color: var(--mkThemeActionPrimaryBG);
+  }
+
+  #primaryFocus {
+    background-color: var(--mkThemeActionPrimaryFocusBG);
+  }
+
+  #primaryDisabled {
+    background-color: var(--mkThemeActionPrimaryDisabledBG);
+  }
+</style>
+
 <mkd-demo-layout>
   <div slot="play">
     <table>
@@ -8,44 +46,40 @@
         <th>Example</th>
       </tr>
       <tr>
-        <td>Normal</td>
-        <td><mk-icon icon="highlight"></mk-icon></td>
-      </tr>
-      <tr>
         <td>Passive</td>
-        <td><mk-icon mode="passive" icon="highlight"></mk-icon></td>
+        <td id="passive"><mk-icon mode="passive" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Secondary</td>
-        <td><mk-icon mode="secondary" icon="highlight"></mk-icon></td>
+        <td id="secondary"><mk-icon mode="secondary" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Action</td>
-        <td><mk-icon mode="action" icon="highlight"></mk-icon></td>
+        <td id="action"><mk-icon mode="action" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Focus</td>
-        <td><mk-icon mode="focus" icon="highlight"></mk-icon></td>
+        <td id="focus"><mk-icon mode="focus" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Disabled</td>
-        <td><mk-icon mode="disabled" icon="highlight"></mk-icon></td>
+        <td id="disabled"><mk-icon mode="disabled" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Active</td>
-        <td><mk-icon mode="active" icon="highlight"></mk-icon></td>
+        <td id="active"><mk-icon mode="active" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Primary Action</td>
-        <td><mk-icon mode="actionPrimary" icon="highlight"></mk-icon></td>
+        <td id="actionPrimary"><mk-icon mode="actionPrimary" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Primary Focused</td>
-        <td><mk-icon mode="primaryFocus" icon="highlight"></mk-icon></td>
+        <td id="primaryFocus"><mk-icon mode="primaryFocus" icon="highlight"></mk-icon></td>
       </tr>
       <tr>
         <td>Primary Disabled</td>
-        <td><mk-icon mode="primaryDisabled" icon="highlight"></mk-icon></td>
+        <td id="primaryDisabled"><mk-icon mode="primaryDisabled" icon="highlight"></mk-icon></td>
       </tr>
     </table>
   </div>
