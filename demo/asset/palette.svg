@@ -14,7 +14,7 @@
    style="enable-background:new 0 0 16 16;"
    xml:space="preserve"
    id="svg2"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="palette.svg"><metadata
      id="metadata14"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
@@ -46,23 +46,21 @@
      transform="matrix(0.73915812,-0.67353194,0.67353194,0.73915812,-3.3015205,7.4749905)" /><path
      style="fill:#ffffff"
      d="M 6.0410156,2.9980469 C 5.590373,2.9869489 5.1328466,3.2912702 5.03125,3.75 4.8521792,4.3540431 5.3705837,5.0226478 6,5 6.2785735,5.0017596 6.5540101,4.8788422 6.7402344,4.671875 7.1773123,4.2242347 7.0362433,3.3997441 6.4765625,3.1210938 6.341494,3.0415002 6.1912298,3.0017462 6.0410156,2.9980469 Z m 4.0000004,0 C 9.5903731,2.9869489 9.1328466,3.2912702 9.03125,3.75 8.8521792,4.3540431 9.3705837,5.0226478 10,5 10.278573,5.0017596 10.55401,4.8788422 10.740234,4.671875 11.177312,4.2242347 11.036243,3.3997441 10.476562,3.1210938 10.341494,3.0415002 10.19123,3.0017462 10.041016,2.9980469 Z m -6.0000004,3 C 3.590373,5.9869489 3.1328466,6.2912702 3.03125,6.75 2.8521792,7.3540431 3.3705837,8.0226478 4,8 4.2785735,8.0017596 4.5540101,7.8788422 4.7402344,7.671875 5.1773123,7.2242347 5.0362433,6.399744 4.4765625,6.1210938 4.341494,6.0415002 4.1912298,6.0017462 4.0410156,5.9980469 Z m 8.0000004,0 C 11.590373,5.9869489 11.132846,6.2912702 11.03125,6.75 10.852179,7.3540431 11.370584,8.0226478 12,8 12.278573,8.0017596 12.55401,7.8788422 12.740234,7.671875 13.177312,7.2242347 13.036243,6.399744 12.476562,6.1210938 12.341494,6.0415002 12.19123,6.0017462 12.041016,5.9980469 Z"
-     id="highlightBG"
+     id="highlight"
      inkscape:label="#path3348"
      inkscape:connector-curvature="0"
-     transform="matrix(0.73915812,-0.67353194,0.67353194,0.73915812,-3.3015205,7.4749905)" /><text
+     transform="rotate(-42.34025,7.9999999,8)" /><text
      x="0"
      y="31"
-     fill="#000000"
      font-size="5px"
      font-weight="bold"
-     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
-     id="text6">Created by icon 54</text>
+     id="text6"
+     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">Created by icon 54</text>
 <text
      x="0"
      y="36"
-     fill="#000000"
      font-size="5px"
      font-weight="bold"
-     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
-     id="text8">from the Noun Project</text>
+     id="text8"
+     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">from the Noun Project</text>
 </svg>

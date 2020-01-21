@@ -2,34 +2,58 @@
 
 <mkd-demo-layout>
   <div slot="play">
-    <div>
-      <mk-icon icon="highlight"></mk-icon>
-      <mk-icon mode="passive" icon="highlight"></mk-icon>
-      <mk-icon mode="secondary" icon="highlight"></mk-icon>
-      <mk-icon mode="action" icon="highlight"></mk-icon>
-      <mk-icon mode="focus" icon="highlight"></mk-icon>
-      <mk-icon mode="disabled" icon="highlight"></mk-icon>
-      <mk-icon mode="active" icon="highlight"></mk-icon>
-      <mk-icon mode="actionPrimary" icon="highlight"></mk-icon>
-      <mk-icon mode="primaryFocus" icon="highlight"></mk-icon>
-      <mk-icon mode="primaryDisabled" icon="highlight"></mk-icon>
-    </div>
-    <div>
-      <mk-icon icon="palette"></mk-icon>
-      <mk-icon mode="passive" icon="palette"></mk-icon>
-      <mk-icon mode="secondary" icon="palette"></mk-icon>
-      <mk-icon mode="action" icon="palette"></mk-icon>
-      <mk-icon mode="focus" icon="palette"></mk-icon>
-      <mk-icon mode="disabled" icon="palette"></mk-icon>
-      <mk-icon mode="active" icon="palette"></mk-icon>
-      <mk-icon mode="actionPrimary" icon="palette"></mk-icon>
-      <mk-icon mode="primaryFocus" icon="palette"></mk-icon>
-      <mk-icon mode="primaryDisabled" icon="palette"></mk-icon>
-    </div>
+    <table>
+      <thead>
+        <td>Mode</td>
+        <td>Example</td>
+      </thead>
+      <tr>
+        <td>Normal</td>
+        <td><mk-icon icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Passive</td>
+        <td><mk-icon mode="passive" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Secondary</td>
+        <td><mk-icon mode="secondary" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Action</td>
+        <td><mk-icon mode="action" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Focus</td>
+        <td><mk-icon mode="focus" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Disabled</td>
+        <td><mk-icon mode="disabled" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Active</td>
+        <td><mk-icon mode="active" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Primary Action</td>
+        <td><mk-icon mode="actionPrimary" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Primary Focused</td>
+        <td><mk-icon mode="primaryFocus" icon="highlight"></mk-icon></td>
+      </tr>
+      <tr>
+        <td>Primary Disabled</td>
+        <td><mk-icon mode="primaryDisabled" icon="highlight"></mk-icon></td>
+      </tr>
+    </table>
   </div>
   <div slot="docs">
     <p>
-      Test text
+      Mask uses SVGs for icons. These icons should be monochromatic and have one polygon with the
+      <code>foreground</code> ID. This node will be colored the same color as the text in different
+      modes, as shown above.
     </p>
   </div>
 </mkd-demo-layout>

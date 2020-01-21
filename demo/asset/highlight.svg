@@ -13,7 +13,7 @@
    y="0px"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
    sodipodi:docname="highlight.svg">
   <metadata
      id="metadata22">
@@ -38,8 +38,8 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1079"
-     inkscape:window-height="681"
+     inkscape:window-width="1257"
+     inkscape:window-height="817"
      id="namedview18"
      showgrid="false"
      inkscape:zoom="7.8666667"
@@ -52,27 +52,21 @@
   <title
      id="title4">Icons</title>
   <path
-     d="M 4 17 L 2 19 L 0.7109375 20.289062 A 1 1 0 0 0 1.4101562 22 L 5 22 L 7 20 L 4 17 z M 8 20 L 6 22 L 21 22 L 21 20 L 8 20 z "
-     id="highlightFG"
-     inkscape:label="#path6" />
-  <polygon
-     points="9 19 18 10 14 6 5 15 5 16 8 19 9 19"
+     d="m 14,6 -9,9 v 1 l 3,3 h 1 l 9,-9 z M 4,17 2,19 0.7109375,20.289062 A 1,1 0 0 0 1.4101562,22 H 5 l 2,-2 z m 4,3 -2,2 h 15 v -2 z"
      id="foreground"
-     inkscape:label="#polygon10" />
+     inkscape:connector-curvature="0" />
   <text
      x="0"
      y="39"
-     fill="#000000"
      font-size="5px"
      font-weight="bold"
-     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
-     id="text14">Created by Yasin Masukor</text>
+     id="text14"
+     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">Created by Yasin Masukor</text>
   <text
      x="0"
      y="44"
-     fill="#000000"
      font-size="5px"
      font-weight="bold"
-     font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"
-     id="text16">from the Noun Project</text>
+     id="text16"
+     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">from the Noun Project</text>
 </svg>

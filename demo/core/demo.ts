@@ -23,14 +23,14 @@ const $ = {
     content: repeated('content'),
     onClick: onDom<MouseEvent>('click'),
   }),
-  darkMode: element('darkMode', elementWithTagType('mk-checkbox'), api($checkbox)),
-  drawerRoot: element('drawerRoot', elementWithTagType('div'), {
+  components: element('components', elementWithTagType('div'), {
     componentButtons: repeated('componentButtons'),
     onClick: onDom('click'),
   }),
   content: element('content', elementWithTagType('div'), {
     content: single('content'),
   }),
+  darkMode: element('darkMode', elementWithTagType('mk-checkbox'), api($checkbox)),
   root: element('root', elementWithTagType('section'), {
     theme: attributeOut('mk-theme', stringParser()),
   }),
@@ -63,7 +63,7 @@ export class Demo extends ThemedCustomElementCtrl {
   private readonly darkMode$ = _p.input($.darkMode._.value, this);
   private readonly onAccentPaletteClick$ = _p.input($.accentPalette._.onClick, this);
   private readonly onBasePaletteClick$ = _p.input($.basePalette._.onClick, this);
-  private readonly onDrawerRootClick$ = _p.input($.drawerRoot._.onClick, this);
+  private readonly onDrawerRootClick$ = _p.input($.components._.onClick, this);
   private readonly onRootLayoutAction$ = _p.input($.rootLayout._.onAction, this);
   private readonly onSettingsDrawerMouseOut$ = _p.input($.settingsDrawer._.onMouseOut, this);
   private readonly onSettingsDrawerMouseOver$ = _p.input($.settingsDrawer._.onMouseOver, this);
@@ -75,7 +75,7 @@ export class Demo extends ThemedCustomElementCtrl {
           .withVine(_v.stream(this.renderAccentPaletteContents, this)),
       _p.render($.basePalette._.content)
           .withVine(_v.stream(this.renderBasePaletteContents, this)),
-      _p.render($.drawerRoot._.componentButtons)
+      _p.render($.components._.componentButtons)
           .withVine(_v.stream(this.renderComponentButtons, this)),
       _p.render($.content._.content).withVine(_v.stream(this.renderMainContent, this)),
       _p.render($.settingsDrawer._.expanded)
