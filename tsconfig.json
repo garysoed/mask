@@ -33,9 +33,9 @@
     "target": "es6"
   },
   "include": [
-    "demo/*",
+    "demo/**/*.ts",
     "demo-old/*",
     "src/**/*.ts",
-    "typings/*.d.ts", "demo/core/demo.ts",
+    "typings/*.d.ts",
   ]
 }

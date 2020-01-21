@@ -14,7 +14,7 @@ export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   protected readonly theme$ = $theme.asSubject();
   private readonly themeEl$ = _p.input($.theme, this);
 
-  getInitFunctions(): InitFn[] {
+  getInitFunctions(): readonly InitFn[] {
     return [
       () => this.setupThemeUpdate(),
     ];
