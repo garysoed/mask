@@ -3,7 +3,7 @@ export { $svgConfig } from '../src/display/svg-service';
 export { Breadcrumb, $$ as $breadcrumb, CrumbData } from '../src/display/breadcrumb';
 export { ActionEvent, ACTION_EVENT } from '../src/event/action-event';
 export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
-export { Checkbox } from '../src/action/input/checkbox';
+export { Checkbox, $$ as $checkbox } from '../src/action/input/checkbox';
 export { CroppedLine } from '../src/display/cropped-line';
 export { Drawer, $$ as $drawer } from '../src/section/drawer';
 export { Dialog } from '../src/section/dialog';

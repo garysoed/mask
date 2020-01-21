@@ -1,5 +1,34 @@
 <style id="theme"></style>
 <style>
+  #accentPalette,
+  #basePalette {
+    height: 0;
+    overflow: hidden;
+    transition: height var(--mkAnimationTime);
+  }
+
+  #drawerContent {
+    overflow: hidden;
+    width: 16rem;
+  }
+
+  #settingsDrawer[expanded="T"] #accentPalette,
+  #settingsDrawer[expanded="T"] #basePalette {
+    height: 16rem;
+    transition: height var(--mkAnimationTime);
+  }
+
+  .palette {
+    cursor: pointer;
+    display: inline-block;
+    height: 4rem;
+    width: 4rem;
+  }
+
+  .palette.selected {
+    outline: black solid 4px;
+    outline-offset: -4px;
+  }
 </style>
 <style id="globalStyle"></style>
 <section id="root" layout="row" mk-theme="dark" fill-parent>
@@ -19,7 +48,24 @@
           mk-theme-highlight
           mode="vertical"
       >
-        <mk-icon-with-text label="Settings" icon="settings"></mk-icon-with-text>
+        <div id="drawerContent">
+          <mk-icon-with-text label="Settings" icon="settings"></mk-icon-with-text>
+          <div id="basePaletteSection">
+            <mk-icon-with-text icon="palette" label="Base Palette"></mk-icon-with-text>
+            <div id="basePalette" shadow="down">
+              <!-- content -->
+            </div>
+          </div>
+
+          <div id="accentPaletteSection">
+            <mk-icon-with-text icon="highlight" label="Accent Palette"></mk-icon-with-text>
+            <div id="accentPalette" shadow="down">
+              <!-- content -->
+            </div>
+          </div>
+
+          <mk-checkbox id="darkMode" label="Dark mode" init-value="T"></mk-checkbox>
+        </div>
       </mk-drawer>
       <mk-layout-overlay></mk-layout-overlay>
     </div>
