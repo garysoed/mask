@@ -52,16 +52,16 @@ export const $ = {
   template: drawerTemplate,
 })
 export class Drawer extends ThemedCustomElementCtrl {
-  private readonly expandedObs = _p.input($.host._.expanded, this);
-  private readonly maxSizeObs = _p.input($.host._.maxSize, this);
-  private readonly minSizeObs = _p.input($.host._.minSize, this);
-  private readonly modeObs = _p.input($.host._.mode, this);
+  private readonly expandedObs = this.declareInput($.host._.expanded);
+  private readonly maxSizeObs = this.declareInput($.host._.maxSize);
+  private readonly minSizeObs = this.declareInput($.host._.minSize);
+  private readonly modeObs = this.declareInput($.host._.mode);
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render($.host._.styleHeight).withVine(_v.stream(this.renderStyleHeight, this)),
-      _p.render($.host._.styleWidth).withVine(_v.stream(this.renderStyleWidth, this)),
+      this.renderStream($.host._.styleHeight, this.renderStyleHeight),
+      this.renderStream($.host._.styleWidth, this.renderStyleWidth),
       _p.render($.host._.styleOverflow)
           .withVine(_v.source(() => new BehaviorSubject('hidden'), this)),
     ];

@@ -44,14 +44,14 @@ export const $ = {
   template: iconTemplate,
 })
 export class Icon extends ThemedCustomElementCtrl {
-  private readonly icon$ = _p.input($.host._.icon, this);
+  private readonly icon$ = this.declareInput($.host._.icon);
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
       _p.render($.host._.ariaHidden).withValue(true),
       _p.render($.host._.role).withValue(AriaRole.PRESENTATION),
-      _p.render($.root._.innerHTML).withVine(_v.stream(this.renderRootInnerHtml_, this)),
+      this.renderStream($.root._.innerHTML, this.renderRootInnerHtml_),
     ];
   }
 

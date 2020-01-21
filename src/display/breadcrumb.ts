@@ -52,14 +52,14 @@ export const $ = {
 export class Breadcrumb extends ThemedCustomElementCtrl {
   private readonly pathDataSubject = new MapSubject<string, CrumbData>();
   private readonly pathKeySubject = new ArraySubject<string>();
-  private readonly pathObs = _p.input($.host._.path, this);
-  private readonly rowOnActionObs = _p.input($.row._.onAction, this);
+  private readonly pathObs = this.declareInput($.host._.path);
+  private readonly rowOnActionObs = this.declareInput($.row._.onAction);
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render($.row._.crumbsSlot).withVine(_v.stream(this.renderCrumbs, this)),
-      _p.render($.host._.dispatch).withVine(_v.stream(this.renderDispatchAction, this)),
+      this.renderStream($.row._.crumbsSlot, this.renderCrumbs),
+      this.renderStream($.host._.dispatch, this.renderDispatchAction),
       this.setupCrumbDataForwarding(),
     ];
   }

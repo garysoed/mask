@@ -38,19 +38,19 @@ const MAX_POSTFIX_LENGTH = 3;
   template: croppedLineTemplate,
 })
 export class CroppedLine extends ThemedCustomElementCtrl {
-  private readonly hostTextObs = _p.input($.host._.text, this);
-  private readonly onCopyObs = _p.input($.container._.onCopy, this);
+  private readonly hostTextObs = this.declareInput($.host._.text);
+  private readonly onCopyObs = this.declareInput($.container._.onCopy);
   private readonly postfixBoundaryObs =
       _v.stream(this.providesPostfixBoundary, this).asObservable();
-  private readonly textObs = _p.input($.host._.text, this);
+  private readonly textObs = this.declareInput($.host._.text);
   // TODO: Allow to copy a part of the text, or select all on selecting.
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
       () => this.setupOnContainerCopy(),
-      _p.render($.postfix._.text).withVine(_v.stream(this.renderPostfixTextContent, this)),
-      _p.render($.prefix._.text).withVine(_v.stream(this.renderPrefixTextContent, this)),
+      this.renderStream($.postfix._.text, this.renderPostfixTextContent),
+      this.renderStream($.prefix._.text, this.renderPrefixTextContent),
     ];
   }
 

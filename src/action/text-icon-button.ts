@@ -63,18 +63,18 @@ export const $ = {
   template: textButtonTemplate,
 })
 export class TextIconButton extends BaseAction {
-  private readonly activeObs = _p.input($.host._.active, this);
-  private readonly ariaLabelObs = _p.input($.host._.ariaLabelIn, this);
-  private readonly hasPrimaryObs = _p.input($.host._.hasMkPrimary, this);
-  private readonly iconObs = _p.input($.host._.icon, this);
-  private readonly labelObs = _p.input($.host._.label, this);
-  private readonly onBlurObs = _p.input($.host._.onBlur, this);
-  private readonly onClickObs = _p.input($.host._.onClick, this);
-  private readonly onEnterDownObs = _p.input($.host._.onEnterDown, this);
-  private readonly onFocusObs = _p.input($.host._.onFocus, this);
-  private readonly onMouseEnterObs = _p.input($.host._.onMouseEnter, this);
-  private readonly onMouseLeaveObs = _p.input($.host._.onMouseLeave, this);
-  private readonly onSpaceDownObs = _p.input($.host._.onSpaceDown, this);
+  private readonly activeObs = this.declareInput($.host._.active);
+  private readonly ariaLabelObs = this.declareInput($.host._.ariaLabelIn);
+  private readonly hasPrimaryObs = this.declareInput($.host._.hasMkPrimary);
+  private readonly iconObs = this.declareInput($.host._.icon);
+  private readonly labelObs = this.declareInput($.host._.label);
+  private readonly onBlurObs = this.declareInput($.host._.onBlur);
+  private readonly onClickObs = this.declareInput($.host._.onClick);
+  private readonly onEnterDownObs = this.declareInput($.host._.onEnterDown);
+  private readonly onFocusObs = this.declareInput($.host._.onFocus);
+  private readonly onMouseEnterObs = this.declareInput($.host._.onMouseEnter);
+  private readonly onMouseLeaveObs = this.declareInput($.host._.onMouseLeave);
+  private readonly onSpaceDownObs = this.declareInput($.host._.onSpaceDown);
 
   constructor(shadowRoot: ShadowRoot) {
     super(
@@ -87,12 +87,12 @@ export class TextIconButton extends BaseAction {
     return [
       ...super.getInitFunctions(),
       _p.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON)),
-      _p.render($.host._.actionEvent).withVine(_v.stream(this.renderDispatchActions, this)),
-      _p.render($.host._.ariaLabelOut).withVine(_v.stream(this.renderHostAriaLabel, this)),
-      _p.render($.host._.tabindex).withVine(_v.stream(this.renderTabIndex, this)),
+      this.renderStream($.host._.actionEvent, this.renderDispatchActions),
+      this.renderStream($.host._.ariaLabelOut, this.renderHostAriaLabel),
+      this.renderStream($.host._.tabindex, this.renderTabIndex),
       _p.render($.iconWithText._.label).withObservable(this.labelObs),
       _p.render($.iconWithText._.icon).withObservable(this.iconObs),
-      _p.render($.iconWithText._.mode).withVine(_v.stream(this.renderIconMode, this)),
+      this.renderStream($.iconWithText._.mode, this.renderIconMode),
     ];
   }
 

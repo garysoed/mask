@@ -54,13 +54,13 @@ export const $ = {
   template,
 })
 export class ListItem extends ThemedCustomElementCtrl {
-  private readonly iconObs = _p.input($.host._.icon, this);
-  private readonly itemDetailObs = _p.input($.host._.itemDetail, this);
-  private readonly itemNameObs = _p.input($.host._.itemName, this);
+  private readonly iconObs = this.declareInput($.host._.icon);
+  private readonly itemDetailObs = this.declareInput($.host._.itemDetail);
+  private readonly itemNameObs = this.declareInput($.host._.itemName);
   // TODO: On hover
-  private readonly onMouseOutObs = _p.input($.host._.onMouseOut, this);
-  private readonly onMouseOverObs = _p.input($.host._.onMouseOver, this);
-  private readonly toolWidthObs = _p.input($.host._.toolWidth, this);
+  private readonly onMouseOutObs = this.declareInput($.host._.onMouseOut);
+  private readonly onMouseOverObs = this.declareInput($.host._.onMouseOver);
+  private readonly toolWidthObs = this.declareInput($.host._.toolWidth);
 
   getInitFunctions(): InitFn[] {
     return [

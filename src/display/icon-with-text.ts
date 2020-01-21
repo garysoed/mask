@@ -47,10 +47,10 @@ export const $ = {
   template: iconWithTextTemplate,
 })
 export class IconWithText extends ThemedCustomElementCtrl {
-  private readonly iconLigatureObs = _p.input($.host._.icon, this);
-  private readonly iconObs = _p.input($.host._.icon, this);
-  private readonly labelObs = _p.input($.host._.label, this);
-  private readonly modeObs = _p.input($.host._.mode, this);
+  private readonly iconLigatureObs = this.declareInput($.host._.icon);
+  private readonly iconObs = this.declareInput($.host._.icon);
+  private readonly labelObs = this.declareInput($.host._.label);
+  private readonly modeObs = this.declareInput($.host._.mode);
 
   getInitFunctions(): InitFn[] {
     return [
@@ -58,8 +58,8 @@ export class IconWithText extends ThemedCustomElementCtrl {
       _p.render($.text._.text).withObservable(this.labelObs),
       _p.render($.icon._.icon).withObservable(this.iconObs),
       _p.render($.icon._.mode).withObservable(this.modeObs),
-      _p.render($.icon._.classes).withVine(_v.stream(this.renderIconClasses, this)),
-      _p.render($.text._.classes).withVine(_v.stream(this.renderTextClasses, this)),
+      this.renderStream($.icon._.classes, this.renderIconClasses),
+      this.renderStream($.text._.classes, this.renderTextClasses),
     ];
   }
 

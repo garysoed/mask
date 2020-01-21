@@ -29,8 +29,8 @@ const $ = {
   template: '<style id="theme"></style><div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
-  private readonly divEl$ = _p.input($.div, this);
-  private readonly valueIn$ = _p.input($.div._.valueIn, this);
+  private readonly divEl$ = this.declareInput($.div);
+  private readonly valueIn$ = this.declareInput($.div._.valueIn);
 
   constructor(root: ShadowRoot) {
     super(

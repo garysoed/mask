@@ -51,8 +51,8 @@ export const $ = {
   template: dialogTemplate,
 })
 export class Dialog extends ThemedCustomElementCtrl {
-  private readonly onCancelObs = _p.input($.cancelButton._.onAction, this);
-  private readonly onOkObs = _p.input($.okButton._.onAction, this);
+  private readonly onCancelObs = this.declareInput($.cancelButton._.onAction);
+  private readonly onOkObs = this.declareInput($.okButton._.onAction);
 
   getInitFunctions(): InitFn[] {
     return [

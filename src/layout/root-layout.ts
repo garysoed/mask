@@ -40,13 +40,13 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
   template,
 })
 export class RootLayout extends ThemedCustomElementCtrl {
-  private readonly hostIcon$ = _p.input($.host._.icon, this);
-  private readonly hostLabel$ = _p.input($.host._.label, this);
+  private readonly hostIcon$ = this.declareInput($.host._.icon);
+  private readonly hostLabel$ = this.declareInput($.host._.label);
   private readonly isDrawerOpen$ = _v.source(() => new BehaviorSubject(false), this).asSubject();
-  private readonly onMouseOut$ = _p.input($.drawer._.onMouseOut, this);
-  private readonly onMouseOver$ = _p.input($.drawer._.onMouseOver, this);
-  private readonly onTitleClick$ = _p.input($.title._.actionEvent, this);
-  private readonly qIsDesktop$ = _p.input($qIsDesktop, this);
+  private readonly onMouseOut$ = this.declareInput($.drawer._.onMouseOut);
+  private readonly onMouseOver$ = this.declareInput($.drawer._.onMouseOver);
+  private readonly onTitleClick$ = this.declareInput($.title._.actionEvent);
+  private readonly qIsDesktop$ = this.declareInput($qIsDesktop);
 
   getInitFunctions(): InitFn[] {
     return [
@@ -56,7 +56,7 @@ export class RootLayout extends ThemedCustomElementCtrl {
       _p.render($.drawer._.expanded).withObservable(this.isDrawerOpen$),
       _p.render($.title._.label).withObservable(this.hostLabel$),
       _p.render($.title._.icon).withObservable(this.hostIcon$),
-      _p.render($.host._.onTitleClick).withVine(_v.stream(this.renderOnTitleClick, this)),
+      this.renderStream($.host._.onTitleClick, this.renderOnTitleClick),
     ];
   }
 

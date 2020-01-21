@@ -22,8 +22,8 @@ export const $ = {
 export abstract class BaseInput<T> extends BaseAction {
   protected readonly dirtyValue$ = new ReplaySubject<T>(1);
   protected readonly isDirty$ = new BehaviorSubject(false);
-  protected readonly label$ = _p.input($.host._.label, this);
-  protected readonly onClear$ = _p.input($.host._.clearFn, this);
+  protected readonly label$ = this.declareInput($.host._.label);
+  protected readonly onClear$ = this.declareInput($.host._.clearFn);
   protected readonly value$: Observable<T>;
   private readonly initValue$: Observable<T>;
 
@@ -35,7 +35,7 @@ export abstract class BaseInput<T> extends BaseAction {
       shadowRoot: ShadowRoot,
   ) {
     super(disabledOutput, shadowRoot);
-    this.initValue$ = _p.input(initValueInput, this);
+    this.initValue$ = this.declareInput(initValueInput);
     this.value$ = this.createValue();
   }
 

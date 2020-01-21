@@ -19,7 +19,7 @@ export const $ = {
 };
 
 export class BaseAction extends ThemedCustomElementCtrl {
-  protected readonly disabled$ = _p.input($.host._.disabled, this);
+  protected readonly disabled$ = this.declareInput($.host._.disabled);
 
   constructor(
       private readonly disabledOutput: Output<boolean>,
@@ -32,7 +32,7 @@ export class BaseAction extends ThemedCustomElementCtrl {
     return [
       ...super.getInitFunctions(),
       _p.render(this.disabledOutput).withObservable(this.disabled$),
-      _p.render($.host._.ariaDisabled).withVine(_v.stream(this.renderAriaDisabled, this)),
+      this.renderStream($.host._.ariaDisabled, this.renderAriaDisabled),
     ];
   }
 

@@ -24,7 +24,7 @@ export class Backdrop extends ThemedCustomElementCtrl {
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render($.root._.classlist).withVine(_v.stream(this.renderRootClasslist, this)),
+      this.renderStream($.root._.classlist, this.renderRootClasslist),
     ];
   }
 

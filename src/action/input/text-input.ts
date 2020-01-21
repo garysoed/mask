@@ -65,10 +65,10 @@ export const $debounceMs = _v.source(() => new BehaviorSubject(DEBOUNCE_MS), glo
   template,
 })
 export class TextInput extends BaseInput<string> {
-  private readonly autocomplete$ = _p.input($.host._.autocomplete, this);
-  private readonly inputEl$ = _p.input($.input, this);
-  private readonly onInput$ = _p.input($.input._.onInput, this);
-  private readonly type$ = _p.input($.host._.type, this);
+  private readonly autocomplete$ = this.declareInput($.host._.autocomplete);
+  private readonly inputEl$ = this.declareInput($.input);
+  private readonly onInput$ = this.declareInput($.input._.onInput);
+  private readonly type$ = this.declareInput($.host._.type);
 
   constructor(root: ShadowRoot) {
     super(

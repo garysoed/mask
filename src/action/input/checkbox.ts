@@ -106,12 +106,12 @@ export const $ = {
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue> {
-  private readonly onBlurObs = _p.input($.host._.onBlur, this);
-  private readonly onClickObs = _p.input($.root._.onClick, this);
-  private readonly onFocusObs = _p.input($.host._.onFocus, this);
-  private readonly onMouseEnterObs = _p.input($.host._.onMouseEnter, this);
-  private readonly onMouseLeaveObs = _p.input($.host._.onMouseLeave, this);
-  private readonly textIconIn$ = _p.input($.text._.iconIn, this);
+  private readonly onBlurObs = this.declareInput($.host._.onBlur);
+  private readonly onClickObs = this.declareInput($.root._.onClick);
+  private readonly onFocusObs = this.declareInput($.host._.onFocus);
+  private readonly onMouseEnterObs = this.declareInput($.host._.onMouseEnter);
+  private readonly onMouseLeaveObs = this.declareInput($.host._.onMouseLeave);
+  private readonly textIconIn$ = this.declareInput($.text._.iconIn);
 
   constructor(shadowRoot: ShadowRoot) {
     super(
@@ -127,7 +127,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     return [
       ...super.getInitFunctions(),
       () => this.setupOnClickHandler(),
-      _p.render($.text._.mode).withVine(_v.stream(this.renderIconMode, this)),
+      this.renderStream($.text._.mode, this.renderIconMode),
     ];
   }
 

@@ -30,14 +30,14 @@ export const $ = {
   template: crumbTemplate,
 })
 export class Crumb extends ThemedCustomElementCtrl {
-  private readonly hostDisplayObs = _p.input($.host._.display, this);
-  private readonly onClickObs = _p.input($.host._.onClick, this);
+  private readonly hostDisplayObs = this.declareInput($.host._.display);
+  private readonly onClickObs = this.declareInput($.host._.onClick);
 
   getInitFunctions(): InitFn[] {
     return [
       ...super.getInitFunctions(),
       _p.render($.text._.text).withObservable(this.hostDisplayObs),
-      _p.render($.host._.dispatch).withVine(_v.stream(this.onHostClick, this)),
+      this.renderStream($.host._.dispatch, this.onHostClick),
       _p.render($.svg._.innerHtml).withValue(separatorSvg),
     ];
   }

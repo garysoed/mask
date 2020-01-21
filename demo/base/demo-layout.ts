@@ -28,9 +28,9 @@ const $ = {
   template,
 })
 export class DemoLayout extends ThemedCustomElementCtrl {
-  private readonly hostLabel$ = _p.input($.host._.label, this);
+  private readonly hostLabel$ = this.declareInput($.host._.label);
   private readonly isDrawerExpanded$ = new BehaviorSubject(false);
-  private readonly onDetailsButtonClick$ = _p.input($.detailsButton._.actionEvent, this);
+  private readonly onDetailsButtonClick$ = this.declareInput($.detailsButton._.actionEvent);
 
   getInitFunctions(): readonly InitFn[] {
     return [
@@ -39,7 +39,7 @@ export class DemoLayout extends ThemedCustomElementCtrl {
       _p.render($.detailsButton._.label).withVine(_v.stream(this.renderDetailsButtonLabel, this)),
       _p.render($.detailsDrawer._.expanded)
           .withVine(_v.stream(this.renderDetailsDrawerExpanded, this)),
-      this.setupOnDetailsButtonClick,
+      () => this.setupOnDetailsButtonClick(),
     ];
   }
 

@@ -60,31 +60,27 @@ const COMPONENT_PATH_ATTR = 'path';
   template,
 })
 export class Demo extends ThemedCustomElementCtrl {
-  private readonly darkMode$ = _p.input($.darkMode._.value, this);
-  private readonly onAccentPaletteClick$ = _p.input($.accentPalette._.onClick, this);
-  private readonly onBasePaletteClick$ = _p.input($.basePalette._.onClick, this);
-  private readonly onDrawerRootClick$ = _p.input($.components._.onClick, this);
-  private readonly onRootLayoutAction$ = _p.input($.rootLayout._.onAction, this);
-  private readonly onSettingsDrawerMouseOut$ = _p.input($.settingsDrawer._.onMouseOut, this);
-  private readonly onSettingsDrawerMouseOver$ = _p.input($.settingsDrawer._.onMouseOver, this);
+  private readonly darkMode$ = this.declareInput($.darkMode._.value);
+  private readonly onAccentPaletteClick$ = this.declareInput($.accentPalette._.onClick);
+  private readonly onBasePaletteClick$ = this.declareInput($.basePalette._.onClick);
+  private readonly onDrawerRootClick$ = this.declareInput($.components._.onClick);
+  private readonly onRootLayoutAction$ = this.declareInput($.rootLayout._.onAction);
+  private readonly onSettingsDrawerMouseOut$ = this.declareInput($.settingsDrawer._.onMouseOut);
+  private readonly onSettingsDrawerMouseOver$ = this.declareInput($.settingsDrawer._.onMouseOver);
 
   getInitFunctions(): readonly InitFn[] {
     return [
       ...super.getInitFunctions(),
-      _p.render($.accentPalette._.content)
-          .withVine(_v.stream(this.renderAccentPaletteContents, this)),
-      _p.render($.basePalette._.content)
-          .withVine(_v.stream(this.renderBasePaletteContents, this)),
-      _p.render($.components._.componentButtons)
-          .withVine(_v.stream(this.renderComponentButtons, this)),
-      _p.render($.content._.content).withVine(_v.stream(this.renderMainContent, this)),
-      _p.render($.settingsDrawer._.expanded)
-          .withVine(_v.stream(this.renderSettingsDrawerExpanded, this)),
-      _p.render($.root._.theme).withVine(_v.stream(this.renderRootTheme, this)),
-      this.setupOnAccentPaletteClick,
-      this.setupOnBasePaletteClick,
-      this.setupOnComponentButtonClick,
-      this.setupOnRootLayoutAction,
+      this.renderStream($.accentPalette._.content, this.renderAccentPaletteContents),
+      this.renderStream($.basePalette._.content, this.renderBasePaletteContents),
+      this.renderStream($.components._.componentButtons, this.renderComponentButtons),
+      this.renderStream($.content._.content, this.renderMainContent),
+      this.renderStream($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded),
+      this.renderStream($.root._.theme, this.renderRootTheme),
+      () => this.setupOnAccentPaletteClick(),
+      () => this.setupOnBasePaletteClick(),
+      vine => this.setupOnComponentButtonClick(vine),
+      vine => this.setupOnRootLayoutAction(vine),
     ];
   }
 
