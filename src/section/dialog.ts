@@ -4,6 +4,7 @@ import { classlist, element, InitFn, onDom, RenderSpec, SimpleElementRenderSpec,
 import { merge, Observable } from '@rxjs';
 import { filter, map, mapTo, switchMap, withLatestFrom } from '@rxjs/operators';
 
+import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';
 import dialogCloseSvg from '../asset/dialog_close.svg';
 import dialogConfirmSvg from '../asset/dialog_confirm.svg';
@@ -15,14 +16,14 @@ import { $dialogState, OpenState } from './dialog-service';
 import dialogTemplate from './dialog.html';
 
 export const $ = {
-  cancelButton: element('cancelButton', ElementWithTagType('mk-text-icon-button'), {
+  cancelButton: element('cancelButton', $textIconButton, {
     classlist: classlist(),
     onAction: onDom(ACTION_EVENT),
   }),
   content: element('content', InstanceofType(HTMLDivElement), {
     single: single('#content'),
   }),
-  okButton: element('okButton', ElementWithTagType('mk-text-icon-button'), {
+  okButton: element('okButton', $textIconButton, {
     onAction: onDom(ACTION_EVENT),
   }),
   root: element('root', InstanceofType(HTMLDivElement), {
@@ -47,6 +48,9 @@ export const $ = {
       value: {type: 'embed', content: dialogConfirmSvg},
     });
   },
+  dependencies: [
+    TextIconButton,
+  ],
   tag: 'mk-dialog',
   template: dialogTemplate,
 })

@@ -13,12 +13,8 @@ import template from './checkbox.html';
 export const TAG = 'mkd-checkbox';
 
 const $ = {
-  resetButton: element('resetButton', elementWithTagType('mk-text-icon-button'), {
-    ...api($textIconButton),
-  }),
-  unknownCheckbox: element('unknownCheckbox', elementWithTagType('mk-checkbox'), {
-    ...api($checkbox),
-  }),
+  resetButton: element('resetButton', $textIconButton, {}),
+  unknownCheckbox: element('unknownCheckbox', $checkbox, {}),
 };
 
 @_p.customElement({

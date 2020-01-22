@@ -7,7 +7,7 @@ export { Checkbox, $$ as $checkbox } from '../src/action/input/checkbox';
 export { CroppedLine } from '../src/display/cropped-line';
 export { Drawer, $$ as $drawer } from '../src/section/drawer';
 export { Dialog } from '../src/section/dialog';
-export { $dialogService, DialogResult, DialogService } from '../src/section/dialog-service';
+export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section/dialog-service';
 export { $$ as $icon, Icon } from '../src/display/icon';
 export { IconWithText } from '../src/display/icon-with-text';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';

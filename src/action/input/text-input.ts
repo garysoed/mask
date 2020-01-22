@@ -36,15 +36,18 @@ enum AutocompleteType {
 }
 
 export const $$ = {
-  ...$baseInput,
-  autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
-  initValue: attributeIn('init-value', stringParser(), ''),
-  type: attributeIn('type', enumParser(InputType), InputType.TEXT),
-  value: attributeOut('value', stringParser()),
+  api: {
+    ...$baseInput,
+    autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
+    initValue: attributeIn('init-value', stringParser(), ''),
+    type: attributeIn('type', enumParser(InputType), InputType.TEXT),
+    value: attributeOut('value', stringParser()),
+  },
+  tag: 'mk-text-input',
 };
 
 export const $ = {
-  host: element($$),
+  host: element($$.api),
   input: element('input', InstanceofType(HTMLInputElement), {
     autocomplete: attributeOut('autocomplete', stringParser()),
     disabled: attributeOut('disabled', booleanParser(), false),
@@ -58,10 +61,9 @@ export const $ = {
 };
 
 export const DEBOUNCE_MS = 250;
-export const $debounceMs = _v.source(() => new BehaviorSubject(DEBOUNCE_MS), globalThis);
 
 @_p.customElement({
-  tag: 'mk-text-input',
+  tag: $$.tag,
   template,
 })
 export class TextInput extends BaseInput<string> {
@@ -100,10 +102,9 @@ export class TextInput extends BaseInput<string> {
   private setupHandleInput(vine: Vine): Observable<string> {
     return this.inputEl$
         .pipe(
-            withLatestFrom($debounceMs.get(vine)),
-            switchMap(([el, debounceMs]) => this.onInput$
+            switchMap(() => this.onInput$
                 .pipe(
-                    debounceTime(debounceMs),
+                    debounceTime(DEBOUNCE_MS),
                     tap(value => this.dirtyValue$.next(value)),
                 )),
         );

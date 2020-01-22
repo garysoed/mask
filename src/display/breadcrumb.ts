@@ -23,21 +23,24 @@ export interface CrumbData {
 }
 
 export const $$ = {
-  dispatch: dispatcher(ACTION_EVENT),
-  path: attributeIn<CrumbData[]>(
-      'path',
-      listParser(
-          objectConverter<CrumbData>({
-            display: stringParser(),
-            key: stringParser(),
-          }),
-      ),
-      [],
-  ),
+  api: {
+    dispatch: dispatcher(ACTION_EVENT),
+    path: attributeIn<CrumbData[]>(
+        'path',
+        listParser(
+            objectConverter<CrumbData>({
+              display: stringParser(),
+              key: stringParser(),
+            }),
+        ),
+        [],
+    ),
+  },
+  tag: 'mk-breadcrumb',
 };
 
 export const $ = {
-  host: element($$),
+  host: element($$.api),
   row: element('row', InstanceofType(HTMLDivElement), {
     crumbsSlot: repeated('crumbs'),
     onAction: onDom(ACTION_EVENT),
@@ -46,7 +49,7 @@ export const $ = {
 
 @_p.customElement({
   dependencies: [Crumb],
-  tag: 'mk-breadcrumb',
+  tag: $$.tag,
   template: breadcrumbTemplate,
 })
 export class Breadcrumb extends ThemedCustomElementCtrl {

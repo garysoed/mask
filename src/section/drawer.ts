@@ -27,19 +27,22 @@ export enum Mode {
 }
 
 export const $$ = {
-  expanded: attributeIn('expanded', booleanParser(), false),
-  maxSize: attributeIn('max-size', stringParser(), ''),
-  minSize: attributeIn('min-size', stringParser(), '0'),
-  mode: attributeIn(
-      'mode',
-      stringMatchConverter(new Set([Mode.HORIZONTAL, Mode.VERTICAL])),
-      Mode.VERTICAL,
-  ),
+  api: {
+    expanded: attributeIn('expanded', booleanParser(), false),
+    maxSize: attributeIn('max-size', stringParser(), ''),
+    minSize: attributeIn('min-size', stringParser(), '0'),
+    mode: attributeIn(
+        'mode',
+        stringMatchConverter(new Set([Mode.HORIZONTAL, Mode.VERTICAL])),
+        Mode.VERTICAL,
+    ),
+  },
+  tag: 'mk-drawer',
 };
 
 export const $ = {
   host: element({
-    ...$$,
+    ...$$.api,
     styleHeight: style('height'),
     styleOverflow: style('overflow'),
     styleWidth: style('width'),
@@ -48,7 +51,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  tag: 'mk-drawer',
+  tag: $$.tag,
   template: drawerTemplate,
 })
 export class Drawer extends ThemedCustomElementCtrl {

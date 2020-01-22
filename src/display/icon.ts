@@ -22,11 +22,16 @@ import { stringParser } from '../util/parsers';
 import iconTemplate from './icon.html';
 import { $svgService } from './svg-service';
 
-export const $$ = {icon: attributeIn('icon', stringParser())};
+export const $$ = {
+  api: {
+    icon: attributeIn('icon', stringParser()),
+  },
+  tag: 'mk-icon',
+};
 
 export const $ = {
   host: element({
-    ...$$,
+    ...$$.api,
     ariaHidden: attributeOut(
         'aria-hidden',
         compose<boolean, Serializable, string>(typeBased(BooleanType), json()),
@@ -40,7 +45,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  tag: 'mk-icon',
+  tag: $$.tag,
   template: iconTemplate,
 })
 export class Icon extends ThemedCustomElementCtrl {

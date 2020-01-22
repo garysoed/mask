@@ -2,18 +2,19 @@ import { $asMap, $map, $pipe, $zip, countableIterable } from '@gs-tools/collect'
 import { Color } from '@gs-tools/color';
 import { ArrayDiff } from '@gs-tools/rxjs';
 import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
+import { attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
 import { concat, Observable, of as observableOf } from '@rxjs';
 import { filter, map, pairwise, switchMap, tap, withLatestFrom } from '@rxjs/operators';
 
 import { $$ as $checkbox, Checkbox } from '../src/action/input/checkbox';
-import { _p, _v } from '../src/app/app';
+import { _p } from '../src/app/app';
 import { RootLayout } from '../src/layout/root-layout';
 import { Palette } from '../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 import { stringParser } from '../src/util/parsers';
 
 import demoTemplate from './demo.html';
+
 
 const $ = {
   accentPalette: element('accentPalette', InstanceofType(HTMLDivElement), {
@@ -24,7 +25,7 @@ const $ = {
     colorlist: repeated('basePalette'),
     onClick: onDom<MouseEvent>('click'),
   }),
-  darkMode: element('darkMode', ElementWithTagType('mk-checkbox'), api($checkbox)),
+  darkMode: element('darkMode', $checkbox, {}),
   root: element('root', ElementWithTagType('section'), {
     theme: attributeOut('mk-theme', stringParser()),
   }),

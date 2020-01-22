@@ -1,5 +1,4 @@
-import { ElementWithTagType } from '@gs-types';
-import { api, attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from '@persona';
+import { attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from '@persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from '@rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from '@rxjs/operators';
 
@@ -13,21 +12,24 @@ import { booleanParser, stringParser } from '../util/parsers';
 
 import template from './root-layout.html';
 
+
 export const $$ = {
-  drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
-  icon: attributeIn('icon', stringParser()),
-  label: attributeIn('label', stringParser()),
-  onTitleClick: dispatcher(ACTION_EVENT),
+  api: {
+    drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
+    icon: attributeIn('icon', stringParser()),
+    label: attributeIn('label', stringParser()),
+    onTitleClick: dispatcher(ACTION_EVENT),
+  },
+  tag: 'mk-root-layout',
 };
 
 export const $ = {
-  drawer: element('drawer', ElementWithTagType('mk-drawer'), {
-    ...api($drawer),
+  drawer: element('drawer', $drawer, {
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
   }),
-  host: element($$),
-  title: element('title', ElementWithTagType('mk-text-icon-button'), api($textIconButton)),
+  host: element($$.api),
+  title: element('title', $textIconButton, {}),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
 
@@ -36,7 +38,7 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
     Drawer,
     TextIconButton,
   ],
-  tag: 'mk-root-layout',
+  tag: $$.tag,
   template,
 })
 export class RootLayout extends ThemedCustomElementCtrl {

@@ -25,21 +25,24 @@ import textButtonTemplate from './text-icon-button.html';
 const THROTTLE_MS = 500;
 
 export const $$ = {
-  // TODO: Add autocomplete option.
-  actionEvent: dispatcher(ACTION_EVENT),
-  active: hasAttribute('active'),
-  ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
-  ariaLabelOut: attributeOut('aria-label', stringParser()),
-  disabled: hasAttribute('disabled'),
-  hasMkPrimary: hasAttribute('mk-primary'),
-  icon: attributeIn('icon', stringParser(), ''),
-  label: attributeIn('label', stringParser(), ''),
-  tabindex: attributeOut('tabindex', integerParser()),
+  tag: 'mk-text-icon-button',
+  api: {
+    // TODO: Add autocomplete option.
+    actionEvent: dispatcher(ACTION_EVENT),
+    active: hasAttribute('active'),
+    ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
+    ariaLabelOut: attributeOut('aria-label', stringParser()),
+    disabled: hasAttribute('disabled'),
+    hasMkPrimary: hasAttribute('mk-primary'),
+    icon: attributeIn('icon', stringParser(), ''),
+    label: attributeIn('label', stringParser(), ''),
+    tabindex: attributeOut('tabindex', integerParser()),
+  },
 };
 
 export const $ = {
   host: element({
-    ...$$,
+    ...$$.api,
     onBlur: onDom('blur'),
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
@@ -49,8 +52,7 @@ export const $ = {
     onSpaceDown: onKeydown(' '),
     role: attributeOut('role', stringParser()),
   }),
-  iconWithText: element('iconWithText', ElementWithTagType('mk-icon-with-text'), {
-    ...api($iconWithText),
+  iconWithText: element('iconWithText', $iconWithText, {
     icon: attributeOut('icon', stringParser()),
     label: attributeOut('label', stringParser()),
     mode: attributeOut('mode', stringParser()),
@@ -59,7 +61,7 @@ export const $ = {
 
 @_p.customElement({
   dependencies: [IconWithText],
-  tag: 'mk-text-icon-button',
+  tag: $$.tag,
   template: textButtonTemplate,
 })
 export class TextIconButton extends BaseAction {

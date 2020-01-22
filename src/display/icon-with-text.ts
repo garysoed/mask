@@ -9,28 +9,31 @@
  * @slot The glyph of the icon to display.
  */
 
-import { ElementWithTagType, InstanceofType } from '@gs-types';
+import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from '@persona';
 import { Observable } from '@rxjs';
 import { map } from '@rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 
-import { Icon } from './icon';
+import { $$ as $icon, Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
 
 
 export const $$ = {
-  icon: attributeIn('icon', stringParser(), ''),
-  label: attributeIn('label', stringParser(), ''),
-  mode: attributeIn('mode', stringParser(), ''),
+  api: {
+    icon: attributeIn('icon', stringParser(), ''),
+    label: attributeIn('label', stringParser(), ''),
+    mode: attributeIn('mode', stringParser(), ''),
+  },
+  tag: 'mk-icon-with-text',
 };
 
 export const $ = {
-  host: element($$),
-  icon: element('icon', ElementWithTagType('mk-icon'), {
+  host: element($$.api),
+  icon: element('icon', $icon, {
     classes: classlist(),
     icon: attributeOut('icon', stringParser()),
     mode: attributeOut('mode', stringParser()),
@@ -43,7 +46,7 @@ export const $ = {
 
 @_p.customElement({
   dependencies: [Icon],
-  tag: 'mk-icon-with-text',
+  tag: $$.tag,
   template: iconWithTextTemplate,
 })
 export class IconWithText extends ThemedCustomElementCtrl {

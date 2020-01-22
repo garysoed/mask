@@ -8,12 +8,8 @@ import { map, tap, withLatestFrom } from '@rxjs/operators';
 import template from './demo-layout.html';
 
 const $ = {
-  detailsButton: element('detailsButton', elementWithTagType('mk-text-icon-button'), {
-    ...api($textIconButton),
-  }),
-  detailsDrawer: element('detailsDrawer', elementWithTagType('mk-drawer'), {
-    ...api($drawer),
-  }),
+  detailsButton: element('detailsButton', $textIconButton, {}),
+  detailsDrawer: element('detailsDrawer', $drawer, {}),
   host: element({
     label: attributeIn('label', stringParser()),
   }),

@@ -1,4 +1,4 @@
-import { $checkbox, $drawer, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
+import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
 
 import { Vine } from '@grapevine';
 import { $asMap, $map, $pipe, $zip, countableIterable } from '@gs-tools/collect';
@@ -30,15 +30,14 @@ const $ = {
   content: element('content', elementWithTagType('div'), {
     content: single('content'),
   }),
-  darkMode: element('darkMode', elementWithTagType('mk-checkbox'), api($checkbox)),
+  darkMode: element('darkMode', $checkbox, {}),
   root: element('root', elementWithTagType('section'), {
     theme: attributeOut('mk-theme', stringParser()),
   }),
-  rootLayout: element('rootLayout', elementWithTagType('mk-root-layout'), {
+  rootLayout: element('rootLayout', $rootLayout, {
     onAction: onDom(ACTION_EVENT),
   }),
-  settingsDrawer: element('settingsDrawer', elementWithTagType('mk-drawer'), {
-    ...api($drawer),
+  settingsDrawer: element('settingsDrawer', $drawer, {
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
   }),
@@ -123,9 +122,9 @@ export class Demo extends ThemedCustomElementCtrl {
   private renderComponentButtons(): Observable<ArrayDiff<RenderSpec>> {
     const renderSpec = COMPONENT_SPECS.map(({name, path}) => {
       return new SimpleElementRenderSpec(
-          'mk-text-icon-button',
+          $textIconButton.tag,
           new Map([
-            [$textIconButton.label.attrName, name],
+            [$textIconButton.api.label.attrName, name],
             [COMPONENT_PATH_ATTR, `${path}`],
           ]),
       );

@@ -9,6 +9,7 @@ export enum Views {
   CHECKBOX = 'ch',
   COLORS = 'co',
   CROPPED_LINE = 'cl',
+  DIALOG = 'd',
   ICON = 'i',
   MAIN = 'm',
 }
@@ -18,6 +19,7 @@ export interface Routes extends LocationSpec {
   [Views.CHECKBOX]: {};
   [Views.COLORS]: {};
   [Views.CROPPED_LINE]: {};
+  [Views.DIALOG]: {};
   [Views.ICON]: {};
   [Views.MAIN]: {};
 }
@@ -28,6 +30,7 @@ const ROUTE_SPEC: Array<RouteSpec<keyof Routes>> = [
   {path: '/checkbox', type: Views.CHECKBOX},
   {path: '/colors', type: Views.COLORS},
   {path: '/cropped-line', type: Views.CROPPED_LINE},
+  {path: '/dialog', type: Views.DIALOG},
   {path: '/icon', type: Views.ICON},
 ];
 

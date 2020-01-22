@@ -1,12 +1,12 @@
 import { Vine } from '@grapevine';
 import { stringMatchConverter } from '@gs-tools/serializer';
-import { ElementWithTagType, InstanceofType } from '@gs-types';
+import { InstanceofType } from '@gs-types';
 import { compose, Converter, firstSuccess, Result } from '@nabu';
-import { api, attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
+import { attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
 import { combineLatest, merge, Observable } from '@rxjs';
 import { filter, map, mapTo, startWith, tap, withLatestFrom } from '@rxjs/operators';
 
-import { _p, _v } from '../../app/app';
+import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
@@ -16,6 +16,7 @@ import { booleanParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
 import template from './checkbox.html';
+
 
 export type CheckedValue = boolean | 'unknown';
 
@@ -56,14 +57,17 @@ const iconCheckedValueParser = compose(
 );
 
 export const $$ = {
-  ...$baseInput,
-  initValue: attributeIn('init-value', checkedValueParser, false),
-  value: attributeOut('value', checkedValueParser, false),
+  api: {
+    ...$baseInput,
+    initValue: attributeIn('init-value', checkedValueParser, false),
+    value: attributeOut('value', checkedValueParser, false),
+  },
+  tag: 'mk-checkbox',
 };
 
 export const $ = {
   host: element({
-    ...$$,
+    ...$$.api,
     onBlur: onDom('blur'),
     onFocus: onDom('focus'),
     onMouseEnter: onDom('mouseenter'),
@@ -72,11 +76,10 @@ export const $ = {
   root: element('root', InstanceofType(HTMLDivElement), {
     onClick: onDom('click'),
   }),
-  text: element('text', ElementWithTagType('mk-icon-with-text'), {
-    ...api($iconWithText),
+  text: element('text', $iconWithText, {
     disabledClass: classToggle('disabled'),
-    iconIn: attributeIn($iconWithText.icon.attrName, iconCheckedValueParser, false),
-    iconOut: attributeOut($iconWithText.icon.attrName, iconCheckedValueParser),
+    iconIn: attributeIn($iconWithText.api.icon.attrName, iconCheckedValueParser, false),
+    iconOut: attributeOut($iconWithText.api.icon.attrName, iconCheckedValueParser),
   }),
 };
 

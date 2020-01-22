@@ -1,5 +1,5 @@
-import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { api, attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from '@persona';
+import { instanceofType } from '@gs-types';
+import { attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from '@persona';
 import { combineLatest, merge, Observable } from '@rxjs';
 import { map, mapTo, startWith } from '@rxjs/operators';
 
@@ -10,47 +10,51 @@ import { stringParser } from '../util/parsers';
 
 import template from './list-item.html';
 
+
 export const $$ = {
-  icon: attributeIn('icon', stringParser()),
-  itemDetail: attributeIn('item-detail', stringParser()),
-  itemName: attributeIn('item-name', stringParser()),
-  selected: hasAttribute('selected'),
-  toolWidth: attributeIn('tool-width', stringParser()),
+  api: {
+    icon: attributeIn('icon', stringParser()),
+    itemDetail: attributeIn('item-detail', stringParser()),
+    itemName: attributeIn('item-name', stringParser()),
+    selected: hasAttribute('selected'),
+    toolWidth: attributeIn('tool-width', stringParser()),
+  },
+  tag: 'mk-list-item',
 };
 
 export const $ = {
   host: element({
-    ...$$,
+    ...$$.api,
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
   }),
-  icon: element('icon', ElementWithTagType('mk-icon'), api($icon)),
-  iconContainer: element('iconContainer', InstanceofType(HTMLDivElement), {
+  icon: element('icon', $icon, {}),
+  iconContainer: element('iconContainer', instanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
   }),
-  itemDetail: element('itemDetail', InstanceofType(HTMLDivElement), {
+  itemDetail: element('itemDetail', instanceofType(HTMLDivElement), {
     innerHtml: innerHtml(),
   }),
-  itemDetailContainer: element('itemDetailContainer', InstanceofType(HTMLDivElement), {
+  itemDetailContainer: element('itemDetailContainer', instanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
   }),
-  itemName: element('itemName', InstanceofType(HTMLDivElement), {
+  itemName: element('itemName', instanceofType(HTMLDivElement), {
     innerHtml: innerHtml(),
   }),
-  itemNameContainer: element('itemNameContainer', InstanceofType(HTMLDivElement), {
+  itemNameContainer: element('itemNameContainer', instanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
   }),
-  root: element('root', InstanceofType(HTMLDivElement), {
+  root: element('root', instanceofType(HTMLDivElement), {
     theme: attributeOut('mk-theme', stringParser()),
   }),
-  tool: element('tool', InstanceofType(HTMLDivElement), {
+  tool: element('tool', instanceofType(HTMLDivElement), {
     width: style('width'),
   }),
 };
 
 @_p.customElement({
   dependencies: [Icon],
-  tag: 'mk-list-item',
+  tag: $$.tag,
   template,
 })
 export class ListItem extends ThemedCustomElementCtrl {
