@@ -3,7 +3,7 @@ import { $dialogService, $textIconButton, _p, Dialog as MaskDialog, TextIconButt
 import { Vine } from '@grapevine';
 import { element, InitFn } from '@persona';
 import { Observable } from '@rxjs';
-import { switchMap, withLatestFrom } from '@rxjs/operators';
+import { switchMap, tap, withLatestFrom } from '@rxjs/operators';
 
 import { DemoLayout } from '../base/demo-layout';
 
@@ -49,6 +49,9 @@ export class Dialog extends ThemedCustomElementCtrl {
             },
             title: 'Dialog title',
           });
+        }),
+        tap(({canceled}) => {
+          window.alert(`Canceled: ${canceled}`);
         }),
     );
   }

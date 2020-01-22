@@ -1,0 +1,38 @@
+<style id="theme"></style>
+<style>
+  #drawerContent {
+    padding: 1rem;
+    width: 10rem;
+  }
+</style>
+
+<mkd-demo-layout label="Drawer">
+  <div slot="play">
+    <section fill-parent id="rootPlay" layout="row">
+      <mk-drawer
+          id="drawer"
+          max-size="20rem"
+          min-size="4rem"
+          mk-theme="light"
+          mk-theme-highlight
+          mode="vertical"
+      >
+        <div id="drawerContent">
+          Drawer content
+        </div>
+      </mk-drawer>
+
+      <section flex>
+        <mk-checkbox id="horizontalModeCheckbox" label="Horizontal mode"></mk-checkbox>
+        <mk-checkbox id="expandCheckbox" label="Expand"></mk-checkbox>
+      </section>
+    </section>
+  </div>
+  <div slot="docs">
+    <p>
+      Mask supports 2 kinds of drawers: vertical and horizontal. Drawers are just expandable
+      sections. You can set it as floating or inline using custom CSS.
+    </p>
+  </div>
+</mkd-demo-layout>
+
