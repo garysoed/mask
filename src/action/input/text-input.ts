@@ -1,10 +1,10 @@
 import { Vine } from '@grapevine';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from '@persona';
-import { BehaviorSubject, combineLatest, Observable } from '@rxjs';
-import { debounceTime, switchMap, tap, withLatestFrom } from '@rxjs/operators';
+import { combineLatest, Observable } from '@rxjs';
+import { debounceTime, switchMap, tap } from '@rxjs/operators';
 
-import { _p, _v } from '../../app/app';
+import { _p } from '../../app/app';
 import { booleanParser, enumParser, stringParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
@@ -87,7 +87,7 @@ export class TextInput extends BaseInput<string> {
       ...super.getInitFunctions(),
       _p.render($.input._.type).withObservable(this.type$),
       _p.render($.input._.autocomplete).withObservable(this.autocomplete$),
-      vine => this.setupHandleInput(vine),
+      () => this.setupHandleInput(),
     ];
   }
 
@@ -99,7 +99,7 @@ export class TextInput extends BaseInput<string> {
     );
   }
 
-  private setupHandleInput(vine: Vine): Observable<string> {
+  private setupHandleInput(): Observable<string> {
     return this.inputEl$
         .pipe(
             switchMap(() => this.onInput$

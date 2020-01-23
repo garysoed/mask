@@ -8,6 +8,7 @@ import { Dialog, TAG as DIALOG_TAG } from '../component/dialog';
 import { Drawer, TAG as DRAWER_TAG } from '../component/drawer';
 import { Icon, TAG as ICON_TAG } from '../component/icon';
 import { IconWithText, TAG as ICON_WITH_TEXT_TAG } from '../component/icon-with-text';
+import { TAG as TEXT_INPUT_TAG, TextInput } from '../component/text-input';
 
 import { Views } from './location-service';
 
@@ -28,4 +29,5 @@ export const COMPONENT_SPECS: readonly ComponentSpec[] = [
   {ctor: Drawer, name: 'Drawer', path: Views.DRAWER, tag: DRAWER_TAG},
   {ctor: Icon, name: 'Icon', path: Views.ICON, tag: ICON_TAG},
   {ctor: IconWithText, name: 'Icon with Text', path: Views.ICON_WITH_TEXT, tag: ICON_WITH_TEXT_TAG},
+  {ctor: TextInput, name: 'Text Input', path: Views.TEXT_INPUT, tag: TEXT_INPUT_TAG},
 ];

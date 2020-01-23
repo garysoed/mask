@@ -1,0 +1,28 @@
+<style id="theme"></style>
+
+<mkd-demo-layout label="Icon with Text">
+  <div slot="play">
+      <mk-text-input
+          init-value="Initial Value"
+          label="Enabled input">
+      </mk-text-input>
+      <mk-text-input init-value="Initial Value"></mk-text-input>
+      <mk-text-input
+          init-value="Disabled"
+          disabled="true"
+          label="Disabled input">
+      </mk-text-input>
+      <mk-text-input
+          init-value="123"
+          label="Number input"
+          type="number">
+      </mk-text-input>
+  </div>
+  <div slot="docs">
+    <p>
+      Mask's text input allows you to specify a label, a default value, and some simple formatting.
+      By specifying the <code>type</code>, Mask will prevent the user from typing invalid values.
+    </p>
+  </div>
+</mkd-demo-layout>
+
