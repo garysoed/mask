@@ -7,6 +7,7 @@ import { CroppedLine, TAG as CROPPED_LINE_TAG } from '../component/cropped-line'
 import { Dialog, TAG as DIALOG_TAG } from '../component/dialog';
 import { Drawer, TAG as DRAWER_TAG } from '../component/drawer';
 import { Icon, TAG as ICON_TAG } from '../component/icon';
+import { IconWithText, TAG as ICON_WITH_TEXT_TAG } from '../component/icon-with-text';
 
 import { Views } from './location-service';
 
@@ -26,4 +27,5 @@ export const COMPONENT_SPECS: readonly ComponentSpec[] = [
   {ctor: Dialog, name: 'Dialog', path: Views.DIALOG, tag: DIALOG_TAG},
   {ctor: Drawer, name: 'Drawer', path: Views.DRAWER, tag: DRAWER_TAG},
   {ctor: Icon, name: 'Icon', path: Views.ICON, tag: ICON_TAG},
+  {ctor: IconWithText, name: 'Icon with Text', path: Views.ICON_WITH_TEXT, tag: ICON_WITH_TEXT_TAG},
 ];

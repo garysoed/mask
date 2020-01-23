@@ -12,6 +12,7 @@ export enum Views {
   DIALOG = 'di',
   DRAWER = 'dr',
   ICON = 'i',
+  ICON_WITH_TEXT = 'iwt',
   MAIN = 'm',
 }
 
@@ -23,6 +24,7 @@ export interface Routes extends LocationSpec {
   [Views.DIALOG]: {};
   [Views.DRAWER]: {};
   [Views.ICON]: {};
+  [Views.ICON_WITH_TEXT]: {};
   [Views.MAIN]: {};
 }
 
@@ -35,6 +37,7 @@ const ROUTE_SPEC: Array<RouteSpec<keyof Routes>> = [
   {path: '/dialog', type: Views.DIALOG},
   {path: '/drawer', type: Views.DRAWER},
   {path: '/icon', type: Views.ICON},
+  {path: '/icon-with-text', type: Views.ICON_WITH_TEXT},
 ];
 
 const DEFAULT_ROUTE: Route<Routes, Views.MAIN> = {payload: {}, type: Views.MAIN};
