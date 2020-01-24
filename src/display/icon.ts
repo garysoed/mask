@@ -8,7 +8,8 @@
  */
 
 import { Vine } from '@grapevine';
-import { typeBased } from '@gs-tools/serializer';
+import { stringMatchConverter, typeBased } from '@gs-tools/serializer';
+import { enums } from '@gs-tools/typescript';
 import { BooleanType, InstanceofType } from '@gs-types';
 import { compose, json, Serializable } from '@nabu';
 import { AriaRole, attributeIn, attributeOut, element, InitFn, innerHtml } from '@persona';
@@ -19,12 +20,14 @@ import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 
+import { IconMode } from './icon-mode';
 import iconTemplate from './icon.html';
 import { $svgService } from './svg-service';
 
 export const $$ = {
   api: {
     icon: attributeIn('icon', stringParser()),
+    mode: attributeIn('mode', stringMatchConverter(enums.getAllValues<IconMode>(IconMode))),
   },
   tag: 'mk-icon',
 };

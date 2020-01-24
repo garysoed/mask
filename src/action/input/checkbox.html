@@ -1,6 +1,7 @@
 <style id="theme"></style>
 <style>
-  #root {
+  #root,
+  #container {
     background-color: var(--mkCheckboxBG);
     color: var(--mkCheckboxFG);
   }
@@ -8,13 +9,11 @@
   :host {
     --mkCheckboxBG: var(--mkThemeActionBG);
     --mkCheckboxFG: var(--mkThemeActionFG1);
-    cursor: pointer;
   }
 
   :host([disabled]),
   :host([disabled]:focus) {
     --mkCheckboxFG: var(--mkThemeActionDisabledFG1);
-    cursor: default;
   }
 
   :host(:not([disabled]):hover),
@@ -22,7 +21,56 @@
     --mkCheckboxBG: var(--mkThemeActionFocusBG);
     --mkCheckboxFG: var(--mkThemeActionFocusFG1);
   }
+
+  /* Customize the label (the container) */
+  #container {
+    display: block;
+    position: relative;
+    line-height: 2rem;
+    padding: 1rem 1rem 1rem 4rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  #container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  :host([disabled]) #container,
+  :host([disabled]:focus) #container,
+  :host([disabled]) #container input,
+  :host([disabled]:focus) #container input {
+    cursor: default;
+  }
+
+  /* Create a custom checkbox */
+  #checkmark {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    bottom: 1rem;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  #checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  #container input:checked ~ #checkmark:after {
+    display: block;
+  }
 </style>
-<div id="root">
-  <mk-icon-with-text id="text"></mk-icon-with-text>
-</div>
+
+<label id="container" mk-body-2>
+  <!-- label -->
+  <input id="checkbox" type="checkbox" checked="checked">
+  <mk-icon id="checkmark" mode="action" icon="checkbox_checked"></mk-icon>
+</label>

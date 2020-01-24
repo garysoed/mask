@@ -1,9 +1,12 @@
 import { assert, setup, should, test } from '@gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { map } from '@rxjs/operators';
 
 import { _p } from '../../app/app';
+import { IconMode } from '../../display/icon-mode';
 
 import { $, Checkbox } from './checkbox';
+
 
 const testerFactory = new PersonaTesterFactory(_p);
 
@@ -20,59 +23,68 @@ test('@mask/input/checkbox', () => {
     should(`render action`, () => {
       el.setHasAttribute($.host._.disabled, false).subscribe();
 
-      assert(el.getAttribute($.text._.mode)).to.emitWith('action');
+      assert(el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.ACTION);
     });
 
     should(`render focus if hovered`, () => {
       el.setHasAttribute($.host._.disabled, false).subscribe();
       el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
 
-      assert(el.getAttribute($.text._.mode)).to.emitWith('focus');
+      assert(el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.FOCUS);
     });
 
     should(`render focus if focused`, () => {
       el.setHasAttribute($.host._.disabled, false).subscribe();
       el.dispatchEvent($.host._.onFocus, new CustomEvent('focus')).subscribe();
 
-      assert(el.getAttribute($.text._.mode)).to.emitWith('focus');
+      assert(el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.FOCUS);
     });
 
     should(`render disabled if disabled`, () => {
       el.setHasAttribute($.host._.disabled, true).subscribe();
       el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')).subscribe();
 
-      assert(el.getAttribute($.text._.mode)).to.emitWith('disabled');
+      assert(el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.DISABLED);
     });
   });
 
   test('setupOnClickHandler', () => {
     should(`toggle the icon on click`, () => {
-      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
+      el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')).subscribe();
 
-      assert(el.getAttribute($.text._.iconOut)).to.emitWith(true);
+      assert(el.getAttribute($.checkbox._.checkedOut)).to.emitWith('checked');
       assert(el.getAttribute($.host._.value)).to.emitWith(true);
 
-      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
+      el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')).subscribe();
 
-      assert(el.getAttribute($.text._.iconOut)).to.emitWith(false);
+      assert(el.getAttribute($.checkbox._.checkedOut)).to.emitWith('');
       assert(el.getAttribute($.host._.value)).to.emitWith(false);
     });
 
     should(`change to true if unknown`, () => {
       // Set the init value to unknown, then click it.
       el.setAttribute($.host._.initValue, 'unknown').subscribe();
-      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
+      el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')).subscribe();
 
-      assert(el.getAttribute($.text._.iconOut)).to.emitWith(true);
+      assert(el.getAttribute($.checkbox._.checkedOut)).to.emitWith('checked');
       assert(el.getAttribute($.host._.value)).to.emitWith(true);
     });
 
     should(`do nothing on click if disabled`, () => {
       el.setHasAttribute($.host._.disabled, true).subscribe();
-      el.dispatchEvent($.root._.onClick, new CustomEvent('click')).subscribe();
+      el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')).subscribe();
 
-      assert(el.getAttribute($.text._.iconOut)).to.emitWith(false);
+      assert(el.getAttribute($.checkbox._.checkedOut)).to.emitWith('');
       assert(el.getAttribute($.host._.value)).to.emitWith(false);
     });
+  });
+
+  should(`display unknown state correctly`, () => {
+    el.setAttribute($.host._.initValue, 'unknown').subscribe();
+    el.callFunction($.host._.clearFn, []).subscribe();
+
+    assert(el.getElement($.checkbox).pipe(map(element => element.indeterminate))).to
+        .emitWith(true);
+    assert(el.getAttribute($.host._.value)).to.emitWith('unknown');
   });
 });

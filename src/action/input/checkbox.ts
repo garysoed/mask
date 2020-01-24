@@ -1,8 +1,9 @@
 import { Vine } from '@grapevine';
+import { filterByType } from '@gs-tools/rxjs';
 import { stringMatchConverter } from '@gs-tools/serializer';
-import { InstanceofType } from '@gs-types';
+import { booleanType, elementWithTagType, instanceofType } from '@gs-types';
 import { compose, Converter, firstSuccess, Result } from '@nabu';
-import { attributeIn, attributeOut, classToggle, element, InitFn, onDom } from '@persona';
+import { attributeIn, attributeOut, combineOutput, element, InitFn, mapOutput, onDom, SimpleElementRenderSpec, single } from '@persona';
 import { combineLatest, merge, Observable } from '@rxjs';
 import { filter, map, mapTo, startWith, tap, withLatestFrom } from '@rxjs/operators';
 
@@ -10,7 +11,8 @@ import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
-import { $$ as $iconWithText, IconWithText } from '../../display/icon-with-text';
+import { $$ as $icon } from '../../display/icon';
+import { IconWithText } from '../../display/icon-with-text';
 import { $svgConfig } from '../../display/svg-service';
 import { booleanParser } from '../../util/parsers';
 
@@ -21,8 +23,8 @@ import template from './checkbox.html';
 export type CheckedValue = boolean | 'unknown';
 
 const checkedValueParser = firstSuccess<CheckedValue, string>(
-    booleanParser(),
     stringMatchConverter<'unknown'>(['unknown']),
+    booleanParser(),
 );
 
 type CheckedIcons = 'checkbox_unchecked' | 'checkbox_checked' | 'checkbox_unknown';
@@ -66,20 +68,24 @@ export const $$ = {
 };
 
 export const $ = {
+  checkbox: element('checkbox', instanceofType(HTMLInputElement), {
+    checkedIn: attributeIn('checked', stringMatchConverter(['checked', ''])),
+    checkedOut: attributeOut('checked', stringMatchConverter(['checked', '']), ''),
+    onClick: onDom('click'),
+    readonly: attributeOut('readonly', booleanParser(), false),
+  }),
+  checkmark: element('checkmark', $icon, {
+    iconOut: attributeOut($icon.api.icon.attrName, iconCheckedValueParser),
+  }),
+  container: element('container', elementWithTagType('label'), {
+    label: single('label'),
+  }),
   host: element({
     ...$$.api,
     onBlur: onDom('blur'),
     onFocus: onDom('focus'),
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
-  }),
-  root: element('root', InstanceofType(HTMLDivElement), {
-    onClick: onDom('click'),
-  }),
-  text: element('text', $iconWithText, {
-    disabledClass: classToggle('disabled'),
-    iconIn: attributeIn($iconWithText.api.icon.attrName, iconCheckedValueParser, false),
-    iconOut: attributeOut($iconWithText.api.icon.attrName, iconCheckedValueParser),
   }),
 };
 
@@ -109,19 +115,24 @@ export const $ = {
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue> {
-  private readonly onBlurObs = this.declareInput($.host._.onBlur);
-  private readonly onClickObs = this.declareInput($.root._.onClick);
-  private readonly onFocusObs = this.declareInput($.host._.onFocus);
-  private readonly onMouseEnterObs = this.declareInput($.host._.onMouseEnter);
-  private readonly onMouseLeaveObs = this.declareInput($.host._.onMouseLeave);
-  private readonly textIconIn$ = this.declareInput($.text._.iconIn);
+  private readonly onBlur$ = this.declareInput($.host._.onBlur);
+  private readonly onCheckboxClick$ = this.declareInput($.checkbox._.onClick);
+  private readonly onFocus$ = this.declareInput($.host._.onFocus);
+  private readonly onMouseEnter$ = this.declareInput($.host._.onMouseEnter);
+  private readonly onMouseLeave$ = this.declareInput($.host._.onMouseLeave);
 
   constructor(shadowRoot: ShadowRoot) {
     super(
         $.host._.initValue,
-        $.host._.value,
-        $.text._.label,
-        $.text._.disabledClass,
+        combineOutput([
+          $.host._.value,
+          $.checkmark._.iconOut,
+        ]),
+        mapOutput(
+            $.container._.label,
+            value => new SimpleElementRenderSpec('span', undefined, value),
+        ),
+        $.checkbox._.readonly,
         shadowRoot,
     );
   }
@@ -130,28 +141,58 @@ export class Checkbox extends BaseInput<CheckedValue> {
     return [
       ...super.getInitFunctions(),
       () => this.setupOnClickHandler(),
-      this.renderStream($.text._.mode, this.renderIconMode),
+      this.renderStream($.checkmark._.mode, this.renderIconMode),
     ];
   }
 
   protected getCurrentValueObs(): Observable<CheckedValue> {
-    return this.textIconIn$;
+    const indeterminate$ = $.checkbox.getValue(this.shadowRoot).pipe(
+        map(element => element.indeterminate),
+    );
+
+    const checked$ = $.checkbox._.checkedIn.getValue(this.shadowRoot);
+    return combineLatest([indeterminate$, checked$]).pipe(
+        map(([indeterminate, checked]) => {
+          if (indeterminate) {
+            return 'unknown';
+          }
+
+          return checked === 'checked';
+        }),
+    );
   }
 
   protected setupUpdateValue(value$: Observable<CheckedValue>): Observable<unknown> {
-    return $.text._.iconOut.output(this.shadowRoot, value$);
+    const indeterminate$ = value$.pipe(
+        filter(value => value === 'unknown'),
+        withLatestFrom($.checkbox.getValue(this.shadowRoot)),
+        tap(([, element]) => {
+          element.indeterminate = true;
+        }),
+    );
+
+    const trueFalse$ = value$.pipe(
+        filterByType(booleanType),
+        withLatestFrom($.checkbox.getValue(this.shadowRoot)),
+        tap(([, element]) => {
+          element.indeterminate = false;
+        }),
+        map(([value]) => value ? 'checked' : ''),
+    );
+
+    return merge(indeterminate$, $.checkbox._.checkedOut.output(this.shadowRoot, trueFalse$));
   }
 
   private renderIconMode(): Observable<string> {
     const hoverObs = merge(
-        this.onMouseEnterObs.pipe(mapTo(true)),
-        this.onMouseLeaveObs.pipe(mapTo(false)),
+        this.onMouseEnter$.pipe(mapTo(true)),
+        this.onMouseLeave$.pipe(mapTo(false)),
     )
     .pipe(startWith(false));
 
     const focusedObs = merge(
-        this.onFocusObs.pipe(mapTo(true)),
-        this.onBlurObs.pipe(mapTo(false)),
+        this.onFocus$.pipe(mapTo(true)),
+        this.onBlur$.pipe(mapTo(false)),
     )
     .pipe(startWith(false));
 
@@ -176,7 +217,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   }
 
   private setupOnClickHandler(): Observable<unknown> {
-    return this.onClickObs
+    return this.onCheckboxClick$
         .pipe(
             withLatestFrom(this.disabled$, this.value$),
             filter(([, disabled]) => !disabled),

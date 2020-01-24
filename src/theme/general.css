@@ -152,9 +152,8 @@ select:-webkit-autofill:focus {
 
 label {
   color: var(--mkThemePassiveFG2);
-  font-size: .75rem;
-  line-height: 1rem;
-  text-transform: uppercase;
+  font-size: 1.25rem;
+  line-height: 2rem;
 }
 
 legend {
