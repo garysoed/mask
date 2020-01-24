@@ -1,8 +1,26 @@
 <style id="theme"></style>
+<style>
+  #col1 {
+    width: 19rem;
+  }
+
+  #col2, #col3 {
+    width: 9rem;
+  }
+
+  tbody tr {
+    height: 8em;
+  }
+</style>
 
 <mkd-demo-layout label="Colors">
   <div slot="play">
     <table>
+      <colgroup>
+        <col id="col1">
+        <col id="col2">
+        <col id="col3">
+      </colgroup>
       <thead mk-body-2>
         <tr>
           <th></th>

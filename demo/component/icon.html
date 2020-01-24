@@ -1,6 +1,14 @@
 <style id="theme"></style>
 
 <style>
+  #col1 {
+    width: 14rem;
+  }
+
+  #col2 {
+    width: 9rem;
+  }
+
   #passive {
     background-color: var(--mkThemePassiveBG);
   }
@@ -41,6 +49,10 @@
 <mkd-demo-layout label="Icon">
   <div slot="play">
     <table>
+      <colgroup>
+        <col id="col1">
+        <col id="col2">
+      </colgroup>
       <thead>
         <tr>
           <th>Mode</th>
