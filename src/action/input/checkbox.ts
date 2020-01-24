@@ -3,7 +3,7 @@ import { filterByType } from '@gs-tools/rxjs';
 import { stringMatchConverter } from '@gs-tools/serializer';
 import { booleanType, elementWithTagType, instanceofType } from '@gs-types';
 import { compose, Converter, firstSuccess, Result } from '@nabu';
-import { attributeIn, attributeOut, combineOutput, element, InitFn, mapOutput, onDom, SimpleElementRenderSpec, single } from '@persona';
+import { attributeIn, attributeOut, element, InitFn, mapOutput, onDom, SimpleElementRenderSpec, single, splitOutput } from '@persona';
 import { combineLatest, merge, Observable } from '@rxjs';
 import { filter, map, mapTo, startWith, tap, withLatestFrom } from '@rxjs/operators';
 
@@ -124,7 +124,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   constructor(shadowRoot: ShadowRoot) {
     super(
         $.host._.initValue,
-        combineOutput([
+        splitOutput([
           $.host._.value,
           $.checkmark._.iconOut,
         ]),

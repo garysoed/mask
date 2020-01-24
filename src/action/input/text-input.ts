@@ -1,4 +1,3 @@
-import { Vine } from '@grapevine';
 import { InstanceofType } from '@gs-types';
 import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from '@persona';
 import { combineLatest, Observable } from '@rxjs';

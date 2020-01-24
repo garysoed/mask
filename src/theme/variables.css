@@ -41,4 +41,7 @@
   --mkSizePadding: 1rem;
 
   --mkAnimationTime: .2s;
+
+  --mkGridColumn: 4rem;
+  --mkGridGap: 1rem;
 }
