@@ -11,8 +11,11 @@ import template from './text-input.html';
 
 
 enum InputType {
+  EMAIL = 'email',
   NUMBER = 'number',
+  TEL = 'tel',
   TEXT = 'text',
+  URL = 'url',
 }
 
 enum AutocompleteType {
