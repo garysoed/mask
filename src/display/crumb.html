@@ -19,9 +19,11 @@
     --mkCrumbSeparatorDisplay: none;
   }
 
-  :host(:hover) {
+  :host(:hover),
+  :host(:focus) {
     --mkCrumbBackgroundColor: var(--mkThemeActionFocusBG);
     --mkCrumbForegroundColor: var(--mkThemeActionFocusFG1);
+    outline: none;
   }
 
   #root {

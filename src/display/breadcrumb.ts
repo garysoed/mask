@@ -1,13 +1,13 @@
-import { $ as $pipe, $asArray, $filter, $map } from '@gs-tools/collect';
+import { $ as $pipe, $asArray, $filterDefined, $map } from '@gs-tools/collect';
 import { Errors } from '@gs-tools/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs-tools/rxjs';
 import { objectConverter } from '@gs-tools/serializer';
-import { InstanceofType } from '@gs-types';
+import { elementWithTagType } from '@gs-types';
 import { attributeIn, dispatcher, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
 import { Observable } from '@rxjs';
 import { map, tap, withLatestFrom } from '@rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { listParser, stringParser } from '../util/parsers';
@@ -41,7 +41,7 @@ export const $$ = {
 
 export const $ = {
   host: element($$.api),
-  row: element('row', InstanceofType(HTMLDivElement), {
+  row: element('row', elementWithTagType('nav'), {
     crumbsSlot: repeated('crumbs'),
     onAction: onDom(ACTION_EVENT),
   }),
@@ -71,17 +71,16 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
     return this.pathKeySubject
         .pipe(
             withLatestFrom(this.pathDataSubject.pipe(scanMap())),
-            map(([diff, map]) => {
+            map(([diff, map]: [ArrayDiff<string>, ReadonlyMap<string, CrumbData>]) => {
               switch (diff.type) {
                 case 'delete':
                   return diff;
                 case 'init':
-                  const valueSet = new Set(diff.value);
                   const crumbDataList = $pipe(
-                      map,
-                      $filter(([key]) => valueSet.has(key)),
-                      $map(([, value]) => value),
-                      $map(renderCrumbData),
+                      diff.value,
+                      $map(key => map.get(key)),
+                      $filterDefined(),
+                      $map(crumbData => renderCrumbData(crumbData)),
                       $asArray(),
                   );
 
@@ -159,6 +158,10 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
 function renderCrumbData(data: CrumbData): RenderSpec {
   return new SimpleElementRenderSpec(
       'mk-crumb',
-      new Map([['display', data.display], ['key', data.key]]),
+      new Map([
+        ['display', data.display],
+        ['key', data.key],
+        ['tabindex', `0`],
+      ]),
   );
 }
