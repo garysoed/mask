@@ -1,6 +1,6 @@
-import { assert, objectThat, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { fromEvent, ReplaySubject } from '@rxjs';
+import { assert, objectThat, should, test } from 'gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { fromEvent, ReplaySubject } from 'rxjs';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';

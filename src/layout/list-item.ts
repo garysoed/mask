@@ -1,7 +1,7 @@
-import { instanceofType } from '@gs-types';
-import { attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from '@persona';
-import { combineLatest, merge, Observable } from '@rxjs';
-import { map, mapTo, startWith } from '@rxjs/operators';
+import { instanceofType } from 'gs-types';
+import { attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from 'persona';
+import { combineLatest, merge, Observable } from 'rxjs';
+import { map, mapTo, startWith } from 'rxjs/operators';
 
 import { _p, _v } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';

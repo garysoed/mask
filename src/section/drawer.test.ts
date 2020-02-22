@@ -1,6 +1,8 @@
-import { assert, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { assert, setup, should, test } from 'gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+
 import { _p } from '../app/app';
+
 import { $, Drawer, Mode } from './drawer';
 
 const testerFactory = new PersonaTesterFactory(_p);

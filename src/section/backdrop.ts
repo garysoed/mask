@@ -1,8 +1,8 @@
-import { Vine } from '@grapevine';
-import { InstanceofType } from '@gs-types';
-import { classlist, element, InitFn } from '@persona';
-import { Observable } from '@rxjs';
-import { map } from '@rxjs/operators';
+import { Vine } from 'grapevine';
+import { InstanceofType } from 'gs-types';
+import { classlist, element, InitFn } from 'persona';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

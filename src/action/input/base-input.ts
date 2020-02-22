@@ -1,7 +1,7 @@
-import { attributeIn, element, handler, InitFn } from '@persona';
-import { Input, Output } from '@persona/internal';
-import { BehaviorSubject, Observable, ReplaySubject } from '@rxjs';
-import { switchMap, tap } from '@rxjs/operators';
+import { attributeIn, element, handler, InitFn } from 'persona';
+import { Input, Output } from 'persona/export/internal';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { stringParser } from '../../util/parsers';

@@ -1,7 +1,7 @@
 import { $window, _v } from 'export';
 
-import { LocationService, LocationSpec, Route, RouteSpec } from '@persona';
-import { BehaviorSubject } from '@rxjs';
+import { LocationService, LocationSpec, Route, RouteSpec } from 'persona';
+import { BehaviorSubject } from 'rxjs';
 
 
 export enum Views {

@@ -1,7 +1,7 @@
-import { Vine } from '@grapevine';
-import { arrayThat, assert, createSpyInstance, fake, should, spy, test } from '@gs-testing';
-import { CustomElementCtrl } from '@persona';
-import { BehaviorSubject } from '@rxjs';
+import { Vine } from 'grapevine';
+import { arrayThat, assert, createSpyInstance, fake, should, spy, test } from 'gs-testing';
+import { CustomElementCtrl } from 'persona';
+import { BehaviorSubject } from 'rxjs';
 
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';

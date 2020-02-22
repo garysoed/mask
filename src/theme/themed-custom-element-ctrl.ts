@@ -1,9 +1,9 @@
-import { DelayedObservable, Provider } from '@grapevine/internal';
-import { InstanceofType } from '@gs-types';
-import { CustomElementCtrl, element, InitFn } from '@persona';
-import { Input, Output } from '@persona/internal';
-import { combineLatest, Observable } from '@rxjs';
-import { tap } from '@rxjs/operators';
+import { DelayedObservable, Provider } from 'grapevine/export/internal';
+import { InstanceofType } from 'gs-types';
+import { CustomElementCtrl, element, InitFn } from 'persona';
+import { Input, Output } from 'persona/export/internal';
+import { combineLatest, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { $theme, _p, _v } from '../app/app';
 

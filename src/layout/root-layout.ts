@@ -1,6 +1,6 @@
-import { attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from '@persona';
-import { BehaviorSubject, combineLatest, merge, Observable } from '@rxjs';
-import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from '@rxjs/operators';
+import { attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from 'persona';
+import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';

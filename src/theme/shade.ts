@@ -1,4 +1,4 @@
-import { Color, Colors, RgbColor } from '@gs-tools/color';
+import { Color, Colors, RgbColor } from 'gs-tools/export/color';
 
 
 export interface Shade {

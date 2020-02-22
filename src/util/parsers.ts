@@ -1,7 +1,7 @@
-import { integerConverter, listConverter, mapConverter, typeBased } from '@gs-tools/serializer';
-import { enums } from '@gs-tools/typescript';
-import { BooleanType } from '@gs-types';
-import { compose, Converter, human, identity, Result, Serializable } from '@nabu';
+import { integerConverter, listConverter, mapConverter, typeBased } from 'gs-tools/export/serializer';
+import { enums } from 'gs-tools/export/typescript';
+import { BooleanType } from 'gs-types';
+import { compose, Converter, human, identity, Result, Serializable } from 'nabu';
 
 export function booleanParser(): Converter<boolean, string> {
   return compose(typeBased(BooleanType), human());

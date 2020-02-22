@@ -1,5 +1,5 @@
-import { assert, FakeTime, mockTime, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
+import { assert, FakeTime, mockTime, setup, should, test } from 'gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p, _v } from '../app/app';
 

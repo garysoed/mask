@@ -1,7 +1,7 @@
-import { assert, createSpySubject, objectThat, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { fromEvent, of as observableOf } from '@rxjs';
-import { map, switchMap } from '@rxjs/operators';
+import { assert, createSpySubject, objectThat, should, test } from 'gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { fromEvent, of as observableOf } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 

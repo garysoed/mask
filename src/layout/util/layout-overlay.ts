@@ -1,9 +1,9 @@
-import { Vine } from '@grapevine';
-import { Jsons } from '@gs-tools/data';
-import { instanceofType } from '@gs-types';
-import { classlist, element, InitFn, style } from '@persona';
-import { BehaviorSubject, Observable } from '@rxjs';
-import { map, switchMap } from '@rxjs/operators';
+import { Vine } from 'grapevine';
+import { Jsons } from 'gs-tools/export/data';
+import { instanceofType } from 'gs-types';
+import { classlist, element, InitFn, style } from 'persona';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { _p, _v } from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';

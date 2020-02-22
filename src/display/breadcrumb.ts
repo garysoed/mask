@@ -1,11 +1,11 @@
-import { $ as $pipe, $asArray, $filterDefined, $map } from '@gs-tools/collect';
-import { Errors } from '@gs-tools/error';
-import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from '@gs-tools/rxjs';
-import { objectConverter } from '@gs-tools/serializer';
-import { elementWithTagType } from '@gs-types';
-import { attributeIn, dispatcher, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
-import { Observable } from '@rxjs';
-import { map, tap, withLatestFrom } from '@rxjs/operators';
+import { $ as $pipe, $asArray, $filterDefined, $map } from 'gs-tools/export/collect';
+import { Errors } from 'gs-tools/export/error';
+import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from 'gs-tools/export/rxjs';
+import { objectConverter } from 'gs-tools/export/serializer';
+import { elementWithTagType } from 'gs-types';
+import { attributeIn, dispatcher, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from 'persona';
+import { Observable } from 'rxjs';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';

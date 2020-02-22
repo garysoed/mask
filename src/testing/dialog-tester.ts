@@ -1,8 +1,8 @@
-import { Vine } from '@grapevine';
-import { filterNonNull } from '@gs-tools/rxjs';
-import { BaseElementTester, ElementTester, PersonaTester } from '@persona/testing';
-import { Observable } from '@rxjs';
-import { distinctUntilChanged, map } from '@rxjs/operators';
+import { Vine } from 'grapevine';
+import { filterNonNull } from 'gs-tools/export/rxjs';
+import { BaseElementTester, ElementTester, PersonaTester } from 'persona/export/testing';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { ActionEvent } from '../event/action-event';
 import { $ as $dialog } from '../section/dialog';

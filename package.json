@@ -2,7 +2,7 @@
   "name": "mask",
   "version": "1.0.0",
   "description": "",
-  "main": "webpack.demo.config.js",
+  "main": "export/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -36,7 +36,7 @@
     "webpack": "^4.32.2"
   },
   "dependencies": {
-    "rxjs": "^6.5.2",
+    "rxjs": "^6.5.4",
     "webpack-notifier": "^1.7.0"
   }
 }

@@ -1,7 +1,7 @@
-import { BaseDisposable } from '@gs-tools/dispose';
-import { MapSubject, scanMap } from '@gs-tools/rxjs';
-import { from as observableFrom, Observable, of as observableOf } from '@rxjs';
-import { map, retry, shareReplay, switchMap } from '@rxjs/operators';
+import { BaseDisposable } from 'gs-tools/export/dispose';
+import { MapSubject, scanMap } from 'gs-tools/export/rxjs';
+import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
+import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 
 import { _v } from '../app/app';
 

@@ -1,8 +1,8 @@
 
-import { arrayThat, assert, createSpySubject, setThat, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { BehaviorSubject, EMPTY } from '@rxjs';
-import { map, switchMap, take } from '@rxjs/operators';
+import { arrayThat, assert, createSpySubject, setThat, setup, should, test } from 'gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { BehaviorSubject, EMPTY } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';

@@ -7,14 +7,15 @@
  * @slot The glyph of the icon to display.
  */
 
-import { Vine } from '@grapevine';
-import { stringMatchConverter, typeBased } from '@gs-tools/serializer';
-import { enums } from '@gs-tools/typescript';
-import { BooleanType, InstanceofType } from '@gs-types';
-import { compose, json, Serializable } from '@nabu';
-import { AriaRole, attributeIn, attributeOut, element, InitFn, innerHtml } from '@persona';
-import { combineLatest, Observable } from '@rxjs';
-import { map, switchMap } from '@rxjs/operators';
+import { compose, json, Serializable } from 'nabu';
+
+import { Vine } from 'grapevine';
+import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
+import { enums } from 'gs-tools/export/typescript';
+import { BooleanType, InstanceofType } from 'gs-types';
+import { AriaRole, attributeIn, attributeOut, element, InitFn, innerHtml } from 'persona';
+import { combineLatest, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

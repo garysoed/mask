@@ -1,13 +1,13 @@
 import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
 
-import { Vine } from '@grapevine';
-import { $asMap, $map, $pipe, $zip, countableIterable } from '@gs-tools/collect';
-import { Color } from '@gs-tools/color';
-import { ArrayDiff, filterNonNull } from '@gs-tools/rxjs';
-import { elementWithTagType } from '@gs-types';
-import { api, attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single } from '@persona';
-import { merge, Observable, of as observableOf } from '@rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, tap, withLatestFrom } from '@rxjs/operators';
+import { Vine } from 'grapevine';
+import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/collect';
+import { Color } from 'gs-tools/export/color';
+import { ArrayDiff, filterNonNull } from 'gs-tools/export/rxjs';
+import { elementWithTagType } from 'gs-types';
+import { api, attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single } from 'persona';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { COMPONENT_SPECS } from './component-spec';
 import template from './demo.html';

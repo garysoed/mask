@@ -1,4 +1,4 @@
-import { CustomElementCtrlCtor } from '@persona/internal';
+import { CustomElementCtrlCtor } from 'persona/export/internal';
 
 import { Breadcrumb, TAG as BREADCRUMB_TAG } from '../component/breadcrumb';
 import { Checkbox, TAG as CHECKBOX_TAG } from '../component/checkbox';

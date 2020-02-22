@@ -1,7 +1,7 @@
-import { InstanceofType } from '@gs-types';
-import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from '@persona';
-import { combineLatest, Observable } from '@rxjs';
-import { debounceTime, switchMap, tap } from '@rxjs/operators';
+import { InstanceofType } from 'gs-types';
+import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from 'persona';
+import { combineLatest, Observable } from 'rxjs';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { booleanParser, enumParser, stringParser } from '../../util/parsers';

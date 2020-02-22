@@ -1,8 +1,8 @@
-import { Vine } from '@grapevine';
-import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { classlist, element, InitFn, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from '@persona';
-import { merge, Observable } from '@rxjs';
-import { filter, map, mapTo, switchMap, withLatestFrom } from '@rxjs/operators';
+import { Vine } from 'grapevine';
+import { ElementWithTagType, InstanceofType } from 'gs-types';
+import { classlist, element, InitFn, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
+import { merge, Observable } from 'rxjs';
+import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';

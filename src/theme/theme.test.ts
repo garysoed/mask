@@ -1,5 +1,5 @@
-import { assert, should, test } from '@gs-testing';
-import { HslColor } from '@gs-tools/color';
+import { assert, should, test } from 'gs-testing';
+import { HslColor } from 'gs-tools/export/color';
 import { Theme } from './theme';
 
 test('@mask/theme/theme', () => {

@@ -1,9 +1,9 @@
 import { $checkbox, $textIconButton, _p, Checkbox as MaskCheckbox, TextIconButton, ThemedCustomElementCtrl } from 'export';
 
-import { elementWithTagType } from '@gs-types';
-import { api, element, InitFn } from '@persona';
-import { Observable } from '@rxjs';
-import { mapTo } from '@rxjs/operators';
+import { elementWithTagType } from 'gs-types';
+import { api, element, InitFn } from 'persona';
+import { Observable } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 
 import { DemoLayout } from '../base/demo-layout';
 

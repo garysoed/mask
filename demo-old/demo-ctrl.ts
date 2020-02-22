@@ -1,10 +1,10 @@
-import { $asMap, $map, $pipe, $zip, countableIterable } from '@gs-tools/collect';
-import { Color } from '@gs-tools/color';
-import { ArrayDiff } from '@gs-tools/rxjs';
-import { ElementWithTagType, InstanceofType } from '@gs-types';
-import { attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from '@persona';
-import { concat, Observable, of as observableOf } from '@rxjs';
-import { filter, map, pairwise, switchMap, tap, withLatestFrom } from '@rxjs/operators';
+import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/collect';
+import { Color } from 'gs-tools/export/color';
+import { ArrayDiff } from 'gs-tools/export/rxjs';
+import { ElementWithTagType, InstanceofType } from 'gs-types';
+import { attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from 'persona';
+import { concat, Observable, of as observableOf } from 'rxjs';
+import { filter, map, pairwise, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { $$ as $checkbox, Checkbox } from '../src/action/input/checkbox';
 import { _p } from '../src/app/app';

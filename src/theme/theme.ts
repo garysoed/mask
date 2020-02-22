@@ -1,5 +1,5 @@
-import { Color, Colors } from '@gs-tools/color';
-import { assertUnreachable, enums } from '@gs-tools/typescript';
+import { Color, Colors } from 'gs-tools/export/color';
+import { assertUnreachable, enums } from 'gs-tools/export/typescript';
 
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';

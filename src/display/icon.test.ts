@@ -1,6 +1,6 @@
-import { assert, FakeFetch, setup, should, test } from '@gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { map } from '@rxjs/operators';
+import { assert, FakeFetch, setup, should, test } from 'gs-testing';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 

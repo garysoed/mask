@@ -1,9 +1,9 @@
-import { assert, setup, should, test } from '@gs-testing';
-import { InstanceofType } from '@gs-types';
-import { attributeIn, attributeOut, element, InitFn } from '@persona';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from '@persona/testing';
-import { fromEvent, Observable } from '@rxjs';
-import { switchMap, tap, withLatestFrom } from '@rxjs/operators';
+import { assert, setup, should, test } from 'gs-testing';
+import { InstanceofType } from 'gs-types';
+import { attributeIn, attributeOut, element, InitFn } from 'persona';
+import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { fromEvent, Observable } from 'rxjs';
+import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { booleanParser, integerParser, stringParser } from '../../util/parsers';

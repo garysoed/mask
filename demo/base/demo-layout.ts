@@ -1,9 +1,9 @@
 import { $drawer, $textIconButton, _p, _v, Drawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
 
-import { elementWithTagType } from '@gs-types';
-import { api, attributeIn, element, InitFn } from '@persona';
-import { BehaviorSubject, Observable } from '@rxjs';
-import { map, tap, withLatestFrom } from '@rxjs/operators';
+import { elementWithTagType } from 'gs-types';
+import { api, attributeIn, element, InitFn } from 'persona';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import template from './demo-layout.html';
 

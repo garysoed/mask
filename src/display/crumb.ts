@@ -1,7 +1,7 @@
-import { InstanceofType } from '@gs-types';
-import { attributeIn, dispatcher, element, InitFn, innerHtml, onDom, textContent } from '@persona';
-import { Observable } from '@rxjs';
-import { map } from '@rxjs/operators';
+import { InstanceofType } from 'gs-types';
+import { attributeIn, dispatcher, element, InitFn, innerHtml, onDom, textContent } from 'persona';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { _p, _v } from '../app/app';
 import separatorSvg from '../asset/separator.svg';

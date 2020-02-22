@@ -1,9 +1,9 @@
 import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
 
-import { elementWithTagType } from '@gs-types';
-import { attributeOut, element, InitFn } from '@persona';
-import { Observable } from '@rxjs';
-import { map } from '@rxjs/operators';
+import { elementWithTagType } from 'gs-types';
+import { attributeOut, element, InitFn } from 'persona';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { DemoLayout } from '../base/demo-layout';
 

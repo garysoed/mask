@@ -9,10 +9,10 @@
  * @slot The glyph of the icon to display.
  */
 
-import { InstanceofType } from '@gs-types';
-import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from '@persona';
-import { Observable } from '@rxjs';
-import { map } from '@rxjs/operators';
+import { InstanceofType } from 'gs-types';
+import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from 'persona';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

@@ -9,11 +9,11 @@
  * @slot The content of the drawer.
  */
 
-import { stringMatchConverter } from '@gs-tools/serializer';
-import { InstanceofType } from '@gs-types';
-import { attributeIn, element, InitFn, style } from '@persona';
-import { BehaviorSubject, combineLatest, Observable } from '@rxjs';
-import { map } from '@rxjs/operators';
+import { stringMatchConverter } from 'gs-tools/export/serializer';
+import { InstanceofType } from 'gs-types';
+import { attributeIn, element, InitFn, style } from 'persona';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

@@ -1,7 +1,8 @@
-import { Vine, VineBuilder } from '@grapevine';
-import { PersonaBuilder } from '@persona';
-import { CustomElementCtrlCtor } from '@persona/internal';
-import { BehaviorSubject } from '@rxjs';
+import { Vine, VineBuilder } from 'grapevine';
+import { PersonaBuilder } from 'persona';
+import { CustomElementCtrlCtor } from 'persona/export/internal';
+import { BehaviorSubject } from 'rxjs';
+
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
 

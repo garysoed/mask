@@ -1,7 +1,7 @@
-import { Source, Vine } from '@grapevine';
-import { assert, createSpy, fake, setup, should, stringThat, test } from '@gs-testing';
-import { BehaviorSubject, EMPTY, Observable } from '@rxjs';
-import { switchMap } from '@rxjs/operators';
+import { Source, Vine } from 'grapevine';
+import { assert, createSpy, fake, setup, should, stringThat, test } from 'gs-testing';
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { _v } from '../app/app';
 

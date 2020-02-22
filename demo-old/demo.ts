@@ -1,4 +1,4 @@
-import { Jsons } from '@gs-tools/data';
+import { Jsons } from 'gs-tools/export/data';
 
 import { $dialogService, $svgConfig, Breadcrumb, Checkbox, CroppedLine, Dialog, Drawer, Icon, IconWithText, LayoutOverlay, ListItem, Palette, start as startMask, TextIconButton, TextInput, Theme } from '../export';
 
