@@ -1,4 +1,4 @@
-import { Vine, VineBuilder } from 'grapevine';
+import { source, Vine, VineBuilder } from 'grapevine';
 import { PersonaBuilder } from 'persona';
 import { CustomElementCtrlCtor } from 'persona/export/internal';
 import { BehaviorSubject } from 'rxjs';
@@ -9,12 +9,12 @@ import { Theme } from '../theme/theme';
 export const _v = new VineBuilder();
 export const _p = new PersonaBuilder(_v);
 
-export const $theme = _v.source(
+export const $theme = source(
     () => new BehaviorSubject(new Theme(Palette.ORANGE, Palette.GREEN)),
     globalThis,
 );
 
-export const $window = _v.source(() => new BehaviorSubject(window), globalThis);
+export const $window = source(() => new BehaviorSubject(window), globalThis);
 
 export function start(
     appName: string,

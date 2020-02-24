@@ -1,14 +1,16 @@
+import { Vine } from 'grapevine';
 import { assert, setup, should, test } from 'gs-testing';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, element, InitFn } from 'persona';
+import { attributeIn, attributeOut, element } from 'persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, Observable } from 'rxjs';
-import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { booleanParser, integerParser, stringParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
+
 
 const $ = {
   div: element('div', InstanceofType(HTMLDivElement), {
@@ -32,33 +34,33 @@ class TestInput extends BaseInput<number> {
   private readonly divEl$ = this.declareInput($.div);
   private readonly valueIn$ = this.declareInput($.div._.valueIn);
 
-  constructor(root: ShadowRoot) {
+  constructor(root: ShadowRoot, vine: Vine) {
     super(
         $.host._.initValue,
         $.host._.value,
         $.div._.label,
         $.div._.disabled,
         root,
+        vine,
     );
+
+    this.setupHandleValueInChange();
   }
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      () => this.setupHandleValueInChange(),
-    ];
+  protected setupHandleValueInChange(): void {
+    this.divEl$
+        .pipe(
+            switchMap(el => fromEvent(el, 'input')),
+            withLatestFrom(this.valueIn$),
+            takeUntil(this.onDispose$),
+        )
+        .subscribe(([, v]) => this.dirtyValue$.next(v));
   }
 
-  protected setupHandleValueInChange(): Observable<unknown> {
-    return this.divEl$.pipe(
-        switchMap(el => fromEvent(el, 'input')),
-        withLatestFrom(this.valueIn$),
-        tap(([, v]) => this.dirtyValue$.next(v)),
-    );
-  }
-
-  protected setupUpdateValue(value$: Observable<number>): Observable<unknown> {
-    return $.div._.valueOut.output(this.shadowRoot, value$);
+  protected setupUpdateValue(value$: Observable<number>): void {
+    $.div._.valueOut.output(this.shadowRoot, value$)
+        .pipe(takeUntil(this.onDispose$))
+        .subscribe();
   }
 }
 

@@ -1,9 +1,10 @@
-import { attributeIn, attributeOut, dispatcher, element, InitFn, mediaQuery, onDom } from 'persona';
+import { Vine } from 'grapevine';
+import { attributeIn, attributeOut, dispatcher, element, mediaQuery, onDom } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, mapTo, startWith, takeUntil } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { $$ as $drawer, Drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
@@ -44,22 +45,21 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
 export class RootLayout extends ThemedCustomElementCtrl {
   private readonly hostIcon$ = this.declareInput($.host._.icon);
   private readonly hostLabel$ = this.declareInput($.host._.label);
-  private readonly isDrawerOpen$ = _v.source(() => new BehaviorSubject(false), this).asSubject();
+  private readonly isDrawerOpen$ = this.declareSubject(() => new BehaviorSubject(false));
   private readonly onMouseOut$ = this.declareInput($.drawer._.onMouseOut);
   private readonly onMouseOver$ = this.declareInput($.drawer._.onMouseOver);
   private readonly onTitleClick$ = this.declareInput($.title._.actionEvent);
   private readonly qIsDesktop$ = this.declareInput($qIsDesktop);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.setupHandleDrawerExpandCollapse(),
-      _p.render($.host._.drawerExpanded).withObservable(this.isDrawerOpen$),
-      _p.render($.drawer._.expanded).withObservable(this.isDrawerOpen$),
-      _p.render($.title._.label).withObservable(this.hostLabel$),
-      _p.render($.title._.icon).withObservable(this.hostIcon$),
-      this.renderStream($.host._.onTitleClick, this.renderOnTitleClick),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.setupHandleDrawerExpandCollapse();
+    this.render($.host._.drawerExpanded).withObservable(this.isDrawerOpen$);
+    this.render($.drawer._.expanded).withObservable(this.isDrawerOpen$);
+    this.render($.title._.label).withObservable(this.hostLabel$);
+    this.render($.title._.icon).withObservable(this.hostIcon$);
+    this.render($.host._.onTitleClick).withFunction(this.renderOnTitleClick);
   }
 
   private renderOnTitleClick(): Observable<ActionEvent> {
@@ -68,21 +68,22 @@ export class RootLayout extends ThemedCustomElementCtrl {
     );
   }
 
-  private setupHandleDrawerExpandCollapse(): InitFn {
-    return () => combineLatest([
-          merge(
-              this.onMouseOut$.pipe(debounceTime(100), mapTo(false)),
-              this.onMouseOver$.pipe(debounceTime(100), mapTo(true)),
-          )
-          .pipe(
-              startWith(false),
-              distinctUntilChanged(),
-          ),
-          this.qIsDesktop$,
-        ])
+  private setupHandleDrawerExpandCollapse(): void {
+    combineLatest([
+        merge(
+            this.onMouseOut$.pipe(debounceTime(100), mapTo(false)),
+            this.onMouseOver$.pipe(debounceTime(100), mapTo(true)),
+        )
         .pipe(
-            map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
-            tap(showDrawer => this.isDrawerOpen$.next(showDrawer)),
-        );
+            startWith(false),
+            distinctUntilChanged(),
+        ),
+        this.qIsDesktop$,
+      ])
+      .pipe(
+          map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
+          takeUntil(this.onDispose$),
+      )
+      .subscribe(showDrawer => this.isDrawerOpen$.next(showDrawer));
   }
 }

@@ -1,7 +1,8 @@
+import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, element, InitFn, innerHtml, onInput } from 'persona';
+import { attributeIn, attributeOut, element, innerHtml, onInput } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { booleanParser, enumParser, stringParser } from '../../util/parsers';
@@ -74,23 +75,19 @@ export class TextInput extends BaseInput<string> {
   private readonly onInput$ = this.declareInput($.input._.onInput);
   private readonly type$ = this.declareInput($.host._.type);
 
-  constructor(root: ShadowRoot) {
+  constructor(root: ShadowRoot, vine: Vine) {
     super(
         $.host._.initValue,
         $.host._.value,
         $.label._.innerHtml,
         $.input._.disabled,
         root,
+        vine,
     );
-  }
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.input._.type).withObservable(this.type$),
-      _p.render($.input._.autocomplete).withObservable(this.autocomplete$),
-      () => this.setupHandleInput(),
-    ];
+    this.render($.input._.type).withObservable(this.type$);
+    this.render($.input._.autocomplete).withObservable(this.autocomplete$);
+    this.setupHandleInput();
   }
 
   protected setupUpdateValue(value$: Observable<string>): Observable<unknown> {
@@ -101,14 +98,13 @@ export class TextInput extends BaseInput<string> {
     );
   }
 
-  private setupHandleInput(): Observable<string> {
-    return this.inputEl$
+  private setupHandleInput(): void {
+    this.inputEl$
         .pipe(
-            switchMap(() => this.onInput$
-                .pipe(
-                    debounceTime(DEBOUNCE_MS),
-                    tap(value => this.dirtyValue$.next(value)),
-                )),
-        );
+            switchMap(() => this.onInput$),
+            debounceTime(DEBOUNCE_MS),
+            takeUntil(this.onDispose$),
+        )
+        .subscribe(value => this.dirtyValue$.next(value));
   }
 }

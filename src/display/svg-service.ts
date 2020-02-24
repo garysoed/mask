@@ -1,3 +1,4 @@
+import { source, stream } from 'grapevine';
 import { BaseDisposable } from 'gs-tools/export/dispose';
 import { MapSubject, scanMap } from 'gs-tools/export/rxjs';
 import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
@@ -51,12 +52,12 @@ function loadSvg(config: SvgConfig): Observable<string> {
   }
 }
 
-export const $svgConfig = _v.source(
+export const $svgConfig = source(
     () => new MapSubject<string, SvgConfig>(),
     globalThis,
 );
 
-export const $svgService = _v.stream(
+export const $svgService = stream(
     vine => $svgConfig.get(vine)
         .pipe(
           scanMap(),

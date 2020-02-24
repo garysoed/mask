@@ -9,18 +9,19 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { ElementWithTagType } from 'gs-types';
-import { api, AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, InitFn, noop, onDom, onKeydown } from 'persona';
+import { Vine } from 'grapevine';
+import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, noop, onDom, onKeydown } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { integerParser, stringParser } from '../util/parsers';
 
 import { BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';
+
 
 const THROTTLE_MS = 500;
 
@@ -78,24 +79,20 @@ export class TextIconButton extends BaseAction {
   private readonly onMouseLeaveObs = this.declareInput($.host._.onMouseLeave);
   private readonly onSpaceDownObs = this.declareInput($.host._.onSpaceDown);
 
-  constructor(shadowRoot: ShadowRoot) {
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
     super(
         noop(),
         shadowRoot,
+        vine,
     );
-  }
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON)),
-      this.renderStream($.host._.actionEvent, this.renderDispatchActions),
-      this.renderStream($.host._.ariaLabelOut, this.renderHostAriaLabel),
-      this.renderStream($.host._.tabindex, this.renderTabIndex),
-      _p.render($.iconWithText._.label).withObservable(this.labelObs),
-      _p.render($.iconWithText._.icon).withObservable(this.iconObs),
-      this.renderStream($.iconWithText._.mode, this.renderIconMode),
-    ];
+    this.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON));
+    this.render($.host._.actionEvent).withFunction(this.renderDispatchActions);
+    this.render($.host._.ariaLabelOut).withFunction(this.renderHostAriaLabel);
+    this.render($.host._.tabindex).withFunction(this.renderTabIndex);
+    this.render($.iconWithText._.label).withObservable(this.labelObs);
+    this.render($.iconWithText._.icon).withObservable(this.iconObs);
+    this.render($.iconWithText._.mode).withFunction(this.renderIconMode);
   }
 
   private renderDispatchActions(): Observable<ActionEvent> {

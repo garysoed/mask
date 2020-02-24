@@ -1,15 +1,17 @@
+import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, InitFn, innerHtml, onDom, textContent } from 'persona';
+import { attributeIn, dispatcher, element, innerHtml, onDom, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import separatorSvg from '../asset/separator.svg';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
 
 import crumbTemplate from './crumb.html';
+
 
 export const $ = {
   host: element({
@@ -33,13 +35,11 @@ export class Crumb extends ThemedCustomElementCtrl {
   private readonly hostDisplayObs = this.declareInput($.host._.display);
   private readonly onClickObs = this.declareInput($.host._.onClick);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.text._.text).withObservable(this.hostDisplayObs),
-      this.renderStream($.host._.dispatch, this.onHostClick),
-      _p.render($.svg._.innerHtml).withValue(separatorSvg),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+    this.render($.text._.text).withObservable(this.hostDisplayObs);
+    this.render($.host._.dispatch).withFunction(this.onHostClick);
+    this.render($.svg._.innerHtml).withValue(separatorSvg);
   }
 
   onHostClick(): Observable<ActionEvent> {

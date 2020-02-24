@@ -5,7 +5,7 @@ export { ActionEvent, ACTION_EVENT } from '../src/event/action-event';
 export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
 export { Checkbox, $$ as $checkbox, CheckedValue } from '../src/action/input/checkbox';
 export { CroppedLine } from '../src/display/cropped-line';
-export { Drawer, $$ as $drawer } from '../src/section/drawer';
+export { Drawer, Mode as DrawerMode, $$ as $drawer } from '../src/section/drawer';
 export { Dialog } from '../src/section/dialog';
 export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section/dialog-service';
 export { $$ as $icon, Icon } from '../src/display/icon';

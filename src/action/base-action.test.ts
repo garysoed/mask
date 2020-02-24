@@ -1,3 +1,4 @@
+import { Vine } from 'grapevine';
 import { assert, setup, should, test } from 'gs-testing';
 import { InstanceofType } from 'gs-types';
 import { attributeOut, element } from 'persona';
@@ -22,8 +23,8 @@ const $ = {
   template: '<style id="theme"></style><div id="div"></div>',
 })
 class TestAction extends BaseAction {
-  constructor(root: ShadowRoot) {
-    super($.div._.disabled, root);
+  constructor(root: ShadowRoot, vine: Vine) {
+    super($.div._.disabled, root, vine);
   }
 }
 

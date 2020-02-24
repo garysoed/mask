@@ -3,15 +3,16 @@ import { filterByType } from 'gs-tools/export/rxjs';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { booleanType, elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
-import { attributeIn, attributeOut, element, InitFn, mapOutput, onDom, SimpleElementRenderSpec, single, splitOutput } from 'persona';
+import { attributeIn, attributeOut, element, mapOutput, onDom, SimpleElementRenderSpec, single, splitOutput } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
-import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import { $$ as $icon } from '../../display/icon';
+import { IconMode } from '../../display/icon-mode';
 import { IconWithText } from '../../display/icon-with-text';
 import { $svgConfig } from '../../display/svg-service';
 import { booleanParser } from '../../util/parsers';
@@ -121,7 +122,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   private readonly onMouseEnter$ = this.declareInput($.host._.onMouseEnter);
   private readonly onMouseLeave$ = this.declareInput($.host._.onMouseLeave);
 
-  constructor(shadowRoot: ShadowRoot) {
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
     super(
         $.host._.initValue,
         splitOutput([
@@ -134,15 +135,11 @@ export class Checkbox extends BaseInput<CheckedValue> {
         ),
         $.checkbox._.readonly,
         shadowRoot,
+        vine,
     );
-  }
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      () => this.setupOnClickHandler(),
-      this.renderStream($.checkmark._.mode, this.renderIconMode),
-    ];
+    this.setupOnClickHandler();
+    this.render($.checkmark._.mode).withFunction(this.renderIconMode);
   }
 
   protected getCurrentValueObs(): Observable<CheckedValue> {
@@ -162,7 +159,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
   }
 
-  protected setupUpdateValue(value$: Observable<CheckedValue>): Observable<unknown> {
+  protected setupUpdateValue(value$: Observable<CheckedValue>): void {
     const indeterminate$ = value$.pipe(
         filter(value => value === 'unknown'),
         withLatestFrom($.checkbox.getValue(this.shadowRoot)),
@@ -180,10 +177,12 @@ export class Checkbox extends BaseInput<CheckedValue> {
         map(([value]) => value ? 'checked' : ''),
     );
 
-    return merge(indeterminate$, $.checkbox._.checkedOut.output(this.shadowRoot, trueFalse$));
+    merge(indeterminate$, $.checkbox._.checkedOut.output(this.shadowRoot, trueFalse$))
+        .pipe(takeUntil(this.onDispose$))
+        .subscribe();
   }
 
-  private renderIconMode(): Observable<string> {
+  private renderIconMode(): Observable<IconMode> {
     const hoverObs = merge(
         this.onMouseEnter$.pipe(mapTo(true)),
         this.onMouseLeave$.pipe(mapTo(false)),
@@ -204,20 +203,20 @@ export class Checkbox extends BaseInput<CheckedValue> {
     .pipe(
         map(([disabled, focused, hover]) => {
           if (disabled) {
-            return 'disabled';
+            return IconMode.DISABLED;
           }
 
           if (hover || focused) {
-            return 'focus';
+            return IconMode.FOCUS;
           }
 
-          return 'action';
+          return IconMode.ACTION;
         }),
     );
   }
 
-  private setupOnClickHandler(): Observable<unknown> {
-    return this.onCheckboxClick$
+  private setupOnClickHandler(): void {
+    this.onCheckboxClick$
         .pipe(
             withLatestFrom(this.disabled$, this.value$),
             filter(([, disabled]) => !disabled),
@@ -230,7 +229,8 @@ export class Checkbox extends BaseInput<CheckedValue> {
                   return false;
               }
             }),
-            tap(newValue => this.dirtyValue$.next(newValue)),
-    );
+            takeUntil(this.onDispose$),
+        )
+        .subscribe(newValue => this.dirtyValue$.next(newValue));
   }
 }

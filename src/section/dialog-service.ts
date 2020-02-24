@@ -1,4 +1,4 @@
-import { Source, Vine } from 'grapevine';
+import { Source, source, stream, Vine } from 'grapevine';
 import { Errors } from 'gs-tools/export/error';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
@@ -81,12 +81,12 @@ export class DialogService {
     this.stateObs.next({isOpen: false});
   }
 }
-export const $dialogService = _v.source(
+export const $dialogService = source(
     vine => new BehaviorSubject(new DialogService(vine)),
     globalThis,
 );
 
-export const $dialogState = _v.stream(
+export const $dialogState = stream(
     vine => $dialogService
         .get(vine)
         .pipe(switchMap(dialogService => dialogService.getStateObs())),

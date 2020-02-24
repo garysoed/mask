@@ -1,7 +1,7 @@
-import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
-
+import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, DrawerMode, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
+import { Vine } from 'grapevine';
 import { elementWithTagType } from 'gs-types';
-import { attributeOut, element, InitFn } from 'persona';
+import { attributeOut, element } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -35,21 +35,20 @@ export class Drawer extends ThemedCustomElementCtrl {
   private readonly expanded$ = this.declareInput($.expandCheckbox._.value);
   private readonly horizontalMode$ = this.declareInput($.horizontalModeCheckbox._.value);
 
-  getInitFunctions(): readonly InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.renderStream($.rootPlay._.layout, this.renderRootPlayLayout),
-      this.renderStream($.drawer._.expanded, this.renderDrawerExpanded),
-      this.renderStream($.drawer._.mode, this.renderDrawerMode),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+    this.render($.rootPlay._.layout).withFunction(this.renderRootPlayLayout);
+    this.render($.drawer._.expanded).withFunction(this.renderDrawerExpanded);
+    this.render($.drawer._.mode).withFunction(this.renderDrawerMode);
   }
 
   private renderDrawerExpanded(): Observable<boolean> {
     return this.expanded$.pipe(map(mode => mode === true));
   }
 
-  private renderDrawerMode(): Observable<string> {
-    return this.horizontalMode$.pipe(map(mode => mode === true ? 'horizontal' : 'vertical'));
+  private renderDrawerMode(): Observable<DrawerMode> {
+    return this.horizontalMode$
+        .pipe(map(mode => mode === true ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL));
   }
 
   private renderRootPlayLayout(): Observable<string> {

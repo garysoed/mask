@@ -1,7 +1,6 @@
 import { $checkbox, $textIconButton, _p, Checkbox as MaskCheckbox, TextIconButton, ThemedCustomElementCtrl } from 'export';
-
-import { elementWithTagType } from 'gs-types';
-import { api, element, InitFn } from 'persona';
+import { Vine } from 'grapevine';
+import { element } from 'persona';
 import { Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
@@ -29,11 +28,10 @@ const $ = {
 export class Checkbox extends ThemedCustomElementCtrl {
   private readonly onResetButtonAction$ = this.declareInput($.resetButton._.actionEvent);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.renderStream($.unknownCheckbox._.clearFn, this.renderClearUnknownCheckbox),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.render($.unknownCheckbox._.clearFn).withFunction(this.renderClearUnknownCheckbox);
   }
 
   private renderClearUnknownCheckbox(): Observable<[]> {

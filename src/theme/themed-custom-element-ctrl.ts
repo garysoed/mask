@@ -1,11 +1,11 @@
-import { DelayedObservable, Provider } from 'grapevine/export/internal';
+import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { CustomElementCtrl, element, InitFn } from 'persona';
-import { Input, Output } from 'persona/export/internal';
-import { combineLatest, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { CustomElementCtrl, element } from 'persona';
+import { combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { $theme, _p, _v } from '../app/app';
+import { $theme, _p } from '../app/app';
+
 
 const $ = {
   theme: element('theme', InstanceofType(HTMLStyleElement), {}),
@@ -13,30 +13,18 @@ const $ = {
 
 @_p.baseCustomElement({})
 export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
-  protected readonly theme$ = $theme.asSubject();
+  protected readonly theme$ = $theme.get(this.vine);
   private readonly themeEl$ = this.declareInput($.theme);
 
-  getInitFunctions(): readonly InitFn[] {
-    return [
-      () => this.setupThemeUpdate(),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.setupThemeUpdate();
   }
 
-  protected declareInput<T>(input: Input<T>): DelayedObservable<T> {
-    return _p.input(input, this);
-  }
-
-  protected renderStream<T>(output: Output<T>, renderFn: Provider<T, this>): InitFn {
-    return _p.render(output).withVine(_v.stream(renderFn, this));
-  }
-
-  private setupThemeUpdate(): Observable<unknown> {
-    return combineLatest([
-      this.themeEl$,
-      this.theme$,
-    ])
-    .pipe(
-        tap(([el, theme]) => theme.injectCss(el)),
-    );
+  private setupThemeUpdate(): void {
+    combineLatest([this.themeEl$, this.theme$])
+        .pipe(takeUntil(this.onDispose$))
+        .subscribe(([el, theme]) => theme.injectCss(el));
   }
 }

@@ -9,8 +9,9 @@
  * @slot The glyph of the icon to display.
  */
 
+import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classlist, element, InitFn, textContent } from 'persona';
+import { attributeIn, attributeOut, classlist, element, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -55,18 +56,16 @@ export class IconWithText extends ThemedCustomElementCtrl {
   private readonly labelObs = this.declareInput($.host._.label);
   private readonly modeObs = this.declareInput($.host._.mode);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.text._.text).withObservable(this.labelObs),
-      _p.render($.icon._.icon).withObservable(this.iconObs),
-      _p.render($.icon._.mode).withObservable(this.modeObs),
-      this.renderStream($.icon._.classes, this.renderIconClasses),
-      this.renderStream($.text._.classes, this.renderTextClasses),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+    this.render($.text._.text).withObservable(this.labelObs);
+    this.render($.icon._.icon).withObservable(this.iconObs);
+    this.render($.icon._.mode).withObservable(this.modeObs);
+    this.render($.icon._.classes).withFunction(this.renderIconClasses);
+    this.render($.text._.classes).withFunction(this.renderTextClasses);
   }
 
-  renderIconClasses(): Observable<ReadonlySet<string>> {
+  private renderIconClasses(): Observable<ReadonlySet<string>> {
     return this.iconLigatureObs.pipe(
         map(iconLigature => {
           if (!iconLigature) {
@@ -78,7 +77,7 @@ export class IconWithText extends ThemedCustomElementCtrl {
     );
   }
 
-  renderTextClasses(): Observable<ReadonlySet<string>> {
+  private renderTextClasses(): Observable<ReadonlySet<string>> {
     return this.labelObs.pipe(
         map(label => {
           if (!label) {

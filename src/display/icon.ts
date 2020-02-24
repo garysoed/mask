@@ -7,13 +7,12 @@
  * @slot The glyph of the icon to display.
  */
 
-import { compose, json, Serializable } from 'nabu';
-
 import { Vine } from 'grapevine';
 import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { BooleanType, InstanceofType } from 'gs-types';
-import { AriaRole, attributeIn, attributeOut, element, InitFn, innerHtml } from 'persona';
+import { compose, json, Serializable } from 'nabu';
+import { AriaRole, attributeIn, attributeOut, element, innerHtml } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -55,16 +54,15 @@ export const $ = {
 export class Icon extends ThemedCustomElementCtrl {
   private readonly icon$ = this.declareInput($.host._.icon);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.host._.ariaHidden).withValue(true),
-      _p.render($.host._.role).withValue(AriaRole.PRESENTATION),
-      this.renderStream($.root._.innerHTML, this.renderRootInnerHtml_),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.render($.host._.ariaHidden).withValue(true);
+    this.render($.host._.role).withValue(AriaRole.PRESENTATION);
+    this.render($.root._.innerHTML).withFunction(this.renderRootInnerHtml);
   }
 
-  renderRootInnerHtml_(
+  private renderRootInnerHtml(
       vine: Vine,
   ): Observable<string> {
     return combineLatest([$svgService.get(vine), this.icon$])

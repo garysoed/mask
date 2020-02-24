@@ -1,14 +1,15 @@
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { classlist, element, InitFn } from 'persona';
+import { classlist, element } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import backdropTemplate from './backdrop.html';
 import { $dialogState } from './dialog-service';
+
 
 export const $ = {
   root: element('root', InstanceofType(HTMLDivElement), {
@@ -21,11 +22,9 @@ export const $ = {
   template: backdropTemplate,
 })
 export class Backdrop extends ThemedCustomElementCtrl {
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.renderStream($.root._.classlist, this.renderRootClasslist),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+    this.render($.root._.classlist).withFunction(this.renderRootClasslist);
   }
 
   renderRootClasslist(vine: Vine): Observable<ReadonlySet<string>> {

@@ -1,13 +1,12 @@
 import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
-
 import { Vine } from 'grapevine';
 import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
 import { ArrayDiff, filterNonNull } from 'gs-tools/export/rxjs';
 import { elementWithTagType } from 'gs-types';
-import { api, attributeOut, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single } from 'persona';
+import { attributeOut, element, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single } from 'persona';
 import { merge, Observable, of as observableOf } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
 import { COMPONENT_SPECS } from './component-spec';
 import template from './demo.html';
@@ -67,20 +66,18 @@ export class Demo extends ThemedCustomElementCtrl {
   private readonly onSettingsDrawerMouseOut$ = this.declareInput($.settingsDrawer._.onMouseOut);
   private readonly onSettingsDrawerMouseOver$ = this.declareInput($.settingsDrawer._.onMouseOver);
 
-  getInitFunctions(): readonly InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.renderStream($.accentPalette._.content, this.renderAccentPaletteContents),
-      this.renderStream($.basePalette._.content, this.renderBasePaletteContents),
-      this.renderStream($.components._.componentButtons, this.renderComponentButtons),
-      this.renderStream($.content._.content, this.renderMainContent),
-      this.renderStream($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded),
-      this.renderStream($.root._.theme, this.renderRootTheme),
-      () => this.setupOnAccentPaletteClick(),
-      () => this.setupOnBasePaletteClick(),
-      vine => this.setupOnComponentButtonClick(vine),
-      vine => this.setupOnRootLayoutAction(vine),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+    this.render($.accentPalette._.content).withFunction(this.renderAccentPaletteContents);
+    this.render($.basePalette._.content).withFunction(this.renderBasePaletteContents);
+    this.render($.components._.componentButtons).withFunction(this.renderComponentButtons);
+    this.render($.content._.content).withFunction(this.renderMainContent);
+    this.render($.settingsDrawer._.expanded).withFunction(this.renderSettingsDrawerExpanded);
+    this.render($.root._.theme).withFunction(this.renderRootTheme);
+    this.setupOnAccentPaletteClick();
+    this.setupOnBasePaletteClick();
+    this.setupOnComponentButtonClick(vine);
+    this.setupOnRootLayoutAction(vine);
   }
 
   private renderAccentPaletteContents(): Observable<ArrayDiff<RenderSpec>> {
@@ -172,51 +169,59 @@ export class Demo extends ThemedCustomElementCtrl {
     );
   }
 
-  private setupOnAccentPaletteClick(): Observable<unknown> {
-    return this.onAccentPaletteClick$
+  private setupOnAccentPaletteClick(): void {
+    this.onAccentPaletteClick$
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
             withLatestFrom(this.theme$),
-            tap(([color, theme]) => {
-              this.theme$.next(theme.setHighlightColor(color));
-            }),
-        );
+            takeUntil(this.onDispose$),
+        )
+        .subscribe(([color, theme]) => {
+          this.theme$.next(theme.setHighlightColor(color));
+        });
   }
 
-  private setupOnBasePaletteClick(): Observable<unknown> {
-    return this.onBasePaletteClick$
+  private setupOnBasePaletteClick(): void {
+    this.onBasePaletteClick$
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
             withLatestFrom(this.theme$),
-            tap(([color, theme]) => {
-              this.theme$.next(theme.setBaseColor(color));
+            takeUntil(this.onDispose$),
+        )
+        .subscribe(([color, theme]) => {
+          this.theme$.next(theme.setBaseColor(color));
+        });
+  }
+
+  private setupOnComponentButtonClick(vine: Vine): void {
+    this.onDrawerRootClick$
+        .pipe(
+            map(event => {
+              const target = event.target;
+              if (!(target instanceof HTMLElement)) {
+                return null;
+              }
+
+              return target.getAttribute(COMPONENT_PATH_ATTR) || null;
             }),
-        );
+            filterNonNull(),
+            withLatestFrom($locationService.get(vine)),
+            switchMap(([path, locationService]) => locationService.goToPath(path, {})),
+            takeUntil(this.onDispose$),
+        )
+        .subscribe();
   }
 
-  private setupOnComponentButtonClick(vine: Vine): Observable<unknown> {
-    return this.onDrawerRootClick$.pipe(
-        map(event => {
-          const target = event.target;
-          if (!(target instanceof HTMLElement)) {
-            return null;
-          }
-
-          return target.getAttribute(COMPONENT_PATH_ATTR) || null;
-        }),
-        filterNonNull(),
-        withLatestFrom($locationService.get(vine)),
-        switchMap(([path, locationService]) => locationService.goToPath(path, {})),
-    );
-  }
-
-  private setupOnRootLayoutAction(vine: Vine): Observable<unknown> {
-    return this.onRootLayoutAction$.pipe(
-        withLatestFrom($locationService.get(vine)),
-        switchMap(([, locationService]) => locationService.goToPath(Views.MAIN, {})),
-    );
+  private setupOnRootLayoutAction(vine: Vine): void {
+    this.onRootLayoutAction$
+        .pipe(
+            withLatestFrom($locationService.get(vine)),
+            switchMap(([, locationService]) => locationService.goToPath(Views.MAIN, {})),
+            takeUntil(this.onDispose$),
+        )
+        .subscribe();
   }
 }
 

@@ -1,8 +1,8 @@
 import { Vine } from 'grapevine';
 import { ElementWithTagType, InstanceofType } from 'gs-types';
-import { classlist, element, InitFn, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
+import { classlist, element, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
 import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p, _v } from '../app/app';
@@ -58,16 +58,14 @@ export class Dialog extends ThemedCustomElementCtrl {
   private readonly onCancelObs = this.declareInput($.cancelButton._.onAction);
   private readonly onOkObs = this.declareInput($.okButton._.onAction);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      vine => this.setupOnCloseOrCancel(vine),
-      _p.render($.cancelButton._.classlist)
-          .withVine(_v.stream(this.renderCancelButtonClasses, this)),
-      _p.render($.root._.classlist).withVine(_v.stream(this.renderRootClasses, this)),
-      _p.render($.title._.text).withVine(_v.stream(this.renderTitle, this)),
-      _p.render($.content._.single).withVine(_v.stream(this.renderContent, this)),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.setupOnCloseOrCancel(vine);
+    this.render($.cancelButton._.classlist).withFunction(this.renderCancelButtonClasses);
+    this.render($.root._.classlist).withFunction(this.renderRootClasses);
+    this.render($.title._.text).withFunction(this.renderTitle);
+    this.render($.content._.single).withFunction(this.renderContent);
   }
 
   private renderCancelButtonClasses(vine: Vine): Observable<ReadonlySet<string>> {
@@ -120,8 +118,8 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 
-  private setupOnCloseOrCancel(vine: Vine): Observable<unknown> {
-    return merge(
+  private setupOnCloseOrCancel(vine: Vine): void {
+    merge(
         this.onCancelObs.pipe(mapTo(true)),
         this.onOkObs.pipe(mapTo(false)),
     )
@@ -129,6 +127,8 @@ export class Dialog extends ThemedCustomElementCtrl {
         withLatestFrom($dialogState.get(vine)),
         filter((pair): pair is [boolean, OpenState] => pair[1].isOpen),
         switchMap(([isCanceled, state]) => state.closeFn(isCanceled)),
-    );
+        takeUntil(this.onDispose$),
+    )
+    .subscribe();
   }
 }

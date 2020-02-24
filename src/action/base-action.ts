@@ -1,11 +1,12 @@
-import { attributeOut, element, hasAttribute, InitFn } from 'persona';
+import { Vine } from 'grapevine';
+import { attributeOut, element, hasAttribute } from 'persona';
 import { Output } from 'persona/export/internal';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
+
 
 export const $$ = {
   disabled: hasAttribute('disabled'),
@@ -24,16 +25,11 @@ export class BaseAction extends ThemedCustomElementCtrl {
   constructor(
       private readonly disabledOutput: Output<boolean>,
       shadowRoot: ShadowRoot,
+      vine: Vine,
   ) {
-    super(shadowRoot);
-  }
-
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render(this.disabledOutput).withObservable(this.disabled$),
-      this.renderStream($.host._.ariaDisabled, this.renderAriaDisabled),
-    ];
+    super(shadowRoot, vine);
+    this.render(this.disabledOutput).withObservable(this.disabled$);
+    this.render($.host._.ariaDisabled).withFunction(this.renderAriaDisabled);
   }
 
   private renderAriaDisabled(): Observable<string> {

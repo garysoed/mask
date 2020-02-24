@@ -1,4 +1,4 @@
-import { Source, Vine } from 'grapevine';
+import { Source, source, Vine } from 'grapevine';
 import { assert, createSpy, fake, setup, should, stringThat, test } from 'gs-testing';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -8,12 +8,12 @@ import { _v } from '../app/app';
 import { DialogService, DialogState, OpenState } from './dialog-service';
 
 test('@mask/section/dialog-service', () => {
-  let source: Source<number|null, typeof globalThis>;
+  let src: Source<number|null, typeof globalThis>;
   let vine: Vine;
   let service: DialogService;
 
   setup(() => {
-    source = _v.source(() => new BehaviorSubject<number|null>(null), globalThis);
+    src = source(() => new BehaviorSubject<number|null>(null), globalThis);
     vine = _v.build('test');
     service = new DialogService(vine);
   });
@@ -32,7 +32,7 @@ test('@mask/section/dialog-service', () => {
           .open({
             cancelable: true,
             content: {tag: 'div'},
-            source,
+            source: src,
             title: 'title',
           })
           .pipe(switchMap(({canceled, value}) => mockCloseHandler(canceled, value)))
@@ -42,7 +42,7 @@ test('@mask/section/dialog-service', () => {
       assert(newState.isOpen).to.beTrue();
 
       const value = 123;
-      source.get(vine).next(value);
+      src.get(vine).next(value);
 
       // Close the dialog.
       newState.closeFn(true).subscribe();

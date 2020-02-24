@@ -1,11 +1,11 @@
-import { $drawer, $textIconButton, _p, _v, Drawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
-
-import { elementWithTagType } from 'gs-types';
-import { api, attributeIn, element, InitFn } from 'persona';
+import { $drawer, $textIconButton, _p, Drawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
+import { Vine } from 'grapevine';
+import { attributeIn, element } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 import template from './demo-layout.html';
+
 
 const $ = {
   detailsButton: element('detailsButton', $textIconButton, {}),
@@ -28,15 +28,13 @@ export class DemoLayout extends ThemedCustomElementCtrl {
   private readonly isDrawerExpanded$ = new BehaviorSubject(false);
   private readonly onDetailsButtonClick$ = this.declareInput($.detailsButton._.actionEvent);
 
-  getInitFunctions(): readonly InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.detailsButton._.icon).withVine(_v.stream(this.renderDetailsButtonIcon, this)),
-      _p.render($.detailsButton._.label).withVine(_v.stream(this.renderDetailsButtonLabel, this)),
-      _p.render($.detailsDrawer._.expanded)
-          .withVine(_v.stream(this.renderDetailsDrawerExpanded, this)),
-      () => this.setupOnDetailsButtonClick(),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.render($.detailsButton._.icon).withFunction(this.renderDetailsButtonIcon);
+    this.render($.detailsButton._.label).withFunction(this.renderDetailsButtonLabel);
+    this.render($.detailsDrawer._.expanded).withFunction(this.renderDetailsDrawerExpanded);
+    this.setupOnDetailsButtonClick();
   }
 
   private renderDetailsButtonIcon(): Observable<string> {
@@ -53,12 +51,13 @@ export class DemoLayout extends ThemedCustomElementCtrl {
     return this.isDrawerExpanded$;
   }
 
-  private setupOnDetailsButtonClick(): Observable<unknown> {
-    return this.onDetailsButtonClick$.pipe(
-        withLatestFrom(this.isDrawerExpanded$),
-        tap(([, isExpanded]) => {
+  private setupOnDetailsButtonClick(): void {
+    this.onDetailsButtonClick$
+        .pipe(
+            withLatestFrom(this.isDrawerExpanded$),
+        )
+        .subscribe(([, isExpanded]) => {
           this.isDrawerExpanded$.next(!isExpanded);
-        }),
-    );
+        });
   }
 }

@@ -1,7 +1,9 @@
-import { attributeIn, element, handler, InitFn } from 'persona';
+import { Vine } from 'grapevine';
+import { debug } from 'gs-tools/export/rxjs';
+import { attributeIn, element, handler } from 'persona';
 import { Input, Output } from 'persona/export/internal';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { stringParser } from '../../util/parsers';
@@ -33,24 +35,20 @@ export abstract class BaseInput<T> extends BaseAction {
       private readonly labelOutput: Output<string>,
       disabledOutput: Output<boolean>,
       shadowRoot: ShadowRoot,
+      vine: Vine,
   ) {
-    super(disabledOutput, shadowRoot);
+    super(disabledOutput, shadowRoot, vine);
     this.initValue$ = this.declareInput(initValueInput);
     this.value$ = this.createValue();
+
+    this.setupHandleOnClear();
+    this.setupUpdateValue(this.value$);
+    this.setupUpdateIsDirty();
+    this.render(this.labelOutput).withObservable(this.label$);
+    this.render(this.hostValueOutput).withObservable(this.value$);
   }
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      () => this.setupHandleOnClear(),
-      () => this.setupUpdateValue(this.value$),
-      () => this.setupUpdateIsDirty(),
-      _p.render(this.labelOutput).withObservable(this.label$),
-      _p.render(this.hostValueOutput).withObservable(this.value$),
-    ];
-  }
-
-  protected abstract setupUpdateValue(value$: Observable<T>): Observable<unknown>;
+  protected abstract setupUpdateValue(value$: Observable<T>): void;
 
   private createValue(): Observable<T> {
     return this.isDirty$.pipe(
@@ -58,11 +56,15 @@ export abstract class BaseInput<T> extends BaseAction {
     );
   }
 
-  private setupHandleOnClear(): Observable<unknown> {
-    return this.onClear$.pipe(tap(() => this.isDirty$.next(false)));
+  private setupHandleOnClear(): void {
+    this.onClear$
+        .pipe(takeUntil(this.onDispose$))
+        .subscribe(() => this.isDirty$.next(false));
   }
 
-  private setupUpdateIsDirty(): Observable<unknown> {
-    return this.dirtyValue$.pipe(tap(() => this.isDirty$.next(true)));
+  private setupUpdateIsDirty(): void {
+    this.dirtyValue$
+        .pipe(takeUntil(this.onDispose$))
+        .subscribe(() => this.isDirty$.next(true));
   }
 }

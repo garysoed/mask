@@ -1,11 +1,12 @@
+import { Vine } from 'grapevine';
 import { $ as $pipe, $asArray, $filterDefined, $map } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, InitFn, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from 'persona';
+import { attributeIn, dispatcher, element, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from 'persona';
 import { Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
@@ -58,13 +59,12 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   private readonly pathObs = this.declareInput($.host._.path);
   private readonly rowOnActionObs = this.declareInput($.row._.onAction);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.renderStream($.row._.crumbsSlot, this.renderCrumbs),
-      this.renderStream($.host._.dispatch, this.renderDispatchAction),
-      this.setupCrumbDataForwarding(),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.render($.row._.crumbsSlot).withFunction(this.renderCrumbs);
+    this.render($.host._.dispatch).withFunction(this.renderDispatchAction);
+    this.setupCrumbDataForwarding();
   }
 
   private renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
@@ -138,20 +138,21 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
         );
   }
 
-  private setupCrumbDataForwarding(): InitFn {
-    return () => this.pathObs
+  private setupCrumbDataForwarding(): void {
+    this.pathObs
         .pipe(
-            tap(path => {
-              // Map has to be updated first, since the keys will cause rendering update.
-              const map = new Map<string, CrumbData>();
-              for (const data of path) {
-                map.set(data.key, data);
-              }
-              this.pathDataSubject.setAll(map);
+            takeUntil(this.onDispose$),
+        )
+        .subscribe(path => {
+          // Map has to be updated first, since the keys will cause rendering update.
+          const map = new Map<string, CrumbData>();
+          for (const data of path) {
+            map.set(data.key, data);
+          }
+          this.pathDataSubject.setAll(map);
 
-              this.pathKeySubject.setAll(path.map(({key}) => key));
-            }),
-        );
+          this.pathKeySubject.setAll(path.map(({key}) => key));
+        });
   }
 }
 

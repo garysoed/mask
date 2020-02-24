@@ -1,9 +1,10 @@
+import { Vine } from 'grapevine';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classToggle, element, hasAttribute, InitFn, innerHtml, onDom, style } from 'persona';
+import { attributeIn, attributeOut, classToggle, element, hasAttribute, innerHtml, onDom, style } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { stringParser } from '../util/parsers';
@@ -66,20 +67,18 @@ export class ListItem extends ThemedCustomElementCtrl {
   private readonly onMouseOverObs = this.declareInput($.host._.onMouseOver);
   private readonly toolWidthObs = this.declareInput($.host._.toolWidth);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      _p.render($.icon._.icon).withObservable(this.iconObs),
-      _p.render($.itemDetail._.innerHtml).withObservable(this.itemDetailObs),
-      _p.render($.itemName._.innerHtml).withObservable(this.itemNameObs),
-      _p.render($.iconContainer._.displayed)
-          .withVine(_v.stream(this.renderIconContainerDisplayed, this)),
-      _p.render($.itemDetailContainer._.displayed)
-          .withVine(_v.stream(this.renderItemDetailContainerDisplayed, this)),
-      _p.render($.itemNameContainer._.displayed)
-          .withVine(_v.stream(this.renderItemNameContainerDisplayed, this)),
-      _p.render($.tool._.width).withVine(_v.stream(this.renderToolWidth, this)),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.render($.icon._.icon).withObservable(this.iconObs);
+    this.render($.itemDetail._.innerHtml).withObservable(this.itemDetailObs);
+    this.render($.itemName._.innerHtml).withObservable(this.itemNameObs);
+    this.render($.iconContainer._.displayed).withFunction(this.renderIconContainerDisplayed);
+    this.render($.itemDetailContainer._.displayed)
+        .withFunction(this.renderItemDetailContainerDisplayed);
+    this.render($.itemNameContainer._.displayed)
+        .withFunction(this.renderItemNameContainerDisplayed);
+    this.render($.tool._.width).withFunction(this.renderToolWidth);
   }
 
   private renderIconContainerDisplayed(): Observable<boolean> {

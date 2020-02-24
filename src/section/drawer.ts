@@ -9,17 +9,19 @@
  * @slot The content of the drawer.
  */
 
+import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, element, InitFn, style } from 'persona';
+import { attributeIn, element, style } from 'persona';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import { booleanParser, stringParser } from '../util/parsers';
 
 import drawerTemplate from './drawer.html';
+
 
 export enum Mode {
   HORIZONTAL = 'horizontal',
@@ -60,14 +62,12 @@ export class Drawer extends ThemedCustomElementCtrl {
   private readonly minSizeObs = this.declareInput($.host._.minSize);
   private readonly modeObs = this.declareInput($.host._.mode);
 
-  getInitFunctions(): InitFn[] {
-    return [
-      ...super.getInitFunctions(),
-      this.renderStream($.host._.styleHeight, this.renderStyleHeight),
-      this.renderStream($.host._.styleWidth, this.renderStyleWidth),
-      _p.render($.host._.styleOverflow)
-          .withVine(_v.source(() => new BehaviorSubject('hidden'), this)),
-    ];
+  constructor(shadowRoot: ShadowRoot, vine: Vine) {
+    super(shadowRoot, vine);
+
+    this.render($.host._.styleHeight).withFunction(this.renderStyleHeight);
+    this.render($.host._.styleWidth).withFunction(this.renderStyleWidth);
+    this.render($.host._.styleOverflow).withFunction(() => new BehaviorSubject('hidden'));
   }
 
   private renderStyleHeight(): Observable<string> {
