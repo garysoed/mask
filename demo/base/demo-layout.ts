@@ -1,6 +1,6 @@
-import { $drawer, $textIconButton, _p, Drawer, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
+import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
-import { attributeIn, element } from 'persona';
+import { attributeIn, element, stringParser } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 

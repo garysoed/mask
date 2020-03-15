@@ -12,17 +12,17 @@ import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { BooleanType, InstanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, innerHtml } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, innerHtml, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
 
 import { IconMode } from './icon-mode';
 import iconTemplate from './icon.html';
 import { $svgService } from './svg-service';
+
 
 export const $$ = {
   api: {

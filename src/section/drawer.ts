@@ -12,13 +12,12 @@
 import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, element, style } from 'persona';
+import { attributeIn, booleanParser, element, stringParser, style } from 'persona';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../util/parsers';
 
 import drawerTemplate from './drawer.html';
 

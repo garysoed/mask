@@ -3,7 +3,7 @@ import { filterByType } from 'gs-tools/export/rxjs';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { booleanType, elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
-import { attributeIn, attributeOut, element, mapOutput, onDom, SimpleElementRenderSpec, single, splitOutput } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, mapOutput, onDom, SimpleElementRenderSpec, single, splitOutput } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { filter, map, mapTo, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -15,7 +15,6 @@ import { $$ as $icon } from '../../display/icon';
 import { IconMode } from '../../display/icon-mode';
 import { IconWithText } from '../../display/icon-with-text';
 import { $svgConfig } from '../../display/svg-service';
-import { booleanParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
 import template from './checkbox.html';

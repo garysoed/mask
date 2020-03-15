@@ -1,13 +1,13 @@
 import { Vine } from 'grapevine';
 import { assert, setup, should, test } from 'gs-testing';
 import { InstanceofType } from 'gs-types';
-import { attributeOut, element } from 'persona';
+import { attributeOut, booleanParser, element } from 'persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
-import { booleanParser } from '../util/parsers';
 
 import { $ as $baseAction, $$ as $$baseAction, BaseAction } from './base-action';
+
 
 const $ = {
   div: element('div', InstanceofType(HTMLDivElement), {

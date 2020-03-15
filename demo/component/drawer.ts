@@ -1,7 +1,7 @@
-import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, DrawerMode, stringParser, TextIconButton, ThemedCustomElementCtrl } from 'export';
+import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, DrawerMode, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
 import { elementWithTagType } from 'gs-types';
-import { attributeOut, element } from 'persona';
+import { attributeOut, element, stringParser } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

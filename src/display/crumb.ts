@@ -1,6 +1,6 @@
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, innerHtml, onDom, textContent } from 'persona';
+import { attributeIn, dispatcher, element, innerHtml, onDom, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,7 +8,6 @@ import { _p } from '../app/app';
 import separatorSvg from '../asset/separator.svg';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
 
 import crumbTemplate from './crumb.html';
 

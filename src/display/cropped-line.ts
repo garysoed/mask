@@ -7,13 +7,12 @@
 
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, element, onDom, textContent } from 'persona';
+import { attributeIn, element, onDom, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
 
 import croppedLineTemplate from './cropped-line.html';
 

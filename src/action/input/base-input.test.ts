@@ -1,13 +1,12 @@
 import { Vine } from 'grapevine';
 import { assert, setup, should, test } from 'gs-testing';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, element } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, integerParser, stringParser } from 'persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, Observable } from 'rxjs';
 import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
-import { booleanParser, integerParser, stringParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
 

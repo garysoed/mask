@@ -1,11 +1,10 @@
 import { Vine } from 'grapevine';
-import { attributeOut, element, hasAttribute } from 'persona';
+import { attributeOut, element, hasAttribute, stringParser } from 'persona';
 import { Output } from 'persona/export/internal';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
 
 
 export const $$ = {

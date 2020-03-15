@@ -1,5 +1,5 @@
 import { Vine } from 'grapevine';
-import { attributeIn, attributeOut, dispatcher, element, mediaQuery, onDom } from 'persona';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, mediaQuery, onDom, stringParser } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, takeUntil } from 'rxjs/operators';
 
@@ -9,7 +9,6 @@ import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { $$ as $drawer, Drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { booleanParser, stringParser } from '../util/parsers';
 
 import template from './root-layout.html';
 

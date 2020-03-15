@@ -1,10 +1,10 @@
-import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, stringParser, ThemedCustomElementCtrl } from 'export';
+import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
 import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
-import { ArrayDiff, filterNonNull } from 'gs-tools/export/rxjs';
-import { elementWithTagType } from 'gs-types';
-import { attributeOut, element, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single } from 'persona';
+import { ArrayDiff, assertByType, filterNonNull } from 'gs-tools/export/rxjs';
+import { elementWithTagType, enumType } from 'gs-types';
+import { attributeOut, element, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single, stringParser } from 'persona';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -207,8 +207,11 @@ export class Demo extends ThemedCustomElementCtrl {
               return target.getAttribute(COMPONENT_PATH_ATTR) || null;
             }),
             filterNonNull(),
+            assertByType(enumType<Views>(Views)),
             withLatestFrom($locationService.get(vine)),
-            switchMap(([path, locationService]) => locationService.goToPath(path, {})),
+            tap(([type, locationService]) => {
+              locationService.goToPath(type, {});
+            }),
             takeUntil(this.onDispose$),
         )
         .subscribe();
@@ -218,7 +221,9 @@ export class Demo extends ThemedCustomElementCtrl {
     this.onRootLayoutAction$
         .pipe(
             withLatestFrom($locationService.get(vine)),
-            switchMap(([, locationService]) => locationService.goToPath(Views.MAIN, {})),
+            tap(([, locationService]) => {
+              locationService.goToPath(Views.MAIN, {});
+            }),
             takeUntil(this.onDispose$),
         )
         .subscribe();

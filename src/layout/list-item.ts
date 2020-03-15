@@ -1,13 +1,12 @@
 import { Vine } from 'grapevine';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classToggle, element, hasAttribute, innerHtml, onDom, style } from 'persona';
+import { attributeIn, attributeOut, classToggle, element, hasAttribute, innerHtml, onDom, stringParser, style } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { $$ as $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
 
 import template from './list-item.html';
 

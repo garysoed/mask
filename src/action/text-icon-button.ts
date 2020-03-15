@@ -10,14 +10,13 @@
  */
 
 import { Vine } from 'grapevine';
-import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, noop, onDom, onKeydown } from 'persona';
+import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, integerParser, noop, onDom, onKeydown, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { integerParser, stringParser } from '../util/parsers';
 
 import { BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';

@@ -1,11 +1,10 @@
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, element, innerHtml, onInput } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, enumParser, innerHtml, onInput, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
-import { booleanParser, enumParser, stringParser } from '../../util/parsers';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
 import template from './text-input.html';
@@ -71,7 +70,6 @@ export const DEBOUNCE_MS = 250;
 })
 export class TextInput extends BaseInput<string> {
   private readonly autocomplete$ = this.declareInput($.host._.autocomplete);
-  private readonly inputEl$ = this.declareInput($.input);
   private readonly onInput$ = this.declareInput($.input._.onInput);
   private readonly type$ = this.declareInput($.host._.type);
 
@@ -90,16 +88,16 @@ export class TextInput extends BaseInput<string> {
     this.setupHandleInput();
   }
 
-  protected setupUpdateValue(value$: Observable<string>): Observable<unknown> {
-    return combineLatest([value$, this.inputEl$]).pipe(
-        tap(([value, el]) => {
+  protected setupUpdateValue(value$: Observable<string>): void {
+    combineLatest([value$, this.declareInput($.input)])
+        .pipe(takeUntil(this.onDispose$))
+        .subscribe(([value, el]) => {
           el.value = value;
-        }),
-    );
+        });
   }
 
   private setupHandleInput(): void {
-    this.inputEl$
+    this.declareInput($.input)
         .pipe(
             switchMap(() => this.onInput$),
             debounceTime(DEBOUNCE_MS),

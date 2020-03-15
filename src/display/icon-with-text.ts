@@ -11,13 +11,12 @@
 
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classlist, element, textContent } from 'persona';
+import { attributeIn, attributeOut, classlist, element, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { stringParser } from '../util/parsers';
 
 import { $$ as $icon, Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';

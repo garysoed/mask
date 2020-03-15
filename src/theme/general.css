@@ -164,7 +164,7 @@ fieldset:hover > legend, fieldset:focus > legend {
   color: var(--mkThemeActionFocusFG1);
 }
 
-p {
+p, pre {
   margin-block-start: 1rem;
   margin-block-end: 1rem;
 }

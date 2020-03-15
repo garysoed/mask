@@ -1,3 +1,5 @@
+import { initialize } from 'persona';
+
 import { $svgConfig, Palette, start as startMask, Theme } from '../export';
 
 import chevronDownSvg from './asset/chevron_down.svg';
@@ -7,6 +9,7 @@ import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import { Demo } from './core/demo';
+import { $locationService } from './core/location-service';
 
 
 const theme = new Theme(Palette.TEAL, Palette.PURPLE);
@@ -34,4 +37,6 @@ window.addEventListener('load', () => {
   for (const [key, content] of ICONS) {
     svgConfig$.next({key, type: 'set', value: {type: 'embed', content}});
   }
+
+  $locationService.get(vine).pipe(initialize()).subscribe();
 });

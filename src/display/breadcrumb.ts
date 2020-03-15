@@ -4,14 +4,13 @@ import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, onDom, RenderSpec, repeated, SimpleElementRenderSpec } from 'persona';
+import { attributeIn, dispatcher, element, listParser, onDom, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
 import { Observable } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { listParser, stringParser } from '../util/parsers';
 
 import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';

@@ -20,6 +20,3 @@ export { TextIconButton, $$ as $textIconButton } from '../src/action/text-icon-b
 export { TextInput, $$ as $textInput } from '../src/action/input/text-input';
 export { Theme } from '../src/theme/theme';
 export { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
-
-// Parsers
-export { booleanParser, enumParser, integerParser, listParser, mapParser, stringParser } from '../src/util/parsers';

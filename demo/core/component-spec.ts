@@ -12,7 +12,6 @@ import { TAG as TEXT_INPUT_TAG, TextInput } from '../component/text-input';
 
 import { Views } from './location-service';
 
-
 export interface ComponentSpec {
   readonly ctor: CustomElementCtrlCtor;
   readonly name: string;
