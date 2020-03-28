@@ -1,6 +1,5 @@
 import { $checkbox, $textIconButton, _p, Checkbox as MaskCheckbox, TextIconButton, ThemedCustomElementCtrl } from 'export';
-import { Vine } from 'grapevine';
-import { element } from 'persona';
+import { element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
@@ -28,8 +27,8 @@ const $ = {
 export class Checkbox extends ThemedCustomElementCtrl {
   private readonly onResetButtonAction$ = this.declareInput($.resetButton._.actionEvent);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.render($.unknownCheckbox._.clearFn).withFunction(this.renderClearUnknownCheckbox);
   }

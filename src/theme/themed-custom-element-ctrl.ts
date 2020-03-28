@@ -1,6 +1,5 @@
-import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { CustomElementCtrl, element } from 'persona';
+import { CustomElementCtrl, element, PersonaContext } from 'persona';
 import { combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,8 +15,8 @@ export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   protected readonly theme$ = $theme.get(this.vine);
   private readonly themeEl$ = this.declareInput($.theme);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.setupThemeUpdate();
   }

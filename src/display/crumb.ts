@@ -1,6 +1,6 @@
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, innerHtml, onDom, stringParser, textContent } from 'persona';
+import { attributeIn, dispatcher, element, innerHtml, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -34,8 +34,8 @@ export class Crumb extends ThemedCustomElementCtrl {
   private readonly hostDisplayObs = this.declareInput($.host._.display);
   private readonly onClickObs = this.declareInput($.host._.onClick);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
     this.render($.text._.text).withObservable(this.hostDisplayObs);
     this.render($.host._.dispatch).withFunction(this.onHostClick);
     this.render($.svg._.innerHtml).withValue(separatorSvg);

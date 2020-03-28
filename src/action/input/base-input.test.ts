@@ -1,7 +1,6 @@
-import { Vine } from 'grapevine';
 import { assert, setup, should, test } from 'gs-testing';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, integerParser, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, integerParser, PersonaContext, stringParser } from 'persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, Observable } from 'rxjs';
 import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -33,14 +32,13 @@ class TestInput extends BaseInput<number> {
   private readonly divEl$ = this.declareInput($.div);
   private readonly valueIn$ = this.declareInput($.div._.valueIn);
 
-  constructor(root: ShadowRoot, vine: Vine) {
+  constructor(context: PersonaContext) {
     super(
         $.host._.initValue,
         $.host._.value,
         $.div._.label,
         $.div._.disabled,
-        root,
-        vine,
+        context,
     );
 
     this.setupHandleValueInChange();

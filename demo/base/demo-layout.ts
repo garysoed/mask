@@ -1,6 +1,6 @@
 import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
-import { attributeIn, element, stringParser } from 'persona';
+import { attributeIn, element, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
@@ -28,8 +28,8 @@ export class DemoLayout extends ThemedCustomElementCtrl {
   private readonly isDrawerExpanded$ = new BehaviorSubject(false);
   private readonly onDetailsButtonClick$ = this.declareInput($.detailsButton._.actionEvent);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.render($.detailsButton._.icon).withFunction(this.renderDetailsButtonIcon);
     this.render($.detailsButton._.label).withFunction(this.renderDetailsButtonLabel);

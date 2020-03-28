@@ -1,7 +1,6 @@
-import { Vine } from 'grapevine';
 import { assert, setup, should, test } from 'gs-testing';
 import { InstanceofType } from 'gs-types';
-import { attributeOut, booleanParser, element } from 'persona';
+import { attributeOut, booleanParser, element, PersonaContext } from 'persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
@@ -23,8 +22,8 @@ const $ = {
   template: '<style id="theme"></style><div id="div"></div>',
 })
 class TestAction extends BaseAction {
-  constructor(root: ShadowRoot, vine: Vine) {
-    super($.div._.disabled, root, vine);
+  constructor(context: PersonaContext) {
+    super($.div._.disabled, context);
   }
 }
 

@@ -4,7 +4,7 @@ import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/co
 import { Color } from 'gs-tools/export/color';
 import { ArrayDiff, assertByType, filterNonNull } from 'gs-tools/export/rxjs';
 import { elementWithTagType, enumType } from 'gs-types';
-import { attributeOut, element, onDom, RenderSpec, repeated, SimpleElementRenderSpec, single, stringParser } from 'persona';
+import { attributeOut, element, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, single, stringParser } from 'persona';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -66,8 +66,8 @@ export class Demo extends ThemedCustomElementCtrl {
   private readonly onSettingsDrawerMouseOut$ = this.declareInput($.settingsDrawer._.onMouseOut);
   private readonly onSettingsDrawerMouseOver$ = this.declareInput($.settingsDrawer._.onMouseOver);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
     this.render($.accentPalette._.content).withFunction(this.renderAccentPaletteContents);
     this.render($.basePalette._.content).withFunction(this.renderBasePaletteContents);
     this.render($.components._.componentButtons).withFunction(this.renderComponentButtons);
@@ -76,8 +76,8 @@ export class Demo extends ThemedCustomElementCtrl {
     this.render($.root._.theme).withFunction(this.renderRootTheme);
     this.setupOnAccentPaletteClick();
     this.setupOnBasePaletteClick();
-    this.setupOnComponentButtonClick(vine);
-    this.setupOnRootLayoutAction(vine);
+    this.setupOnComponentButtonClick(context.vine);
+    this.setupOnRootLayoutAction(context.vine);
   }
 
   private renderAccentPaletteContents(): Observable<ArrayDiff<RenderSpec>> {

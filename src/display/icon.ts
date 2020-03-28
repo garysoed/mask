@@ -12,7 +12,7 @@ import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { BooleanType, InstanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, innerHtml, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, innerHtml, PersonaContext, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -54,8 +54,8 @@ export const $ = {
 export class Icon extends ThemedCustomElementCtrl {
   private readonly icon$ = this.declareInput($.host._.icon);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.render($.host._.ariaHidden).withValue(true);
     this.render($.host._.role).withValue(AriaRole.PRESENTATION);

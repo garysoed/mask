@@ -1,6 +1,6 @@
 import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { classlist, element } from 'persona';
+import { classlist, element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -22,8 +22,8 @@ export const $ = {
   template: backdropTemplate,
 })
 export class Backdrop extends ThemedCustomElementCtrl {
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
     this.render($.root._.classlist).withFunction(this.renderRootClasslist);
   }
 

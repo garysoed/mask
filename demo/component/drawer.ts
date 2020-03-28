@@ -1,7 +1,6 @@
 import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, DrawerMode, TextIconButton, ThemedCustomElementCtrl } from 'export';
-import { Vine } from 'grapevine';
 import { elementWithTagType } from 'gs-types';
-import { attributeOut, element, stringParser } from 'persona';
+import { attributeOut, element, PersonaContext, stringParser } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -35,8 +34,8 @@ export class Drawer extends ThemedCustomElementCtrl {
   private readonly expanded$ = this.declareInput($.expandCheckbox._.value);
   private readonly horizontalMode$ = this.declareInput($.horizontalModeCheckbox._.value);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
     this.render($.rootPlay._.layout).withFunction(this.renderRootPlayLayout);
     this.render($.drawer._.expanded).withFunction(this.renderDrawerExpanded);
     this.render($.drawer._.mode).withFunction(this.renderDrawerMode);

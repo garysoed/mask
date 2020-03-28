@@ -9,9 +9,8 @@
  * @slot The glyph of the icon to display.
  */
 
-import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classlist, element, stringParser, textContent } from 'persona';
+import { attributeIn, attributeOut, classlist, element, PersonaContext, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -55,8 +54,8 @@ export class IconWithText extends ThemedCustomElementCtrl {
   private readonly labelObs = this.declareInput($.host._.label);
   private readonly modeObs = this.declareInput($.host._.mode);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
     this.render($.text._.text).withObservable(this.labelObs);
     this.render($.icon._.icon).withObservable(this.iconObs);
     this.render($.icon._.mode).withObservable(this.modeObs);

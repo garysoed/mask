@@ -1,6 +1,6 @@
 import { $dialogService, $textIconButton, _p, Dialog as MaskDialog, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
-import { element } from 'persona';
+import { element, PersonaContext } from 'persona';
 import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import { DemoLayout } from '../base/demo-layout';
@@ -28,10 +28,10 @@ export class Dialog extends ThemedCustomElementCtrl {
   private readonly onDialogLaunchButtonAction$ =
       this.declareInput($.dialogLaunchButton._.actionEvent);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
-    this.setupOnDialogLaunchButtonAction(vine);
+    this.setupOnDialogLaunchButtonAction(context.vine);
   }
 
   private setupOnDialogLaunchButtonAction(vine: Vine): void {

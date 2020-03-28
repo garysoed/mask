@@ -1,6 +1,5 @@
-import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, enumParser, innerHtml, onInput, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, enumParser, innerHtml, onInput, PersonaContext, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
 
@@ -73,14 +72,13 @@ export class TextInput extends BaseInput<string> {
   private readonly onInput$ = this.declareInput($.input._.onInput);
   private readonly type$ = this.declareInput($.host._.type);
 
-  constructor(root: ShadowRoot, vine: Vine) {
+  constructor(context: PersonaContext) {
     super(
         $.host._.initValue,
         $.host._.value,
         $.label._.innerHtml,
         $.input._.disabled,
-        root,
-        vine,
+        context,
     );
 
     this.render($.input._.type).withObservable(this.type$);

@@ -4,7 +4,7 @@ import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, listParser, onDom, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
+import { attributeIn, dispatcher, element, listParser, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
 import { Observable } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -58,8 +58,8 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   private readonly pathObs = this.declareInput($.host._.path);
   private readonly rowOnActionObs = this.declareInput($.row._.onAction);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.render($.row._.crumbsSlot).withFunction(this.renderCrumbs);
     this.render($.host._.dispatch).withFunction(this.renderDispatchAction);

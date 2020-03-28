@@ -1,5 +1,4 @@
-import { Vine } from 'grapevine';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, mediaQuery, onDom, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, mediaQuery, onDom, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, takeUntil } from 'rxjs/operators';
 
@@ -50,8 +49,8 @@ export class RootLayout extends ThemedCustomElementCtrl {
   private readonly onTitleClick$ = this.declareInput($.title._.actionEvent);
   private readonly qIsDesktop$ = this.declareInput($qIsDesktop);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.setupHandleDrawerExpandCollapse();
     this.render($.host._.drawerExpanded).withObservable(this.isDrawerOpen$);

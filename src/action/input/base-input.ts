@@ -1,5 +1,4 @@
-import { Vine } from 'grapevine';
-import { attributeIn, element, handler, stringParser } from 'persona';
+import { attributeIn, element, handler, PersonaContext, stringParser } from 'persona';
 import { Input, Output } from 'persona/export/internal';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
@@ -32,10 +31,9 @@ export abstract class BaseInput<T> extends BaseAction {
       private readonly hostValueOutput: Output<T>,
       private readonly labelOutput: Output<string>,
       disabledOutput: Output<boolean>,
-      shadowRoot: ShadowRoot,
-      vine: Vine,
+      context: PersonaContext,
   ) {
-    super(disabledOutput, shadowRoot, vine);
+    super(disabledOutput, context);
     this.initValue$ = this.declareInput(initValueInput);
     this.value$ = this.createValue();
 

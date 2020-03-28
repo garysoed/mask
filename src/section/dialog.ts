@@ -1,6 +1,6 @@
 import { Vine } from 'grapevine';
 import { ElementWithTagType, InstanceofType } from 'gs-types';
-import { classlist, element, onDom, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
+import { classlist, element, onDom, PersonaContext, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -58,10 +58,10 @@ export class Dialog extends ThemedCustomElementCtrl {
   private readonly onCancelObs = this.declareInput($.cancelButton._.onAction);
   private readonly onOkObs = this.declareInput($.okButton._.onAction);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
-    this.setupOnCloseOrCancel(vine);
+    this.setupOnCloseOrCancel(context.vine);
     this.render($.cancelButton._.classlist).withFunction(this.renderCancelButtonClasses);
     this.render($.root._.classlist).withFunction(this.renderRootClasses);
     this.render($.title._.text).withFunction(this.renderTitle);

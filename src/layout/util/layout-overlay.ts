@@ -1,7 +1,7 @@
 import { source, Vine } from 'grapevine';
 import { Jsons } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { classlist, element, style } from 'persona';
+import { classlist, element, PersonaContext, style } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -40,8 +40,8 @@ const $ = {
   template: layoutOverlayTemplate,
 })
 export class LayoutOverlay extends ThemedCustomElementCtrl {
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.render($.root._.classlist).withFunction(this.handleIsActiveChange);
     this.render($.gridLeft._.backgroundImage, $.gridRight._.backgroundImage)

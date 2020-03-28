@@ -5,9 +5,8 @@
  * @attr {<string} text Text to display.
  */
 
-import { Vine } from 'grapevine';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, element, onDom, stringParser, textContent } from 'persona';
+import { attributeIn, element, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -46,8 +45,8 @@ export class CroppedLine extends ThemedCustomElementCtrl {
       .pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
   // TODO: Allow to copy a part of the text, or select all on selecting.
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.setupOnContainerCopy();
     this.render($.postfix._.text).withFunction(this.renderPostfixTextContent);

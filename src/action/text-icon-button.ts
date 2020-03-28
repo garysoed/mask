@@ -9,8 +9,7 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { Vine } from 'grapevine';
-import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, integerParser, noop, onDom, onKeydown, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
 
@@ -78,12 +77,8 @@ export class TextIconButton extends BaseAction {
   private readonly onMouseLeaveObs = this.declareInput($.host._.onMouseLeave);
   private readonly onSpaceDownObs = this.declareInput($.host._.onSpaceDown);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(
-        noop(),
-        shadowRoot,
-        vine,
-    );
+  constructor(context: PersonaContext) {
+    super(noop(), context);
 
     this.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON));
     this.render($.host._.actionEvent).withFunction(this.renderDispatchActions);

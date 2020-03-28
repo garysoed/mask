@@ -1,5 +1,5 @@
 import { Vine } from 'grapevine';
-import { attributeOut, element, hasAttribute, stringParser } from 'persona';
+import { attributeOut, element, hasAttribute, PersonaContext, stringParser } from 'persona';
 import { Output } from 'persona/export/internal';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,10 +23,9 @@ export class BaseAction extends ThemedCustomElementCtrl {
 
   constructor(
       private readonly disabledOutput: Output<boolean>,
-      shadowRoot: ShadowRoot,
-      vine: Vine,
+      context: PersonaContext,
   ) {
-    super(shadowRoot, vine);
+    super(context);
     this.render(this.disabledOutput).withObservable(this.disabled$);
     this.render($.host._.ariaDisabled).withFunction(this.renderAriaDisabled);
   }

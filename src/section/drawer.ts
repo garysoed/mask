@@ -12,7 +12,7 @@
 import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { InstanceofType } from 'gs-types';
-import { attributeIn, booleanParser, element, stringParser, style } from 'persona';
+import { attributeIn, booleanParser, element, PersonaContext, stringParser, style } from 'persona';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -61,8 +61,8 @@ export class Drawer extends ThemedCustomElementCtrl {
   private readonly minSizeObs = this.declareInput($.host._.minSize);
   private readonly modeObs = this.declareInput($.host._.mode);
 
-  constructor(shadowRoot: ShadowRoot, vine: Vine) {
-    super(shadowRoot, vine);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.render($.host._.styleHeight).withFunction(this.renderStyleHeight);
     this.render($.host._.styleWidth).withFunction(this.renderStyleWidth);
