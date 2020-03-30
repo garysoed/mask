@@ -15,8 +15,8 @@ import template from './root-layout.html';
 export const $$ = {
   api: {
     drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
-    icon: attributeIn('icon', stringParser()),
-    label: attributeIn('label', stringParser()),
+    icon: attributeIn('icon', stringParser(), ''),
+    label: attributeIn('label', stringParser(), ''),
     onTitleClick: dispatcher(ACTION_EVENT),
   },
   tag: 'mk-root-layout',

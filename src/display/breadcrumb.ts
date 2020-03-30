@@ -4,7 +4,7 @@ import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, listParser, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
+import { attributeIn, dispatcher, element, listParser, NoopRenderSpec, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
 import { Observable } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
 
@@ -73,7 +73,11 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
             map(([diff, map]: [ArrayDiff<string>, ReadonlyMap<string, CrumbData>]) => {
               switch (diff.type) {
                 case 'delete':
-                  return diff;
+                  return {
+                    type: 'delete' as 'delete',
+                    index: diff.index,
+                    value: new NoopRenderSpec(),
+                  };
                 case 'init':
                   const crumbDataList = $pipe(
                       diff.value,

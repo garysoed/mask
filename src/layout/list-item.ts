@@ -13,10 +13,10 @@ import template from './list-item.html';
 export const $$ = {
   api: {
     icon: attributeIn('icon', stringParser()),
-    itemDetail: attributeIn('item-detail', stringParser()),
-    itemName: attributeIn('item-name', stringParser()),
+    itemDetail: attributeIn('item-detail', stringParser(), ''),
+    itemName: attributeIn('item-name', stringParser(), ''),
     selected: hasAttribute('selected'),
-    toolWidth: attributeIn('tool-width', stringParser()),
+    toolWidth: attributeIn('tool-width', stringParser(), '0'),
   },
   tag: 'mk-list-item',
 };

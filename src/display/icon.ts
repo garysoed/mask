@@ -8,6 +8,7 @@
  */
 
 import { Vine } from 'grapevine';
+import { filterDefined } from 'gs-tools/export/rxjs';
 import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { BooleanType, InstanceofType } from 'gs-types';
@@ -65,7 +66,7 @@ export class Icon extends ThemedCustomElementCtrl {
   private renderRootInnerHtml(
       vine: Vine,
   ): Observable<string> {
-    return combineLatest([$svgService.get(vine), this.icon$])
+    return combineLatest([$svgService.get(vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
             map(svg => svg || ''),
