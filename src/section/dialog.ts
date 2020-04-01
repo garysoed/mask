@@ -1,5 +1,5 @@
 import { Vine } from 'grapevine';
-import { ElementWithTagType, InstanceofType } from 'gs-types';
+import { elementWithTagType, instanceofType } from 'gs-types';
 import { classlist, element, onDom, PersonaContext, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
 import { merge, Observable } from 'rxjs';
 import { filter, map, mapTo, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -20,16 +20,16 @@ export const $ = {
     classlist: classlist(),
     onAction: onDom(ACTION_EVENT),
   }),
-  content: element('content', InstanceofType(HTMLDivElement), {
+  content: element('content', instanceofType(HTMLDivElement), {
     single: single('#content'),
   }),
   okButton: element('okButton', $textIconButton, {
     onAction: onDom(ACTION_EVENT),
   }),
-  root: element('root', InstanceofType(HTMLDivElement), {
+  root: element('root', instanceofType(HTMLDivElement), {
     classlist: classlist(),
   }),
-  title: element('title', ElementWithTagType('h3'), {
+  title: element('title', elementWithTagType('h3'), {
     text: textContent(),
   }),
 };

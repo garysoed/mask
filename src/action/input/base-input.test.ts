@@ -1,5 +1,5 @@
 import { assert, setup, should, test } from 'gs-testing';
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, element, integerParser, PersonaContext, stringParser } from 'persona';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { $$ as $baseInput, BaseInput } from './base-input';
 
 
 const $ = {
-  div: element('div', InstanceofType(HTMLDivElement), {
+  div: element('div', instanceofType(HTMLDivElement), {
     disabled: attributeOut('disabled', booleanParser(), false),
     label: attributeOut('label', stringParser(), ''),
     valueIn: attributeIn('init-value', integerParser(), 0),

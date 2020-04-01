@@ -1,5 +1,5 @@
 import { Vine } from 'grapevine';
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { attributeIn, dispatcher, element, innerHtml, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,10 +18,10 @@ export const $ = {
     display: attributeIn('display', stringParser(), ''),
     onClick: onDom('click'),
   }),
-  svg: element('svg', InstanceofType(HTMLDivElement), {
+  svg: element('svg', instanceofType(HTMLDivElement), {
     innerHtml: innerHtml(),
   }),
-  text: element('text', InstanceofType(HTMLDivElement), {
+  text: element('text', instanceofType(HTMLDivElement), {
     text: textContent(),
   }),
 };

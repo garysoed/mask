@@ -1,4 +1,4 @@
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, element, enumParser, innerHtml, onInput, PersonaContext, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
@@ -49,14 +49,14 @@ export const $$ = {
 
 export const $ = {
   host: element($$.api),
-  input: element('input', InstanceofType(HTMLInputElement), {
+  input: element('input', instanceofType(HTMLInputElement), {
     autocomplete: attributeOut('autocomplete', stringParser()),
     disabled: attributeOut('disabled', booleanParser(), false),
     // TODO: This should cause compile error if the Element type is not InputElement.
     onInput: onInput(),
     type: attributeOut('type', enumParser(InputType)),
   }),
-  label: element('label', InstanceofType(HTMLLabelElement), {
+  label: element('label', instanceofType(HTMLLabelElement), {
     innerHtml: innerHtml(),
   }),
 };

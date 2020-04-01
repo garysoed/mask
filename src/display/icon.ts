@@ -11,7 +11,7 @@ import { Vine } from 'grapevine';
 import { filterDefined } from 'gs-tools/export/rxjs';
 import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
-import { BooleanType, InstanceofType } from 'gs-types';
+import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
 import { AriaRole, attributeIn, attributeOut, element, innerHtml, PersonaContext, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
@@ -38,12 +38,12 @@ export const $ = {
     ...$$.api,
     ariaHidden: attributeOut(
         'aria-hidden',
-        compose<boolean, Serializable, string>(typeBased(BooleanType), json()),
+        compose<boolean, Serializable, string>(typeBased(booleanType), json()),
         false,
     ),
     role: attributeOut('role', stringParser()),
   }),
-  root: element('root', InstanceofType(HTMLSpanElement), {
+  root: element('root', instanceofType(HTMLSpanElement), {
     innerHTML: innerHtml(),
   }),
 };

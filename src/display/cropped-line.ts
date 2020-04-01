@@ -5,7 +5,7 @@
  * @attr {<string} text Text to display.
  */
 
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { attributeIn, element, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -17,16 +17,16 @@ import croppedLineTemplate from './cropped-line.html';
 
 
 export const $ = {
-  container: element('container', InstanceofType(HTMLDivElement), {
+  container: element('container', instanceofType(HTMLDivElement), {
     onCopy: onDom<ClipboardEvent>('copy'),
   }),
   host: element({
     text: attributeIn('text', stringParser(), ''),
   }),
-  postfix: element('postfix', InstanceofType(HTMLElement), {
+  postfix: element('postfix', instanceofType(HTMLElement), {
     text: textContent(),
   }),
-  prefix: element('prefix', InstanceofType(HTMLElement), {
+  prefix: element('prefix', instanceofType(HTMLElement), {
     text: textContent(),
   }),
 };

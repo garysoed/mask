@@ -1,4 +1,4 @@
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { CustomElementCtrl, element, PersonaContext } from 'persona';
 import { combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { $theme, _p } from '../app/app';
 
 
 const $ = {
-  theme: element('theme', InstanceofType(HTMLStyleElement), {}),
+  theme: element('theme', instanceofType(HTMLStyleElement), {}),
 };
 
 @_p.baseCustomElement({})

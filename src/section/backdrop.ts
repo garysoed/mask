@@ -1,5 +1,5 @@
 import { Vine } from 'grapevine';
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { classlist, element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { $dialogState } from './dialog-service';
 
 
 export const $ = {
-  root: element('root', InstanceofType(HTMLDivElement), {
+  root: element('root', instanceofType(HTMLDivElement), {
     classlist: classlist(),
   }),
 };

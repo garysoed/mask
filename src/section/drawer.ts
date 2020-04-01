@@ -11,7 +11,7 @@
 
 import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { attributeIn, booleanParser, element, PersonaContext, stringParser, style } from 'persona';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -48,7 +48,7 @@ export const $ = {
     styleOverflow: style('overflow'),
     styleWidth: style('width'),
   }),
-  theme: element('theme', InstanceofType(HTMLStyleElement), {}),
+  theme: element('theme', instanceofType(HTMLStyleElement), {}),
 };
 
 @_p.customElement({

@@ -9,7 +9,7 @@
  * @slot The glyph of the icon to display.
  */
 
-import { InstanceofType } from 'gs-types';
+import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, classlist, element, PersonaContext, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -37,7 +37,7 @@ export const $ = {
     icon: attributeOut('icon', stringParser()),
     mode: attributeOut('mode', stringParser()),
   }),
-  text: element('text', InstanceofType(HTMLDivElement), {
+  text: element('text', instanceofType(HTMLDivElement), {
     classes: classlist(),
     text: textContent(),
   }),
