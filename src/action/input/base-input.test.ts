@@ -55,8 +55,11 @@ class TestInput extends BaseInput<number> {
   }
 
   protected setupUpdateValue(value$: Observable<number>): void {
-    $.div._.valueOut.output(this.shadowRoot, value$)
-        .pipe(takeUntil(this.onDispose$))
+    value$
+        .pipe(
+            $.div._.valueOut.output(this.shadowRoot),
+            takeUntil(this.onDispose$),
+        )
         .subscribe();
   }
 }

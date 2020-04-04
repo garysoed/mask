@@ -137,7 +137,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
 
     this.setupOnClickHandler();
-    this.render($.checkmark._.mode).withFunction(this.renderIconMode);
+    this.render($.checkmark._.mode, this.renderIconMode());
   }
 
   protected getCurrentValueObs(): Observable<CheckedValue> {
@@ -175,7 +175,8 @@ export class Checkbox extends BaseInput<CheckedValue> {
         map(([value]) => value ? 'checked' : ''),
     );
 
-    merge(indeterminate$, $.checkbox._.checkedOut.output(this.shadowRoot, trueFalse$))
+    const output$ = trueFalse$.pipe($.checkbox._.checkedOut.output(this.shadowRoot));
+    merge(indeterminate$, output$)
         .pipe(takeUntil(this.onDispose$))
         .subscribe();
   }

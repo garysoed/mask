@@ -80,13 +80,13 @@ export class TextIconButton extends BaseAction {
   constructor(context: PersonaContext) {
     super(noop(), context);
 
-    this.render($.host._.role).withObservable(observableOf(AriaRole.BUTTON));
-    this.render($.host._.actionEvent).withFunction(this.renderDispatchActions);
-    this.render($.host._.ariaLabelOut).withFunction(this.renderHostAriaLabel);
-    this.render($.host._.tabindex).withFunction(this.renderTabIndex);
-    this.render($.iconWithText._.label).withObservable(this.labelObs);
-    this.render($.iconWithText._.icon).withObservable(this.iconObs);
-    this.render($.iconWithText._.mode).withFunction(this.renderIconMode);
+    this.render($.host._.role, observableOf(AriaRole.BUTTON));
+    this.render($.host._.actionEvent, this.renderDispatchActions());
+    this.render($.host._.ariaLabelOut, this.renderHostAriaLabel());
+    this.render($.host._.tabindex, this.renderTabIndex());
+    this.render($.iconWithText._.label, this.labelObs);
+    this.render($.iconWithText._.icon, this.iconObs);
+    this.render($.iconWithText._.mode, this.renderIconMode());
   }
 
   private renderDispatchActions(): Observable<ActionEvent> {

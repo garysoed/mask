@@ -40,8 +40,8 @@ export abstract class BaseInput<T> extends BaseAction {
     this.setupHandleOnClear();
     this.setupUpdateValue(this.value$);
     this.setupUpdateIsDirty();
-    this.render(this.labelOutput).withObservable(this.label$);
-    this.render(this.hostValueOutput).withObservable(this.value$);
+    this.render(this.labelOutput, this.label$);
+    this.render(this.hostValueOutput, this.value$);
   }
 
   protected abstract setupUpdateValue(value$: Observable<T>): void;

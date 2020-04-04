@@ -61,16 +61,15 @@ export class Dialog extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.setupOnCloseOrCancel(context.vine);
-    this.render($.cancelButton._.classlist).withFunction(this.renderCancelButtonClasses);
-    this.render($.root._.classlist).withFunction(this.renderRootClasses);
-    this.render($.title._.text).withFunction(this.renderTitle);
-    this.render($.content._.single).withFunction(this.renderContent);
+    this.setupOnCloseOrCancel();
+    this.render($.cancelButton._.classlist, this.renderCancelButtonClasses());
+    this.render($.root._.classlist, this.renderRootClasses());
+    this.render($.title._.text, this.renderTitle());
+    this.render($.content._.single, this.renderContent());
   }
 
-  private renderCancelButtonClasses(vine: Vine): Observable<ReadonlySet<string>> {
-    return $dialogState
-        .get(vine)
+  private renderCancelButtonClasses(): Observable<ReadonlySet<string>> {
+    return $dialogState.get(this.vine)
         .pipe(
             map(dialogState => {
               if (!dialogState.isOpen || !dialogState.spec.cancelable) {
@@ -82,8 +81,8 @@ export class Dialog extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderContent(vine: Vine): Observable<RenderSpec|null> {
-    return $dialogState.get(vine)
+  private renderContent(): Observable<RenderSpec|null> {
+    return $dialogState.get(this.vine)
         .pipe(
             map(state => {
               if (!state.isOpen) {
@@ -98,8 +97,8 @@ export class Dialog extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderRootClasses(vine: Vine): Observable<ReadonlySet<string>> {
-    return $dialogState.get(vine).pipe(map(dialogState => {
+  private renderRootClasses(): Observable<ReadonlySet<string>> {
+    return $dialogState.get(this.vine).pipe(map(dialogState => {
       if (dialogState.isOpen) {
         return new Set(['isVisible']);
       } else {
@@ -108,8 +107,8 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 
-  private renderTitle(vine: Vine): Observable<string> {
-    return $dialogState.get(vine).pipe(map(dialogState => {
+  private renderTitle(): Observable<string> {
+    return $dialogState.get(this.vine).pipe(map(dialogState => {
       if (dialogState.isOpen) {
         return dialogState.spec.title;
       } else {
@@ -118,13 +117,13 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 
-  private setupOnCloseOrCancel(vine: Vine): void {
+  private setupOnCloseOrCancel(): void {
     merge(
         this.onCancelObs.pipe(mapTo(true)),
         this.onOkObs.pipe(mapTo(false)),
     )
     .pipe(
-        withLatestFrom($dialogState.get(vine)),
+        withLatestFrom($dialogState.get(this.vine)),
         filter((pair): pair is [boolean, OpenState] => pair[1].isOpen),
         switchMap(([isCanceled, state]) => state.closeFn(isCanceled)),
         takeUntil(this.onDispose$),

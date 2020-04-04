@@ -26,8 +26,8 @@ export class BaseAction extends ThemedCustomElementCtrl {
       context: PersonaContext,
   ) {
     super(context);
-    this.render(this.disabledOutput).withObservable(this.disabled$);
-    this.render($.host._.ariaDisabled).withFunction(this.renderAriaDisabled);
+    this.render(this.disabledOutput, this.disabled$);
+    this.render($.host._.ariaDisabled, this.renderAriaDisabled());
   }
 
   private renderAriaDisabled(): Observable<string> {

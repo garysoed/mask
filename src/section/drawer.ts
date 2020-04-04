@@ -9,11 +9,10 @@
  * @slot The content of the drawer.
  */
 
-import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { instanceofType } from 'gs-types';
 import { attributeIn, booleanParser, element, PersonaContext, stringParser, style } from 'persona';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
@@ -64,9 +63,9 @@ export class Drawer extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.host._.styleHeight).withFunction(this.renderStyleHeight);
-    this.render($.host._.styleWidth).withFunction(this.renderStyleWidth);
-    this.render($.host._.styleOverflow).withFunction(() => new BehaviorSubject('hidden'));
+    this.render($.host._.styleHeight, this.renderStyleHeight());
+    this.render($.host._.styleWidth, this.renderStyleWidth());
+    this.render($.host._.styleOverflow, observableOf('hidden'));
   }
 
   private renderStyleHeight(): Observable<string> {

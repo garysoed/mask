@@ -36,9 +36,9 @@ export class Drawer extends ThemedCustomElementCtrl {
 
   constructor(context: PersonaContext) {
     super(context);
-    this.render($.rootPlay._.layout).withFunction(this.renderRootPlayLayout);
-    this.render($.drawer._.expanded).withFunction(this.renderDrawerExpanded);
-    this.render($.drawer._.mode).withFunction(this.renderDrawerMode);
+    this.render($.rootPlay._.layout, this.renderRootPlayLayout());
+    this.render($.drawer._.expanded, this.renderDrawerExpanded());
+    this.render($.drawer._.mode, this.renderDrawerMode());
   }
 
   private renderDrawerExpanded(): Observable<boolean> {

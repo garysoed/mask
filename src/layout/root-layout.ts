@@ -53,11 +53,11 @@ export class RootLayout extends ThemedCustomElementCtrl {
     super(context);
 
     this.setupHandleDrawerExpandCollapse();
-    this.render($.host._.drawerExpanded).withObservable(this.isDrawerOpen$);
-    this.render($.drawer._.expanded).withObservable(this.isDrawerOpen$);
-    this.render($.title._.label).withObservable(this.hostLabel$);
-    this.render($.title._.icon).withObservable(this.hostIcon$);
-    this.render($.host._.onTitleClick).withFunction(this.renderOnTitleClick);
+    this.render($.host._.drawerExpanded, this.isDrawerOpen$);
+    this.render($.drawer._.expanded, this.isDrawerOpen$);
+    this.render($.title._.label, this.hostLabel$);
+    this.render($.title._.icon, this.hostIcon$);
+    this.render($.host._.onTitleClick, this.renderOnTitleClick());
   }
 
   private renderOnTitleClick(): Observable<ActionEvent> {

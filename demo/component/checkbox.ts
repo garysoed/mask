@@ -30,7 +30,7 @@ export class Checkbox extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.unknownCheckbox._.clearFn).withFunction(this.renderClearUnknownCheckbox);
+    this.render($.unknownCheckbox._.clearFn, this.renderClearUnknownCheckbox());
   }
 
   private renderClearUnknownCheckbox(): Observable<[]> {

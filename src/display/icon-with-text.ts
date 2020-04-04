@@ -56,11 +56,11 @@ export class IconWithText extends ThemedCustomElementCtrl {
 
   constructor(context: PersonaContext) {
     super(context);
-    this.render($.text._.text).withObservable(this.labelObs);
-    this.render($.icon._.icon).withObservable(this.iconObs);
-    this.render($.icon._.mode).withObservable(this.modeObs);
-    this.render($.icon._.classes).withFunction(this.renderIconClasses);
-    this.render($.text._.classes).withFunction(this.renderTextClasses);
+    this.render($.text._.text, this.labelObs);
+    this.render($.icon._.icon, this.iconObs);
+    this.render($.icon._.mode, this.modeObs);
+    this.render($.icon._.classes, this.renderIconClasses());
+    this.render($.text._.classes, this.renderTextClasses());
   }
 
   private renderIconClasses(): Observable<ReadonlySet<string>> {

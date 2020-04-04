@@ -14,7 +14,7 @@ import { enums } from 'gs-tools/export/typescript';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
 import { AriaRole, attributeIn, attributeOut, element, innerHtml, PersonaContext, stringParser } from 'persona';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
@@ -58,15 +58,13 @@ export class Icon extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.host._.ariaHidden).withValue(true);
-    this.render($.host._.role).withValue(AriaRole.PRESENTATION);
-    this.render($.root._.innerHTML).withFunction(this.renderRootInnerHtml);
+    this.render($.host._.ariaHidden, observableOf(true));
+    this.render($.host._.role, observableOf(AriaRole.PRESENTATION));
+    this.render($.root._.innerHTML, this.renderRootInnerHtml());
   }
 
-  private renderRootInnerHtml(
-      vine: Vine,
-  ): Observable<string> {
-    return combineLatest([$svgService.get(vine), this.icon$.pipe(filterDefined())])
+  private renderRootInnerHtml(): Observable<string> {
+    return combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
             map(svg => svg || ''),

@@ -68,12 +68,12 @@ export class Demo extends ThemedCustomElementCtrl {
 
   constructor(context: PersonaContext) {
     super(context);
-    this.render($.accentPalette._.content).withFunction(this.renderAccentPaletteContents);
-    this.render($.basePalette._.content).withFunction(this.renderBasePaletteContents);
-    this.render($.components._.componentButtons).withFunction(this.renderComponentButtons);
-    this.render($.content._.content).withFunction(this.renderMainContent);
-    this.render($.settingsDrawer._.expanded).withFunction(this.renderSettingsDrawerExpanded);
-    this.render($.root._.theme).withFunction(this.renderRootTheme);
+    this.render($.accentPalette._.content, this.renderAccentPaletteContents());
+    this.render($.basePalette._.content, this.renderBasePaletteContents());
+    this.render($.components._.componentButtons, this.renderComponentButtons());
+    this.render($.content._.content, this.renderMainContent());
+    this.render($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded());
+    this.render($.root._.theme, this.renderRootTheme());
     this.setupOnAccentPaletteClick();
     this.setupOnBasePaletteClick();
     this.setupOnComponentButtonClick(context.vine);
@@ -130,8 +130,8 @@ export class Demo extends ThemedCustomElementCtrl {
     return observableOf({type: 'init', value: renderSpec});
   }
 
-  private renderMainContent(vine: Vine): Observable<RenderSpec> {
-    return $locationService.get(vine).pipe(
+  private renderMainContent(): Observable<RenderSpec> {
+    return $locationService.get(this.vine).pipe(
         switchMap(locationService => locationService.getLocation()),
         map(location => {
           return COMPONENT_SPECS.find(({path}) => path === location.type);

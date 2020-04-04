@@ -68,15 +68,13 @@ export class ListItem extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.icon._.icon).withObservable(this.iconObs);
-    this.render($.itemDetail._.innerHtml).withObservable(this.itemDetailObs);
-    this.render($.itemName._.innerHtml).withObservable(this.itemNameObs);
-    this.render($.iconContainer._.displayed).withFunction(this.renderIconContainerDisplayed);
-    this.render($.itemDetailContainer._.displayed)
-        .withFunction(this.renderItemDetailContainerDisplayed);
-    this.render($.itemNameContainer._.displayed)
-        .withFunction(this.renderItemNameContainerDisplayed);
-    this.render($.tool._.width).withFunction(this.renderToolWidth);
+    this.render($.icon._.icon, this.iconObs);
+    this.render($.itemDetail._.innerHtml, this.itemDetailObs);
+    this.render($.itemName._.innerHtml, this.itemNameObs);
+    this.render($.iconContainer._.displayed, this.renderIconContainerDisplayed());
+    this.render($.itemDetailContainer._.displayed, this.renderItemDetailContainerDisplayed());
+    this.render($.itemNameContainer._.displayed, this.renderItemNameContainerDisplayed());
+    this.render($.tool._.width, this.renderToolWidth());
   }
 
   private renderIconContainerDisplayed(): Observable<boolean> {

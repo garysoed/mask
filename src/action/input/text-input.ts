@@ -81,8 +81,8 @@ export class TextInput extends BaseInput<string> {
         context,
     );
 
-    this.render($.input._.type).withObservable(this.type$);
-    this.render($.input._.autocomplete).withObservable(this.autocomplete$);
+    this.render($.input._.type, this.type$);
+    this.render($.input._.autocomplete, this.autocomplete$);
     this.setupHandleInput();
   }
 

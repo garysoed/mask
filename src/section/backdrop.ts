@@ -24,11 +24,11 @@ export const $ = {
 export class Backdrop extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
-    this.render($.root._.classlist).withFunction(this.renderRootClasslist);
+    this.render($.root._.classlist, this.renderRootClasslist());
   }
 
-  renderRootClasslist(vine: Vine): Observable<ReadonlySet<string>> {
-    return $dialogState.get(vine).pipe(
+  renderRootClasslist(): Observable<ReadonlySet<string>> {
+    return $dialogState.get(this.vine).pipe(
         map(dialogState => {
           if (dialogState.isOpen) {
             return new Set(['isVisible']);

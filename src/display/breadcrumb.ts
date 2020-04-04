@@ -61,8 +61,8 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.row._.crumbsSlot).withFunction(this.renderCrumbs);
-    this.render($.host._.dispatch).withFunction(this.renderDispatchAction);
+    this.render($.row._.crumbsSlot, this.renderCrumbs());
+    this.render($.host._.dispatch, this.renderDispatchAction());
     this.setupCrumbDataForwarding();
   }
 

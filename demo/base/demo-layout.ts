@@ -31,9 +31,9 @@ export class DemoLayout extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.detailsButton._.icon).withFunction(this.renderDetailsButtonIcon);
-    this.render($.detailsButton._.label).withFunction(this.renderDetailsButtonLabel);
-    this.render($.detailsDrawer._.expanded).withFunction(this.renderDetailsDrawerExpanded);
+    this.render($.detailsButton._.icon, this.renderDetailsButtonIcon());
+    this.render($.detailsButton._.label, this.renderDetailsButtonLabel());
+    this.render($.detailsDrawer._.expanded, this.renderDetailsDrawerExpanded());
     this.setupOnDetailsButtonClick();
   }
 

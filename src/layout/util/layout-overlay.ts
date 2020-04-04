@@ -43,18 +43,18 @@ export class LayoutOverlay extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.root._.classlist).withFunction(this.handleIsActiveChange);
-    this.render($.gridLeft._.backgroundImage, $.gridRight._.backgroundImage)
-        .withFunction(this.renderBackgroundImage);
+    this.render($.root._.classlist, this.handleIsActiveChange());
+    this.render($.gridLeft._.backgroundImage, this.renderBackgroundImage());
+    this.render($.gridRight._.backgroundImage, this.renderBackgroundImage());
   }
 
-  private handleIsActiveChange(vine: Vine): Observable<ReadonlySet<string>> {
-    return $isActive.get(vine).pipe(map(isActive => isActive ? new Set(['active']) : new Set([])));
+  private handleIsActiveChange(): Observable<ReadonlySet<string>> {
+    return $isActive.get(this.vine)
+        .pipe(map(isActive => isActive ? new Set(['active']) : new Set([])));
   }
 
-  private renderBackgroundImage(vine: Vine): Observable<string> {
-    return $svgService
-        .get(vine)
+  private renderBackgroundImage(): Observable<string> {
+    return $svgService.get(this.vine)
         .pipe(
             switchMap(service => service.getSvg('layout_overlay')),
             map(svg => `url('data:image/svg+xml;base64,${btoa(svg || '')}')`),

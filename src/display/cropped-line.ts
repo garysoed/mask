@@ -49,8 +49,8 @@ export class CroppedLine extends ThemedCustomElementCtrl {
     super(context);
 
     this.setupOnContainerCopy();
-    this.render($.postfix._.text).withFunction(this.renderPostfixTextContent);
-    this.render($.prefix._.text).withFunction(this.renderPrefixTextContent);
+    this.render($.postfix._.text, this.renderPostfixTextContent());
+    this.render($.prefix._.text, this.renderPrefixTextContent());
   }
 
   private renderPostfixTextContent(): Observable<string> {
