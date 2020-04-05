@@ -1,8 +1,7 @@
 import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from 'export';
-import { Vine } from 'grapevine';
 import { attributeIn, element, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import template from './demo-layout.html';
 
@@ -34,7 +33,7 @@ export class DemoLayout extends ThemedCustomElementCtrl {
     this.render($.detailsButton._.icon, this.renderDetailsButtonIcon());
     this.render($.detailsButton._.label, this.renderDetailsButtonLabel());
     this.render($.detailsDrawer._.expanded, this.renderDetailsDrawerExpanded());
-    this.setupOnDetailsButtonClick();
+    this.addSetup(this.setupOnDetailsButtonClick());
   }
 
   private renderDetailsButtonIcon(): Observable<string> {
@@ -51,13 +50,13 @@ export class DemoLayout extends ThemedCustomElementCtrl {
     return this.isDrawerExpanded$;
   }
 
-  private setupOnDetailsButtonClick(): void {
-    this.onDetailsButtonClick$
+  private setupOnDetailsButtonClick(): Observable<unknown> {
+    return this.onDetailsButtonClick$
         .pipe(
             withLatestFrom(this.isDrawerExpanded$),
-        )
-        .subscribe(([, isExpanded]) => {
-          this.isDrawerExpanded$.next(!isExpanded);
-        });
+            tap(([, isExpanded]) => {
+              this.isDrawerExpanded$.next(!isExpanded);
+            }),
+        );
   }
 }

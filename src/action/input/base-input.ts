@@ -1,7 +1,7 @@
 import { attributeIn, element, handler, PersonaContext, stringParser } from 'persona';
 import { Input, Output } from 'persona/export/internal';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { $$ as $baseAction, BaseAction } from '../base-action';
@@ -37,14 +37,14 @@ export abstract class BaseInput<T> extends BaseAction {
     this.initValue$ = this.declareInput(initValueInput);
     this.value$ = this.createValue();
 
-    this.setupHandleOnClear();
-    this.setupUpdateValue(this.value$);
-    this.setupUpdateIsDirty();
+    this.addSetup(this.setupHandleOnClear());
+    this.addSetup(this.setupUpdateValue(this.value$));
+    this.addSetup(this.setupUpdateIsDirty());
     this.render(this.labelOutput, this.label$);
     this.render(this.hostValueOutput, this.value$);
   }
 
-  protected abstract setupUpdateValue(value$: Observable<T>): void;
+  protected abstract setupUpdateValue(value$: Observable<T>): Observable<unknown>;
 
   private createValue(): Observable<T> {
     return this.isDirty$.pipe(
@@ -52,15 +52,11 @@ export abstract class BaseInput<T> extends BaseAction {
     );
   }
 
-  private setupHandleOnClear(): void {
-    this.onClear$
-        .pipe(takeUntil(this.onDispose$))
-        .subscribe(() => this.isDirty$.next(false));
+  private setupHandleOnClear(): Observable<unknown> {
+    return this.onClear$.pipe(tap(() => this.isDirty$.next(false)));
   }
 
-  private setupUpdateIsDirty(): void {
-    this.dirtyValue$
-        .pipe(takeUntil(this.onDispose$))
-        .subscribe(() => this.isDirty$.next(true));
+  private setupUpdateIsDirty(): Observable<unknown> {
+    return this.dirtyValue$.pipe(tap(() => this.isDirty$.next(true)));
   }
 }

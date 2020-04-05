@@ -5,7 +5,7 @@ import { booleanType, elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
 import { attributeIn, attributeOut, booleanParser, element, mapOutput, onDom, PersonaContext, SimpleElementRenderSpec, single, splitOutput } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
-import { filter, map, mapTo, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
@@ -136,7 +136,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
         context,
     );
 
-    this.setupOnClickHandler();
+    this.addSetup(this.setupOnClickHandler());
     this.render($.checkmark._.mode, this.renderIconMode());
   }
 
@@ -157,7 +157,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
   }
 
-  protected setupUpdateValue(value$: Observable<CheckedValue>): void {
+  protected setupUpdateValue(value$: Observable<CheckedValue>): Observable<unknown> {
     const indeterminate$ = value$.pipe(
         filter(value => value === 'unknown'),
         withLatestFrom($.checkbox.getValue(this.shadowRoot)),
@@ -176,9 +176,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
 
     const output$ = trueFalse$.pipe($.checkbox._.checkedOut.output(this.shadowRoot));
-    merge(indeterminate$, output$)
-        .pipe(takeUntil(this.onDispose$))
-        .subscribe();
+    return merge(indeterminate$, output$);
   }
 
   private renderIconMode(): Observable<IconMode> {
@@ -214,8 +212,8 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
   }
 
-  private setupOnClickHandler(): void {
-    this.onCheckboxClick$
+  private setupOnClickHandler(): Observable<unknown> {
+    return this.onCheckboxClick$
         .pipe(
             withLatestFrom(this.disabled$, this.value$),
             filter(([, disabled]) => !disabled),
@@ -228,8 +226,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
                   return false;
               }
             }),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(newValue => this.dirtyValue$.next(newValue));
+            tap(newValue => this.dirtyValue$.next(newValue)),
+        );
   }
 }

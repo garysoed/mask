@@ -6,7 +6,7 @@ import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
 import { attributeIn, dispatcher, element, listParser, NoopRenderSpec, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
 import { Observable } from 'rxjs';
-import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
@@ -63,7 +63,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
 
     this.render($.row._.crumbsSlot, this.renderCrumbs());
     this.render($.host._.dispatch, this.renderDispatchAction());
-    this.setupCrumbDataForwarding();
+    this.addSetup(this.setupCrumbDataForwarding());
   }
 
   private renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
@@ -141,21 +141,20 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
         );
   }
 
-  private setupCrumbDataForwarding(): void {
-    this.pathObs
+  private setupCrumbDataForwarding(): Observable<unknown> {
+    return this.pathObs
         .pipe(
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(path => {
-          // Map has to be updated first, since the keys will cause rendering update.
-          const map = new Map<string, CrumbData>();
-          for (const data of path) {
-            map.set(data.key, data);
-          }
-          this.pathDataSubject.setAll(map);
+            tap(path => {
+              // Map has to be updated first, since the keys will cause rendering update.
+              const map = new Map<string, CrumbData>();
+              for (const data of path) {
+                map.set(data.key, data);
+              }
+              this.pathDataSubject.setAll(map);
 
-          this.pathKeySubject.setAll(path.map(({key}) => key));
-        });
+              this.pathKeySubject.setAll(path.map(({key}) => key));
+            }),
+        );
   }
 }
 

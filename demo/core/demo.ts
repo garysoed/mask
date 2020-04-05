@@ -74,10 +74,10 @@ export class Demo extends ThemedCustomElementCtrl {
     this.render($.content._.content, this.renderMainContent());
     this.render($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded());
     this.render($.root._.theme, this.renderRootTheme());
-    this.setupOnAccentPaletteClick();
-    this.setupOnBasePaletteClick();
-    this.setupOnComponentButtonClick(context.vine);
-    this.setupOnRootLayoutAction(context.vine);
+    this.addSetup(this.setupOnAccentPaletteClick());
+    this.addSetup(this.setupOnBasePaletteClick());
+    this.addSetup(this.setupOnComponentButtonClick(context.vine));
+    this.addSetup(this.setupOnRootLayoutAction(context.vine));
   }
 
   private renderAccentPaletteContents(): Observable<ArrayDiff<RenderSpec>> {
@@ -169,34 +169,32 @@ export class Demo extends ThemedCustomElementCtrl {
     );
   }
 
-  private setupOnAccentPaletteClick(): void {
-    this.onAccentPaletteClick$
+  private setupOnAccentPaletteClick(): Observable<unknown> {
+    return this.onAccentPaletteClick$
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
             withLatestFrom(this.theme$),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(([color, theme]) => {
-          this.theme$.next(theme.setHighlightColor(color));
-        });
+            tap(([color, theme]) => {
+              this.theme$.next(theme.setHighlightColor(color));
+            }),
+        );
   }
 
-  private setupOnBasePaletteClick(): void {
-    this.onBasePaletteClick$
+  private setupOnBasePaletteClick(): Observable<unknown> {
+    return this.onBasePaletteClick$
         .pipe(
             map(event => getColor(event)),
             filter((color): color is Color => !!color),
             withLatestFrom(this.theme$),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(([color, theme]) => {
-          this.theme$.next(theme.setBaseColor(color));
-        });
+            tap(([color, theme]) => {
+              this.theme$.next(theme.setBaseColor(color));
+            }),
+        );
   }
 
-  private setupOnComponentButtonClick(vine: Vine): void {
-    this.onDrawerRootClick$
+  private setupOnComponentButtonClick(vine: Vine): Observable<unknown> {
+    return this.onDrawerRootClick$
         .pipe(
             map(event => {
               const target = event.target;
@@ -212,21 +210,17 @@ export class Demo extends ThemedCustomElementCtrl {
             tap(([type, locationService]) => {
               locationService.goToPath(type, {});
             }),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe();
+        );
   }
 
-  private setupOnRootLayoutAction(vine: Vine): void {
-    this.onRootLayoutAction$
+  private setupOnRootLayoutAction(vine: Vine): Observable<unknown> {
+    return this.onRootLayoutAction$
         .pipe(
             withLatestFrom($locationService.get(vine)),
             tap(([, locationService]) => {
               locationService.goToPath(Views.MAIN, {});
             }),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe();
+        );
   }
 }
 

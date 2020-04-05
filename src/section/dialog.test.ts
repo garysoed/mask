@@ -1,81 +1,81 @@
 
-import { arrayThat, assert, createSpySubject, setThat, setup, should, test } from 'gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
-import { BehaviorSubject, EMPTY } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { arrayThat, assert, createSpySubject, run, setThat, should, test } from 'gs-testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 
 import { $, Dialog } from './dialog';
-import { $dialogService, $dialogState, DialogService, DialogState } from './dialog-service';
+import { $dialogService, $dialogState, DialogService } from './dialog-service';
+
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('@mask/section/dialog', () => {
-  let el: ElementTester;
-  let tester: PersonaTester;
-
-  setup(() => {
-    tester = testerFactory.build([Dialog, TextIconButton]);
-    el = tester.createElement('mk-dialog', document.body);
+test('@mask/section/dialog', init => {
+  const _ = init(() => {
+    const tester = testerFactory.build([Dialog, TextIconButton]);
+    const el = tester.createElement('mk-dialog', document.body);
     $dialogService.get(tester.vine).next(new DialogService(tester.vine));
+
+    return {el, tester};
   });
 
   test('renderCancelButtonClasses', () => {
     should(`display the cancel button if cancelable`, () => {
-      $dialogService.get(tester.vine)
-          .pipe(
-              take(1),
-              switchMap(dialogService => dialogService.open({
-                cancelable: true,
-                content: {tag: 'div'},
-                title: 'title',
-              })),
-          )
-          .subscribe();
+      run(
+          $dialogService.get(_.tester.vine)
+              .pipe(
+                  take(1),
+                  switchMap(dialogService => dialogService.open({
+                    cancelable: true,
+                    content: {tag: 'div'},
+                    title: 'title',
+                  })),
+              ),
+      );
 
-      assert(el.getClassList($.cancelButton)).to.emitWith(
+      assert(_.el.getClassList($.cancelButton)).to.emitWith(
           setThat<string>().haveExactElements(new Set(['isVisible'])),
       );
     });
 
     should(`not display the cancel button if not cancelable`, () => {
-      $dialogService.get(tester.vine)
-          .pipe(
-              take(1),
-              switchMap(dialogService => dialogService.open({
-                cancelable: false,
-                content: {tag: 'div'},
-                title: 'title',
-              })),
-          )
-          .subscribe();
-
-      assert(el.getClassList($.cancelButton)).to.emitWith(
-        setThat<string>().beEmpty(),
+      run(
+          $dialogService.get(_.tester.vine)
+              .pipe(
+                  take(1),
+                  switchMap(dialogService => dialogService.open({
+                    cancelable: false,
+                    content: {tag: 'div'},
+                    title: 'title',
+                  })),
+              ),
       );
+
+      assert(_.el.getClassList($.cancelButton)).to.emitWith(setThat<string>().beEmpty());
     });
   });
 
   test('renderContent', () => {
     should(`render the content correctly`, () => {
-      $dialogService.get(tester.vine)
-          .pipe(
-              take(1),
-              switchMap(dialogService => dialogService.open({
-                cancelable: false,
-                content: {
-                  attr: new Map([['a', '1'], ['b', '2']]),
-                  tag: 'mk-content',
-                },
-                title: 'title',
-              })),
-          )
-          .subscribe();
+      run(
+          $dialogService.get(_.tester.vine)
+              .pipe(
+                  take(1),
+                  switchMap(dialogService => dialogService.open({
+                    cancelable: false,
+                    content: {
+                      attr: new Map([['a', '1'], ['b', '2']]),
+                      tag: 'mk-content',
+                    },
+                    title: 'title',
+                  })),
+              ),
+      );
 
-      const nodeObs = el.getNodesAfter($.content._.single)
+      const nodeObs = _.el.getNodesAfter($.content._.single)
           .pipe(
               take(1),
               map(nodes => nodes[0] as HTMLElement),
@@ -86,7 +86,7 @@ test('@mask/section/dialog', () => {
     });
 
     should(`render nothing if dialog is not open`, () => {
-      const elementsObs = el.getNodesAfter($.content._.single)
+      const elementsObs = _.el.getNodesAfter($.content._.single)
           .pipe(map(nodes => nodes.filter(node => node.nodeType === Node.ELEMENT_NODE)));
       assert(elementsObs).to.emitWith(arrayThat<Node>().beEmpty());
     });
@@ -94,24 +94,25 @@ test('@mask/section/dialog', () => {
 
   test('renderRootClasses', () => {
     should(`render correctly when dialog is displayed`, () => {
-      $dialogService.get(tester.vine)
-          .pipe(
-              take(1),
-              switchMap(dialogService => dialogService.open({
-                cancelable: false,
-                content: {tag: 'div'},
-                title: 'title',
-              })),
-          )
-          .subscribe();
+      run(
+          $dialogService.get(_.tester.vine)
+              .pipe(
+                  take(1),
+                  switchMap(dialogService => dialogService.open({
+                    cancelable: false,
+                    content: {tag: 'div'},
+                    title: 'title',
+                  })),
+              ),
+      );
 
-      assert(el.getClassList($.root)).to.emitWith(
+      assert(_.el.getClassList($.root)).to.emitWith(
         setThat<string>().haveExactElements(new Set(['isVisible'])),
       );
     });
 
     should(`render correctly when dialog is hidden`, () => {
-      assert(el.getClassList($.root)).to.emitWith(
+      assert(_.el.getClassList($.root)).to.emitWith(
         setThat<string>().beEmpty(),
       );
     });
@@ -120,29 +121,29 @@ test('@mask/section/dialog', () => {
   test('renderTitle', () => {
     should(`render the title correctly`, () => {
       const title = 'title';
-      $dialogService.get(tester.vine)
-          .pipe(
-              take(1),
-              switchMap(dialogService => dialogService.open({
-                cancelable: false,
-                content: {tag: 'div'},
-                title,
-              })),
-          )
-          .subscribe();
+      run(
+          $dialogService.get(_.tester.vine)
+              .pipe(
+                  take(1),
+                  switchMap(dialogService => dialogService.open({
+                    cancelable: false,
+                    content: {tag: 'div'},
+                    title,
+                  })),
+              ),
+      );
 
-      assert(el.getTextContent($.title)).to.emitWith(title);
+      assert(_.el.getTextContent($.title)).to.emitWith(title);
     });
 
     should(`render empty string when dialog is hidden`, () => {
-      assert(el.getTextContent($.title)).to.emitWith('');
+      assert(_.el.getTextContent($.title)).to.emitWith('');
     });
   });
 
   test('setupOnCloseOrCancel', () => {
     should(`close the dialog correctly if canceled`, () => {
-      const onCloseSubject = createSpySubject<boolean>();
-      $dialogService.get(tester.vine)
+      const onOpen$ = $dialogService.get(_.tester.vine)
           .pipe(
               take(1),
               switchMap(dialogService => dialogService.open({
@@ -150,30 +151,29 @@ test('@mask/section/dialog', () => {
                 content: {tag: 'div'},
                 title: 'title',
               })),
-          )
-          .pipe(switchMap(({canceled}) => {
-            onCloseSubject.next(canceled);
+              map(({canceled}) => canceled),
+          );
+      const onCloseSubject = createSpySubject<boolean>(onOpen$);
 
-            return EMPTY;
-          }))
-          .subscribe();
+      const stateSubject = createSpySubject($dialogState.get(_.tester.vine));
 
-      const stateSubject = new BehaviorSubject<DialogState|null>(null);
-      $dialogState.get(tester.vine).subscribe(stateSubject);
-
-      el.getElement($.cancelButton)
-          .pipe(take(1))
-          .subscribe(el => el.click());
+      run(
+          _.el.getElement($.cancelButton)
+              .pipe(
+                  take(1),
+                  tap(el => {
+                    el.click();
+                  }),
+              ),
+      );
 
       assert(onCloseSubject).to.emitWith(true);
 
-      // tslint:disable-next-line:no-non-null-assertion
-      assert(stateSubject.getValue()!.isOpen).to.beFalse();
+      assert(stateSubject.pipe(map(({isOpen}) => isOpen))).to.emitWith(false);
     });
 
     should(`close the dialog correctly if OK'd`, () => {
-      const onCloseSubject = createSpySubject<boolean>();
-      $dialogService.get(tester.vine)
+      const onOpen$ = $dialogService.get(_.tester.vine)
           .pipe(
               take(1),
               switchMap(dialogService => dialogService.open({
@@ -181,23 +181,16 @@ test('@mask/section/dialog', () => {
                 content: {tag: 'div'},
                 title: 'title',
               })),
-          )
-          .pipe(switchMap(({canceled}) => {
-            onCloseSubject.next(canceled);
+              map(({canceled}) => canceled),
+          );
+      const onCloseSubject = createSpySubject<boolean>(onOpen$);
 
-            return EMPTY;
-          }))
-          .subscribe();
+      const stateSubject = createSpySubject($dialogState.get(_.tester.vine));
 
-      const stateSubject = new BehaviorSubject<DialogState|null>(null);
-      $dialogState.get(tester.vine).subscribe(stateSubject);
-
-      el.dispatchEvent($.okButton._.onAction, new ActionEvent()).subscribe();
+      run(_.el.dispatchEvent($.okButton._.onAction, new ActionEvent()));
 
       assert(onCloseSubject).to.emitWith(false);
-
-      // tslint:disable-next-line:no-non-null-assertion
-      assert(stateSubject.getValue()!.isOpen).to.beFalse();
+      assert(stateSubject.pipe(map(({isOpen}) => isOpen))).to.emitWith(false);
     });
   });
 });

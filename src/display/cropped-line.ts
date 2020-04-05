@@ -8,7 +8,7 @@
 import { instanceofType } from 'gs-types';
 import { attributeIn, element, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -38,45 +38,44 @@ const MAX_POSTFIX_LENGTH = 3;
   template: croppedLineTemplate,
 })
 export class CroppedLine extends ThemedCustomElementCtrl {
-  private readonly hostTextObs = this.declareInput($.host._.text);
-  private readonly onCopyObs = this.declareInput($.container._.onCopy);
-  private readonly textObs = this.declareInput($.host._.text);
-  private readonly postfixBoundary$ = this.textObs
+  private readonly hostText$ = this.declareInput($.host._.text);
+  private readonly onCopy$ = this.declareInput($.container._.onCopy);
+  private readonly text$ = this.declareInput($.host._.text);
+  private readonly postfixBoundary$ = this.text$
       .pipe(map(text => Math.max(text.length - MAX_POSTFIX_LENGTH, 0)));
   // TODO: Allow to copy a part of the text, or select all on selecting.
 
   constructor(context: PersonaContext) {
     super(context);
 
-    this.setupOnContainerCopy();
+    this.addSetup(this.setupOnContainerCopy());
     this.render($.postfix._.text, this.renderPostfixTextContent());
     this.render($.prefix._.text, this.renderPrefixTextContent());
   }
 
   private renderPostfixTextContent(): Observable<string> {
-    return combineLatest([this.textObs, this.postfixBoundary$])
+    return combineLatest([this.text$, this.postfixBoundary$])
         .pipe(map(([text, postfixBoundary]) => text.substring(postfixBoundary)));
   }
 
   private renderPrefixTextContent(): Observable<string> {
-    return combineLatest([this.textObs, this.postfixBoundary$])
+    return combineLatest([this.text$, this.postfixBoundary$])
         .pipe(map(([text, postfixBoundary]) => text.substring(0, postfixBoundary)));
   }
 
-  private setupOnContainerCopy(): void {
-    this.onCopyObs
+  private setupOnContainerCopy(): Observable<unknown> {
+    return this.onCopy$
         .pipe(
-            withLatestFrom(this.hostTextObs),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(([event, text]) => {
-          const dataTransfer = event.clipboardData;
-          if (!dataTransfer) {
-            return;
-          }
-          dataTransfer.setData('text/plain', text);
-          event.preventDefault();
-          event.stopPropagation();
-        });
+            withLatestFrom(this.hostText$),
+            tap(([event, text]) => {
+              const dataTransfer = event.clipboardData;
+              if (!dataTransfer) {
+                return;
+              }
+              dataTransfer.setData('text/plain', text);
+              event.preventDefault();
+              event.stopPropagation();
+            }),
+        );
   }
 }

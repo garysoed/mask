@@ -1,51 +1,49 @@
-import { assert, FakeTime, mockTime, setup, should, test } from 'gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, mockTime, run, should, test } from 'gs-testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 
 import { $, $qIsDesktop, RootLayout } from './root-layout';
 
+
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('layout.RootLayout', () => {
-  let el: ElementTester;
-  let tester: PersonaTester;
-  let fakeTime: FakeTime;
-
-  setup(() => {
-    fakeTime = mockTime(window);
-    tester = testerFactory.build([RootLayout]);
-    el = tester.createElement('mk-root-layout', document.body);
+test('layout.RootLayout', init => {
+  const _ = init(() => {
+    const fakeTime = mockTime(window);
+    const tester = testerFactory.build([RootLayout]);
+    const el = tester.createElement('mk-root-layout', document.body);
+    return {el, tester, fakeTime};
   });
 
   test('handleDrawerExpandCollapse', () => {
     should(`open the drawer if hovered`, () => {
-      el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
+      run(_.el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')));
 
-      fakeTime.tick(100);
+      _.fakeTime.tick(100);
 
-      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(true);
-      assert(el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
+      assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
+      assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
     });
 
     should(`collapse the drawer if not hovered and is not desktop`, () => {
-      el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')).subscribe();
-      fakeTime.tick(100);
+      run(_.el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')));
+      _.fakeTime.tick(100);
 
-      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(true);
+      assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
 
-      el.dispatchEvent($.drawer._.onMouseOut, new CustomEvent('mouseout')).subscribe();
-      fakeTime.tick(100);
+      run(_.el.dispatchEvent($.drawer._.onMouseOut, new CustomEvent('mouseout')));
+      _.fakeTime.tick(100);
 
-      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(false);
-      assert(el.getAttribute($.host._.drawerExpanded)).to.emitWith(false);
+      assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(false);
+      assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(false);
     });
 
     should(`open the drawer if destop sized`, () => {
-      tester.setMedia($qIsDesktop, true);
+      _.tester.setMedia($qIsDesktop, true);
 
-      assert(el.getAttribute($.drawer._.expanded)).to.emitWith(true);
-      assert(el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
+      assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
+      assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
     });
   });
 });

@@ -1,9 +1,9 @@
-import { assert, setup, should, test } from 'gs-testing';
+import { assert, run, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, element, integerParser, PersonaContext, stringParser } from 'persona';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, Observable } from 'rxjs';
-import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -41,69 +41,61 @@ class TestInput extends BaseInput<number> {
         context,
     );
 
-    this.setupHandleValueInChange();
+    this.addSetup(this.setupHandleValueInChange());
   }
 
-  protected setupHandleValueInChange(): void {
-    this.divEl$
+  protected setupHandleValueInChange(): Observable<unknown> {
+    return this.divEl$
         .pipe(
             switchMap(el => fromEvent(el, 'input')),
             withLatestFrom(this.valueIn$),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(([, v]) => this.dirtyValue$.next(v));
+            tap(([, v]) => this.dirtyValue$.next(v)),
+        );
   }
 
-  protected setupUpdateValue(value$: Observable<number>): void {
-    value$
-        .pipe(
-            $.div._.valueOut.output(this.shadowRoot),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe();
+  protected setupUpdateValue(value$: Observable<number>): Observable<unknown> {
+    return value$.pipe($.div._.valueOut.output(this.shadowRoot));
   }
 }
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('@mask/input/base-input', () => {
-  let el: ElementTester;
-  let tester: PersonaTester;
-
-  setup(() => {
-    tester = testerFactory.build([TestInput]);
-    el = tester.createElement('mk-test-base-input', document.body);
+test('@mask/input/base-input', init => {
+  const _ = init(() => {
+    const tester = testerFactory.build([TestInput]);
+    const el = tester.createElement('mk-test-base-input', document.body);
+    return {el, tester};
   });
 
   test('providesInitValue', () => {
     should(`set the initial value at the start`, () => {
-      el.setAttribute($.host._.initValue, 123).subscribe();
+      run(_.el.setAttribute($.host._.initValue, 123));
 
-      assert(el.getAttribute($.div._.valueOut)).to.emitWith(123);
+      assert(_.el.getAttribute($.div._.valueOut)).to.emitWith(123);
     });
 
     should(`set the initial value after calling clear`, () => {
-      el.setAttribute($.host._.initValue, 123).subscribe();
+      run(_.el.setAttribute($.host._.initValue, 123));
 
       // Set the dirty value.
-      el.setAttribute($.div._.valueIn, 456).subscribe();
+      run(_.el.setAttribute($.div._.valueIn, 456));
 
       // Clear the value
-      el.callFunction($.host._.clearFn, []).subscribe();
-      assert(el.getAttribute($.div._.valueOut)).to.emitWith(123);
+      run(_.el.callFunction($.host._.clearFn, []));
+      assert(_.el.getAttribute($.div._.valueOut)).to.emitWith(123);
     });
   });
 
   should(`render disabled status correctly`, () => {
-    el.setHasAttribute($.host._.disabled, true).subscribe();
+    run(_.el.setHasAttribute($.host._.disabled, true));
 
-    assert(el.getAttribute($.div._.disabled)).to.emitWith(true);
+    assert(_.el.getAttribute($.div._.disabled)).to.emitWith(true);
   });
 
   should(`render the label correctly`, () => {
     const label = 'label';
-    el.setAttribute($.host._.label, label).subscribe();
+    run(_.el.setAttribute($.host._.label, label));
 
-    assert(el.getAttribute($.div._.label)).to.emitWith(label);
+    assert(_.el.getAttribute($.div._.label)).to.emitWith(label);
   });
 });

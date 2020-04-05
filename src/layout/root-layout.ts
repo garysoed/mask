@@ -1,6 +1,6 @@
 import { attributeIn, attributeOut, booleanParser, dispatcher, element, mediaQuery, onDom, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mapTo, startWith, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
 import { _p } from '../app/app';
@@ -52,7 +52,7 @@ export class RootLayout extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.setupHandleDrawerExpandCollapse();
+    this.addSetup(this.setupHandleDrawerExpandCollapse());
     this.render($.host._.drawerExpanded, this.isDrawerOpen$);
     this.render($.drawer._.expanded, this.isDrawerOpen$);
     this.render($.title._.label, this.hostLabel$);
@@ -66,8 +66,8 @@ export class RootLayout extends ThemedCustomElementCtrl {
     );
   }
 
-  private setupHandleDrawerExpandCollapse(): void {
-    combineLatest([
+  private setupHandleDrawerExpandCollapse(): Observable<unknown> {
+    return combineLatest([
         merge(
             this.onMouseOut$.pipe(debounceTime(100), mapTo(false)),
             this.onMouseOver$.pipe(debounceTime(100), mapTo(true)),
@@ -80,8 +80,7 @@ export class RootLayout extends ThemedCustomElementCtrl {
       ])
       .pipe(
           map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
-          takeUntil(this.onDispose$),
-      )
-      .subscribe(showDrawer => this.isDrawerOpen$.next(showDrawer));
+          tap(showDrawer => this.isDrawerOpen$.next(showDrawer)),
+      );
   }
 }

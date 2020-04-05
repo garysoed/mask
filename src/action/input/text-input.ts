@@ -1,7 +1,7 @@
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, element, enumParser, innerHtml, onInput, PersonaContext, stringParser } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -83,24 +83,24 @@ export class TextInput extends BaseInput<string> {
 
     this.render($.input._.type, this.type$);
     this.render($.input._.autocomplete, this.autocomplete$);
-    this.setupHandleInput();
+    this.addSetup(this.setupHandleInput());
   }
 
-  protected setupUpdateValue(value$: Observable<string>): void {
-    combineLatest([value$, this.declareInput($.input)])
-        .pipe(takeUntil(this.onDispose$))
-        .subscribe(([value, el]) => {
-          el.value = value;
-        });
+  protected setupUpdateValue(value$: Observable<string>): Observable<unknown> {
+    return combineLatest([value$, this.declareInput($.input)])
+        .pipe(
+            tap(([value, el]) => {
+              el.value = value;
+            }),
+        );
   }
 
-  private setupHandleInput(): void {
-    this.declareInput($.input)
+  private setupHandleInput(): Observable<unknown> {
+    return this.declareInput($.input)
         .pipe(
             switchMap(() => this.onInput$),
             debounceTime(DEBOUNCE_MS),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(value => this.dirtyValue$.next(value));
+            tap(value => this.dirtyValue$.next(value)),
+        );
   }
 }

@@ -1,7 +1,7 @@
 import { instanceofType } from 'gs-types';
 import { CustomElementCtrl, element, PersonaContext } from 'persona';
-import { combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { $theme, _p } from '../app/app';
 
@@ -18,12 +18,11 @@ export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.setupThemeUpdate();
+    this.addSetup(this.setupThemeUpdate());
   }
 
-  private setupThemeUpdate(): void {
-    combineLatest([this.themeEl$, this.theme$])
-        .pipe(takeUntil(this.onDispose$))
-        .subscribe(([el, theme]) => theme.injectCss(el));
+  private setupThemeUpdate(): Observable<unknown> {
+    return combineLatest([this.themeEl$, this.theme$])
+        .pipe(tap(([el, theme]) => theme.injectCss(el)));
   }
 }

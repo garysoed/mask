@@ -1,4 +1,4 @@
-import { initialize } from 'persona';
+import { switchMap } from 'rxjs/operators';
 
 import { $svgConfig, Palette, start as startMask, Theme } from '../export';
 
@@ -38,5 +38,7 @@ window.addEventListener('load', () => {
     svgConfig$.next({key, type: 'set', value: {type: 'embed', content}});
   }
 
-  $locationService.get(vine).pipe(initialize()).subscribe();
+  $locationService.get(vine)
+      .pipe(switchMap(locationService => locationService.run()))
+      .subscribe();
 });

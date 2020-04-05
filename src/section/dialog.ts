@@ -61,7 +61,7 @@ export class Dialog extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.setupOnCloseOrCancel();
+    this.addSetup(this.setupOnCloseOrCancel());
     this.render($.cancelButton._.classlist, this.renderCancelButtonClasses());
     this.render($.root._.classlist, this.renderRootClasses());
     this.render($.title._.text, this.renderTitle());
@@ -117,8 +117,8 @@ export class Dialog extends ThemedCustomElementCtrl {
     }));
   }
 
-  private setupOnCloseOrCancel(): void {
-    merge(
+  private setupOnCloseOrCancel(): Observable<unknown> {
+    return merge(
         this.onCancelObs.pipe(mapTo(true)),
         this.onOkObs.pipe(mapTo(false)),
     )
@@ -126,8 +126,6 @@ export class Dialog extends ThemedCustomElementCtrl {
         withLatestFrom($dialogState.get(this.vine)),
         filter((pair): pair is [boolean, OpenState] => pair[1].isOpen),
         switchMap(([isCanceled, state]) => state.closeFn(isCanceled)),
-        takeUntil(this.onDispose$),
-    )
-    .subscribe();
+    );
   }
 }

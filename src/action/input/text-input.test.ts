@@ -1,5 +1,5 @@
-import { assert, FakeTime, mockTime, setup, should, test } from 'gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, mockTime, run, should, test } from 'gs-testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../../app/app';
 
@@ -8,25 +8,22 @@ import { $, DEBOUNCE_MS, TextInput } from './text-input';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('@mask/input/text-input', () => {
-  let el: ElementTester;
-  let tester: PersonaTester;
-  let fakeTime: FakeTime;
-
-  setup(() => {
-    fakeTime = mockTime(window);
-    tester = testerFactory.build([TextInput]);
-    el = tester.createElement('mk-text-input', document.body);
+test('@mask/input/text-input', init => {
+  const _ = init(() => {
+    const fakeTime = mockTime(window);
+    const tester = testerFactory.build([TextInput]);
+    const el = tester.createElement('mk-text-input', document.body);
+    return {el, tester, fakeTime};
   });
 
   test('getCurrentValueObs', () => {
     should(`update the host value when typing`, () => {
       const value1 = 'value1';
-      el.setInputValue($.input, value1).subscribe();
+      run(_.el.setInputValue($.input, value1));
 
-      fakeTime.tick(DEBOUNCE_MS);
+      _.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(el.getAttribute($.host._.value)).to.emitWith(value1);
+      assert(_.el.getAttribute($.host._.value)).to.emitWith(value1);
     });
   });
 
@@ -34,14 +31,14 @@ test('@mask/input/text-input', () => {
     should(`set the initial value correctly`, () => {
       // Change the input and wait for the value to update.
       const value1 = 'value1';
-      el.setInputValue($.input, value1).subscribe();
-      fakeTime.tick(DEBOUNCE_MS);
+      run(_.el.setInputValue($.input, value1));
+      _.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(el.getAttribute($.host._.value)).to.emitWith(value1);
+      assert(_.el.getAttribute($.host._.value)).to.emitWith(value1);
 
       // Clear the input.
-      el.callFunction($.host._.clearFn, []).subscribe();
-      assert(el.getAttribute($.host._.value)).to.emitWith('');
+      run(_.el.callFunction($.host._.clearFn, []));
+      assert(_.el.getAttribute($.host._.value)).to.emitWith('');
     });
   });
 });

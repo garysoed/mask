@@ -1,59 +1,56 @@
-import { assert, setThat, setup, should, test } from 'gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, run, setThat, should, test } from 'gs-testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
 
 import { $, IconWithText } from './icon-with-text';
 
+
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('display.IconWithText', () => {
-  let el: ElementTester;
-  let tester: PersonaTester;
-
-  setup(() => {
-    tester = testerFactory.build([IconWithText]);
-    el = tester.createElement('mk-icon-with-text', document.body);
+test('display.IconWithText', init => {
+  const _ = init(() => {
+    const tester = testerFactory.build([IconWithText]);
+    const el = tester.createElement('mk-icon-with-text', document.body);
+    return {el, tester};
   });
 
   should(`render the text and icon correctly`, () => {
     const iconLigature = 'iconLigature';
     const label = 'label';
 
-    el.setAttribute($.host._.icon, iconLigature).subscribe();
-    el.setAttribute($.host._.label, label).subscribe();
+    run(_.el.setAttribute($.host._.icon, iconLigature));
+    run(_.el.setAttribute($.host._.label, label));
 
-    assert(el.getTextContent($.text)).to.emitWith(label);
-    assert(el.getAttribute($.icon._.icon)).to.emitWith(iconLigature);
+    assert(_.el.getTextContent($.text)).to.emitWith(label);
+    assert(_.el.getAttribute($.icon._.icon)).to.emitWith(iconLigature);
   });
 
   test('renderIconClasses', () => {
     should(`render 'hasIcon' class if icon attribute is set`, () => {
       const iconLigature = 'iconLigature';
-      el.setAttribute($.host._.icon, iconLigature).subscribe();
+      run(_.el.setAttribute($.host._.icon, iconLigature));
 
-      assert(el.getClassList($.icon)).to
+      assert(_.el.getClassList($.icon)).to
           .emitWith(setThat<string>().haveExactElements(new Set(['hasIcon'])));
     });
 
     should(`render nothing if the icon attribute is not set`, () => {
-      assert(el.getClassList($.icon)).to
-          .emitWith(setThat<string>().beEmpty());
+      assert(_.el.getClassList($.icon)).to.emitWith(setThat<string>().beEmpty());
     });
   });
 
   test('renderTextClasses', () => {
     should(`render 'hasText' class if the label is set`, () => {
       const label = 'label';
-      el.setAttribute($.host._.label, label).subscribe();
+      run(_.el.setAttribute($.host._.label, label));
 
-      assert(el.getClassList($.text)).to
+      assert(_.el.getClassList($.text)).to
           .emitWith(setThat<string>().haveExactElements(new Set(['hasText'])));
     });
 
     should(`render nothing if the slot is empty`, () => {
-      assert(el.getClassList($.text)).to
-          .emitWith(setThat<string>().beEmpty());
+      assert(_.el.getClassList($.text)).to.emitWith(setThat<string>().beEmpty());
     });
   });
 });

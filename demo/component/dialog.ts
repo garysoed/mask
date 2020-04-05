@@ -1,7 +1,8 @@
 import { $dialogService, $textIconButton, _p, Dialog as MaskDialog, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
 import { element, PersonaContext } from 'persona';
-import { switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { DemoLayout } from '../base/demo-layout';
 
@@ -31,11 +32,11 @@ export class Dialog extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.setupOnDialogLaunchButtonAction(context.vine);
+    this.addSetup(this.setupOnDialogLaunchButtonAction(context.vine));
   }
 
-  private setupOnDialogLaunchButtonAction(vine: Vine): void {
-    this.onDialogLaunchButtonAction$
+  private setupOnDialogLaunchButtonAction(vine: Vine): Observable<unknown> {
+    return this.onDialogLaunchButtonAction$
         .pipe(
             withLatestFrom($dialogService.get(vine)),
             switchMap(([, dialogService]) => {
@@ -48,10 +49,9 @@ export class Dialog extends ThemedCustomElementCtrl {
                 title: 'Dialog title',
               });
             }),
-            takeUntil(this.onDispose$),
-        )
-        .subscribe(({canceled}) => {
-          window.alert(`Canceled: ${canceled}`);
-        });
+            tap(({canceled}) => {
+              window.alert(`Canceled: ${canceled}`);
+            }),
+        );
   }
 }

@@ -5,7 +5,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _v } from '../app/app';
 
-interface CloseState {
+export interface CloseState {
   isOpen: false;
 }
 

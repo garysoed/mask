@@ -1,7 +1,7 @@
-import { assert, createSpySubject, objectThat, should, test } from 'gs-testing';
+import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, of as observableOf } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 
@@ -39,14 +39,15 @@ test('display.Breadcrumb', () => {
         },
       ];
 
-      const actionSubject = createSpySubject();
-      fromEvent(el.element, BREADCRUMB_CLICK_EVENT).subscribe(actionSubject);
+      const actionSubject = createSpySubject(fromEvent(el.element, BREADCRUMB_CLICK_EVENT));
 
-      el.setAttribute($.host._.path, data).subscribe();
+      run(el.setAttribute($.host._.path, data));
 
       // Wait until all the crumbs are rendered.
-      el.getNodesAfter($.row._.crumbsSlot)
-          .subscribe(childrenNodes => (childrenNodes![0] as HTMLElement).click());
+      run(
+          el.getNodesAfter($.row._.crumbsSlot)
+              .pipe(tap(childrenNodes => (childrenNodes![0] as HTMLElement).click())),
+      );
 
       const eventMatcher = objectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
@@ -72,7 +73,7 @@ test('display.Breadcrumb', () => {
         },
       ];
 
-      el.setAttribute($.host._.path, data).subscribe();
+      run(el.setAttribute($.host._.path, data));
 
       // Wait until all the crumbs are rendered.
       const elementsObs = el.getNodesAfter($.row._.crumbsSlot)

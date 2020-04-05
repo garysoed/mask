@@ -1,21 +1,19 @@
-import { Source, source, Vine } from 'grapevine';
-import { assert, createSpy, fake, setup, should, stringThat, test } from 'gs-testing';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { source } from 'grapevine';
+import { assert, createSpy, createSpySubject, fake, run, should, stringThat, test } from 'gs-testing';
+import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { _v } from '../app/app';
 
-import { DialogService, DialogState, OpenState } from './dialog-service';
+import { DialogService, OpenState } from './dialog-service';
 
-test('@mask/section/dialog-service', () => {
-  let src: Source<number|null, typeof globalThis>;
-  let vine: Vine;
-  let service: DialogService;
 
-  setup(() => {
-    src = source(() => new BehaviorSubject<number|null>(null), globalThis);
-    vine = _v.build('test');
-    service = new DialogService(vine);
+test('@mask/section/dialog-service', init => {
+  const _ = init(() => {
+    const src = source(() => new BehaviorSubject<number|null>(null), globalThis);
+    const vine = _v.build('test');
+    const service = new DialogService(vine);
+    return {src, vine, service};
   });
 
   test('open', () => {
@@ -25,48 +23,58 @@ test('@mask/section/dialog-service', () => {
       );
       fake(mockCloseHandler).always().return(EMPTY);
 
-      const stateSubject = new BehaviorSubject<DialogState|null>(null);
-      service.getStateObs().subscribe(stateSubject);
+      const state$ = createSpySubject(_.service.getStateObs());
 
-      service
-          .open({
-            cancelable: true,
-            content: {tag: 'div'},
-            source: src,
-            title: 'title',
-          })
-          .pipe(switchMap(({canceled, value}) => mockCloseHandler(canceled, value)))
-          .subscribe();
+      run(
+          _.service
+              .open({
+                cancelable: true,
+                content: {tag: 'div'},
+                source: _.src,
+                title: 'title',
+              })
+              .pipe(switchMap(({canceled, value}) => mockCloseHandler(canceled, value))),
+          );
 
-      const newState = stateSubject.getValue() as OpenState;
-      assert(newState.isOpen).to.beTrue();
+      assert(state$.pipe(map(({isOpen}) => isOpen))).to.emitWith(true);
 
       const value = 123;
-      src.get(vine).next(value);
+      _.src.get(_.vine).next(value);
 
       // Close the dialog.
-      newState.closeFn(true).subscribe();
+      run(
+          state$.pipe(
+              filter((state): state is OpenState => state.isOpen),
+              switchMap(newState => {
+                return newState.closeFn(true);
+              }),
+          ),
+      );
       assert(mockCloseHandler).to.haveBeenCalledWith(true, value);
       // tslint:disable-next-line:no-non-null-assertion
-      assert(stateSubject.getValue()!.isOpen).to.beFalse();
+      assert(state$.pipe(map(({isOpen}) => isOpen))).to.emitWith(false);
     });
 
     should(`throw error if already opening a dialog`, () => {
-      const stateSubject = new BehaviorSubject<DialogState|null>(null);
-      service.getStateObs().subscribe(stateSubject);
-
       const spec = {
         cancelable: true,
         content: {tag: 'div'},
         title: 'title',
       };
-      service.open(spec).subscribe();
+      run(_.service.open(spec));
 
       // Open the dialog again.
       const mockError = createSpy('error');
-      service.open(spec).subscribe({error: err => mockError(err.message)});
-      assert(mockError).to
-          .haveBeenCalledWith(stringThat().match(/State of dialog service/));
+      run(
+          _.service.open(spec)
+              .pipe(
+                  catchError(err => {
+                    mockError(err.message);
+                    return observableOf({});
+                  }),
+              ),
+      );
+      assert(mockError).to.haveBeenCalledWith(stringThat().match(/State of dialog service/));
     });
   });
 });

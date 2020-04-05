@@ -1,5 +1,5 @@
-import { assert, FakeFetch, setup, should, test } from 'gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { assert, FakeFetch, run, should, test } from 'gs-testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
@@ -7,20 +7,17 @@ import { _p } from '../app/app';
 import { $, Icon } from './icon';
 import { $svgConfig } from './svg-service';
 
+
 const SVG_NAME = 'svgName';
 const SVG_URL = 'http://svgUrl';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('display.Icon', () => {
+test('display.Icon', init => {
   const SVG_CONTENT = 'svgContent';
 
-  let el: ElementTester;
-  let tester: PersonaTester;
-  let fakeFetch: FakeFetch;
-
-  setup(() => {
-    tester = testerFactory.build([Icon]);
+  const _ = init(() => {
+    const tester = testerFactory.build([Icon]);
     const svgSbj = $svgConfig.get(tester.vine);
     svgSbj.next({
       key: SVG_NAME,
@@ -28,24 +25,26 @@ test('display.Icon', () => {
       value: {type: 'remote' as 'remote', url: SVG_URL},
     });
 
-    fakeFetch = new FakeFetch();
+    const fakeFetch = new FakeFetch();
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);
     fakeFetch.install(window);
 
-    el = tester.createElement('mk-icon', document.body);
+    const el = tester.createElement('mk-icon', document.body);
+
+    return {el, tester, fakeFetch};
   });
 
   test('renderRootInnerHtml', () => {
     should(`set the innerHTML correctly`, () => {
       const svgContent = 'svgContent';
 
-      el.setAttribute($.host._.icon, SVG_NAME).subscribe();
+      run(_.el.setAttribute($.host._.icon, SVG_NAME));
 
-      assert(el.getElement($.root).pipe(map(el => el.innerHTML))).to.emitWith(svgContent);
+      assert(_.el.getElement($.root).pipe(map(el => el.innerHTML))).to.emitWith(svgContent);
     });
 
     should(`set the innerHTML correctly if there are no SVG names specified`, () => {
-      assert(el.getElement($.root).pipe(map(el => el.innerHTML))).to.emitWith('');
+      assert(_.el.getElement($.root).pipe(map(el => el.innerHTML))).to.emitWith('');
     });
   });
 });

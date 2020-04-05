@@ -1,4 +1,4 @@
-import { assert, createSpyInstance, should, spy, test } from 'gs-testing';
+import { assert, createSpyInstance, run, should, spy, test } from 'gs-testing';
 import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
@@ -20,7 +20,7 @@ test('display.CroppedLine', () => {
     should(`set the clipboard data correctly`, () => {
       const value = 'value';
 
-      el.setAttribute($.host._.text, value).subscribe();
+      run(el.setAttribute($.host._.text, value));
 
       const mockDataTransfer = createSpyInstance(DataTransfer);
       const event = Object.assign(
@@ -29,7 +29,7 @@ test('display.CroppedLine', () => {
       );
       const preventDefaultSpy = spy(event, 'preventDefault');
       const stopPropagationSpy = spy(event, 'stopPropagation');
-      el.dispatchEvent($.container._.onCopy, event).subscribe();
+      run(el.dispatchEvent($.container._.onCopy, event));
 
       assert(preventDefaultSpy).to.haveBeenCalledWith();
       assert(stopPropagationSpy).to.haveBeenCalledWith();
@@ -39,7 +39,7 @@ test('display.CroppedLine', () => {
 
   test('providesPostfixTextContent', () => {
     should(`set the postfix text correctly`, () => {
-      el.setAttribute($.host._.text, 'abcde').subscribe();
+      run(el.setAttribute($.host._.text, 'abcde'));
 
       assert(el.getTextContent($.postfix)).to.emitWith('cde');
     });
@@ -47,7 +47,7 @@ test('display.CroppedLine', () => {
 
   test('providesPrefixTextContent', () => {
     should(`set the prefix text correctly`, () => {
-      el.setAttribute($.host._.text, 'abcde').subscribe();
+      run(el.setAttribute($.host._.text, 'abcde'));
 
       assert(el.getTextContent($.prefix)).to.emitWith('ab');
     });
