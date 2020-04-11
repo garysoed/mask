@@ -62,7 +62,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/base-input', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([TestInput]);
+    const tester = testerFactory.build([TestInput], document);
     const el = tester.createElement('mk-test-base-input', document.body);
     return {el, tester};
   });

@@ -23,11 +23,12 @@ test('app.App', () => {
       const mockVineImpl = createSpyInstance(Vine);
       fake(personaBuilderBuildSpy).always().return({vine: mockVineImpl});
 
-      start('test', [], mockTheme, styleEl, window.customElements);
+      start('test', [], document, mockTheme, styleEl, window.customElements);
 
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
           'test',
           arrayThat<CustomElementCtrlCtor>().beEmpty(),
+          document,
           window.customElements,
       );
       assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);

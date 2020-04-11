@@ -12,7 +12,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/section/backdrop', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([Backdrop]);
+    const tester = testerFactory.build([Backdrop], document);
     const el = tester.createElement('mk-backdrop', document.body);
     $dialogService.get(tester.vine).next(new DialogService(tester.vine));
 

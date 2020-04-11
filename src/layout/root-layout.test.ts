@@ -11,7 +11,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('layout.RootLayout', init => {
   const _ = init(() => {
     const fakeTime = mockTime(window);
-    const tester = testerFactory.build([RootLayout]);
+    const tester = testerFactory.build([RootLayout], document);
     const el = tester.createElement('mk-root-layout', document.body);
     return {el, tester, fakeTime};
   });

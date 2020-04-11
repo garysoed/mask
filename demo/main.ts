@@ -26,9 +26,8 @@ const ICONS = new Map([
 window.addEventListener('load', () => {
   const {vine} = startMask(
       'demo',
-      [
-        Demo,
-      ],
+      [Demo],
+      document,
       theme,
       document.getElementById('globalStyle') as HTMLStyleElement,
   );

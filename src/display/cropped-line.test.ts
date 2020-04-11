@@ -7,20 +7,19 @@ import { $, CroppedLine } from './cropped-line';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('display.CroppedLine', () => {
-  let tester: PersonaTester;
-  let el: ElementTester;
+test('display.CroppedLine', init => {
 
-  beforeEach(() => {
-    tester = testerFactory.build([CroppedLine]);
-    el = tester.createElement('mk-cropped-line', document.body);
+  const _ = init(() => {
+    const tester = testerFactory.build([CroppedLine], document);
+    const el = tester.createElement('mk-cropped-line', document.body);
+    return {el, tester};
   });
 
   test('onContainerCopy', () => {
     should(`set the clipboard data correctly`, () => {
       const value = 'value';
 
-      run(el.setAttribute($.host._.text, value));
+      run(_.el.setAttribute($.host._.text, value));
 
       const mockDataTransfer = createSpyInstance(DataTransfer);
       const event = Object.assign(
@@ -29,7 +28,7 @@ test('display.CroppedLine', () => {
       );
       const preventDefaultSpy = spy(event, 'preventDefault');
       const stopPropagationSpy = spy(event, 'stopPropagation');
-      run(el.dispatchEvent($.container._.onCopy, event));
+      run(_.el.dispatchEvent($.container._.onCopy, event));
 
       assert(preventDefaultSpy).to.haveBeenCalledWith();
       assert(stopPropagationSpy).to.haveBeenCalledWith();
@@ -39,17 +38,17 @@ test('display.CroppedLine', () => {
 
   test('providesPostfixTextContent', () => {
     should(`set the postfix text correctly`, () => {
-      run(el.setAttribute($.host._.text, 'abcde'));
+      run(_.el.setAttribute($.host._.text, 'abcde'));
 
-      assert(el.getTextContent($.postfix)).to.emitWith('cde');
+      assert(_.el.getTextContent($.postfix)).to.emitWith('cde');
     });
   });
 
   test('providesPrefixTextContent', () => {
     should(`set the prefix text correctly`, () => {
-      run(el.setAttribute($.host._.text, 'abcde'));
+      run(_.el.setAttribute($.host._.text, 'abcde'));
 
-      assert(el.getTextContent($.prefix)).to.emitWith('ab');
+      assert(_.el.getTextContent($.prefix)).to.emitWith('ab');
     });
   });
 });

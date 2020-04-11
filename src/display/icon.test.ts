@@ -17,7 +17,7 @@ test('display.Icon', init => {
   const SVG_CONTENT = 'svgContent';
 
   const _ = init(() => {
-    const tester = testerFactory.build([Icon]);
+    const tester = testerFactory.build([Icon], document);
     const svgSbj = $svgConfig.get(tester.vine);
     svgSbj.next({
       key: SVG_NAME,

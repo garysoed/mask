@@ -12,7 +12,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/checkbox', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([Checkbox]);
+    const tester = testerFactory.build([Checkbox], document);
     const el = tester.createElement('mk-checkbox', document.body);
     return {el, tester};
   });

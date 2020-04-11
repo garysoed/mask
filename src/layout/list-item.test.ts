@@ -10,7 +10,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('mask.layout.ListItem', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([ListItem]);
+    const tester = testerFactory.build([ListItem], document);
     const el = tester.createElement('mk-list-item', document.body);
     return {el, tester};
   });

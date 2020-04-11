@@ -19,11 +19,12 @@ export const $window = source(() => new BehaviorSubject(window), globalThis);
 export function start(
     appName: string,
     rootCtrls: CustomElementCtrlCtor[],
+    rootDoc: Document,
     theme: Theme,
     styleEl: HTMLStyleElement,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
-  const {vine} = _p.build(appName, rootCtrls, customElementRegistry);
+  const {vine} = _p.build(appName, rootCtrls, rootDoc, customElementRegistry);
   const themeSbj = $theme.get(vine);
   themeSbj.next(theme);
   themeSbj.subscribe(theme => theme.injectCss(styleEl));

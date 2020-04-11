@@ -1,5 +1,5 @@
 import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
-import { ElementTester, PersonaTester, PersonaTesterFactory } from 'persona/export/testing';
+import { PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, of as observableOf } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -11,15 +11,12 @@ import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('display.Breadcrumb', () => {
-  let el: ElementTester;
-  let tester: PersonaTester;
+test('display.Breadcrumb', init => {
+  const _ = init(() => {
+    const tester = testerFactory.build([Breadcrumb], document);
+    const el = tester.createElement('mk-breadcrumb', document.body);
 
-  beforeEach(() => {
-    tester = testerFactory.build([
-      Breadcrumb,
-    ]);
-    el = tester.createElement('mk-breadcrumb', document.body);
+    return {el, tester};
   });
 
   test('onRowAction', () => {
@@ -39,13 +36,13 @@ test('display.Breadcrumb', () => {
         },
       ];
 
-      const actionSubject = createSpySubject(fromEvent(el.element, BREADCRUMB_CLICK_EVENT));
+      const actionSubject = createSpySubject(fromEvent(_.el.element, BREADCRUMB_CLICK_EVENT));
 
-      run(el.setAttribute($.host._.path, data));
+      run(_.el.setAttribute($.host._.path, data));
 
       // Wait until all the crumbs are rendered.
       run(
-          el.getNodesAfter($.row._.crumbsSlot)
+          _.el.getNodesAfter($.row._.crumbsSlot)
               .pipe(tap(childrenNodes => (childrenNodes![0] as HTMLElement).click())),
       );
 
@@ -73,10 +70,10 @@ test('display.Breadcrumb', () => {
         },
       ];
 
-      run(el.setAttribute($.host._.path, data));
+      run(_.el.setAttribute($.host._.path, data));
 
       // Wait until all the crumbs are rendered.
-      const elementsObs = el.getNodesAfter($.row._.crumbsSlot)
+      const elementsObs = _.el.getNodesAfter($.row._.crumbsSlot)
           .pipe(
               map(nodes => {
                 return nodes.filter((item): item is HTMLElement => item instanceof HTMLElement);

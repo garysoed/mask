@@ -11,7 +11,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/input/text-input', init => {
   const _ = init(() => {
     const fakeTime = mockTime(window);
-    const tester = testerFactory.build([TextInput]);
+    const tester = testerFactory.build([TextInput], document);
     const el = tester.createElement('mk-text-input', document.body);
     return {el, tester, fakeTime};
   });
