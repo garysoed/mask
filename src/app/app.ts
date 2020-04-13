@@ -10,7 +10,7 @@ export const _v = new VineBuilder();
 export const _p = new PersonaBuilder(_v);
 
 export const $theme = source(
-    () => new BehaviorSubject(new Theme(Palette.ORANGE, Palette.GREEN)),
+    () => new BehaviorSubject(new Theme(document, Palette.ORANGE, Palette.GREEN)),
     globalThis,
 );
 
@@ -21,13 +21,13 @@ export function start(
     rootCtrls: CustomElementCtrlCtor[],
     rootDoc: Document,
     theme: Theme,
-    styleEl: HTMLStyleElement,
+    body: HTMLElement,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
   const {vine} = _p.build(appName, rootCtrls, rootDoc, customElementRegistry);
   const themeSbj = $theme.get(vine);
   themeSbj.next(theme);
-  themeSbj.subscribe(theme => theme.injectCss(styleEl));
+  themeSbj.subscribe(theme => theme.injectCss(body));
 
   return {vine};
 }

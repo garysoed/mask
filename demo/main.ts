@@ -12,7 +12,7 @@ import { Demo } from './core/demo';
 import { $locationService } from './core/location-service';
 
 
-const theme = new Theme(Palette.TEAL, Palette.PURPLE);
+const theme = new Theme(document, Palette.TEAL, Palette.PURPLE);
 
 const ICONS = new Map([
   ['chevrondown', chevronDownSvg],
@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
       [Demo],
       document,
       theme,
-      document.getElementById('globalStyle') as HTMLStyleElement,
+      document.body,
   );
 
   const svgConfig$ = $svgConfig.get(vine);

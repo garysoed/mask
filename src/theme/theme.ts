@@ -1,4 +1,5 @@
 import { Color, Colors } from 'gs-tools/export/color';
+import { cache } from 'gs-tools/export/data';
 import { assertUnreachable, enums } from 'gs-tools/export/typescript';
 
 import { Alpha } from './alpha';
@@ -149,10 +150,26 @@ function getContrastForegroundShade(
 
 export class Theme {
   constructor(
+      private readonly document: Document,
       readonly baseColor: Color,
-      readonly accentColor: Color) { }
+      readonly accentColor: Color,
+  ) { }
 
-  injectCss(styleEl: HTMLStyleElement): void {
+  injectCss(root: Node): void {
+    const styleEl = this.createStyleEl().cloneNode(true);
+    root.appendChild(styleEl);
+  }
+
+  setBaseColor(color: Color): Theme {
+    return new Theme(this.document, color, this.accentColor);
+  }
+
+  setHighlightColor(color: Color): Theme {
+    return new Theme(this.document, this.baseColor, color);
+  }
+
+  @cache()
+  private createStyleEl(): HTMLStyleElement {
     const baseColorPairs = new Map<Shade, Color>();
     const accentColorPairs = new Map<Shade, Color>();
     for (const shade of SHADES) {
@@ -215,15 +232,9 @@ export class Theme {
             generateHighlightSwitch(),
         );
 
+    const styleEl = this.document.createElement('style');
     styleEl.innerHTML = `${cssContent}\n${generalCss}`;
-  }
-
-  setBaseColor(color: Color): Theme {
-    return new Theme(color, this.accentColor);
-  }
-
-  setHighlightColor(color: Color): Theme {
-    return new Theme(this.baseColor, color);
+    return styleEl;
   }
 }
 

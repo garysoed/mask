@@ -26,7 +26,7 @@ const $ = {
 
 @_p.customElement({
   tag: 'mk-test-base-input',
-  template: '<style id="theme"></style><div id="div"></div>',
+  template: '<div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
   private readonly divEl$ = this.declareInput($.div);

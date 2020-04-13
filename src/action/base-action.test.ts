@@ -19,7 +19,7 @@ const $ = {
 
 @_p.customElement({
   tag: 'mk-test-base-action',
-  template: '<style id="theme"></style><div id="div"></div>',
+  template: '<div id="div"></div>',
 })
 class TestAction extends BaseAction {
   constructor(context: PersonaContext) {

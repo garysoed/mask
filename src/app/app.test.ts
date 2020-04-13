@@ -18,7 +18,7 @@ test('app.App', () => {
 
       const mockTheme = createSpyInstance(Theme);
       fake(spy($theme, 'get')).always()
-          .return(new BehaviorSubject(new Theme(Palette.AMBER, Palette.AZURE)));
+          .return(new BehaviorSubject(new Theme(document, Palette.AMBER, Palette.AZURE)));
 
       const mockVineImpl = createSpyInstance(Vine);
       fake(personaBuilderBuildSpy).always().return({vine: mockVineImpl});
