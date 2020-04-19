@@ -12,7 +12,7 @@ test('layout.RootLayout', init => {
   const _ = init(() => {
     const fakeTime = mockTime(window);
     const tester = testerFactory.build([RootLayout], document);
-    const el = tester.createElement('mk-root-layout', document.body);
+    const el = tester.createElement('mk-root-layout');
     return {el, tester, fakeTime};
   });
 

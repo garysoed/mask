@@ -13,7 +13,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('component.TextIconButton', init => {
   const _ = init(_ => {
     const tester = testerFactory.build([TextIconButton], document);
-    const el = tester.createElement('mk-text-icon-button', document.body);
+    const el = tester.createElement('mk-text-icon-button');
 
     return {el, tester};
   });

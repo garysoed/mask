@@ -11,7 +11,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('section.Drawer', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Drawer], document);
-    const el = tester.createElement('mk-drawer', document.body);
+    const el = tester.createElement('mk-drawer');
 
     return {el};
   });

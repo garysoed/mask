@@ -13,7 +13,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/display/crumb', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Crumb], document);
-    const el = tester.createElement('mk-crumb', document.body);
+    const el = tester.createElement('mk-crumb');
     return {el, tester};
   });
 

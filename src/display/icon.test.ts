@@ -29,7 +29,7 @@ test('display.Icon', init => {
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);
     fakeFetch.install(window);
 
-    const el = tester.createElement('mk-icon', document.body);
+    const el = tester.createElement('mk-icon');
 
     return {el, tester, fakeFetch};
   });

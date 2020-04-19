@@ -16,7 +16,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/section/dialog', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Dialog, TextIconButton], document);
-    const el = tester.createElement('mk-dialog', document.body);
+    const el = tester.createElement('mk-dialog');
     $dialogService.get(tester.vine).next(new DialogService(tester.vine));
 
     return {el, tester};

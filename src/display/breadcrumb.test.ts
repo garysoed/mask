@@ -14,7 +14,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('display.Breadcrumb', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Breadcrumb], document);
-    const el = tester.createElement('mk-breadcrumb', document.body);
+    const el = tester.createElement('mk-breadcrumb');
 
     return {el, tester};
   });

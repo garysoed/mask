@@ -12,10 +12,9 @@ export class DialogTester {
 
   constructor(
       personaTester: PersonaTester,
-      parent: HTMLElement|null,
       private readonly vine: Vine,
   ) {
-    this.dialogEl = personaTester.createElement('mk-dialog', parent);
+    this.dialogEl = personaTester.createElement('mk-dialog');
   }
 
   clickCancel(): Observable<unknown> {

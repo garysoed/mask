@@ -11,7 +11,7 @@ test('display.CroppedLine', init => {
 
   const _ = init(() => {
     const tester = testerFactory.build([CroppedLine], document);
-    const el = tester.createElement('mk-cropped-line', document.body);
+    const el = tester.createElement('mk-cropped-line');
     return {el, tester};
   });
 

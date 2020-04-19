@@ -12,7 +12,7 @@ test('@mask/input/text-input', init => {
   const _ = init(() => {
     const fakeTime = mockTime(window);
     const tester = testerFactory.build([TextInput], document);
-    const el = tester.createElement('mk-text-input', document.body);
+    const el = tester.createElement('mk-text-input');
     return {el, tester, fakeTime};
   });
 

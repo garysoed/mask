@@ -11,7 +11,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('display.IconWithText', init => {
   const _ = init(() => {
     const tester = testerFactory.build([IconWithText], document);
-    const el = tester.createElement('mk-icon-with-text', document.body);
+    const el = tester.createElement('mk-icon-with-text');
     return {el, tester};
   });
 
