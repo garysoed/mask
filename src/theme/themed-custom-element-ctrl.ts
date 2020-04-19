@@ -1,6 +1,6 @@
 import { CustomElementCtrl, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, pairwise, startWith, tap } from 'rxjs/operators';
 
 import { $theme, _p } from '../app/app';
 
@@ -16,11 +16,19 @@ export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   }
 
   private setupThemeUpdate(): Observable<unknown> {
-    return this.theme$
-        .pipe(
-            tap(theme => {
-              theme.injectCss(this.shadowRoot);
-            }),
-        );
+    return this.theme$.pipe(
+        map(theme => theme.getStyleEl().cloneNode(true) as HTMLStyleElement),
+        startWith(null),
+        pairwise(),
+        tap(([oldEl, newEl]) => {
+          if (oldEl) {
+            oldEl.remove();
+          }
+
+          if (newEl) {
+            this.shadowRoot.appendChild(newEl);
+          }
+        }),
+    );
   }
 }

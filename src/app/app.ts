@@ -2,6 +2,7 @@ import { source, Vine, VineBuilder } from 'grapevine';
 import { PersonaBuilder } from 'persona';
 import { CustomElementCtrlCtor } from 'persona/export/internal';
 import { BehaviorSubject } from 'rxjs';
+import { map, pairwise, startWith } from 'rxjs/operators';
 
 import { Palette } from '../theme/palette';
 import { Theme } from '../theme/theme';
@@ -27,7 +28,21 @@ export function start(
   const {vine} = _p.build(appName, rootCtrls, rootDoc, customElementRegistry);
   const themeSbj = $theme.get(vine);
   themeSbj.next(theme);
-  themeSbj.subscribe(theme => theme.injectCss(body));
+  themeSbj
+      .pipe(
+          map(theme => theme.getStyleEl().cloneNode(true) as HTMLStyleElement),
+          startWith(null),
+          pairwise(),
+      )
+      .subscribe(([oldEl, newEl]) => {
+        if (oldEl) {
+          oldEl.remove();
+        }
+
+        if (newEl) {
+          body.appendChild(newEl);
+        }
+      });
 
   return {vine};
 }

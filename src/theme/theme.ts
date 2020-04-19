@@ -155,9 +155,8 @@ export class Theme {
       readonly accentColor: Color,
   ) { }
 
-  injectCss(root: Node): void {
-    const styleEl = this.createStyleEl().cloneNode(true);
-    root.appendChild(styleEl);
+  getStyleEl(): HTMLStyleElement {
+    return this.createStyleEl();
   }
 
   setBaseColor(color: Color): Theme {

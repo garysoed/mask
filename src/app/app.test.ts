@@ -31,7 +31,7 @@ test('app.App', () => {
           document,
           window.customElements,
       );
-      assert(mockTheme.injectCss).to.haveBeenCalledWith(styleEl);
+      assert(mockTheme.getStyleEl).to.haveBeenCalledWith();
     });
   });
 });
