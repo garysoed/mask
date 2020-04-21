@@ -9,7 +9,7 @@ import { $$ as $baseAction, BaseAction } from '../base-action';
 
 export const $$ = {
   ...$baseAction,
-  clearFn: handler<[]>('clear'),
+  clearFn: handler('clear'),
   label: attributeIn('label', stringParser(), ''),
 };
 
