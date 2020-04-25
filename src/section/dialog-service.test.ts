@@ -1,7 +1,7 @@
 import { source } from 'grapevine';
 import { assert, createSpy, createSpySubject, fake, run, should, stringThat, test } from 'gs-testing';
-import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, Observable, of as observableOf } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 import { _v } from '../app/app';
 
@@ -10,7 +10,7 @@ import { DialogService, OpenState } from './dialog-service';
 
 test('@mask/section/dialog-service', init => {
   const _ = init(() => {
-    const src = source(() => new BehaviorSubject<number|null>(null), globalThis);
+    const src = source<number|null>(() => null);
     const vine = _v.build('test');
     const service = new DialogService(vine);
     return {src, vine, service};
@@ -39,7 +39,7 @@ test('@mask/section/dialog-service', init => {
       assert(state$.pipe(map(({isOpen}) => isOpen))).to.emitWith(true);
 
       const value = 123;
-      _.src.get(_.vine).next(value);
+      _.src.set(_.vine, () => value);
 
       // Close the dialog.
       run(

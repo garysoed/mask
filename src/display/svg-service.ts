@@ -1,12 +1,10 @@
-import { source, stream } from 'grapevine';
+import { source, stream, Vine } from 'grapevine';
 import { BaseDisposable } from 'gs-tools/export/dispose';
-import { MapSubject, scanMap } from 'gs-tools/export/rxjs';
 import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 
-import { _v } from '../app/app';
-
 import { SvgConfig } from './svg-config';
+
 
 const __run = Symbol('SvgService.run');
 
@@ -52,15 +50,15 @@ function loadSvg(config: SvgConfig): Observable<string> {
   }
 }
 
-export const $svgConfig = source(
-    () => new MapSubject<string, SvgConfig>(),
-    globalThis,
-);
+const $svgConfig = source<ReadonlyMap<string, SvgConfig>>(() => new Map());
+
+export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
+  $svgConfig.set(vine, map => new Map([...map, [key, config]]));
+}
 
 export const $svgService = stream(
     vine => $svgConfig.get(vine)
         .pipe(
-          scanMap(),
           map(config => {
             const service = new SvgService(config);
             service[__run]();

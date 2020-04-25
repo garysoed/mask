@@ -2,18 +2,18 @@ import { source, Vine } from 'grapevine';
 import { Jsons } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
 import { classlist, element, PersonaContext, style } from 'persona';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { _p, _v } from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
-import { $svgConfig, $svgService } from '../../display/svg-service';
+import { $svgService, registerSvg } from '../../display/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 
 import layoutOverlayTemplate from './layout-overlay.html';
 
 
-const $isActive = source(() => new BehaviorSubject(false), globalThis);
+const $isActive = source(() => false);
 
 const $ = {
   gridLeft: element('gridLeft', instanceofType(HTMLDivElement), {
@@ -29,12 +29,7 @@ const $ = {
 
 @_p.customElement({
   configure(vine: Vine): void {
-    const svgConfigSubject = $svgConfig.get(vine);
-    svgConfigSubject.next({
-      key: 'layout_overlay',
-      type: 'set',
-      value: {type: 'embed', content: layoutOverlaySvg},
-    });
+    registerSvg(vine, 'layout_overlay', {type: 'embed', content: layoutOverlaySvg});
   },
   tag: 'mk-layout-overlay',
   template: layoutOverlayTemplate,
@@ -64,6 +59,6 @@ export class LayoutOverlay extends ThemedCustomElementCtrl {
 
 _v.onRun(vine => {
   Jsons.setValue(window, 'mk.dbg.setLayoutOverlayActive', (active: boolean) => {
-    $isActive.get(vine).next(active);
+    $isActive.set(vine, () => active);
   });
 });

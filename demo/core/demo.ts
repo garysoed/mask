@@ -8,6 +8,8 @@ import { attributeOut, element, onDom, PersonaContext, RenderSpec, repeated, Sim
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
+import { $theme } from '../../src/app/app';
+
 import { COMPONENT_SPECS } from './component-spec';
 import template from './demo.html';
 import { $locationService, Views } from './location-service';
@@ -176,7 +178,7 @@ export class Demo extends ThemedCustomElementCtrl {
             filter((color): color is Color => !!color),
             withLatestFrom(this.theme$),
             tap(([color, theme]) => {
-              this.theme$.next(theme.setHighlightColor(color));
+              $theme.set(this.vine, () => theme.setHighlightColor(color));
             }),
         );
   }
@@ -188,7 +190,7 @@ export class Demo extends ThemedCustomElementCtrl {
             filter((color): color is Color => !!color),
             withLatestFrom(this.theme$),
             tap(([color, theme]) => {
-              this.theme$.next(theme.setBaseColor(color));
+              $theme.set(this.vine, () => theme.setBaseColor(color));
             }),
         );
   }

@@ -14,7 +14,7 @@ test('@mask/section/backdrop', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Backdrop], document);
     const el = tester.createElement('mk-backdrop');
-    $dialogService.get(tester.vine).next(new DialogService(tester.vine));
+    $dialogService.set(tester.vine, () => new DialogService(tester.vine));
 
     return {el, tester};
   });

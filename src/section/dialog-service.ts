@@ -1,6 +1,6 @@
 import { Source, source, stream, Vine } from 'grapevine';
 import { Errors } from 'gs-tools/export/error';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _v } from '../app/app';
@@ -17,7 +17,7 @@ interface DialogSpec<T> {
     attr?: Map<string, string>;
     tag: string;
   };
-  source?: Source<T|null, any>;
+  source?: Source<T|null>;
   title: string;
 }
 
@@ -50,17 +50,14 @@ export class DialogService {
                 throw Errors.assert('State of dialog service').shouldBe('closed').butWas('opened');
               }
 
-              const source = spec.source;
-              const sourceSubject = source ?
-                  source.get(this.vine) :
-                  new BehaviorSubject<T|null>(null);
-              sourceSubject.next(null);
+              spec.source?.set(this.vine, () => null);
 
               const onCloseSubject = new Subject<DialogResult<T>>();
 
               this.stateObs.next({
                 closeFn: (canceled: boolean) => {
-                  return sourceSubject.pipe(
+                  const value$ = spec.source?.get(this.vine) || observableOf(null);
+                  return value$.pipe(
                       take(1),
                       tap(value => {
                         onCloseSubject.next({canceled, value});
@@ -81,10 +78,7 @@ export class DialogService {
     this.stateObs.next({isOpen: false});
   }
 }
-export const $dialogService = source(
-    vine => new BehaviorSubject(new DialogService(vine)),
-    globalThis,
-);
+export const $dialogService = source(vine => new DialogService(vine));
 
 export const $dialogState = stream(
     vine => $dialogService

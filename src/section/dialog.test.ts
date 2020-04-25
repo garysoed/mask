@@ -17,7 +17,7 @@ test('@mask/section/dialog', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Dialog, TextIconButton], document);
     const el = tester.createElement('mk-dialog');
-    $dialogService.get(tester.vine).next(new DialogService(tester.vine));
+    $dialogService.set(tester.vine, () => new DialogService(tester.vine));
 
     return {el, tester};
   });

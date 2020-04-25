@@ -1,6 +1,6 @@
 import { switchMap } from 'rxjs/operators';
 
-import { $svgConfig, Palette, start as startMask, Theme } from '../export';
+import { Palette, registerSvg, start as startMask, Theme } from '../export';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -32,9 +32,8 @@ window.addEventListener('load', () => {
       document.body,
   );
 
-  const svgConfig$ = $svgConfig.get(vine);
   for (const [key, content] of ICONS) {
-    svgConfig$.next({key, type: 'set', value: {type: 'embed', content}});
+    registerSvg(vine, key, {type: 'embed', content});
   }
 
   $locationService.get(vine)

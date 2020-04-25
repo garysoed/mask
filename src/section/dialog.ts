@@ -2,18 +2,19 @@ import { Vine } from 'grapevine';
 import { elementWithTagType, instanceofType } from 'gs-types';
 import { classlist, element, onDom, PersonaContext, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
 import { merge, Observable } from 'rxjs';
-import { filter, map, mapTo, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
-import { _p, _v } from '../app/app';
+import { _p } from '../app/app';
 import dialogCloseSvg from '../asset/dialog_close.svg';
 import dialogConfirmSvg from '../asset/dialog_confirm.svg';
-import { $svgConfig } from '../display/svg-service';
+import { registerSvg } from '../display/svg-service';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import { $dialogState, OpenState } from './dialog-service';
 import dialogTemplate from './dialog.html';
+
 
 export const $ = {
   cancelButton: element('cancelButton', $textIconButton, {
@@ -36,17 +37,8 @@ export const $ = {
 
 @_p.customElement({
   configure(vine: Vine): void {
-    const svgSubject = $svgConfig.get(vine);
-    svgSubject.next({
-      key: 'dialog_close',
-      type: 'set',
-      value: {type: 'embed', content: dialogCloseSvg},
-    });
-    svgSubject.next({
-      key: 'dialog_confirm',
-      type: 'set',
-      value: {type: 'embed', content: dialogConfirmSvg},
-    });
+    registerSvg(vine, 'dialog_close', {type: 'embed', content: dialogCloseSvg});
+    registerSvg(vine, 'dialog_confirm', {type: 'embed', content: dialogConfirmSvg});
   },
   dependencies: [
     TextIconButton,

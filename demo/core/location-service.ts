@@ -1,7 +1,6 @@
 import { $window } from 'export';
 import { source } from 'grapevine';
 import { fromPattern, LocationService } from 'persona';
-import { BehaviorSubject } from 'rxjs';
 
 export enum Views {
   BREADCRUMB = 'b',
@@ -32,8 +31,5 @@ const ROUTE_SPEC = {
 const DEFAULT_ROUTE = {payload: {}, type: Views.MAIN};
 
 export const $locationService = source(
-    vine => new BehaviorSubject(
-        new LocationService(ROUTE_SPEC, DEFAULT_ROUTE, $window.get(vine)),
-    ),
-    globalThis,
+    vine => new LocationService(ROUTE_SPEC, DEFAULT_ROUTE, $window.get(vine)),
 );

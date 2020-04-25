@@ -14,7 +14,7 @@ import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import { $$ as $icon } from '../../display/icon';
 import { IconMode } from '../../display/icon-mode';
 import { IconWithText } from '../../display/icon-with-text';
-import { $svgConfig } from '../../display/svg-service';
+import { registerSvg } from '../../display/svg-service';
 
 import { $$ as $baseInput, BaseInput } from './base-input';
 import template from './checkbox.html';
@@ -91,21 +91,20 @@ export const $ = {
 
 @_p.customElement({
   configure(vine: Vine): void {
-    const svgConfigSbj = $svgConfig.get(vine);
-    svgConfigSbj.next({
-      key: 'checkbox_checked',
-      type: 'set',
-      value: {type: 'embed', content: checkboxChecked}},
+    registerSvg(
+        vine,
+        'checkbox_checked',
+        {type: 'embed', content: checkboxChecked},
     );
-    svgConfigSbj.next({
-      key: 'checkbox_unchecked',
-      type: 'set',
-      value: {type: 'embed', content: checkboxEmpty}},
+    registerSvg(
+        vine,
+        'checkbox_unchecked',
+        {type: 'embed', content: checkboxEmpty},
     );
-    svgConfigSbj.next({
-      key: 'checkbox_unknown',
-      type: 'set',
-      value: {type: 'embed', content: checkboxUnknown}},
+    registerSvg(
+        vine,
+        'checkbox_unknown',
+        {type: 'embed', content: checkboxUnknown},
     );
   },
   dependencies: [

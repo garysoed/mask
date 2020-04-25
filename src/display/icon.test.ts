@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { _p } from '../app/app';
 
 import { $, Icon } from './icon';
-import { $svgConfig } from './svg-service';
+import { registerSvg } from './svg-service';
 
 
 const SVG_NAME = 'svgName';
@@ -18,12 +18,7 @@ test('display.Icon', init => {
 
   const _ = init(() => {
     const tester = testerFactory.build([Icon], document);
-    const svgSbj = $svgConfig.get(tester.vine);
-    svgSbj.next({
-      key: SVG_NAME,
-      type: 'set',
-      value: {type: 'remote' as 'remote', url: SVG_URL},
-    });
+    registerSvg(tester.vine, SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL});
 
     const fakeFetch = new FakeFetch();
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);

@@ -1,5 +1,5 @@
 export { _p, _v, $window } from '../src/app/app';
-export { $svgConfig } from '../src/display/svg-service';
+export { registerSvg } from '../src/display/svg-service';
 export { Breadcrumb, $$ as $breadcrumb, CrumbData } from '../src/display/breadcrumb';
 export { ActionEvent, ACTION_EVENT } from '../src/event/action-event';
 export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
