@@ -122,10 +122,10 @@ export class Demo extends ThemedCustomElementCtrl {
     const renderSpec = COMPONENT_SPECS.map(({name, path}) => {
       return new SimpleElementRenderSpec(
           $textIconButton.tag,
-          new Map([
+          observableOf(new Map([
             [$textIconButton.api.label.attrName, name],
             [COMPONENT_PATH_ATTR, `${path}`],
-          ]),
+          ])),
       );
     });
 
@@ -295,11 +295,11 @@ function createPaletteData(colorName: string, color: Color, selected: boolean):
 
   return new SimpleElementRenderSpec(
       'div',
-      new Map([
+      observableOf(new Map([
         ['class', classes.join(' ')],
         ['color', colorName],
         ['style', `background-color: ${colorCss};`],
-      ]),
+      ])),
   );
 }
 

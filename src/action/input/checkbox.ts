@@ -4,7 +4,7 @@ import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { booleanType, elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
 import { attributeIn, attributeOut, booleanParser, element, mapOutput, onDom, PersonaContext, SimpleElementRenderSpec, single, splitOutput } from 'persona';
-import { combineLatest, merge, Observable } from 'rxjs';
+import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
@@ -129,7 +129,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
         ]),
         mapOutput(
             $.container._.label,
-            value => new SimpleElementRenderSpec('span', undefined, value),
+            value => new SimpleElementRenderSpec('span', undefined, observableOf(value)),
         ),
         $.checkbox._.readonly,
         context,

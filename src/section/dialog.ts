@@ -1,7 +1,7 @@
 import { Vine } from 'grapevine';
 import { elementWithTagType, instanceofType } from 'gs-types';
 import { classlist, element, onDom, PersonaContext, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
-import { merge, Observable } from 'rxjs';
+import { merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
@@ -83,7 +83,7 @@ export class Dialog extends ThemedCustomElementCtrl {
 
               return new SimpleElementRenderSpec(
                   state.spec.content.tag,
-                  state.spec.content.attr || new Map(),
+                  observableOf(state.spec.content.attr || new Map()),
               );
             }),
         );

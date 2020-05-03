@@ -1,11 +1,10 @@
-import { Vine } from 'grapevine';
 import { $ as $pipe, $asArray, $filterDefined, $map } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
-import { ArrayDiff, ArraySubject, filterNonNull, MapSubject, scanMap } from 'gs-tools/export/rxjs';
+import { ArrayDiff, diffArray, filterNonNull } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
 import { attributeIn, dispatcher, element, listParser, NoopRenderSpec, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
@@ -53,10 +52,10 @@ export const $ = {
   template: breadcrumbTemplate,
 })
 export class Breadcrumb extends ThemedCustomElementCtrl {
-  private readonly pathDataSubject = new MapSubject<string, CrumbData>();
-  private readonly pathKeySubject = new ArraySubject<string>();
-  private readonly pathObs = this.declareInput($.host._.path);
-  private readonly rowOnActionObs = this.declareInput($.row._.onAction);
+  private readonly pathData$ = new BehaviorSubject<ReadonlyMap<string, CrumbData>>(new Map());
+  private readonly pathKey$ = new BehaviorSubject<readonly string[]>([]);
+  private readonly path$ = this.declareInput($.host._.path);
+  private readonly rowOnAction$ = this.declareInput($.row._.onAction);
 
   constructor(context: PersonaContext) {
     super(context);
@@ -67,9 +66,10 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   }
 
   private renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
-    return this.pathKeySubject
+    return this.pathKey$
         .pipe(
-            withLatestFrom(this.pathDataSubject.pipe(scanMap())),
+            diffArray(),
+            withLatestFrom(this.pathData$),
             map(([diff, map]: [ArrayDiff<string>, ReadonlyMap<string, CrumbData>]) => {
               switch (diff.type) {
                 case 'delete':
@@ -120,7 +120,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   }
 
   private renderDispatchAction(): Observable<BreadcrumbClickEvent> {
-    return this.rowOnActionObs
+    return this.rowOnAction$
         .pipe(
             map(event => {
               const target = event.target;
@@ -142,7 +142,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
   }
 
   private setupCrumbDataForwarding(): Observable<unknown> {
-    return this.pathObs
+    return this.path$
         .pipe(
             tap(path => {
               // Map has to be updated first, since the keys will cause rendering update.
@@ -150,9 +150,9 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
               for (const data of path) {
                 map.set(data.key, data);
               }
-              this.pathDataSubject.setAll(map);
+              this.pathData$.next(map);
 
-              this.pathKeySubject.setAll(path.map(({key}) => key));
+              this.pathKey$.next(path.map(({key}) => key));
             }),
         );
   }
@@ -161,10 +161,10 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
 function renderCrumbData(data: CrumbData): RenderSpec {
   return new SimpleElementRenderSpec(
       'mk-crumb',
-      new Map([
+      observableOf(new Map([
         ['display', data.display],
         ['key', data.key],
         ['tabindex', `0`],
-      ]),
+      ])),
   );
 }
