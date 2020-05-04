@@ -13,7 +13,7 @@ import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, innerHtml, PersonaContext, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, PersonaContext, stringParser, single, NoopRenderSpec, InnerHtmlRenderSpec, RenderSpec } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -44,7 +44,7 @@ export const $ = {
     role: attributeOut('role', stringParser()),
   }),
   root: element('root', instanceofType(HTMLSpanElement), {
-    innerHTML: innerHtml(),
+    content: single('#content'),
   }),
 };
 
@@ -60,14 +60,23 @@ export class Icon extends ThemedCustomElementCtrl {
 
     this.render($.host._.ariaHidden, observableOf(true));
     this.render($.host._.role, observableOf(AriaRole.PRESENTATION));
-    this.render($.root._.innerHTML, this.renderRootInnerHtml());
+    this.render($.root._.content, this.renderRootInnerHtml());
   }
 
-  private renderRootInnerHtml(): Observable<string> {
+  private renderRootInnerHtml(): Observable<RenderSpec> {
     return combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
-            map(svg => svg || ''),
+            map(svg => {
+              if (!svg) {
+                return new NoopRenderSpec();
+              }
+              return new InnerHtmlRenderSpec(
+                  svg,
+                  'image/svg+xml',
+                  this.vine,
+              );
+            }),
         );
   }
 }

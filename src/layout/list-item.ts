@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classToggle, element, hasAttribute, innerHtml, onDom, PersonaContext, stringParser, style } from 'persona';
+import { attributeIn, attributeOut, classToggle, element, hasAttribute, onDom, PersonaContext, stringParser, style, textContent } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 
@@ -32,13 +32,13 @@ export const $ = {
     displayed: classToggle('displayed'),
   }),
   itemDetail: element('itemDetail', instanceofType(HTMLDivElement), {
-    innerHtml: innerHtml(),
+    text: textContent(),
   }),
   itemDetailContainer: element('itemDetailContainer', instanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
   }),
   itemName: element('itemName', instanceofType(HTMLDivElement), {
-    innerHtml: innerHtml(),
+    text: textContent(),
   }),
   itemNameContainer: element('itemNameContainer', instanceofType(HTMLDivElement), {
     displayed: classToggle('displayed'),
@@ -69,8 +69,8 @@ export class ListItem extends ThemedCustomElementCtrl {
     super(context);
 
     this.render($.icon._.icon, this.iconObs);
-    this.render($.itemDetail._.innerHtml, this.itemDetailObs);
-    this.render($.itemName._.innerHtml, this.itemNameObs);
+    this.render($.itemDetail._.text, this.itemDetailObs);
+    this.render($.itemName._.text, this.itemNameObs);
     this.render($.iconContainer._.displayed, this.renderIconContainerDisplayed());
     this.render($.itemDetailContainer._.displayed, this.renderItemDetailContainerDisplayed());
     this.render($.itemNameContainer._.displayed, this.renderItemNameContainerDisplayed());

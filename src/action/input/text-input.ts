@@ -1,7 +1,7 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, enumParser, innerHtml, onInput, PersonaContext, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, enumParser, onInput, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -57,7 +57,7 @@ export const $ = {
     type: attributeOut('type', enumParser(InputType)),
   }),
   label: element('label', instanceofType(HTMLLabelElement), {
-    innerHtml: innerHtml(),
+    text: textContent(),
   }),
 };
 
@@ -76,7 +76,7 @@ export class TextInput extends BaseInput<string> {
     super(
         $.host._.initValue,
         $.host._.value,
-        $.label._.innerHtml,
+        $.label._.text,
         $.input._.disabled,
         context,
     );

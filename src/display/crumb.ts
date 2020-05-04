@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, innerHtml, onDom, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, dispatcher, element, onDom, PersonaContext, stringParser, textContent, InnerHtmlRenderSpec, single, RenderSpec } from 'persona';
 import { Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export const $ = {
     onClick: onDom('click'),
   }),
   svg: element('svg', instanceofType(HTMLDivElement), {
-    innerHtml: innerHtml(),
+    content: single('#content'),
   }),
   text: element('text', instanceofType(HTMLDivElement), {
     text: textContent(),
@@ -37,10 +37,18 @@ export class Crumb extends ThemedCustomElementCtrl {
     super(context);
     this.render($.text._.text, this.hostDisplayObs);
     this.render($.host._.dispatch, this.onHostClick());
-    this.render($.svg._.innerHtml, observableOf(separatorSvg));
+    this.render($.svg._.content, this.renderSvgContent());
   }
 
-  onHostClick(): Observable<ActionEvent> {
+  private onHostClick(): Observable<ActionEvent> {
     return this.onClickObs.pipe(map(() => new ActionEvent()));
+  }
+
+  private renderSvgContent(): Observable<RenderSpec> {
+    return observableOf(new InnerHtmlRenderSpec(
+        separatorSvg,
+        'image/svg+xml',
+        this.vine,
+    ));
   }
 }
