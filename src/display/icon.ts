@@ -7,13 +7,12 @@
  * @slot The glyph of the icon to display.
  */
 
-import { Vine } from 'grapevine';
 import { filterDefined } from 'gs-tools/export/rxjs';
 import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, PersonaContext, stringParser, single, NoopRenderSpec, InnerHtmlRenderSpec, RenderSpec } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, InnerHtmlRenderSpec, NoopRenderSpec, PersonaContext, RenderSpec, single, stringParser } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

@@ -16,10 +16,11 @@ test('app.App', () => {
       const personaBuilderBuildSpy = spy(_p, 'build');
 
       const mockTheme = createSpyInstance(Theme);
+      fake(mockTheme.getStyleEl).always().return(styleEl);
       const mockVineImpl = createSpyInstance(Vine);
       fake(personaBuilderBuildSpy).always().return({vine: mockVineImpl});
 
-      start('test', [], document, mockTheme, styleEl, window.customElements);
+      start('test', [], document, mockTheme, document.createElement('div'), window.customElements);
 
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
           'test',
