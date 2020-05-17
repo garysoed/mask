@@ -20,6 +20,7 @@ export const $ = {
 @_p.customElement({
   tag: 'mk-backdrop',
   template: backdropTemplate,
+  api: {},
 })
 export class Backdrop extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {

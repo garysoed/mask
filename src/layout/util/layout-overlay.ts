@@ -33,6 +33,7 @@ const $ = {
   },
   tag: 'mk-layout-overlay',
   template: layoutOverlayTemplate,
+  api: {},
 })
 export class LayoutOverlay extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {

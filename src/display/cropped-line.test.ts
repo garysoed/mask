@@ -36,7 +36,7 @@ test('display.CroppedLine', init => {
     });
   });
 
-  test('providesPostfixTextContent', () => {
+  test('renderPostfixTextContent', () => {
     should(`set the postfix text correctly`, () => {
       run(_.el.setAttribute($.host._.text, 'abcde'));
 
@@ -44,7 +44,7 @@ test('display.CroppedLine', init => {
     });
   });
 
-  test('providesPrefixTextContent', () => {
+  test('renderPrefixTextContent', () => {
     should(`set the prefix text correctly`, () => {
       run(_.el.setAttribute($.host._.text, 'abcde'));
 

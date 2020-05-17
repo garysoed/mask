@@ -11,7 +11,7 @@
 
 import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
@@ -64,18 +64,18 @@ export const $ = {
   template: textButtonTemplate,
 })
 export class TextIconButton extends BaseAction {
-  private readonly activeObs = this.declareInput($.host._.active);
-  private readonly ariaLabelObs = this.declareInput($.host._.ariaLabelIn);
-  private readonly hasPrimaryObs = this.declareInput($.host._.hasMkPrimary);
-  private readonly iconObs = this.declareInput($.host._.icon);
-  private readonly labelObs = this.declareInput($.host._.label);
-  private readonly onBlurObs = this.declareInput($.host._.onBlur);
-  private readonly onClickObs = this.declareInput($.host._.onClick);
-  private readonly onEnterDownObs = this.declareInput($.host._.onEnterDown);
-  private readonly onFocusObs = this.declareInput($.host._.onFocus);
-  private readonly onMouseEnterObs = this.declareInput($.host._.onMouseEnter);
-  private readonly onMouseLeaveObs = this.declareInput($.host._.onMouseLeave);
-  private readonly onSpaceDownObs = this.declareInput($.host._.onSpaceDown);
+  private readonly active$ = this.declareInput($.host._.active);
+  private readonly ariaLabel$ = this.declareInput($.host._.ariaLabelIn);
+  private readonly hasPrimary$ = this.declareInput($.host._.hasMkPrimary);
+  private readonly icon$ = this.declareInput($.host._.icon);
+  private readonly label$ = this.declareInput($.host._.label);
+  private readonly onBlur$ = this.declareInput($.host._.onBlur);
+  private readonly onClick$ = this.declareInput($.host._.onClick);
+  private readonly onEnterDown$ = this.declareInput($.host._.onEnterDown);
+  private readonly onFocus$ = this.declareInput($.host._.onFocus);
+  private readonly onMouseEnter$ = this.declareInput($.host._.onMouseEnter);
+  private readonly onMouseLeave$ = this.declareInput($.host._.onMouseLeave);
+  private readonly onSpaceDown$ = this.declareInput($.host._.onSpaceDown);
 
   constructor(context: PersonaContext) {
     super(noop(), context);
@@ -84,16 +84,16 @@ export class TextIconButton extends BaseAction {
     this.render($.host._.actionEvent, this.renderDispatchActions());
     this.render($.host._.ariaLabelOut, this.renderHostAriaLabel());
     this.render($.host._.tabindex, this.renderTabIndex());
-    this.render($.iconWithText._.label, this.labelObs);
-    this.render($.iconWithText._.icon, this.iconObs);
+    this.render($.iconWithText._.label, this.label$);
+    this.render($.iconWithText._.icon, this.icon$);
     this.render($.iconWithText._.mode, this.renderIconMode());
   }
 
   private renderDispatchActions(): Observable<ActionEvent> {
     return merge(
-            this.onClickObs,
-            this.onEnterDownObs,
-            this.onSpaceDownObs,
+            this.onClick$,
+            this.onEnterDown$,
+            this.onSpaceDown$,
         )
         .pipe(
             throttleTime(THROTTLE_MS),
@@ -104,29 +104,32 @@ export class TextIconButton extends BaseAction {
   }
 
   private renderHostAriaLabel(): Observable<string> {
-    return combineLatest([this.ariaLabelObs, this.labelObs])
-        .pipe(map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel));
+    return combineLatest([this.ariaLabel$, this.label$])
+        .pipe(
+            map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel),
+            distinctUntilChanged(),
+        );
   }
 
   private renderIconMode(): Observable<string> {
     const hoverObs = merge(
-        this.onMouseEnterObs.pipe(mapTo(true)),
-        this.onMouseLeaveObs.pipe(mapTo(false)),
+        this.onMouseEnter$.pipe(mapTo(true)),
+        this.onMouseLeave$.pipe(mapTo(false)),
     )
     .pipe(startWith(false));
 
     const focusedObs = merge(
-        this.onFocusObs.pipe(mapTo(true)),
-        this.onBlurObs.pipe(mapTo(false)),
+        this.onFocus$.pipe(mapTo(true)),
+        this.onBlur$.pipe(mapTo(false)),
     )
     .pipe(startWith(false));
 
     return combineLatest([
-      this.activeObs,
+      this.active$,
       this.disabled$,
       focusedObs,
       hoverObs,
-      this.hasPrimaryObs,
+      this.hasPrimary$,
     ])
     .pipe(
         map(([active, disabled, focused, hover, primary]) => {

@@ -45,6 +45,7 @@ export const $ = {
   ],
   tag: 'mk-dialog',
   template: dialogTemplate,
+  api: {},
 })
 export class Dialog extends ThemedCustomElementCtrl {
   private readonly onCancelObs = this.declareInput($.cancelButton._.onAction);

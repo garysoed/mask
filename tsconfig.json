@@ -24,5 +24,6 @@
     "demo-old/*",
     "src/**/*.ts",
     "typings/*.d.ts",
+    "export/*.ts",
   ]
 }

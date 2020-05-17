@@ -58,6 +58,7 @@ const COMPONENT_PATH_ATTR = 'path';
   ],
   tag: 'mkd-demo',
   template,
+  api: {},
 })
 export class Demo extends ThemedCustomElementCtrl {
   private readonly darkMode$ = this.declareInput($.darkMode._.value);
