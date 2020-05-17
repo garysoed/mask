@@ -7,8 +7,10 @@ import { DemoLayout } from '../base/demo-layout';
 
 import template from './checkbox.html';
 
-
-export const TAG = 'mkd-checkbox';
+export const $$ = {
+  tag: 'mkd-checkbox',
+  api: {},
+};
 
 const $ = {
   resetButton: element('resetButton', $textIconButton, {}),
@@ -16,12 +18,12 @@ const $ = {
 };
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     DemoLayout,
     MaskCheckbox,
     TextIconButton,
   ],
-  tag: TAG,
   template,
 })
 export class Checkbox extends ThemedCustomElementCtrl {

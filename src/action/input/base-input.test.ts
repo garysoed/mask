@@ -1,6 +1,6 @@
 import { assert, run, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, integerParser, PersonaContext, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, host, integerParser, PersonaContext, stringParser } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent, Observable } from 'rxjs';
 import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -17,7 +17,7 @@ const $ = {
     valueIn: attributeIn('init-value', integerParser(), 0),
     valueOut: attributeOut('value', integerParser(), 0),
   }),
-  host: element({
+  host: host({
     ...$baseInput,
     initValue: attributeIn('init-value', integerParser(), 0),
     value: attributeOut('value', integerParser(), 0),
@@ -26,6 +26,7 @@ const $ = {
 
 @_p.customElement({
   tag: 'mk-test-base-input',
+  api: {},
   template: '<div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
@@ -54,7 +55,7 @@ class TestInput extends BaseInput<number> {
   }
 
   protected setupUpdateValue(value$: Observable<number>): Observable<unknown> {
-    return value$.pipe($.div._.valueOut.output(this.shadowRoot));
+    return value$.pipe($.div._.valueOut.output(this.context));
   }
 }
 

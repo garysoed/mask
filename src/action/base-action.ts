@@ -1,5 +1,4 @@
-import { Vine } from 'grapevine';
-import { attributeOut, element, hasAttribute, PersonaContext, stringParser } from 'persona';
+import { attributeOut, hasAttribute, host, PersonaContext, stringParser } from 'persona';
 import { Output } from 'persona/export/internal';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,7 +11,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element({
+  host: host({
     ...$$,
     ariaDisabled: attributeOut('aria-disabled', stringParser(), 'false'),
   }),

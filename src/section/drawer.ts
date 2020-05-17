@@ -11,7 +11,7 @@
 
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { instanceofType } from 'gs-types';
-import { attributeIn, booleanParser, element, PersonaContext, stringParser, style } from 'persona';
+import { attributeIn, booleanParser, element, host, PersonaContext, stringParser, style } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -41,7 +41,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element({
+  host: host({
     ...$$.api,
     styleHeight: style('height'),
     styleOverflow: style('overflow'),
@@ -51,7 +51,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  tag: $$.tag,
+  ...$$,
   template: drawerTemplate,
 })
 export class Drawer extends ThemedCustomElementCtrl {

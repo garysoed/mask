@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, enumParser, onInput, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, enumParser, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element($$.api),
+  host: host($$.api),
   input: element('input', instanceofType(HTMLInputElement), {
     autocomplete: attributeOut('autocomplete', stringParser()),
     disabled: attributeOut('disabled', booleanParser(), false),
@@ -64,7 +64,7 @@ export const $ = {
 export const DEBOUNCE_MS = 250;
 
 @_p.customElement({
-  tag: $$.tag,
+  ...$$,
   template,
 })
 export class TextInput extends BaseInput<string> {

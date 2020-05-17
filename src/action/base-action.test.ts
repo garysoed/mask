@@ -1,6 +1,6 @@
 import { assert, run, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
-import { attributeOut, booleanParser, element, PersonaContext } from 'persona';
+import { attributeOut, booleanParser, element, host, PersonaContext } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
@@ -12,12 +12,13 @@ const $ = {
   div: element('div', instanceofType(HTMLDivElement), {
     disabled: attributeOut('disabled', booleanParser(), false),
   }),
-  host: element({
+  host: host({
     ...$$baseAction,
   }),
 };
 
 @_p.customElement({
+  api: $$baseAction,
   tag: 'mk-test-base-action',
   template: '<div id="div"></div>',
 })

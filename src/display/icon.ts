@@ -12,7 +12,7 @@ import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
 import { enums } from 'gs-tools/export/typescript';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, InnerHtmlRenderSpec, NoopRenderSpec, PersonaContext, RenderSpec, single, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, host, InnerHtmlRenderSpec, NoopRenderSpec, PersonaContext, RenderSpec, single, stringParser } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -26,14 +26,14 @@ import { $svgService } from './svg-service';
 
 export const $$ = {
   api: {
-    icon: attributeIn('icon', stringParser()),
+    icon: attributeIn('icon', stringParser(), ''),
     mode: attributeIn('mode', stringMatchConverter(enums.getAllValues<IconMode>(IconMode))),
   },
   tag: 'mk-icon',
 };
 
 export const $ = {
-  host: element({
+  host: host({
     ...$$.api,
     ariaHidden: attributeOut(
         'aria-hidden',
@@ -48,7 +48,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  tag: $$.tag,
+  ...$$,
   template: iconTemplate,
 })
 export class Icon extends ThemedCustomElementCtrl {
@@ -70,11 +70,7 @@ export class Icon extends ThemedCustomElementCtrl {
               if (!svg) {
                 return new NoopRenderSpec();
               }
-              return new InnerHtmlRenderSpec(
-                  svg,
-                  'image/svg+xml',
-                  this.vine,
-              );
+              return new InnerHtmlRenderSpec(svg, 'image/svg+xml', this.vine);
             }),
         );
   }

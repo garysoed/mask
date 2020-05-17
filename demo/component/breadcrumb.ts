@@ -4,14 +4,17 @@ import { DemoLayout } from '../base/demo-layout';
 
 import template from './breadcrumb.html';
 
-export const TAG = 'mkd-breadcrumb';
+export const $$ = {
+  tag: 'mkd-breadcrumb',
+  api: {},
+};
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     DemoLayout,
     MaskBreadcrumb,
   ],
-  tag: TAG,
   template,
 })
 export class Breadcrumb extends ThemedCustomElementCtrl {

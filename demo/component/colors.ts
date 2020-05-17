@@ -5,13 +5,16 @@ import { DemoLayout } from '../base/demo-layout';
 import template from './colors.html';
 
 
-export const TAG = 'mkd-colors';
+export const $$ = {
+  tag: 'mkd-colors',
+  api: {},
+};
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     DemoLayout,
   ],
-  tag: TAG,
   template,
 })
 export class Colors extends ThemedCustomElementCtrl {

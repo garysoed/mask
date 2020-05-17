@@ -9,7 +9,7 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
 
@@ -40,7 +40,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element({
+  host: host({
     ...$$.api,
     onBlur: onDom('blur'),
     onClick: onDom('click'),
@@ -59,8 +59,8 @@ export const $ = {
 };
 
 @_p.customElement({
+  ...$$,
   dependencies: [IconWithText],
-  tag: $$.tag,
   template: textButtonTemplate,
 })
 export class TextIconButton extends BaseAction {

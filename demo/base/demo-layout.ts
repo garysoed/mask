@@ -1,25 +1,29 @@
 import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from 'export';
-import { attributeIn, element, PersonaContext, stringParser } from 'persona';
+import { attributeIn, element, host, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import template from './demo-layout.html';
 
+const $$ = {
+  api: {
+    label: attributeIn('label', stringParser()),
+  },
+  tag: 'mkd-demo-layout',
+};
 
 const $ = {
   detailsButton: element('detailsButton', $textIconButton, {}),
   detailsDrawer: element('detailsDrawer', $drawer, {}),
-  host: element({
-    label: attributeIn('label', stringParser()),
-  }),
+  host: host($$.api),
 };
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     Drawer,
     TextIconButton,
   ],
-  tag: 'mkd-demo-layout',
   template,
 })
 export class DemoLayout extends ThemedCustomElementCtrl {

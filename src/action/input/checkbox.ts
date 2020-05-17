@@ -3,7 +3,7 @@ import { filterByType } from 'gs-tools/export/rxjs';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { booleanType, elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
-import { attributeIn, attributeOut, booleanParser, element, mapOutput, onDom, PersonaContext, SimpleElementRenderSpec, single, splitOutput } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, host, mapOutput, onDom, PersonaContext, SimpleElementRenderSpec, single, splitOutput } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -80,7 +80,7 @@ export const $ = {
   container: element('container', elementWithTagType('label'), {
     label: single('label'),
   }),
-  host: element({
+  host: host({
     ...$$.api,
     onBlur: onDom('blur'),
     onFocus: onDom('focus'),
@@ -90,6 +90,7 @@ export const $ = {
 };
 
 @_p.customElement({
+  ...$$,
   configure(vine: Vine): void {
     registerSvg(
         vine,
@@ -110,7 +111,6 @@ export const $ = {
   dependencies: [
     IconWithText,
   ],
-  tag: 'mk-checkbox',
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue> {
@@ -140,11 +140,11 @@ export class Checkbox extends BaseInput<CheckedValue> {
   }
 
   protected getCurrentValueObs(): Observable<CheckedValue> {
-    const indeterminate$ = $.checkbox.getValue(this.shadowRoot).pipe(
+    const indeterminate$ = this.declareInput($.checkbox).pipe(
         map(element => element.indeterminate),
     );
 
-    const checked$ = $.checkbox._.checkedIn.getValue(this.shadowRoot);
+    const checked$ = this.declareInput($.checkbox._.checkedIn);
     return combineLatest([indeterminate$, checked$]).pipe(
         map(([indeterminate, checked]) => {
           if (indeterminate) {
@@ -159,7 +159,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   protected setupUpdateValue(value$: Observable<CheckedValue>): Observable<unknown> {
     const indeterminate$ = value$.pipe(
         filter(value => value === 'unknown'),
-        withLatestFrom($.checkbox.getValue(this.shadowRoot)),
+        withLatestFrom(this.declareInput($.checkbox)),
         tap(([, element]) => {
           element.indeterminate = true;
         }),
@@ -167,14 +167,14 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
     const trueFalse$ = value$.pipe(
         filterByType(booleanType),
-        withLatestFrom($.checkbox.getValue(this.shadowRoot)),
+        withLatestFrom(this.declareInput($.checkbox)),
         tap(([, element]) => {
           element.indeterminate = false;
         }),
         map(([value]) => value ? 'checked' : ''),
     );
 
-    const output$ = trueFalse$.pipe($.checkbox._.checkedOut.output(this.shadowRoot));
+    const output$ = trueFalse$.pipe($.checkbox._.checkedOut.output(this.context));
     return merge(indeterminate$, output$);
   }
 

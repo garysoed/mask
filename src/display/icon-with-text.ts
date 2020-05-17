@@ -10,7 +10,7 @@
  */
 
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classlist, element, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, attributeOut, classlist, element, host, PersonaContext, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element($$.api),
+  host: host($$.api),
   icon: element('icon', $icon, {
     classes: classlist(),
     icon: attributeOut('icon', stringParser()),
@@ -44,8 +44,8 @@ export const $ = {
 };
 
 @_p.customElement({
+  ...$$,
   dependencies: [Icon],
-  tag: $$.tag,
   template: iconWithTextTemplate,
 })
 export class IconWithText extends ThemedCustomElementCtrl {

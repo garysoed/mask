@@ -1,4 +1,4 @@
-import { attributeIn, element, handler, PersonaContext, stringParser } from 'persona';
+import { attributeIn, handler, host, PersonaContext, stringParser } from 'persona';
 import { Input, Output } from 'persona/export/internal';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element($$),
+  host: host($$),
 };
 
 @_p.baseCustomElement({})

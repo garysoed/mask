@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, classToggle, element, hasAttribute, onDom, PersonaContext, stringParser, style, textContent } from 'persona';
+import { attributeIn, attributeOut, classToggle, element, hasAttribute, host, onDom, PersonaContext, stringParser, style, textContent } from 'persona';
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import template from './list-item.html';
 
 export const $$ = {
   api: {
-    icon: attributeIn('icon', stringParser()),
+    icon: attributeIn('icon', stringParser(), ''),
     itemDetail: attributeIn('item-detail', stringParser(), ''),
     itemName: attributeIn('item-name', stringParser(), ''),
     selected: hasAttribute('selected'),
@@ -22,7 +22,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element({
+  host: host({
     ...$$.api,
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
@@ -52,8 +52,8 @@ export const $ = {
 };
 
 @_p.customElement({
+  ...$$,
   dependencies: [Icon],
-  tag: $$.tag,
   template,
 })
 export class ListItem extends ThemedCustomElementCtrl {

@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, onDom, PersonaContext, stringParser, textContent, InnerHtmlRenderSpec, single, RenderSpec } from 'persona';
+import { attributeIn, dispatcher, element, host, InnerHtmlRenderSpec, onDom, PersonaContext, RenderSpec, single, stringParser, textContent } from 'persona';
 import { Observable, of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -10,13 +10,17 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import crumbTemplate from './crumb.html';
 
-
-export const $ = {
-  host: element({
+const $$ = {
+  api: {
     dispatch: dispatcher(ACTION_EVENT),
     display: attributeIn('display', stringParser(), ''),
     onClick: onDom('click'),
-  }),
+  },
+  tag: 'mk-crumb',
+};
+
+export const $ = {
+  host: host($$.api),
   svg: element('svg', instanceofType(HTMLDivElement), {
     content: single('#content'),
   }),
@@ -26,22 +30,22 @@ export const $ = {
 };
 
 @_p.customElement({
-  tag: 'mk-crumb',
+  ...$$,
   template: crumbTemplate,
 })
 export class Crumb extends ThemedCustomElementCtrl {
-  private readonly hostDisplayObs = this.declareInput($.host._.display);
-  private readonly onClickObs = this.declareInput($.host._.onClick);
+  private readonly hostDisplay$ = this.declareInput($.host._.display);
+  private readonly onClick$ = this.declareInput($.host._.onClick);
 
   constructor(context: PersonaContext) {
     super(context);
-    this.render($.text._.text, this.hostDisplayObs);
+    this.render($.text._.text, this.hostDisplay$);
     this.render($.host._.dispatch, this.onHostClick());
     this.render($.svg._.content, this.renderSvgContent());
   }
 
   private onHostClick(): Observable<ActionEvent> {
-    return this.onClickObs.pipe(map(() => new ActionEvent()));
+    return this.onClick$.pipe(map(() => new ActionEvent()));
   }
 
   private renderSvgContent(): Observable<RenderSpec> {

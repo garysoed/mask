@@ -4,14 +4,17 @@ import { DemoLayout } from '../base/demo-layout';
 
 import template from './icon.html';
 
-export const TAG = 'mkd-icon';
+export const $$ = {
+  tag: 'mkd-icon',
+  api: {},
+};
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     DemoLayout,
     MaskIcon,
   ],
-  tag: TAG,
   template,
 })
 export class Icon extends ThemedCustomElementCtrl {

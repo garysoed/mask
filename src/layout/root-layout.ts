@@ -1,4 +1,4 @@
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, mediaQuery, onDom, PersonaContext, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
@@ -27,17 +27,17 @@ export const $ = {
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
   }),
-  host: element($$.api),
+  host: host($$.api),
   title: element('title', $textIconButton, {}),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     Drawer,
     TextIconButton,
   ],
-  tag: $$.tag,
   template,
 })
 export class RootLayout extends ThemedCustomElementCtrl {

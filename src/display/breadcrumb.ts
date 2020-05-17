@@ -3,7 +3,7 @@ import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, diffArray, filterNonNull } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, listParser, NoopRenderSpec, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
+import { attributeIn, dispatcher, element, host, listParser, NoopRenderSpec, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -39,7 +39,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: element($$.api),
+  host: host($$.api),
   row: element('row', elementWithTagType('nav'), {
     crumbsSlot: repeated('crumbs'),
     onAction: onDom(ACTION_EVENT),
@@ -47,8 +47,8 @@ export const $ = {
 };
 
 @_p.customElement({
+  ...$$,
   dependencies: [Crumb],
-  tag: $$.tag,
   template: breadcrumbTemplate,
 })
 export class Breadcrumb extends ThemedCustomElementCtrl {

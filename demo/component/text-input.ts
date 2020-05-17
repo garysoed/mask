@@ -4,14 +4,17 @@ import { DemoLayout } from '../base/demo-layout';
 
 import template from './text-input.html';
 
-export const TAG = 'mkd-text-input';
+export const $$ = {
+  tag: 'mkd-text-input',
+  api: {},
+};
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     DemoLayout,
     MaskTextInput,
   ],
-  tag: TAG,
   template,
 })
 export class TextInput extends ThemedCustomElementCtrl {

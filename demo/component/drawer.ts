@@ -18,16 +18,19 @@ const $ = {
   horizontalModeCheckbox: element('horizontalModeCheckbox', $checkbox, {}),
 };
 
-export const TAG = 'mkd-drawer';
+export const $$ = {
+  tag: 'mkd-drawer',
+  api: {},
+};
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     Checkbox,
     DemoLayout,
     MaskDrawer,
     TextIconButton,
   ],
-  tag: TAG,
   template,
 })
 export class Drawer extends ThemedCustomElementCtrl {

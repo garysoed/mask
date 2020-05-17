@@ -3,7 +3,7 @@ export { registerSvg } from '../src/display/svg-service';
 export { Breadcrumb, $$ as $breadcrumb, CrumbData } from '../src/display/breadcrumb';
 export { ActionEvent, ACTION_EVENT } from '../src/event/action-event';
 export { addAnnotationSpec } from '../src/display/annotation-service';
-export { newBuilder as newAnnotationSpec } from '../src/display/annotation-spec';
+export { newBuilder as newAnnotationSpec, RenderFn as AnnotationRenderFn } from '../src/display/annotation-spec';
 export { AnnotatedText, $$ as $annotatedText } from '../src/display/annotated-text';
 export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
 export { Checkbox, $$ as $checkbox, CheckedValue } from '../src/action/input/checkbox';

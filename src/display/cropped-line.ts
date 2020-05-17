@@ -6,7 +6,7 @@
  */
 
 import { instanceofType } from 'gs-types';
-import { attributeIn, element, onDom, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, element, host, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -15,14 +15,18 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import croppedLineTemplate from './cropped-line.html';
 
+const $$ = {
+  api: {
+    text: attributeIn('text', stringParser(), ''),
+  },
+  tag: 'mk-cropped-line',
+};
 
 export const $ = {
   container: element('container', instanceofType(HTMLDivElement), {
     onCopy: onDom<ClipboardEvent>('copy'),
   }),
-  host: element({
-    text: attributeIn('text', stringParser(), ''),
-  }),
+  host: host($$.api),
   postfix: element('postfix', instanceofType(HTMLElement), {
     text: textContent(),
   }),
@@ -34,7 +38,7 @@ export const $ = {
 const MAX_POSTFIX_LENGTH = 3;
 
 @_p.customElement({
-  tag: 'mk-cropped-line',
+  ...$$,
   template: croppedLineTemplate,
 })
 export class CroppedLine extends ThemedCustomElementCtrl {

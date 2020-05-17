@@ -14,15 +14,18 @@ const $ = {
 };
 
 
-export const TAG = 'mkd-dialog';
+export const $$ = {
+  tag: 'mkd-dialog',
+  api: {},
+};
 
 @_p.customElement({
+  ...$$,
   dependencies: [
     DemoLayout,
     MaskDialog,
     TextIconButton,
   ],
-  tag: TAG,
   template,
 })
 export class Dialog extends ThemedCustomElementCtrl {

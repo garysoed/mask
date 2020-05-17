@@ -17,7 +17,7 @@ interface MatchResult {
 type MatchResults = ReadonlyArray<MatchResult>;
 
 type MatchFn = (node: Node) => MatchResults;
-type RenderFn = (node: Node) => Observable<readonly Node[]>;
+export type RenderFn = (node: Node) => Observable<readonly Node[]>;
 
 class Renderer {
   constructor(

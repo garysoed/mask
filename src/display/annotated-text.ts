@@ -1,7 +1,7 @@
 import { $asArray, $filterNonNull, $map, $pipe } from 'gs-tools/export/collect';
 import { cache } from 'gs-tools/export/data';
 import { filterDefined } from 'gs-tools/export/rxjs';
-import { attributeIn, element, listParser, PersonaContext, stringParser } from 'persona';
+import { attributeIn, host, listParser, PersonaContext, stringParser } from 'persona';
 import { combineLatest, concat, Observable, of as observableOf } from 'rxjs';
 import { bufferCount, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -15,13 +15,13 @@ import { AnnotationSpec } from './annotation-spec';
 export const $$ = {
   tag: 'mk-annotated-text',
   api: {
-    annotations: attributeIn('annotations', listParser(stringParser())),
-    text: attributeIn('text', stringParser()),
+    annotations: attributeIn('annotations', listParser(stringParser()), []),
+    text: attributeIn('text', stringParser(), ''),
   },
 };
 
 export const $ = {
-  host: element($$.api),
+  host: host($$.api),
 };
 
 @_p.customElement({
