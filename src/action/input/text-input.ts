@@ -1,7 +1,8 @@
+import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, enumParser, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, enumParser, handler, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -41,6 +42,7 @@ export const $$ = {
     ...$baseInput,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
     initValue: attributeIn('init-value', stringParser(), ''),
+    setValidator: handler('setValidator'),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
     value: attributeOut('value', stringParser()),
   },
@@ -100,7 +102,21 @@ export class TextInput extends BaseInput<string> {
         .pipe(
             switchMap(() => this.onInput$),
             debounceTime(DEBOUNCE_MS),
-            tap(value => this.dirtyValue$.next(value)),
+            withLatestFrom(this.validator$, this.value$),
+            tap(([value, validator, prevValue]) => {
+              const isValid = !validator || !!validator(value);
+              this.dirtyValue$.next(isValid ? value : prevValue);
+            }),
         );
+  }
+
+  @cache()
+  get validator$(): Observable<Function|null> {
+    return this.declareInput($.host._.setValidator).pipe(
+        map(([validator]) => {
+          return instanceofType(Function).check(validator) ? validator : null;
+        }),
+        startWith(null),
+    );
   }
 }

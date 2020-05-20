@@ -27,18 +27,32 @@ test('@mask/input/text-input', init => {
     });
   });
 
-  test('updateCurrentValue', () => {
+  test('setupHandleInput', () => {
     should(`set the initial value correctly`, () => {
       // Change the input and wait for the value to update.
-      const value1 = 'value1';
-      run(_.el.setInputValue($.input, value1));
+      const value = 'value';
+      run(_.el.setInputValue($.input, value));
       _.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(value1);
+      assert(_.el.getAttribute($.host._.value)).to.emitWith(value);
 
       // Clear the input.
       run(_.el.callFunction($.host._.clearFn, []));
       assert(_.el.getAttribute($.host._.value)).to.emitWith('');
+    });
+
+    should(`revert to the previous value if the new value is invalid`, () => {
+      // Change the input and wait for the value to update.
+      const value = 'value';
+      run(_.el.setInputValue($.input, value));
+      _.fakeTime.tick(DEBOUNCE_MS);
+
+      const value2 = 'otherValue';
+      run(_.el.callFunction($.host._.setValidator, [(str: string) => str === 'value']));
+      run(_.el.setInputValue($.input, value2));
+      _.fakeTime.tick(DEBOUNCE_MS);
+
+      assert(_.el.getAttribute($.host._.value)).to.emitWith(value);
     });
   });
 });

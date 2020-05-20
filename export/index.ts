@@ -12,7 +12,7 @@ export { Drawer, Mode as DrawerMode, $$ as $drawer } from '../src/section/drawer
 export { Dialog } from '../src/section/dialog';
 export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section/dialog-service';
 export { $$ as $icon, Icon } from '../src/display/icon';
-export { IconWithText } from '../src/display/icon-with-text';
+export { IconWithText, $$ as $iconWithText } from '../src/display/icon-with-text';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { ListItem, $$ as $listItem } from '../src/layout/list-item';
 export { Palette } from '../src/theme/palette';

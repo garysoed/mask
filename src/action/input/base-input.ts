@@ -1,3 +1,4 @@
+import { cache } from 'gs-tools/export/data';
 import { attributeIn, handler, host, PersonaContext, stringParser } from 'persona';
 import { Input, Output } from 'persona/export/internal';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
@@ -23,19 +24,16 @@ export abstract class BaseInput<T> extends BaseAction {
   protected readonly isDirty$ = new BehaviorSubject(false);
   protected readonly label$ = this.declareInput($.host._.label);
   protected readonly onClear$ = this.declareInput($.host._.clearFn);
-  protected readonly value$: Observable<T>;
-  private readonly initValue$: Observable<T>;
+  private readonly initValue$ = this.declareInput(this.initValueInput);
 
   constructor(
-      initValueInput: Input<T>,
+      private readonly initValueInput: Input<T>,
       private readonly hostValueOutput: Output<T>,
       private readonly labelOutput: Output<string>,
       disabledOutput: Output<boolean>,
       context: PersonaContext,
   ) {
     super(disabledOutput, context);
-    this.initValue$ = this.declareInput(initValueInput);
-    this.value$ = this.createValue();
 
     this.addSetup(this.setupHandleOnClear());
     this.addSetup(this.setupUpdateValue(this.value$));
@@ -46,7 +44,8 @@ export abstract class BaseInput<T> extends BaseAction {
 
   protected abstract setupUpdateValue(value$: Observable<T>): Observable<unknown>;
 
-  private createValue(): Observable<T> {
+  @cache()
+  protected get value$(): Observable<T> {
     return this.isDirty$.pipe(
         switchMap(isDirty => isDirty ? this.dirtyValue$ : this.initValue$),
     );
