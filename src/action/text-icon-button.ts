@@ -89,7 +89,7 @@ export class TextIconButton extends BaseAction {
     this.render($.iconWithText._.mode, this.renderIconMode());
   }
 
-  private renderDispatchActions(): Observable<ActionEvent> {
+  private renderDispatchActions(): Observable<ActionEvent<void>> {
     return merge(
             this.onClick$,
             this.onEnterDown$,
@@ -99,7 +99,7 @@ export class TextIconButton extends BaseAction {
             throttleTime(THROTTLE_MS),
             withLatestFrom(this.disabled$),
             filter(([, disabled]) => !disabled),
-            map(() => new ActionEvent()),
+            map(() => new ActionEvent(undefined)),
         );
   }
 

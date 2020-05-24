@@ -26,19 +26,21 @@ test('component.TextIconButton', init => {
 
     should(`fire the action event if clicked`, () => {
       _.el.element.click();
-      assert(_.actionSubject).to.emitWith(anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+      assert(_.actionSubject).to.emitWith(
+          anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent),
+      );
     });
 
     should(`fire the action event on pressing Enter`, () => {
       run(_.el.simulateKeypress($.host, [{key: 'Enter'}]));
       assert(_.actionSubject).to
-          .emitWith(anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+          .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
     });
 
     should(`fire the action event on pressing space`, () => {
       run(_.el.simulateKeypress($.host, [{key: ' '}]));
       assert(_.actionSubject).to
-          .emitWith(anyThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+          .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
     });
 
     should(`not fire the action event if disabled`, () => {

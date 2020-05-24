@@ -23,7 +23,9 @@ test('@mask/display/crumb', init => {
 
       _.el.element.click();
 
-      assert(actionSubject).to.emitWith(objectThat<ActionEvent>().beAnInstanceOf(ActionEvent));
+      assert(actionSubject).to.emitWith(
+          objectThat<ActionEvent<void>>().beAnInstanceOf(ActionEvent),
+      );
     });
   });
 });

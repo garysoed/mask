@@ -13,6 +13,7 @@ export enum Views {
   ICON_WITH_TEXT = 'iwt',
   MAIN = 'm',
   TEXT_INPUT = 't',
+  UPLOAD_BUTTON = 'ub',
 }
 
 const ROUTE_SPEC = {
@@ -26,6 +27,7 @@ const ROUTE_SPEC = {
   [Views.ICON]: fromPattern('/icon', {}),
   [Views.ICON_WITH_TEXT]: fromPattern('/icon-with-text', {}),
   [Views.TEXT_INPUT]: fromPattern('/text-input', {}),
+  [Views.UPLOAD_BUTTON]: fromPattern('/upload-button', {}),
 };
 
 const DEFAULT_ROUTE = {payload: {}, type: Views.MAIN};

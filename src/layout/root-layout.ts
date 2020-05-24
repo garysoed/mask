@@ -60,9 +60,9 @@ export class RootLayout extends ThemedCustomElementCtrl {
     this.render($.host._.onTitleClick, this.renderOnTitleClick());
   }
 
-  private renderOnTitleClick(): Observable<ActionEvent> {
+  private renderOnTitleClick(): Observable<ActionEvent<void>> {
     return this.onTitleClick$.pipe(
-        map(() => new ActionEvent()),
+        map(() => new ActionEvent(undefined)),
     );
   }
 

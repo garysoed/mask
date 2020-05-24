@@ -1,4 +1,3 @@
-
 import { arrayThat, assert, createSpySubject, run, setThat, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { map, switchMap, take, tap } from 'rxjs/operators';
@@ -187,7 +186,7 @@ test('@mask/section/dialog', init => {
 
       const stateSubject = createSpySubject($dialogState.get(_.tester.vine));
 
-      run(_.el.dispatchEvent($.okButton._.onAction, new ActionEvent()));
+      run(_.el.dispatchEvent($.okButton._.onAction, new ActionEvent(undefined)));
 
       assert(onCloseSubject).to.emitWith(false);
       assert(stateSubject.pipe(map(({isOpen}) => isOpen))).to.emitWith(false);

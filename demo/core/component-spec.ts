@@ -9,6 +9,7 @@ import { $$ as $drawer, Drawer } from '../component/drawer';
 import { $$ as $icon, Icon } from '../component/icon';
 import { $$ as $iconWithText, IconWithText } from '../component/icon-with-text';
 import { $$ as $textInput, TextInput } from '../component/text-input';
+import { $$ as $uploadButton, UploadButton } from '../component/upload-button';
 
 import { Views } from './location-service';
 
@@ -30,4 +31,5 @@ export const COMPONENT_SPECS: readonly ComponentSpec[] = [
   {ctor: Icon, name: 'Icon', path: Views.ICON, tag: $icon.tag},
   {ctor: IconWithText, name: 'Icon with Text', path: Views.ICON_WITH_TEXT, tag: $iconWithText.tag},
   {ctor: TextInput, name: 'Text Input', path: Views.TEXT_INPUT, tag: $textInput.tag},
+  {ctor: UploadButton, name: 'Upload Button', path: Views.UPLOAD_BUTTON, tag: $uploadButton.tag},
 ];

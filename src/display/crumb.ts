@@ -44,8 +44,8 @@ export class Crumb extends ThemedCustomElementCtrl {
     this.render($.svg._.content, this.renderSvgContent());
   }
 
-  private onHostClick(): Observable<ActionEvent> {
-    return this.onClick$.pipe(map(() => new ActionEvent()));
+  private onHostClick(): Observable<ActionEvent<void>> {
+    return this.onClick$.pipe(map(() => new ActionEvent(undefined)));
   }
 
   private renderSvgContent(): Observable<RenderSpec> {

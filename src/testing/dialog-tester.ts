@@ -18,11 +18,14 @@ export class DialogTester {
   }
 
   clickCancel(): Observable<unknown> {
-    return this.dialogEl.dispatchEvent($dialog.cancelButton._.onAction, new ActionEvent());
+    return this.dialogEl.dispatchEvent(
+        $dialog.cancelButton._.onAction,
+        new ActionEvent(undefined),
+    );
   }
 
   clickOk(): Observable<unknown> {
-    return this.dialogEl.dispatchEvent($dialog.okButton._.onAction, new ActionEvent());
+    return this.dialogEl.dispatchEvent($dialog.okButton._.onAction, new ActionEvent(undefined));
   }
 
   getContentObs(): BaseElementTester {
