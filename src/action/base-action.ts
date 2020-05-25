@@ -7,12 +7,14 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 
 export const $$ = {
-  disabled: hasAttribute('disabled'),
+  api: {
+    disabled: hasAttribute('disabled'),
+  },
 };
 
 export const $ = {
   host: host({
-    ...$$,
+    ...$$.api,
     ariaDisabled: attributeOut('aria-disabled', stringParser(), 'false'),
   }),
 };

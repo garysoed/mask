@@ -13,12 +13,12 @@ const $ = {
     disabled: attributeOut('disabled', booleanParser(), false),
   }),
   host: host({
-    ...$$baseAction,
+    ...$$baseAction.api,
   }),
 };
 
 @_p.customElement({
-  api: $$baseAction,
+  api: $$baseAction.api,
   tag: 'mk-test-base-action',
   template: '<div id="div"></div>',
 })

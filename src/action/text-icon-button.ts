@@ -17,7 +17,7 @@ import { _p } from '../app/app';
 import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 
-import { BaseAction } from './base-action';
+import { $$ as $baseAction, BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';
 
 
@@ -26,6 +26,7 @@ const THROTTLE_MS = 500;
 export const $$ = {
   tag: 'mk-text-icon-button',
   api: {
+    ...$baseAction.api,
     // TODO: Add autocomplete option.
     actionEvent: dispatcher(ACTION_EVENT),
     active: hasAttribute('active'),

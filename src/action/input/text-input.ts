@@ -39,7 +39,7 @@ enum AutocompleteType {
 
 export const $$ = {
   api: {
-    ...$baseInput,
+    ...$baseInput.api,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
     initValue: attributeIn('init-value', stringParser(), ''),
     setValidator: handler('setValidator'),

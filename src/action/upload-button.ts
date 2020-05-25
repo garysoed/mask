@@ -1,15 +1,14 @@
 import { $asArray, $map, $pipe, arrayFrom } from 'gs-tools/export/collect';
 import { cache } from 'gs-tools/export/data';
-import { debug } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, dispatcher, element, hasAttribute, host, onDom, PersonaContext, setAttribute, stringParser, textContent } from 'persona';
-import { Observable } from 'rxjs';
-import { map, startWith, withLatestFrom } from 'rxjs/operators';
+import { attributeIn, attributeOut, dispatcher, element, handler, hasAttribute, host, onDom, PersonaContext, setAttribute, stringParser, textContent } from 'persona';
+import { merge, Observable } from 'rxjs';
+import { map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 
-import { BaseAction } from './base-action';
+import { $$ as $baseAction, BaseAction } from './base-action';
 import { $$ as $textIconButton, TextIconButton } from './text-icon-button';
 import template from './upload-button.html';
 
@@ -17,10 +16,12 @@ import template from './upload-button.html';
 export const $$ = {
   tag: 'mk-upload-button',
   api: {
+    ...$baseAction.api,
     actionEvent: dispatcher<ActionEvent<readonly File[]>>(ACTION_EVENT),
-    accept: attributeIn('capture', stringParser(), ''),
+    accept: attributeIn('accept', stringParser(), ''),
     label: attributeIn('label', stringParser(), ''),
     multiple: hasAttribute('multiple'),
+    reset: handler('reset'),
   },
 };
 
@@ -46,6 +47,8 @@ export const $ = {
 })
 export class UploadButton extends BaseAction {
   private readonly onInput$ = this.declareInput($.input._.onInput);
+  private readonly onReset$ = this.declareInput($.host._.reset);
+  private readonly inputEl$ = this.declareInput($.input);
 
   constructor(context: PersonaContext) {
     super($.button._.disabled, context);
@@ -55,26 +58,27 @@ export class UploadButton extends BaseAction {
     this.render($.files._.text, this.renderFiles());
     this.render($.input._.multiple, this.declareInput($.host._.multiple));
     this.render($.input._.accept, this.declareInput($.host._.accept));
+    this.addSetup(this.setupHandleReset());
   }
 
   @cache()
   private get files$(): Observable<readonly File[]> {
-    return this.onInput$.pipe(
-        startWith({}),
-        withLatestFrom(this.declareInput($.input)),
+    const onInput$ = this.onInput$.pipe(
+        withLatestFrom(this.inputEl$),
         map(([, element]) => {
           const files = element.files;
           return files ? arrayFrom(files) : [];
         }),
-        debug('files'),
     );
+
+    const onReset$ = this.onReset$.pipe(mapTo([]));
+
+    return merge(onInput$, onReset$).pipe(startWith([]));
   }
 
   private renderActionEvent(): Observable<ActionEvent<readonly File[]>> {
     return this.onInput$.pipe(
-        debug('input'),
         withLatestFrom(this.files$),
-        debug('wlf'),
         map(([, files]) => new ActionEvent(files)),
     );
   }
@@ -82,6 +86,15 @@ export class UploadButton extends BaseAction {
   private renderFiles(): Observable<string> {
     return this.files$.pipe(
         map(files => $pipe(files, $map(file => file.name), $asArray()).join(', ')),
+    );
+  }
+
+  private setupHandleReset(): Observable<unknown> {
+    return this.onReset$.pipe(
+        withLatestFrom(this.inputEl$),
+        tap(([, inputEl]) => {
+          inputEl.value = '';
+        }),
     );
   }
 }

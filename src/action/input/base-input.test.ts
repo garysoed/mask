@@ -18,7 +18,7 @@ const $ = {
     valueOut: attributeOut('value', integerParser(), 0),
   }),
   host: host({
-    ...$baseInput,
+    ...$baseInput.api,
     initValue: attributeIn('init-value', integerParser(), 0),
     value: attributeOut('value', integerParser(), 0),
   }),

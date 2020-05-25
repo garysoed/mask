@@ -60,7 +60,7 @@ const iconCheckedValueParser = compose(
 
 export const $$ = {
   api: {
-    ...$baseInput,
+    ...$baseInput.api,
     initValue: attributeIn('init-value', checkedValueParser, false),
     value: attributeOut('value', checkedValueParser, false),
   },
