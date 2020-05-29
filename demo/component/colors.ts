@@ -1,5 +1,4 @@
-import { _p, ThemedCustomElementCtrl } from 'export';
-
+import { _p, ThemedCustomElementCtrl } from '../../export';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './colors.html';

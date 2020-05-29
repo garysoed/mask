@@ -1,6 +1,7 @@
-import { DemoLayout } from 'demo/base/demo-layout';
-import { $uploadButton, _p, ThemedCustomElementCtrl, UploadButton as MaskUploadButton } from 'export';
 import { element } from 'persona';
+
+import { $uploadButton, _p, ThemedCustomElementCtrl, UploadButton as MaskUploadButton } from '../../export';
+import { DemoLayout } from '../base/demo-layout';
 
 import template from './upload-button.html';
 

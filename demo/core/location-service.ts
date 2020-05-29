@@ -1,6 +1,7 @@
-import { $window } from 'export';
 import { source } from 'grapevine';
 import { fromPattern, LocationService } from 'persona';
+
+import { $window } from '../../export';
 
 export enum Views {
   BREADCRUMB = 'b',

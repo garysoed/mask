@@ -1,7 +1,7 @@
-import { $textInput, _p, TextInput as MaskTextInput, ThemedCustomElementCtrl } from 'export';
 import { element, integerParser, PersonaContext } from 'persona';
 import { Observable, of as observableOf } from 'rxjs';
 
+import { $textInput, _p, TextInput as MaskTextInput, ThemedCustomElementCtrl } from '../../export';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './text-input.html';

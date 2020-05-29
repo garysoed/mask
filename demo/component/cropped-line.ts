@@ -1,5 +1,4 @@
-import { _p, CroppedLine as MaskCroppedLine, ThemedCustomElementCtrl } from 'export';
-
+import { _p, CroppedLine as MaskCroppedLine, ThemedCustomElementCtrl } from '../../export';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './cropped-line.html';

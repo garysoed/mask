@@ -1,9 +1,9 @@
-import { $dialogService, $textIconButton, _p, Dialog as MaskDialog, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
 import { element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
 import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
+import { $dialogService, $textIconButton, _p, Dialog as MaskDialog, TextIconButton, ThemedCustomElementCtrl } from '../../export';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './dialog.html';

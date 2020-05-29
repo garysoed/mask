@@ -1,7 +1,8 @@
-import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from 'export';
 import { attributeIn, element, host, PersonaContext, stringParser } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
+
+import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from '../../export';
 
 import template from './demo-layout.html';
 

@@ -1,5 +1,4 @@
-import { _p, Breadcrumb as MaskBreadcrumb, ThemedCustomElementCtrl } from 'export';
-
+import { _p, Breadcrumb as MaskBreadcrumb, ThemedCustomElementCtrl } from '../../export';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './breadcrumb.html';

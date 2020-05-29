@@ -1,5 +1,4 @@
-import { _p, IconWithText as MaskIconWithText, ThemedCustomElementCtrl } from 'export';
-
+import { _p, IconWithText as MaskIconWithText, ThemedCustomElementCtrl } from '../../export';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './icon-with-text.html';

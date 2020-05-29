@@ -1,4 +1,3 @@
-import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from 'export';
 import { Vine } from 'grapevine';
 import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
@@ -8,6 +7,7 @@ import { attributeOut, element, onDom, PersonaContext, RenderSpec, repeated, Sim
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 
+import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
 import { $theme } from '../../src/app/app';
 
 import { COMPONENT_SPECS } from './component-spec';
