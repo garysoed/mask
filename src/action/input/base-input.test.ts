@@ -1,9 +1,10 @@
+import { source } from 'grapevine';
 import { assert, run, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, host, integerParser, PersonaContext, stringParser } from 'persona';
+import { attributeOut, booleanParser, element, host, integerParser, PersonaContext, stringParser } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
-import { fromEvent, Observable } from 'rxjs';
-import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, ReplaySubject } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -14,48 +15,46 @@ const $ = {
   div: element('div', instanceofType(HTMLDivElement), {
     disabled: attributeOut('disabled', booleanParser(), false),
     label: attributeOut('label', stringParser(), ''),
-    valueIn: attributeIn('init-value', integerParser(), 0),
-    valueOut: attributeOut('value', integerParser(), 0),
   }),
   host: host({
     ...$baseInput.api,
-    initValue: attributeIn('init-value', integerParser(), 0),
-    value: attributeOut('value', integerParser(), 0),
   }),
 };
 
+const $valueIn = source(() => new ReplaySubject<number>(1));
+const $valueOut = source(() => new ReplaySubject<number>(1));
+
 @_p.customElement({
   tag: 'mk-test-base-input',
-  api: {},
+  api: $baseInput.api,
   template: '<div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
-  private readonly divEl$ = this.declareInput($.div);
-  private readonly valueIn$ = this.declareInput($.div._.valueIn);
-
   constructor(context: PersonaContext) {
     super(
-        $.host._.initValue,
-        $.host._.value,
+        integerParser(),
         $.div._.label,
         $.div._.disabled,
         context,
     );
 
-    this.addSetup(this.setupHandleValueInChange());
+    this.addSetup(this.setupHandleValueChange());
   }
 
-  protected setupHandleValueInChange(): Observable<unknown> {
-    return this.divEl$
-        .pipe(
-            switchMap(el => fromEvent(el, 'input')),
-            withLatestFrom(this.valueIn$),
-            tap(([, v]) => this.dirtyValue$.next(v)),
-        );
+  protected setupHandleValueChange(): Observable<unknown> {
+    return $valueIn.get(this.context.vine).pipe(
+        switchMap(value$ => value$),
+        tap(value => this.value$.next(value)),
+    );
   }
 
-  protected setupUpdateValue(value$: Observable<number>): Observable<unknown> {
-    return value$.pipe($.div._.valueOut.output(this.context));
+  protected updateDomValue(newValue: number): Observable<unknown> {
+    return $valueOut.get(this.context.vine).pipe(
+        take(1),
+        tap(value$ => {
+          value$.next(newValue);
+        }),
+    );
   }
 }
 
@@ -65,26 +64,41 @@ test('@mask/input/base-input', init => {
   const _ = init(() => {
     const tester = testerFactory.build([TestInput], document);
     const el = tester.createElement('mk-test-base-input');
-    return {el, tester};
+    const valueOut$ = $valueOut.get(tester.vine).pipe(switchMap(value$ => value$));
+    const valueInService$ = $valueIn.get(tester.vine);
+    return {el, tester, valueInService$, valueOut$};
   });
 
-  test('providesInitValue', () => {
-    should(`set the initial value at the start`, () => {
-      run(_.el.setAttribute($.host._.initValue, 123));
+  test('defaultValue$', () => {
+    should(`ignore default values that cannot be parsed correctly`, () => {
+      run(_.el.setAttribute($.host._.defaultValue, '123'));
 
-      assert(_.el.getAttribute($.div._.valueOut)).to.emitWith(123);
-    });
-
-    should(`set the initial value after calling clear`, () => {
-      run(_.el.setAttribute($.host._.initValue, 123));
-
-      // Set the dirty value.
-      run(_.el.setAttribute($.div._.valueIn, 456));
+      // Set the new default value.
+      run(_.el.setAttribute($.host._.defaultValue, 'invalid'));
 
       // Clear the value
       run(_.el.callFunction($.host._.clearFn, []));
-      assert(_.el.getAttribute($.div._.valueOut)).to.emitWith(123);
+      assert(_.valueOut$).to.emitWith(123);
     });
+  });
+
+  test('setupHandleOnClear', () => {
+    should(`set the default value after calling clear`, () => {
+      run(_.el.setAttribute($.host._.defaultValue, '123'));
+
+      // Set the new value.
+      run(_.valueInService$.pipe(take(1), tap(value$ => value$.next(456))));
+
+      // Clear the value
+      run(_.el.callFunction($.host._.clearFn, []));
+      assert(_.valueOut$).to.emitWith(123);
+    });
+  });
+
+  should(`set the default value at the start`, () => {
+    run(_.el.setAttribute($.host._.defaultValue, `123`));
+
+    assert(_.valueOut$).to.emitWith(123);
   });
 
   should(`render disabled status correctly`, () => {

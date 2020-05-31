@@ -1,6 +1,6 @@
 import { assert, run, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { IconMode } from '../../display/icon-mode';
@@ -14,7 +14,37 @@ test('@mask/input/checkbox', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Checkbox], document);
     const el = tester.createElement('mk-checkbox');
-    return {el, tester};
+    const checkmark$ = el.getAttribute($.checkmark._.icon);
+    return {checkmark$, el, tester};
+  });
+
+  test('updateDomValue', _, init => {
+    const _ = init(_ => {
+      const checked$ = _.el.getElement($.checkbox).pipe(map(el => el.checked));
+      const indeterminate$ = _.el.getElement($.checkbox).pipe(map(el => el.indeterminate));
+      return {..._, checked$, indeterminate$};
+    });
+
+    should(`set true value correctly`, () => {
+      run(_.el.setAttribute($.host._.defaultValue, 'T'));
+
+      assert(_.checked$).to.emitWith(true);
+      assert(_.indeterminate$).to.emitWith(false);
+    });
+
+    should(`set false value correctly`, () => {
+      run(_.el.setAttribute($.host._.defaultValue, 'F'));
+
+      assert(_.checked$).to.emitWith(false);
+      assert(_.indeterminate$).to.emitWith(false);
+    });
+
+    should(`set unknown value correctly`, () => {
+      run(_.el.setAttribute($.host._.defaultValue, 'unknown'));
+
+      assert(_.checked$).to.emitWith(false);
+      assert(_.indeterminate$).to.emitWith(true);
+    });
   });
 
   test('renderIconMode', () => {
@@ -46,43 +76,41 @@ test('@mask/input/checkbox', init => {
     });
   });
 
-  test('setupOnClickHandler', () => {
-    should(`toggle the icon on click`, () => {
-      run(_.el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')));
+  test('setupOnInput', () => {
+    should(`emit true if the value is true`, () => {
+      run(_.el.getElement($.checkbox).pipe(
+          tap(el => {
+            el.indeterminate = false;
+            el.checked = true;
+          }),
+      ));
+      run(_.el.dispatchEvent($.checkbox._.onInput));
 
-      assert(_.el.getAttribute($.checkbox._.checkedOut)).to.emitWith('checked');
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(true);
-
-      run(_.el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')));
-
-      assert(_.el.getAttribute($.checkbox._.checkedOut)).to.emitWith('');
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(false);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(true);
     });
 
-    should(`change to true if unknown`, () => {
-      // Set the init value to unknown, then click it.
-      run(_.el.setAttribute($.host._.initValue, 'unknown'));
-      run(_.el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')));
+    should(`emit false if the value is false`, () => {
+      run(_.el.getElement($.checkbox).pipe(
+          tap(el => {
+            el.indeterminate = false;
+            el.checked = false;
+          }),
+      ));
+      run(_.el.dispatchEvent($.checkbox._.onInput));
 
-      assert(_.el.getAttribute($.checkbox._.checkedOut)).to.emitWith('checked');
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(true);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(false);
     });
 
-    should(`do nothing on click if disabled`, () => {
-      run(_.el.setHasAttribute($.host._.disabled, true));
-      run(_.el.dispatchEvent($.checkbox._.onClick, new CustomEvent('click')));
+    should(`emit unknown if the value is indeterminate`, () => {
+      run(_.el.getElement($.checkbox).pipe(
+          tap(el => {
+            el.indeterminate = true;
+            el.checked = true;
+          }),
+      ));
+      run(_.el.dispatchEvent($.checkbox._.onInput));
 
-      assert(_.el.getAttribute($.checkbox._.checkedOut)).to.emitWith('');
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(false);
+      assert(_.el.getObserver($.host._.value)).to.emitWith('unknown');
     });
-  });
-
-  should(`display unknown state correctly`, () => {
-    run(_.el.setAttribute($.host._.initValue, 'unknown'));
-    run(_.el.callFunction($.host._.clearFn, []));
-
-    assert(_.el.getElement($.checkbox).pipe(map(element => element.indeterminate))).to
-        .emitWith(true);
-    assert(_.el.getAttribute($.host._.value)).to.emitWith('unknown');
   });
 });

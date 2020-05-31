@@ -1,11 +1,10 @@
 import { Vine } from 'grapevine';
-import { filterByType } from 'gs-tools/export/rxjs';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
-import { booleanType, elementWithTagType, instanceofType } from 'gs-types';
+import { elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
-import { attributeIn, attributeOut, booleanParser, element, host, mapOutput, onDom, PersonaContext, SimpleElementRenderSpec, single, splitOutput } from 'persona';
+import { attributeOut, booleanParser, element, host, mapOutput, onDom, onInput, PersonaContext, SimpleElementRenderSpec, single } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { filter, map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mapTo, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
@@ -61,21 +60,17 @@ const iconCheckedValueParser = compose(
 export const $$ = {
   api: {
     ...$baseInput.api,
-    initValue: attributeIn('init-value', checkedValueParser, false),
-    value: attributeOut('value', checkedValueParser, false),
   },
   tag: 'mk-checkbox',
 };
 
 export const $ = {
   checkbox: element('checkbox', instanceofType(HTMLInputElement), {
-    checkedIn: attributeIn('checked', stringMatchConverter(['checked', ''])),
-    checkedOut: attributeOut('checked', stringMatchConverter(['checked', '']), ''),
-    onClick: onDom('click'),
+    onInput: onInput(),
     readonly: attributeOut('readonly', booleanParser(), false),
   }),
   checkmark: element('checkmark', $icon, {
-    iconOut: attributeOut($icon.api.icon.attrName, iconCheckedValueParser),
+    icon: attributeOut($icon.api.icon.attrName, iconCheckedValueParser),
   }),
   container: element('container', elementWithTagType('label'), {
     label: single('label'),
@@ -114,19 +109,9 @@ export const $ = {
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue> {
-  private readonly onBlur$ = this.declareInput($.host._.onBlur);
-  private readonly onCheckboxClick$ = this.declareInput($.checkbox._.onClick);
-  private readonly onFocus$ = this.declareInput($.host._.onFocus);
-  private readonly onMouseEnter$ = this.declareInput($.host._.onMouseEnter);
-  private readonly onMouseLeave$ = this.declareInput($.host._.onMouseLeave);
-
   constructor(context: PersonaContext) {
     super(
-        $.host._.initValue,
-        splitOutput([
-          $.host._.value,
-          $.checkmark._.iconOut,
-        ]),
+        checkedValueParser,
         mapOutput(
             $.container._.label,
             value => new SimpleElementRenderSpec('span', undefined, observableOf(value)),
@@ -135,66 +120,43 @@ export class Checkbox extends BaseInput<CheckedValue> {
         context,
     );
 
-    this.addSetup(this.setupOnClickHandler());
+    this.addSetup(this.setupOnInput());
+    this.render($.checkmark._.icon, this.value$);
     this.render($.checkmark._.mode, this.renderIconMode());
   }
 
-  protected getCurrentValueObs(): Observable<CheckedValue> {
-    const indeterminate$ = this.declareInput($.checkbox).pipe(
-        map(element => element.indeterminate),
-    );
-
-    const checked$ = this.declareInput($.checkbox._.checkedIn);
-    return combineLatest([indeterminate$, checked$]).pipe(
-        map(([indeterminate, checked]) => {
-          if (indeterminate) {
-            return 'unknown';
+  protected updateDomValue(newValue: CheckedValue): Observable<unknown> {
+    return this.declareInput($.checkbox).pipe(
+        take(1),
+        tap(el => {
+          if (newValue === 'unknown') {
+            el.indeterminate = true;
+            el.checked = false;
+          } else {
+            el.indeterminate = false;
+            el.checked = newValue;
           }
-
-          return checked === 'checked';
         }),
     );
-  }
-
-  protected setupUpdateValue(value$: Observable<CheckedValue>): Observable<unknown> {
-    const indeterminate$ = value$.pipe(
-        filter(value => value === 'unknown'),
-        withLatestFrom(this.declareInput($.checkbox)),
-        tap(([, element]) => {
-          element.indeterminate = true;
-        }),
-    );
-
-    const trueFalse$ = value$.pipe(
-        filterByType(booleanType),
-        withLatestFrom(this.declareInput($.checkbox)),
-        tap(([, element]) => {
-          element.indeterminate = false;
-        }),
-        map(([value]) => value ? 'checked' : ''),
-    );
-
-    const output$ = trueFalse$.pipe($.checkbox._.checkedOut.output(this.context));
-    return merge(indeterminate$, output$);
   }
 
   private renderIconMode(): Observable<IconMode> {
-    const hoverObs = merge(
-        this.onMouseEnter$.pipe(mapTo(true)),
-        this.onMouseLeave$.pipe(mapTo(false)),
+    const hovered$ = merge(
+        this.declareInput($.host._.onMouseEnter).pipe(mapTo(true)),
+        this.declareInput($.host._.onMouseLeave).pipe(mapTo(false)),
     )
     .pipe(startWith(false));
 
-    const focusedObs = merge(
-        this.onFocus$.pipe(mapTo(true)),
-        this.onBlur$.pipe(mapTo(false)),
+    const focused$ = merge(
+        this.declareInput($.host._.onFocus).pipe(mapTo(true)),
+        this.declareInput($.host._.onBlur).pipe(mapTo(false)),
     )
     .pipe(startWith(false));
 
     return combineLatest([
       this.disabled$,
-      focusedObs,
-      hoverObs,
+      focused$,
+      hovered$,
     ])
     .pipe(
         map(([disabled, focused, hover]) => {
@@ -211,21 +173,20 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
   }
 
-  private setupOnClickHandler(): Observable<unknown> {
-    return this.onCheckboxClick$
+  private setupOnInput(): Observable<unknown> {
+    return this.declareInput($.checkbox._.onInput)
         .pipe(
-            withLatestFrom(this.disabled$, this.value$),
-            filter(([, disabled]) => !disabled),
-            map(([, , currentValue]) => {
-              switch (currentValue) {
-                case 'unknown':
-                case false:
-                  return true;
-                case true:
-                  return false;
+            withLatestFrom(this.declareInput($.checkbox)),
+            map(([, element]) => {
+              if (element.indeterminate) {
+                return 'unknown';
               }
+
+              return element.checked;
             }),
-            tap(newValue => this.dirtyValue$.next(newValue)),
+            tap(newValue => {
+              this.value$.next(newValue);
+            }),
         );
   }
 }

@@ -2,7 +2,7 @@ import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, element, enumParser, handler, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -41,10 +41,8 @@ export const $$ = {
   api: {
     ...$baseInput.api,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
-    initValue: attributeIn('init-value', stringParser(), ''),
     setValidator: handler('setValidator'),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
-    value: attributeOut('value', stringParser()),
   },
   tag: 'mk-text-input',
 };
@@ -70,48 +68,42 @@ export const DEBOUNCE_MS = 250;
   template,
 })
 export class TextInput extends BaseInput<string> {
-  private readonly autocomplete$ = this.declareInput($.host._.autocomplete);
-  private readonly onInput$ = this.declareInput($.input._.onInput);
-  private readonly type$ = this.declareInput($.host._.type);
-
   constructor(context: PersonaContext) {
     super(
-        $.host._.initValue,
-        $.host._.value,
+        stringParser(),
         $.label._.text,
         $.input._.disabled,
         context,
     );
 
-    this.render($.input._.type, this.type$);
-    this.render($.input._.autocomplete, this.autocomplete$);
+    this.render($.input._.type, this.declareInput($.host._.type));
+    this.render($.input._.autocomplete, this.declareInput($.host._.autocomplete));
     this.addSetup(this.setupHandleInput());
   }
 
-  protected setupUpdateValue(value$: Observable<string>): Observable<unknown> {
-    return combineLatest([value$, this.declareInput($.input)])
-        .pipe(
-            tap(([value, el]) => {
-              el.value = value;
-            }),
-        );
+  protected updateDomValue(newValue: string): Observable<unknown> {
+    return this.declareInput($.input).pipe(
+        take(1),
+        tap(el => {
+          el.value = newValue;
+        }),
+    );
   }
 
   private setupHandleInput(): Observable<unknown> {
-    return this.declareInput($.input)
+    return this.declareInput($.input._.onInput)
         .pipe(
-            switchMap(() => this.onInput$),
             debounceTime(DEBOUNCE_MS),
             withLatestFrom(this.validator$, this.value$),
             tap(([value, validator, prevValue]) => {
               const isValid = !validator || !!validator(value);
-              this.dirtyValue$.next(isValid ? value : prevValue);
+              this.value$.next(isValid ? value : prevValue);
             }),
         );
   }
 
   @cache()
-  get validator$(): Observable<Function|null> {
+  private get validator$(): Observable<Function|null> {
     return this.declareInput($.host._.setValidator).pipe(
         map(([validator]) => {
           return instanceofType(Function).check(validator) ? validator : null;

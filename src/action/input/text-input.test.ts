@@ -1,5 +1,6 @@
 import { assert, mockTime, run, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { map } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
@@ -16,14 +17,13 @@ test('@mask/input/text-input', init => {
     return {el, tester, fakeTime};
   });
 
-  test('getCurrentValueObs', () => {
-    should(`update the host value when typing`, () => {
-      const value1 = 'value1';
-      run(_.el.setInputValue($.input, value1));
+  test('updateDomValue', () => {
+    should(`set the value correctly`, () => {
+      const value = 'value';
+      run(_.el.setAttribute($.host._.defaultValue, value));
+      run(_.el.callFunction($.host._.clearFn, []));
 
-      _.fakeTime.tick(DEBOUNCE_MS);
-
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(value1);
+      assert(_.el.getElement($.input).pipe(map(el => el.value))).to.emitWith(value);
     });
   });
 
@@ -34,11 +34,11 @@ test('@mask/input/text-input', init => {
       run(_.el.setInputValue($.input, value));
       _.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(value);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(value);
 
       // Clear the input.
       run(_.el.callFunction($.host._.clearFn, []));
-      assert(_.el.getAttribute($.host._.value)).to.emitWith('');
+      assert(_.el.getObserver($.host._.value)).to.emitWith('');
     });
 
     should(`revert to the previous value if the new value is invalid`, () => {
@@ -52,7 +52,7 @@ test('@mask/input/text-input', init => {
       run(_.el.setInputValue($.input, value2));
       _.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(_.el.getAttribute($.host._.value)).to.emitWith(value);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(value);
     });
   });
 });
