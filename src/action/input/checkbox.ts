@@ -2,7 +2,7 @@ import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
-import { attributeOut, booleanParser, element, host, mapOutput, onDom, onInput, PersonaContext, SimpleElementRenderSpec, single } from 'persona';
+import { attributeOut, booleanParser, classToggle, element, host, mapOutput, onDom, onInput, PersonaContext, SimpleElementRenderSpec, single, textContent } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -73,6 +73,7 @@ export const $ = {
     icon: attributeOut($icon.api.icon.attrName, iconCheckedValueParser),
   }),
   container: element('container', elementWithTagType('label'), {
+    hasText: classToggle('hasText'),
     label: single('label'),
   }),
   host: host({
@@ -81,6 +82,9 @@ export const $ = {
     onFocus: onDom('focus'),
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
+  }),
+  label: element('label', instanceofType(HTMLSpanElement), {
+    text: textContent(),
   }),
 };
 
@@ -112,10 +116,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   constructor(context: PersonaContext) {
     super(
         checkedValueParser,
-        mapOutput(
-            $.container._.label,
-            value => new SimpleElementRenderSpec('span', undefined, observableOf(value)),
-        ),
+        $.label._.text,
         $.checkbox._.readonly,
         context,
     );
@@ -123,6 +124,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     this.addSetup(this.setupOnInput());
     this.render($.checkmark._.icon, this.value$);
     this.render($.checkmark._.mode, this.renderIconMode());
+    this.render($.container._.hasText, this.renderHasText());
   }
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {
@@ -138,6 +140,10 @@ export class Checkbox extends BaseInput<CheckedValue> {
           }
         }),
     );
+  }
+
+  private renderHasText(): Observable<boolean> {
+    return this.declareInput($.host._.label).pipe(map(label => !!label));
   }
 
   private renderIconMode(): Observable<IconMode> {

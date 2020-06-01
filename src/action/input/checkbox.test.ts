@@ -47,6 +47,20 @@ test('@mask/input/checkbox', init => {
     });
   });
 
+  test('renderHasText', () => {
+    should(`add the hasText class if label exists`, () => {
+      run(_.el.setAttribute($.host._.label, 'label'));
+
+      assert(_.el.getHasClass($.container._.hasText)).to.emitWith(true);
+    });
+
+    should(`remove the hasText class if label doesn't exist`, () => {
+      run(_.el.setAttribute($.host._.label, ''));
+
+      assert(_.el.getHasClass($.container._.hasText)).to.emitWith(false);
+    });
+  });
+
   test('renderIconMode', () => {
     should(`render action`, () => {
       run(_.el.setHasAttribute($.host._.disabled, false));

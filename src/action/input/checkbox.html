@@ -27,9 +27,13 @@
     height: 2rem;
     position: relative;
     line-height: 2rem;
-    padding: 1rem 1rem 1rem 4rem;
+    padding: 1rem;
     cursor: pointer;
     user-select: none;
+  }
+
+  #container.hasText {
+    padding-left: 4rem;
   }
 
   /* Hide the browser's default checkbox */
@@ -70,7 +74,7 @@
 </style>
 
 <label id="container" mk-body-2>
-  <!-- label -->
+  <span id="label"></span>
   <input id="checkbox" type="checkbox" checked="checked">
   <mk-icon id="checkmark" mode="action" icon="checkbox_checked"></mk-icon>
 </label>
