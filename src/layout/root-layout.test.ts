@@ -10,17 +10,16 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('layout.RootLayout', init => {
   const _ = init(() => {
-    const fakeTime = mockTime(window);
     const tester = testerFactory.build([RootLayout], document);
     const el = tester.createElement('mk-root-layout');
-    return {el, tester, fakeTime};
+    return {el, tester};
   });
 
   test('handleDrawerExpandCollapse', () => {
     should(`open the drawer if hovered`, () => {
       run(_.el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')));
 
-      _.fakeTime.tick(100);
+      _.tester.fakeTime.tick(100);
 
       assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
       assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
@@ -28,12 +27,12 @@ test('layout.RootLayout', init => {
 
     should(`collapse the drawer if not hovered and is not desktop`, () => {
       run(_.el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')));
-      _.fakeTime.tick(100);
+      _.tester.fakeTime.tick(100);
 
       assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
 
       run(_.el.dispatchEvent($.drawer._.onMouseOut, new CustomEvent('mouseout')));
-      _.fakeTime.tick(100);
+      _.tester.fakeTime.tick(100);
 
       assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(false);
       assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(false);
