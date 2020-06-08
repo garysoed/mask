@@ -1,40 +1,45 @@
 import { source } from 'grapevine';
 import { assert, run, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
-import { attributeOut, booleanParser, element, host, integerParser, PersonaContext, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, element, emitter, host, integerParser, PersonaContext, stringParser } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { Observable, ReplaySubject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
-import { $$ as $baseInput, BaseInput } from './base-input';
+import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, VALUE_PROPERTY_NAME } from './base-input';
 
-
+const $$ = {
+  tag: 'mk-test-base-input',
+  api: {
+    ...$baseInput.api,
+    defaultValue: attributeIn(DEFAULT_VALUE_ATTR_NAME, integerParser(), 0),
+    value: emitter(VALUE_PROPERTY_NAME),
+  },
+};
 const $ = {
   div: element('div', instanceofType(HTMLDivElement), {
     disabled: attributeOut('disabled', booleanParser(), false),
     label: attributeOut('label', stringParser(), ''),
   }),
-  host: host({
-    ...$baseInput.api,
-  }),
+  host: host($$.api),
 };
 
 const $valueIn = source(() => new ReplaySubject<number>(1));
 const $valueOut = source(() => new ReplaySubject<number>(1));
 
 @_p.customElement({
-  tag: 'mk-test-base-input',
-  api: $baseInput.api,
+  ...$$,
   template: '<div id="div"></div>',
 })
 class TestInput extends BaseInput<number> {
   constructor(context: PersonaContext) {
     super(
-        integerParser(),
-        $.div._.label,
+        $.host._.defaultValue,
         $.div._.disabled,
+        $.div._.label,
+        $.host._.value,
         context,
     );
 
@@ -69,22 +74,10 @@ test('@mask/input/base-input', init => {
     return {el, tester, valueInService$, valueOut$};
   });
 
-  test('defaultValue$', () => {
-    should(`ignore default values that cannot be parsed correctly`, () => {
-      run(_.el.setAttribute($.host._.defaultValue, '123'));
-
-      // Set the new default value.
-      run(_.el.setAttribute($.host._.defaultValue, 'invalid'));
-
-      // Clear the value
-      run(_.el.callFunction($.host._.clearFn, []));
-      assert(_.valueOut$).to.emitWith(123);
-    });
-  });
-
   test('setupHandleOnClear', () => {
     should(`set the default value after calling clear`, () => {
-      run(_.el.setAttribute($.host._.defaultValue, '123'));
+      run(_.el.setAttribute($.host._.defaultValue, 123));
+      run(_.el.callFunction($.host._.clearFn, []));
 
       // Set the new value.
       run(_.valueInService$.pipe(take(1), tap(value$ => value$.next(456))));
@@ -96,7 +89,8 @@ test('@mask/input/base-input', init => {
   });
 
   should(`set the default value at the start`, () => {
-    run(_.el.setAttribute($.host._.defaultValue, `123`));
+    run(_.el.setAttribute($.host._.defaultValue, 123));
+    run(_.el.callFunction($.host._.clearFn, []));
 
     assert(_.valueOut$).to.emitWith(123);
   });

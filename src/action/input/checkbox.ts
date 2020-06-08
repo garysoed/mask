@@ -2,9 +2,9 @@ import { Vine } from 'grapevine';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
-import { attributeOut, booleanParser, classToggle, element, host, mapOutput, onDom, onInput, PersonaContext, SimpleElementRenderSpec, single, textContent } from 'persona';
-import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { filter, map, mapTo, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
+import { attributeIn, attributeOut, booleanParser, classToggle, element, emitter, host, onDom, onInput, PersonaContext, single, textContent } from 'persona';
+import { combineLatest, merge, Observable } from 'rxjs';
+import { map, mapTo, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
@@ -15,7 +15,7 @@ import { IconMode } from '../../display/icon-mode';
 import { IconWithText } from '../../display/icon-with-text';
 import { registerSvg } from '../../display/svg-service';
 
-import { $$ as $baseInput, BaseInput } from './base-input';
+import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, VALUE_PROPERTY_NAME } from './base-input';
 import template from './checkbox.html';
 
 
@@ -60,6 +60,8 @@ const iconCheckedValueParser = compose(
 export const $$ = {
   api: {
     ...$baseInput.api,
+    defaultValue: attributeIn(DEFAULT_VALUE_ATTR_NAME, checkedValueParser, 'unknown'),
+    value: emitter(VALUE_PROPERTY_NAME),
   },
   tag: 'mk-checkbox',
 };
@@ -115,9 +117,10 @@ export const $ = {
 export class Checkbox extends BaseInput<CheckedValue> {
   constructor(context: PersonaContext) {
     super(
-        checkedValueParser,
-        $.label._.text,
+        $.host._.defaultValue,
         $.checkbox._.readonly,
+        $.label._.text,
+        $.host._.value,
         context,
     );
 

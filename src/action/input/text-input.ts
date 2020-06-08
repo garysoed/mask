@@ -1,12 +1,12 @@
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, element, enumParser, handler, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
-import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { attributeIn, attributeOut, booleanParser, element, emitter, enumParser, handler, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
+import { Observable } from 'rxjs';
+import { debounceTime, map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
-import { $$ as $baseInput, BaseInput } from './base-input';
+import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, VALUE_PROPERTY_NAME } from './base-input';
 import template from './text-input.html';
 
 
@@ -41,8 +41,10 @@ export const $$ = {
   api: {
     ...$baseInput.api,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
+    defaultValue: attributeIn(DEFAULT_VALUE_ATTR_NAME, stringParser(), ''),
     setValidator: handler('setValidator'),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
+    value: emitter(VALUE_PROPERTY_NAME),
   },
   tag: 'mk-text-input',
 };
@@ -70,9 +72,10 @@ export const DEBOUNCE_MS = 250;
 export class TextInput extends BaseInput<string> {
   constructor(context: PersonaContext) {
     super(
-        stringParser(),
-        $.label._.text,
+        $.host._.defaultValue,
         $.input._.disabled,
+        $.label._.text,
+        $.host._.value,
         context,
     );
 

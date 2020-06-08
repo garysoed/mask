@@ -26,14 +26,16 @@ test('@mask/input/checkbox', init => {
     });
 
     should(`set true value correctly`, () => {
-      run(_.el.setAttribute($.host._.defaultValue, 'T'));
+      run(_.el.setAttribute($.host._.defaultValue, true));
+      run(_.el.callFunction($.host._.clearFn, []));
 
       assert(_.checked$).to.emitWith(true);
       assert(_.indeterminate$).to.emitWith(false);
     });
 
     should(`set false value correctly`, () => {
-      run(_.el.setAttribute($.host._.defaultValue, 'F'));
+      run(_.el.setAttribute($.host._.defaultValue, false));
+      run(_.el.callFunction($.host._.clearFn, []));
 
       assert(_.checked$).to.emitWith(false);
       assert(_.indeterminate$).to.emitWith(false);
@@ -41,6 +43,7 @@ test('@mask/input/checkbox', init => {
 
     should(`set unknown value correctly`, () => {
       run(_.el.setAttribute($.host._.defaultValue, 'unknown'));
+      run(_.el.callFunction($.host._.clearFn, []));
 
       assert(_.checked$).to.emitWith(false);
       assert(_.indeterminate$).to.emitWith(true);
