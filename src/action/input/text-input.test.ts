@@ -1,9 +1,10 @@
-import { assert, run, should, test } from 'gs-testing';
+import { assert, objectThat, run, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
+import { Value } from './base-input';
 import { $, DEBOUNCE_MS, TextInput } from './text-input';
 
 
@@ -33,11 +34,16 @@ test('@mask/input/text-input', init => {
       run(_.el.setInputValue($.input, value));
       _.tester.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(_.el.getObserver($.host._.value)).to.emitWith(value);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(
+          objectThat<Value<string>>().haveProperties({trigger: 'input', value}),
+      );
 
       // Clear the input.
       run(_.el.callFunction($.host._.clearFn, []));
-      assert(_.el.getObserver($.host._.value)).to.emitWith('');
+
+      assert(_.el.getObserver($.host._.value)).to.emitWith(
+          objectThat<Value<string>>().haveProperties({trigger: 'default', value: ''}),
+      );
     });
 
     should(`revert to the previous value if the new value is invalid`, () => {
@@ -51,7 +57,9 @@ test('@mask/input/text-input', init => {
       run(_.el.setInputValue($.input, value2));
       _.tester.fakeTime.tick(DEBOUNCE_MS);
 
-      assert(_.el.getObserver($.host._.value)).to.emitWith(value);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(
+          objectThat<Value<string>>().haveProperties({trigger: 'input', value}),
+      );
     });
   });
 });

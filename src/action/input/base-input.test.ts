@@ -1,5 +1,5 @@
 import { source } from 'grapevine';
-import { assert, run, should, test } from 'gs-testing';
+import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, element, emitter, host, integerParser, PersonaContext, stringParser } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
@@ -8,14 +8,14 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
-import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, VALUE_PROPERTY_NAME } from './base-input';
+import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 
 const $$ = {
   tag: 'mk-test-base-input',
   api: {
     ...$baseInput.api,
     defaultValue: attributeIn(DEFAULT_VALUE_ATTR_NAME, integerParser(), 0),
-    value: emitter(VALUE_PROPERTY_NAME),
+    value: emitter<Value<number>>(VALUE_PROPERTY_NAME),
   },
 };
 const $ = {
@@ -49,7 +49,7 @@ class TestInput extends BaseInput<number> {
   protected setupHandleValueChange(): Observable<unknown> {
     return $valueIn.get(this.context.vine).pipe(
         switchMap(value$ => value$),
-        tap(value => this.value$.next(value)),
+        tap(value => this.onInputValue$.next(value)),
     );
   }
 
@@ -76,6 +76,7 @@ test('@mask/input/base-input', init => {
 
   test('setupHandleOnClear', () => {
     should(`set the default value after calling clear`, () => {
+      const value$ = createSpySubject(_.el.getObserver($.host._.value));
       run(_.el.setAttribute($.host._.defaultValue, 123));
       run(_.el.callFunction($.host._.clearFn, []));
 
@@ -85,14 +86,39 @@ test('@mask/input/base-input', init => {
       // Clear the value
       run(_.el.callFunction($.host._.clearFn, []));
       assert(_.valueOut$).to.emitWith(123);
+      assert(value$).to.emitWith(objectThat<Value<number>>().haveProperties({
+        trigger: 'default',
+        value: 123,
+      }));
+    });
+  });
+
+  test('setForwardInputValue', () => {
+    should(`emit the correct value for value observable`, () => {
+      const value$ = createSpySubject(_.el.getObserver($.host._.value));
+      run($valueIn.get(_.tester.vine).pipe(
+          tap(subject => {
+            subject.next(123);
+          }),
+      ));
+
+      assert(value$).to.emitWith(objectThat<Value<number>>().haveProperties({
+        trigger: 'input',
+        value: 123,
+      }));
     });
   });
 
   should(`set the default value at the start`, () => {
+    const value$ = createSpySubject(_.el.getObserver($.host._.value));
     run(_.el.setAttribute($.host._.defaultValue, 123));
     run(_.el.callFunction($.host._.clearFn, []));
 
     assert(_.valueOut$).to.emitWith(123);
+    assert(value$).to.emitWith(objectThat<Value<number>>().haveProperties({
+      trigger: 'default',
+      value: 123,
+    }));
   });
 
   should(`render disabled status correctly`, () => {

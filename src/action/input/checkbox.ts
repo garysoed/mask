@@ -15,7 +15,7 @@ import { IconMode } from '../../display/icon-mode';
 import { IconWithText } from '../../display/icon-with-text';
 import { registerSvg } from '../../display/svg-service';
 
-import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, VALUE_PROPERTY_NAME } from './base-input';
+import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 import template from './checkbox.html';
 
 
@@ -61,7 +61,7 @@ export const $$ = {
   api: {
     ...$baseInput.api,
     defaultValue: attributeIn(DEFAULT_VALUE_ATTR_NAME, checkedValueParser, 'unknown'),
-    value: emitter(VALUE_PROPERTY_NAME),
+    value: emitter<Value<CheckedValue>>(VALUE_PROPERTY_NAME),
   },
   tag: 'mk-checkbox',
 };
@@ -125,7 +125,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     );
 
     this.addSetup(this.setupOnInput());
-    this.render($.checkmark._.icon, this.value$);
+    this.render($.checkmark._.icon, this.value$.pipe(map(({value}) => value)));
     this.render($.checkmark._.mode, this.renderIconMode());
     this.render($.container._.hasText, this.renderHasText());
   }
@@ -194,7 +194,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
               return element.checked;
             }),
             tap(newValue => {
-              this.value$.next(newValue);
+              this.onInputValue$.next(newValue);
             }),
         );
   }

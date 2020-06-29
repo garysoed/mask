@@ -117,9 +117,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 code {
-  background-color: var(--mkThemeActiveBG);
-  border-radius: .4rem;
-  color: var(--mkThemeActiveFG1);
   font-family: var(--mkFontFamilyMono);
   padding: .2rem;
 }

@@ -24,3 +24,4 @@ export { TextInput, $$ as $textInput } from '../src/action/input/text-input';
 export { Theme } from '../src/theme/theme';
 export { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
 export { UploadButton, $$ as $uploadButton } from '../src/action/upload-button';
+export { Value } from '../src/action/input/base-input';

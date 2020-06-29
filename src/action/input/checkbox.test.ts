@@ -1,10 +1,11 @@
-import { assert, run, should, test } from 'gs-testing';
+import { assert, objectThat, run, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { map, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { IconMode } from '../../display/icon-mode';
 
+import { Value } from './base-input';
 import { $, Checkbox } from './checkbox';
 
 
@@ -103,7 +104,12 @@ test('@mask/input/checkbox', init => {
       ));
       run(_.el.dispatchEvent($.checkbox._.onInput));
 
-      assert(_.el.getObserver($.host._.value)).to.emitWith(true);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(
+          objectThat<Value<boolean>>().haveProperties({
+            trigger: 'input',
+            value: true,
+          }),
+      );
     });
 
     should(`emit false if the value is false`, () => {
@@ -115,7 +121,12 @@ test('@mask/input/checkbox', init => {
       ));
       run(_.el.dispatchEvent($.checkbox._.onInput));
 
-      assert(_.el.getObserver($.host._.value)).to.emitWith(false);
+      assert(_.el.getObserver($.host._.value)).to.emitWith(
+          objectThat<Value<boolean>>().haveProperties({
+            trigger: 'input',
+            value: false,
+          }),
+      );
     });
 
     should(`emit unknown if the value is indeterminate`, () => {
@@ -127,7 +138,12 @@ test('@mask/input/checkbox', init => {
       ));
       run(_.el.dispatchEvent($.checkbox._.onInput));
 
-      assert(_.el.getObserver($.host._.value)).to.emitWith('unknown');
+      assert(_.el.getObserver($.host._.value)).to.emitWith(
+          objectThat<Value<boolean>>().haveProperties({
+            trigger: 'input',
+            value: 'unknown',
+          }),
+      );
     });
   });
 });

@@ -45,15 +45,15 @@ export class Drawer extends ThemedCustomElementCtrl {
   }
 
   private renderDrawerExpanded(): Observable<boolean> {
-    return this.expanded$.pipe(map(mode => mode === true));
+    return this.expanded$.pipe(map(({value: mode}) => mode === true));
   }
 
   private renderDrawerMode(): Observable<DrawerMode> {
     return this.horizontalMode$
-        .pipe(map(mode => mode === true ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL));
+        .pipe(map(({value: mode}) => mode === true ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL));
   }
 
   private renderRootPlayLayout(): Observable<string> {
-    return this.horizontalMode$.pipe(map(mode => mode === true ? 'column' : 'row'));
+    return this.horizontalMode$.pipe(map(({value: mode}) => mode === true ? 'column' : 'row'));
   }
 }

@@ -152,7 +152,7 @@ export class Demo extends ThemedCustomElementCtrl {
   private renderRootTheme(): Observable<'light'|'dark'> {
     return this.darkMode$
         .pipe(
-            map(isDarkMode => {
+            map(({value: isDarkMode}) => {
               if (!isDarkMode || isDarkMode === 'unknown') {
                 return 'light';
               }

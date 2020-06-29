@@ -6,7 +6,7 @@ import { debounceTime, map, startWith, take, tap, withLatestFrom } from 'rxjs/op
 
 import { _p } from '../../app/app';
 
-import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, VALUE_PROPERTY_NAME } from './base-input';
+import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 import template from './text-input.html';
 
 
@@ -44,7 +44,7 @@ export const $$ = {
     defaultValue: attributeIn(DEFAULT_VALUE_ATTR_NAME, stringParser(), ''),
     setValidator: handler('setValidator'),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
-    value: emitter(VALUE_PROPERTY_NAME),
+    value: emitter<Value<string>>(VALUE_PROPERTY_NAME),
   },
   tag: 'mk-text-input',
 };
@@ -98,9 +98,9 @@ export class TextInput extends BaseInput<string> {
         .pipe(
             debounceTime(DEBOUNCE_MS),
             withLatestFrom(this.validator$, this.value$),
-            tap(([value, validator, prevValue]) => {
+            tap(([value, validator, {value: prevValue}]) => {
               const isValid = !validator || !!validator(value);
-              this.value$.next(isValid ? value : prevValue);
+              this.onInputValue$.next(isValid ? value : prevValue);
             }),
         );
   }
