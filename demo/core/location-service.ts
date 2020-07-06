@@ -6,6 +6,7 @@ import { $window } from '../../export';
 export enum Views {
   BREADCRUMB = 'b',
   CHECKBOX = 'ch',
+  CODE_BLOCK = 'cb',
   COLORS = 'co',
   CROPPED_LINE = 'cl',
   DIALOG = 'di',
@@ -21,6 +22,7 @@ const ROUTE_SPEC = {
   [Views.MAIN]: fromPattern('/', {}),
   [Views.BREADCRUMB]: fromPattern('/breadcrumb', {}),
   [Views.CHECKBOX]: fromPattern('/checkbox', {}),
+  [Views.CODE_BLOCK]: fromPattern('/code-block', {}),
   [Views.COLORS]: fromPattern('/colors', {}),
   [Views.CROPPED_LINE]: fromPattern('/cropped-line', {}),
   [Views.DIALOG]: fromPattern('/dialog', {}),

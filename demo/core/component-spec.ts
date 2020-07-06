@@ -2,6 +2,7 @@ import { CustomElementCtrlCtor } from 'persona/export/internal';
 
 import { $$ as $breadcrumb, Breadcrumb } from '../component/breadcrumb';
 import { $$ as $checkbox, Checkbox } from '../component/checkbox';
+import { $$ as $codeBlock, CodeBlock } from '../component/code-block';
 import { $$ as $colors, Colors } from '../component/colors';
 import { $$ as $croppedLine, CroppedLine } from '../component/cropped-line';
 import { $$ as $dialog, Dialog } from '../component/dialog';
@@ -24,6 +25,7 @@ export interface ComponentSpec {
 export const COMPONENT_SPECS: readonly ComponentSpec[] = [
   {ctor: Breadcrumb, name: 'Breadcrumb', path: Views.BREADCRUMB, tag: $breadcrumb.tag},
   {ctor: Checkbox, name: 'Checkbox', path: Views.CHECKBOX, tag: $checkbox.tag},
+  {ctor: CodeBlock, name: 'Code Block', path: Views.CODE_BLOCK, tag: $codeBlock.tag},
   {ctor: Colors, name: 'Colors', path: Views.COLORS, tag: $colors.tag},
   {ctor: CroppedLine, name: 'Cropped Line', path: Views.CROPPED_LINE, tag: $croppedLine.tag},
   {ctor: Dialog, name: 'Dialog', path: Views.DIALOG, tag: $dialog.tag},

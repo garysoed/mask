@@ -7,6 +7,7 @@ export { newBuilder as newAnnotationSpec, RenderFn as AnnotationRenderFn } from 
 export { AnnotatedText, $$ as $annotatedText } from '../src/display/annotated-text';
 export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
 export { Checkbox, $$ as $checkbox, CheckedValue } from '../src/action/input/checkbox';
+export { CodeBlock, $$ as $codeBlock } from '../src/display/code-block';
 export { CroppedLine } from '../src/display/cropped-line';
 export { Drawer, Mode as DrawerMode, $$ as $drawer } from '../src/section/drawer';
 export { Dialog } from '../src/section/dialog';

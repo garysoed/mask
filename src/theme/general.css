@@ -16,14 +16,11 @@ body {
 
 [mk-body-1],
 [mk-body-2],
-a {
+a,
+code,
+pre {
   font-size: 1.25rem;
   line-height: 2rem;
-}
-
-code {
-  font-size: 1rem;
-  line-height: 1.5rem;
 }
 
 [mk-body-2] {
@@ -57,16 +54,16 @@ a[disabled] {
 }
 
 h1 {
-  font-size: 9rem;
+  font-size: 5rem;
   font-weight: 300;
 }
 
 h1[mk-display] {
-  line-height: 12rem;
+  line-height: 8rem;
 }
 
 h2 {
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 400;
 }
 
@@ -75,7 +72,7 @@ h2[mk-display] {
 }
 
 h3 {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 400;
 }
 
@@ -84,7 +81,7 @@ h3[mk-display] {
 }
 
 h4 {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 400;
 }
 
@@ -93,7 +90,7 @@ h4[mk-display] {
 }
 
 h5 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 500;
 }
 
@@ -116,9 +113,12 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-code {
+code, pre {
   font-family: var(--mkFontFamilyMono);
-  padding: .2rem;
+}
+
+pre {
+  padding: 1rem;
 }
 
 fieldset {
@@ -206,6 +206,30 @@ td:last-child {
 tr:last-child th,
 tr:last-child td {
   border-bottom: none;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+dt, dd {
+  padding: 1rem;
+}
+
+dt > p,
+dd > p {
+  margin: 0;
+}
+
+dd {
+  margin-inline-start: 0;
+}
+
+dt {
+  font-weight: var(--mkFontWeightBold);
 }
 
 /* Layouts */

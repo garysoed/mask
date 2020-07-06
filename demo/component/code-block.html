@@ -1,0 +1,40 @@
+
+<mkd-demo-layout label="Code block">
+  <div slot="play">
+    <mk-code-block class="typescript">
+      /**
+       * API for the component.
+       */
+      export const $$ = {
+        tag: 'mkd-code-block',
+        api: {},
+      };
+
+      @_p.customElement({
+        ...$$,
+        dependencies: [
+          DemoLayout,
+          MaskCodeBlock,
+        ],
+        template,
+      })
+      export class CodeBlock extends ThemedCustomElementCtrl {
+        private readonly regexp: RegExp;
+
+        constructor(context: PersonaContext) {
+          super(context);
+
+          this.regexp = /regex match/i;
+          const n = 1 + 2;
+        }
+      }
+    </mk-code-block>
+  </div>
+  <div slot="docs">
+    <p mk-body-1>
+      Mask uses the theme colors for syntax highlighting. You can change the theme using the base
+      and the accent colors.
+    </p>
+  </div>
+</mkd-demo-layout>
+
