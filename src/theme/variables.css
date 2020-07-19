@@ -3,10 +3,12 @@
  * Colors
  */
 [mk-theme="light"] {
+  --theme: light;
   /*{themeLight}*/
 }
 
 [mk-theme="dark"] {
+  --theme: dark;
   /*{themeDark}*/
 }
 

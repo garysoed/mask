@@ -33,15 +33,25 @@ pre {
 }
 
 a {
-  color: var(--mkThemeActionFG1);
   font-weight: var(--mkFontWeightBold);
   text-decoration: none;
 }
 
+a,
+a > code {
+  color: var(--mkThemeActionFG1);
+}
+
 a:hover, a:focus {
-  color: var(--mkThemeActionFocusFG1);
   cursor: pointer;
   text-decoration: underline;
+}
+
+a:hover,
+a:focus,
+a:hover > code,
+a:focus > code {
+  color: var(--mkThemeActionFocusFG1);
 }
 
 a:focus {
@@ -114,6 +124,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 code, pre {
+  color: var(--mkThemePassiveFG2);
   font-family: var(--mkFontFamilyMono);
 }
 
@@ -211,8 +222,8 @@ tr:last-child td {
 dl {
   display: grid;
   grid-template-columns: auto 1fr;
-  margin-block-start: 0;
-  margin-block-end: 0;
+  margin-block-start: 1rem;
+  margin-block-end: 1rem;
 }
 
 dt, dd {

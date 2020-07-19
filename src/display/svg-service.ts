@@ -1,6 +1,6 @@
 import { source, stream, Vine } from 'grapevine';
 import { BaseDisposable } from 'gs-tools/export/dispose';
-import { from as observableFrom, Observable, of as observableOf } from 'rxjs';
+import { defer, from as observableFrom, Observable, of as observableOf } from 'rxjs';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 
 import { SvgConfig } from './svg-config';
@@ -41,7 +41,7 @@ function loadSvg(config: SvgConfig): Observable<string> {
     return observableOf(config.content);
   } else {
     // TODO: Retry with exponential backoff.
-    return observableFrom<Promise<Response>>(fetch(config.url))
+    return defer(() => fetch(config.url))
         .pipe(
             switchMap(response => observableFrom(response.text())),
             retry(3),
