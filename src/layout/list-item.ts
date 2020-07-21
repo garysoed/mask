@@ -9,7 +9,7 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import template from './list-item.html';
 
-
+// TODO: Change these into slots.
 export const $$ = {
   api: {
     icon: attributeIn('icon', stringParser(), ''),
