@@ -1,11 +1,18 @@
+import { Observable } from 'rxjs';
+
 interface RemoteSvgConfig {
-  type: 'remote';
-  url: string;
+  readonly type: 'remote';
+  readonly url: string;
 }
 
 interface EmbeddedSvgConfig {
-  content: string;
-  type: 'embed';
+  readonly content: string;
+  readonly type: 'embed';
 }
 
-export type SvgConfig = EmbeddedSvgConfig|RemoteSvgConfig;
+interface ObservableSvgConfig {
+  readonly content$: Observable<string>;
+  readonly type: 'observable';
+}
+
+export type SvgConfig = EmbeddedSvgConfig|ObservableSvgConfig|RemoteSvgConfig;

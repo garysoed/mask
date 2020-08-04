@@ -1,5 +1,4 @@
 import { source, Vine } from 'grapevine';
-import { Jsons } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
 import { classlist, element, PersonaContext, style } from 'persona';
 import { Observable } from 'rxjs';
@@ -59,7 +58,16 @@ export class LayoutOverlay extends ThemedCustomElementCtrl {
 }
 
 _v.onRun(vine => {
-  Jsons.setValue(window, 'mk.dbg.setLayoutOverlayActive', (active: boolean) => {
-    $isActive.set(vine, () => active);
-  });
+  Object.assign(
+      window,
+      {
+        mk: {
+          dbg: {
+            setLayoutOverlayActive: (active: boolean) => {
+              $isActive.set(vine, () => active);
+            },
+          },
+        },
+      },
+  );
 });

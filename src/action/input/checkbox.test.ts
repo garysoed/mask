@@ -6,7 +6,7 @@ import { _p } from '../../app/app';
 import { IconMode } from '../../display/icon-mode';
 
 import { Value } from './base-input';
-import { $, Checkbox } from './checkbox';
+import { $, Checkbox, CheckedValue } from './checkbox';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -139,7 +139,7 @@ test('@mask/input/checkbox', init => {
       run(_.el.dispatchEvent($.checkbox._.onInput));
 
       assert(_.el.getObserver($.host._.value)).to.emitWith(
-          objectThat<Value<boolean>>().haveProperties({
+          objectThat<Value<CheckedValue>>().haveProperties({
             trigger: 'input',
             value: 'unknown',
           }),

@@ -9,7 +9,7 @@
 
 import { filterDefined } from 'gs-tools/export/rxjs';
 import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
-import { enums } from 'gs-tools/export/typescript';
+import { getAllValues } from 'gs-tools/export/typescript';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
 import { AriaRole, attributeIn, attributeOut, element, host, InnerHtmlRenderSpec, NoopRenderSpec, PersonaContext, RenderSpec, single, stringParser } from 'persona';
@@ -27,7 +27,7 @@ import { $svgService } from './svg-service';
 export const $$ = {
   api: {
     icon: attributeIn('icon', stringParser(), ''),
-    mode: attributeIn('mode', stringMatchConverter(enums.getAllValues<IconMode>(IconMode))),
+    mode: attributeIn('mode', stringMatchConverter(getAllValues<IconMode>(IconMode))),
   },
   tag: 'mk-icon',
 };

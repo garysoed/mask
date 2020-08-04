@@ -37,16 +37,20 @@ function createSvgObs(
 }
 
 function loadSvg(config: SvgConfig): Observable<string> {
-  if (config.type === 'embed') {
-    return observableOf(config.content);
-  } else {
-    // TODO: Retry with exponential backoff.
-    return defer(() => fetch(config.url))
-        .pipe(
-            switchMap(response => observableFrom(response.text())),
-            retry(3),
-            shareReplay(1),
-        );
+  switch (config.type) {
+    case 'embed':
+      return observableOf(config.content);
+    case 'observable':
+      return config.content$;
+    case 'remote':
+      // TODO: Retry with exponential backoff.
+      return defer(() => fetch(config.url))
+          .pipe(
+              switchMap(response => observableFrom(response.text())),
+              retry(3),
+              shareReplay(1),
+          );
+
   }
 }
 

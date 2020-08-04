@@ -1,6 +1,6 @@
 import { Color, Colors } from 'gs-tools/export/color';
 import { cache } from 'gs-tools/export/data';
-import { assertUnreachable, enums } from 'gs-tools/export/typescript';
+import { assertUnreachable, getAllValues } from 'gs-tools/export/typescript';
 
 import { Alpha } from './alpha';
 import { ColorSection } from './color-section';
@@ -239,7 +239,7 @@ export class Theme {
 
 function generateHighlightSwitch(): string {
   const sections: string[] = [];
-  for (const section of enums.getAllValues(ColorSection)) {
+  for (const section of getAllValues(ColorSection)) {
     sections.push(`--mkTheme${section}FG1: var(--mkThemeHighlight${section}FG1);`);
     sections.push(`--mkTheme${section}FG2: var(--mkThemeHighlight${section}FG2);`);
     sections.push(`--mkTheme${section}BG: var(--mkThemeHighlight${section}BG);`);

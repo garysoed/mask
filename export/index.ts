@@ -18,7 +18,7 @@ export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { ListItem, $$ as $listItem } from '../src/layout/list-item';
 export { Palette } from '../src/theme/palette';
 export { RootLayout, $$ as $rootLayout } from '../src/layout/root-layout';
-export { start } from '../src/app/app';
+export { $theme, start } from '../src/app/app';
 export { SvgConfig } from '../src/display/svg-config';
 export { TextIconButton, $$ as $textIconButton } from '../src/action/text-icon-button';
 export { TextInput, $$ as $textInput } from '../src/action/input/text-input';
