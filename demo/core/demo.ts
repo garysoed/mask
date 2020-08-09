@@ -287,7 +287,7 @@ function createDiffObs(oldColor: Color, newColor: Color):
 
 function createPaletteData(colorName: string, color: Color, selected: boolean):
     RenderSpec {
-  const colorCss = `rgb(${color.getRed()}, ${color.getGreen()}, ${color.getBlue()})`;
+  const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
   const classes = ['palette'];
   if (selected) {

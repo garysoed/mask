@@ -1,4 +1,4 @@
-import { $ as $pipe, $asArray, $filterDefined, $map } from 'gs-tools/export/collect';
+import { $asArray, $filterDefined, $map, $pipe } from 'gs-tools/export/collect';
 import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, diffArray, filterNonNull } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';

@@ -1,4 +1,4 @@
-import { Color, Colors, RgbColor } from 'gs-tools/export/color';
+import { Color, mix, RgbColor } from 'gs-tools/export/color';
 
 
 export interface Shade {
@@ -35,12 +35,12 @@ export const SHADES: readonly Shade[] = [
   B200,
 ];
 
-const BLACK = RgbColor.newInstance(0, 0, 0);
-const WHITE = RgbColor.newInstance(255, 255, 255);
+const BLACK = new RgbColor(0, 0, 0);
+const WHITE = new RgbColor(255, 255, 255);
 
 export function createColor(shade: Shade, base: Color): Color {
   const mixAmount = shade.mixRatio;
   const backgroundColor = shade.mixBG ? BLACK : WHITE;
 
-  return Colors.mix(base, backgroundColor, mixAmount);
+  return mix(base, backgroundColor, mixAmount);
 }

@@ -1,4 +1,4 @@
-import { Color, Colors } from 'gs-tools/export/color';
+import { Color, getContrast } from 'gs-tools/export/color';
 import { cache } from 'gs-tools/export/data';
 import { assertUnreachable, getAllValues } from 'gs-tools/export/typescript';
 
@@ -22,38 +22,38 @@ function generateColorCss(
 ): string {
   const lines = [];
   for (const [section, {bg, fg, primary, secondary}] of colorMap) {
-    lines.push(`--mkTheme${section}BG: rgb(${bg.getRed()},${bg.getGreen()},${bg.getBlue()});`);
+    lines.push(`--mkTheme${section}BG: rgb(${bg.red},${bg.green},${bg.blue});`);
     lines.push([
       `--mkTheme${section}FG1: `,
-      `rgba(${fg.getRed()},`,
-      `${fg.getGreen()},`,
-      `${fg.getBlue()},`,
+      `rgba(${fg.red},`,
+      `${fg.green},`,
+      `${fg.blue},`,
       `${primary});`,
     ].join(''));
     lines.push([
       `--mkTheme${section}FG2: `,
-      `rgba(${fg.getRed()},`,
-      `${fg.getGreen()},`,
-      `${fg.getBlue()},`,
+      `rgba(${fg.red},`,
+      `${fg.green},`,
+      `${fg.blue},`,
       `${secondary});`,
     ].join(''));
   }
 
   for (const [section, {bg, fg, primary, secondary}] of highlightColorMap) {
     lines.push(
-        `--mkThemeHighlight${section}BG: rgb(${bg.getRed()},${bg.getGreen()},${bg.getBlue()});`);
+        `--mkThemeHighlight${section}BG: rgb(${bg.red},${bg.green},${bg.blue});`);
     lines.push([
       `--mkThemeHighlight${section}FG1: `,
-      `rgba(${fg.getRed()},`,
-      `${fg.getGreen()},`,
-      `${fg.getBlue()},`,
+      `rgba(${fg.red},`,
+      `${fg.green},`,
+      `${fg.blue},`,
       `${primary});`,
     ].join(''));
     lines.push([
       `--mkThemeHighlight${section}FG2: `,
-      `rgba(${fg.getRed()},`,
-      `${fg.getGreen()},`,
-      `${fg.getBlue()},`,
+      `rgba(${fg.red},`,
+      `${fg.green},`,
+      `${fg.blue},`,
       `${secondary});`,
     ].join(''));
   }
@@ -134,15 +134,15 @@ function getContrastForegroundShade(
   const lightForeground = shadingMap.get(lightShade);
 
   if (!darkForeground) {
-    throw new Error(`Cannot find color for ${darkShade}`);
+  throw new Error(`Cannot find color for ${darkShade}`);
   }
 
   if (!lightForeground) {
     throw new Error(`Cannot find color for ${lightShade}`);
   }
 
-  const darkContrast = Colors.getContrast(darkForeground, highlightBackground);
-  const lightContrast = Colors.getContrast(lightForeground, highlightBackground);
+  const darkContrast = getContrast(darkForeground, highlightBackground);
+  const lightContrast = getContrast(lightForeground, highlightBackground);
 
   return darkContrast > lightContrast ? darkShade : lightShade;
 }
