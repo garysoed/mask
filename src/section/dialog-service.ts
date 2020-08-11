@@ -1,5 +1,4 @@
 import { Source, source, stream, Vine } from 'grapevine';
-import { Errors } from 'gs-tools/export/error';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
@@ -47,7 +46,7 @@ export class DialogService {
             take(1),
             switchMap(latestState => {
               if (latestState.isOpen) {
-                throw Errors.assert('State of dialog service').shouldBe('closed').butWas('opened');
+                throw new Error('State of dialog service should be closed but was opened');
               }
 
               spec.source?.set(this.vine, () => null);

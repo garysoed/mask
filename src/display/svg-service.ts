@@ -1,5 +1,4 @@
 import { source, stream, Vine } from 'grapevine';
-import { BaseDisposable } from 'gs-tools/export/dispose';
 import { defer, from as observableFrom, Observable, of as observableOf } from 'rxjs';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 
@@ -8,11 +7,10 @@ import { SvgConfig } from './svg-config';
 
 const __run = Symbol('SvgService.run');
 
-export class SvgService extends BaseDisposable {
+export class SvgService {
   private readonly svgObsMap: Map<string, Observable<string>>;
 
   constructor(svgConfig: ReadonlyMap<string, SvgConfig>) {
-    super();
     this.svgObsMap = createSvgObs(svgConfig);
   }
 

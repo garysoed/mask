@@ -1,5 +1,4 @@
 import { $asArray, $filterDefined, $map, $pipe } from 'gs-tools/export/collect';
-import { Errors } from 'gs-tools/export/error';
 import { ArrayDiff, diffArray, filterNonNull } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
@@ -125,14 +124,12 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
             map(event => {
               const target = event.target;
               if (!(target instanceof Element)) {
-                throw Errors.assert(`target for ${ACTION_EVENT}`)
-                    .shouldBeAnInstanceOf(Element)
-                    .butWas(target);
+                throw Error(`target for ${ACTION_EVENT} should be an Element`);
               }
 
               const key = target.getAttribute('key');
               if (!key) {
-                throw Errors.assert(`key for ${target}`).shouldExist().butNot();
+                throw Error(`key for ${target} is missing`);
               }
 
               return key;
