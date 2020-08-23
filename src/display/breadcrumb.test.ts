@@ -53,7 +53,7 @@ test('display.Breadcrumb', init => {
     });
   });
 
-  test('renderCrumbs_', () => {
+  test('renderCrumbs', () => {
     should(`render the crumbs correctly`, () => {
       const data = [
         {
@@ -73,7 +73,7 @@ test('display.Breadcrumb', init => {
       run(_.el.setAttribute($.host._.path, data));
 
       // Wait until all the crumbs are rendered.
-      const elementsObs = _.el.getNodesAfter($.row._.crumbsSlot)
+      const elements$ = _.el.getNodesAfter($.row._.crumbsSlot)
           .pipe(
               map(nodes => {
                 return nodes.filter((item): item is HTMLElement => item instanceof HTMLElement);
@@ -81,17 +81,17 @@ test('display.Breadcrumb', init => {
               switchMap(els => observableOf(...els)),
           );
 
-      assert(elementsObs.pipe(map(el => el.tagName.toLowerCase()))).to.emitSequence([
+      assert(elements$.pipe(map(el => el.tagName.toLowerCase()))).to.emitSequence([
         'mk-crumb',
         'mk-crumb',
         'mk-crumb',
       ]);
-      assert(elementsObs.pipe(map(el => el.getAttribute('display')))).to.emitSequence([
+      assert(elements$.pipe(map(el => el.getAttribute('display')))).to.emitSequence([
         'displayA',
         'displayB',
         'displayC',
       ]);
-      assert(elementsObs.pipe(map(el => el.getAttribute('key')))).to.emitSequence([
+      assert(elements$.pipe(map(el => el.getAttribute('key')))).to.emitSequence([
         'a',
         'b',
         'c',

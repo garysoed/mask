@@ -1,10 +1,9 @@
 import { $asArray, $filterDefined, $map, $pipe } from 'gs-tools/export/collect';
-import { ArrayDiff, diffArray, filterNonNull } from 'gs-tools/export/rxjs';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, host, listParser, NoopRenderSpec, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, stringParser } from 'persona';
-import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { attributeIn, dispatcher, element, host, listParser, multi, onDom, PersonaContext, renderCustomElement, stringParser } from 'persona';
+import { BehaviorSubject, combineLatest, EMPTY, Observable, of as observableOf } from 'rxjs';
+import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT } from '../event/action-event';
@@ -12,12 +11,12 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import { BreadcrumbClickEvent } from './breadcrumb-event';
 import breadcrumbTemplate from './breadcrumb.html';
-import { Crumb } from './crumb';
+import { $crumb, Crumb } from './crumb';
 
 
 export interface CrumbData {
-  display: string;
-  key: string;
+  readonly display: string;
+  readonly key: string;
 }
 
 export const $$ = {
@@ -40,7 +39,7 @@ export const $$ = {
 export const $ = {
   host: host($$.api),
   row: element('row', elementWithTagType('nav'), {
-    crumbsSlot: repeated('crumbs'),
+    crumbsSlot: multi('crumbs'),
     onAction: onDom(ACTION_EVENT),
   }),
 };
@@ -64,57 +63,35 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
     this.addSetup(this.setupCrumbDataForwarding());
   }
 
-  private renderCrumbs(): Observable<ArrayDiff<RenderSpec>> {
+  private renderCrumbs(): Observable<readonly Node[]> {
     return this.pathKey$
         .pipe(
-            diffArray(),
             withLatestFrom(this.pathData$),
-            map(([diff, map]: [ArrayDiff<string>, ReadonlyMap<string, CrumbData>]) => {
-              switch (diff.type) {
-                case 'delete':
-                  return {
-                    type: 'delete' as 'delete',
-                    index: diff.index,
-                    value: new NoopRenderSpec(),
-                  };
-                case 'init':
-                  const crumbDataList = $pipe(
-                      diff.value,
-                      $map(key => map.get(key)),
-                      $filterDefined(),
-                      $map(crumbData => renderCrumbData(crumbData)),
-                      $asArray(),
-                  );
+            switchMap(([keys, pathData]) => {
+              const node$List = $pipe(
+                  keys,
+                  $map(key => pathData.get(key)),
+                  $filterDefined(),
+                  $map(crumbData => renderCustomElement(
+                      $crumb,
+                      {
+                        inputs: {
+                          display: observableOf(crumbData.display),
+                          key: observableOf(crumbData.key),
+                        },
+                        attrs: new Map([['tabindex', observableOf('0')]]),
+                      },
+                      this.context,
+                  )),
+                  $asArray(),
+              );
 
-                  return {
-                    type: 'init' as 'init',
-                    value: crumbDataList,
-                  };
-                case 'insert':
-                  const insertData = map.get(diff.value);
-                  if (!insertData) {
-                    return null;
-                  }
-
-                  return {
-                    index: diff.index,
-                    type: 'insert' as 'insert',
-                    value: renderCrumbData(insertData),
-                  };
-                case 'set':
-                  const setData = map.get(diff.value);
-                  if (!setData) {
-                    return null;
-                  }
-
-                  return {
-                    index: diff.index,
-                    type: 'set' as 'set',
-                    value: renderCrumbData(setData),
-                  };
+              if (node$List.length <= 0) {
+                return observableOf([]);
               }
+
+              return combineLatest(node$List);
             }),
-            filterNonNull<ArrayDiff<RenderSpec>|null>(),
         );
   }
 
@@ -153,15 +130,4 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
             }),
         );
   }
-}
-
-function renderCrumbData(data: CrumbData): RenderSpec {
-  return new SimpleElementRenderSpec(
-      'mk-crumb',
-      observableOf(new Map([
-        ['display', data.display],
-        ['key', data.key],
-        ['tabindex', `0`],
-      ])),
-  );
 }

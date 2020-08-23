@@ -1,11 +1,11 @@
 import { Vine } from 'grapevine';
-import { $asMap, $map, $pipe, $zip, countableIterable } from 'gs-tools/export/collect';
+import { $asMap, $map, $pipe } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
-import { ArrayDiff, assertByType, filterNonNull } from 'gs-tools/export/rxjs';
+import { assertByType, filterNonNull } from 'gs-tools/export/rxjs';
 import { elementWithTagType, enumType } from 'gs-types';
-import { attributeOut, element, onDom, PersonaContext, RenderSpec, repeated, SimpleElementRenderSpec, single, stringParser } from 'persona';
-import { merge, Observable, of as observableOf } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, mapTo, pairwise, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
+import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
 import { $theme } from '../../src/app/app';
@@ -17,15 +17,15 @@ import { $locationService, Views } from './location-service';
 
 const $ = {
   accentPalette: element('accentPalette', elementWithTagType('div'), {
-    content: repeated('content'),
+    content: multi('content'),
     onClick: onDom<MouseEvent>('click'),
   }),
   basePalette: element('basePalette', elementWithTagType('div'), {
-    content: repeated('content'),
+    content: multi('content'),
     onClick: onDom<MouseEvent>('click'),
   }),
   components: element('components', elementWithTagType('div'), {
-    componentButtons: repeated('componentButtons'),
+    componentButtons: multi('componentButtons'),
     onClick: onDom('click'),
   }),
   content: element('content', elementWithTagType('div'), {
@@ -83,68 +83,75 @@ export class Demo extends ThemedCustomElementCtrl {
     this.addSetup(this.setupOnRootLayoutAction(context.vine));
   }
 
-  private renderAccentPaletteContents(): Observable<ArrayDiff<RenderSpec>> {
-    const initPaletteData = ORDERED_PALETTES
-        .map(([colorName, color]) => createPaletteData(colorName, color, false));
+  private renderAccentPaletteContents(): Observable<readonly Node[]> {
+    const selectedColor$ = this.theme$.pipe(map(theme => theme.accentColor));
+    const paletteNode$List = ORDERED_PALETTES
+        .map(([colorName, color]) => {
+          const isSelected$ = selectedColor$.pipe(
+              map(selected => {
+                const selectedName = COLOR_TO_NAME.get(selected);
+                return selectedName === colorName;
+              }),
+          );
+          return renderPaletteData(
+              colorName,
+              color,
+              isSelected$,
+              this.context,
+          );
+        });
 
-    const diff$ = this.theme$.pipe(
-        map(theme => theme.accentColor),
-        pairwise(),
-        switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
-    );
-
-    return diff$.pipe(
-        startWith({
-          type: 'init' as 'init',
-          value: initPaletteData,
-        }),
-    );
+    return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
   }
 
-  private renderBasePaletteContents(): Observable<ArrayDiff<RenderSpec>> {
-    const initPaletteData = ORDERED_PALETTES
-        .map(([colorName, color]) => createPaletteData(colorName, color, false));
+  private renderBasePaletteContents(): Observable<readonly Node[]> {
+    const selectedColor$ = this.theme$.pipe(map(theme => theme.baseColor));
+    const paletteNode$List = ORDERED_PALETTES
+        .map(([colorName, color]) => {
+          const isSelected$ = selectedColor$.pipe(
+              map(selected => {
+                const selectedName = COLOR_TO_NAME.get(selected);
+                return selectedName === colorName;
+              }),
+          );
+          return renderPaletteData(
+              colorName,
+              color,
+              isSelected$,
+              this.context,
+          );
+        });
 
-    const diff$ = this.theme$.pipe(
-        map(theme => theme.baseColor),
-        pairwise(),
-        switchMap(([oldColor, newColor]) => createDiffObs(oldColor, newColor)),
-    );
-
-    return diff$.pipe(
-        startWith({
-          type: 'init' as 'init',
-          value: initPaletteData,
-        }),
-    );
+    return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
   }
 
-  private renderComponentButtons(): Observable<ArrayDiff<RenderSpec>> {
-    const renderSpec = COMPONENT_SPECS.map(({name, path}) => {
-      return new SimpleElementRenderSpec(
-          $textIconButton.tag,
-          observableOf(new Map([
-            [$textIconButton.api.label.attrName, name],
-            [COMPONENT_PATH_ATTR, `${path}`],
-          ])),
+  private renderComponentButtons(): Observable<readonly Node[]> {
+    const componentNode$List = COMPONENT_SPECS.map(({name, path}) => {
+      return renderCustomElement(
+          $textIconButton,
+          {
+            attrs: new Map([[COMPONENT_PATH_ATTR, observableOf(`${path}`)]]),
+            inputs: {label: observableOf(name)},
+          },
+          this.context,
       );
     });
 
-    return observableOf({type: 'init', value: renderSpec});
+    return componentNode$List.length <= 0 ? observableOf([]) : combineLatest(componentNode$List);
   }
 
-  private renderMainContent(): Observable<RenderSpec> {
+  private renderMainContent(): Observable<Node> {
     return $locationService.get(this.vine).pipe(
         switchMap(locationService => locationService.getLocation()),
         map(location => {
           return COMPONENT_SPECS.find(({path}) => path === location.type);
         }),
-        map(spec => {
+        switchMap(spec => {
           if (!spec) {
-            return new SimpleElementRenderSpec('div');
+            return renderElement('div', {}, this.context);
           }
 
-          return new SimpleElementRenderSpec(spec.tag);
+          return renderElement(spec.tag, {}, this.context);
         }),
     );
   }
@@ -245,12 +252,6 @@ const ORDERED_PALETTES: ReadonlyArray<[string, Color]> = [
   ['BROWN', Palette.BROWN],
   ['GREY', Palette.GREY],
 ];
-const COLOR_TO_INDEX: ReadonlyMap<Color, number> = $pipe(
-    ORDERED_PALETTES,
-    $map(([, color]) => color),
-    $zip(countableIterable()),
-    $asMap(),
-);
 
 const COLOR_TO_NAME: ReadonlyMap<Color, string> = $pipe(
     ORDERED_PALETTES,
@@ -258,49 +259,31 @@ const COLOR_TO_NAME: ReadonlyMap<Color, string> = $pipe(
     $asMap(),
 );
 
-function createDiffObs(oldColor: Color, newColor: Color):
-    Observable<ArrayDiff<RenderSpec>> {
-  const diffs: Array<ArrayDiff<RenderSpec>> = [];
-
-  const oldIndex = COLOR_TO_INDEX.get(oldColor);
-  const oldName = COLOR_TO_NAME.get(oldColor);
-  if (oldIndex !== undefined && oldName !== undefined) {
-    diffs.push({
-      index: oldIndex,
-      type: 'set',
-      value: createPaletteData(oldName, oldColor, false),
-    });
-  }
-
-  const newIndex = COLOR_TO_INDEX.get(newColor);
-  const newName = COLOR_TO_NAME.get(newColor);
-  if (newIndex !== undefined && newName !== undefined) {
-    diffs.push({
-      index: newIndex,
-      type: 'set',
-      value: createPaletteData(newName, newColor, true),
-    });
-  }
-
-  return observableOf(...diffs);
-}
-
-function createPaletteData(colorName: string, color: Color, selected: boolean):
-    RenderSpec {
+function renderPaletteData(
+    colorName: string,
+    color: Color,
+    selected$: Observable<boolean>,
+    context: PersonaContext,
+): Observable<Node> {
   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
-  const classes = ['palette'];
-  if (selected) {
-    classes.push('selected');
-  }
+  const classes$ = selected$.pipe(
+      map(selected => {
+        return selected ? ['palette', 'selected'] : ['palette'];
+      }),
+      map(classes => classes.join(' ')),
+  );
 
-  return new SimpleElementRenderSpec(
+  return renderElement(
       'div',
-      observableOf(new Map([
-        ['class', classes.join(' ')],
-        ['color', colorName],
-        ['style', `background-color: ${colorCss};`],
-      ])),
+      {
+        attrs: new Map([
+          ['class', classes$],
+          ['color', observableOf(colorName)],
+          ['style', observableOf(`background-color: ${colorCss};`)],
+        ]),
+      },
+      context,
   );
 }
 

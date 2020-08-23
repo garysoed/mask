@@ -13,8 +13,8 @@ export type DialogState = OpenState|CloseState;
 interface DialogSpec<T> {
   cancelable: boolean;
   content: {
-    attr?: Map<string, string>;
-    tag: string;
+    readonly attr?: Map<string, string>;
+    readonly tag: string;
   };
   source?: Source<T|null>;
   title: string;

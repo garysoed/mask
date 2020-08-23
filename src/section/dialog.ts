@@ -1,6 +1,7 @@
 import { Vine } from 'grapevine';
+import { $asMap, $map, $pipe } from 'gs-tools/export/collect';
 import { elementWithTagType, instanceofType } from 'gs-types';
-import { classlist, element, onDom, PersonaContext, RenderSpec, SimpleElementRenderSpec, single, textContent } from 'persona';
+import { classlist, element, onDom, PersonaContext, renderElement, single, textContent } from 'persona';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
@@ -74,18 +75,23 @@ export class Dialog extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderContent(): Observable<RenderSpec|null> {
+  private renderContent(): Observable<Node|null> {
     return $dialogState.get(this.vine)
         .pipe(
-            map(state => {
+            switchMap(state => {
               if (!state.isOpen) {
-                return null;
+                return observableOf(null);
               }
 
-              return new SimpleElementRenderSpec(
-                  state.spec.content.tag,
-                  observableOf(state.spec.content.attr || new Map()),
+              const attrs = $pipe(
+                  state.spec.content.attr || new Map(),
+                  $map(([key, value]) => {
+                    return [key, observableOf(value)] as [string, Observable<string>];
+                  }),
+                  $asMap(),
               );
+
+              return renderElement(state.spec.content.tag, {attrs}, this.context);
             }),
         );
   }

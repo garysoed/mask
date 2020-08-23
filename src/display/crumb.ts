@@ -1,7 +1,7 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, host, InnerHtmlRenderSpec, onDom, PersonaContext, RenderSpec, single, stringParser, textContent } from 'persona';
-import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { attributeIn, dispatcher, element, host, onDom, PersonaContext, renderHtml, single, stringParser, textContent } from 'persona';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import separatorSvg from '../asset/separator.svg';
@@ -10,17 +10,19 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import crumbTemplate from './crumb.html';
 
-const $$ = {
+
+export const $crumb = {
   api: {
     dispatch: dispatcher(ACTION_EVENT),
     display: attributeIn('display', stringParser(), ''),
+    key: attributeIn('key', stringParser(), ''),
     onClick: onDom('click'),
   },
   tag: 'mk-crumb',
 };
 
 export const $ = {
-  host: host($$.api),
+  host: host($crumb.api),
   svg: element('svg', instanceofType(HTMLDivElement), {
     content: single('#content'),
   }),
@@ -30,7 +32,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  ...$$,
+  ...$crumb,
   template: crumbTemplate,
 })
 export class Crumb extends ThemedCustomElementCtrl {
@@ -44,15 +46,14 @@ export class Crumb extends ThemedCustomElementCtrl {
     this.render($.svg._.content, this.renderSvgContent());
   }
 
-  private onHostClick(): Observable<ActionEvent<void>> {
-    return this.onClick$.pipe(map(() => new ActionEvent(undefined)));
+  private onHostClick(): Observable<ActionEvent<string>> {
+    return this.onClick$.pipe(
+        withLatestFrom(this.declareInput($.host._.key)),
+        map(([, key]) => new ActionEvent(key)),
+    );
   }
 
-  private renderSvgContent(): Observable<RenderSpec> {
-    return observableOf(new InnerHtmlRenderSpec(
-        separatorSvg,
-        'image/svg+xml',
-        this.vine,
-    ));
+  private renderSvgContent(): Observable<Node|null> {
+    return renderHtml(separatorSvg, 'image/svg+xml', this.context);
   }
 }
