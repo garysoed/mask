@@ -123,6 +123,16 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+hr {
+  margin-block-start: 2rem;
+  margin-block-end: 2rem;
+  border-style: solid;
+  border-bottom-color: var(--mkThemeActionDisabledFG2);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
 code, pre {
   color: var(--mkThemePassiveFG2);
   font-family: var(--mkFontFamilyMono);

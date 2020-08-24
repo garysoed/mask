@@ -22,7 +22,7 @@ export interface CrumbData {
 export const $$ = {
   api: {
     dispatch: dispatcher(ACTION_EVENT),
-    path: attributeIn<CrumbData[]>(
+    path: attributeIn<readonly CrumbData[]>(
         'path',
         listParser(
             objectConverter<CrumbData>({
