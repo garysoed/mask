@@ -10,7 +10,7 @@ import { DialogService, OpenState } from './dialog-service';
 
 test('@mask/section/dialog-service', init => {
   const _ = init(() => {
-    const src = source<number|null>(() => null);
+    const src = source<number|null>('src', () => null);
     const vine = _v.build('test');
     const service = new DialogService(vine);
     return {src, vine, service};

@@ -10,8 +10,8 @@ import { Theme } from '../theme/theme';
 export const _v = new VineBuilder();
 export const _p = new PersonaBuilder(_v);
 
-export const $theme = source(() => new Theme(document, Palette.ORANGE, Palette.GREEN));
-export const $window = source(() => window);
+export const $theme = source('Theme', () => new Theme(document, Palette.ORANGE, Palette.GREEN));
+export const $window = source('window', () => window);
 
 export function start(
     appName: string,

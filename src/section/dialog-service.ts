@@ -77,9 +77,10 @@ export class DialogService {
     this.stateObs.next({isOpen: false});
   }
 }
-export const $dialogService = source(vine => new DialogService(vine));
+export const $dialogService = source('DialogService', vine => new DialogService(vine));
 
 export const $dialogState = stream(
+    'dialogState',
     vine => $dialogService
         .get(vine)
         .pipe(switchMap(dialogService => dialogService.getStateObs())),

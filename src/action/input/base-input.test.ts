@@ -26,8 +26,8 @@ const $ = {
   host: host($$.api),
 };
 
-const $valueIn = source(() => new ReplaySubject<number>(1));
-const $valueOut = source(() => new ReplaySubject<number>(1));
+const $valueIn = source('valueIn', () => new ReplaySubject<number>(1));
+const $valueOut = source('valueOut', () => new ReplaySubject<number>(1));
 
 @_p.customElement({
   ...$$,

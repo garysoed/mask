@@ -12,13 +12,14 @@ class AnnotationService {
   }
 }
 
-const $annotationConfig = source(() => new Map<string, AnnotationSpec>());
+const $annotationConfig = source('annotationConfig', () => new Map<string, AnnotationSpec>());
 
 export function addAnnotationSpec(vine: Vine, annotationId: string, spec: AnnotationSpec): void {
   $annotationConfig.set(vine, configMap => new Map([...configMap, [annotationId, spec]]));
 }
 
 export const $annotationService = stream(
+    'AnnotationService',
     vine => $annotationConfig.get(vine)
         .pipe(map(config => new AnnotationService(config))),
     globalThis,

@@ -12,7 +12,7 @@ import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl'
 import layoutOverlayTemplate from './layout-overlay.html';
 
 
-const $isActive = source(() => false);
+const $isActive = source('layout.isActive', () => false);
 
 const $ = {
   gridLeft: element('gridLeft', instanceofType(HTMLDivElement), {

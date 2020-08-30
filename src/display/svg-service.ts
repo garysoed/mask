@@ -52,13 +52,14 @@ function loadSvg(config: SvgConfig): Observable<string> {
   }
 }
 
-const $svgConfig = source<ReadonlyMap<string, SvgConfig>>(() => new Map());
+const $svgConfig = source<ReadonlyMap<string, SvgConfig>>('svgConfig', () => new Map());
 
 export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
   $svgConfig.set(vine, map => new Map([...map, [key, config]]));
 }
 
 export const $svgService = stream(
+    'SvgService',
     vine => $svgConfig.get(vine)
         .pipe(
           map(config => {
