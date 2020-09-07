@@ -3,7 +3,8 @@ import { attributeOut, element, PersonaContext, stringParser } from 'persona';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, DrawerMode, TextIconButton, ThemedCustomElementCtrl } from '../../export';
+import { $checkbox, $drawer, _p, Checkbox, Drawer as MaskDrawer, DrawerMode, ThemedCustomElementCtrl } from '../../export';
+import { TextIconButton } from '../../export/deprecated';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './drawer.html';

@@ -2,7 +2,8 @@ import { element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 
-import { $checkbox, $textIconButton, _p, Checkbox as MaskCheckbox, TextIconButton, ThemedCustomElementCtrl } from '../../export';
+import { $checkbox, _p, Checkbox as MaskCheckbox, ThemedCustomElementCtrl } from '../../export';
+import { $textIconButton, TextIconButton } from '../../export/deprecated';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './checkbox.html';

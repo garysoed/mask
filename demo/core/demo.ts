@@ -7,7 +7,8 @@ import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElemen
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $checkbox, $drawer, $rootLayout, $textIconButton, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
+import { $checkbox, $drawer, $rootLayout, _p, ACTION_EVENT, Checkbox, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
+import { $textIconButton } from '../../export/deprecated';
 import { $theme } from '../../src/app/app';
 
 import { COMPONENT_SPECS } from './component-spec';

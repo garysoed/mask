@@ -2,7 +2,8 @@ import { attributeIn, element, host, PersonaContext, stringParser } from 'person
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $drawer, $textIconButton, _p, Drawer, TextIconButton, ThemedCustomElementCtrl } from '../../export';
+import { $drawer, _p, Drawer, ThemedCustomElementCtrl } from '../../export';
+import { $textIconButton, TextIconButton } from '../../export/deprecated';
 
 import template from './demo-layout.html';
 

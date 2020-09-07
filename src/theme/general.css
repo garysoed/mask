@@ -1,3 +1,133 @@
+/***********
+ * Variables
+ ***********/
+ * {
+  --mkFontFamilyHeader: 'Montserrat', cursive;
+  --mkFontFamilyNormal: 'Lato', sans-serif;
+  --mkFontFamilyMono: 'Ubuntu Mono', monospace;
+
+  --mkFontWeightNormal: 400;
+  --mkFontWeightBold: 700;
+  --mkLineHeight: 2rem;
+
+  --mkSizePadding: 1rem;
+
+  --mkAnimationTime: .2s;
+
+  --mkGridColumn: 4rem;
+  --mkGridGap: 1rem;
+}
+
+/****************
+ * Applied themes
+ ****************/
+[mk-theme="light"],
+[mk-theme="dark"],
+[mk-theme-highlight],
+[mk-passive-1] {
+  --mkThemeBG: var(--mkThemePassiveBG1B);
+  --mkThemeFG: var(--mkThemePassiveFG1B);
+}
+
+[mk-theme="light"] [mk-passive-2],
+[mk-theme="light"][mk-passive-2],
+[mk-theme="dark"] [mk-passive-2],
+[mk-theme="dark"][mk-passive-2],
+[mk-theme-highlight] [mk-passive-2],
+[mk-theme-highlight][mk-passive-2],
+[mk-passive-2] {
+  --mkThemeBG: var(--mkThemePassiveBG2B);
+  --mkThemeFG: var(--mkThemePassiveFG2B);
+}
+
+[mk-theme="light"] [mk-action-1],
+[mk-theme="light"][mk-action-1],
+[mk-theme="dark"] [mk-action-1],
+[mk-theme="dark"][mk-action-1],
+[mk-theme-highlight] [mk-action-1],
+[mk-theme-highlight][mk-action-1],
+[mk-action-1] {
+  --mkThemeBG: var(--mkThemeActionBG1B);
+  --mkThemeFG: var(--mkThemeActionFG1B);
+}
+
+[mk-theme="light"] [mk-action-2],
+[mk-theme="light"][mk-action-2],
+[mk-theme="dark"] [mk-action-2],
+[mk-theme="dark"][mk-action-2],
+[mk-theme-highlight] [mk-action-2],
+[mk-theme-highlight][mk-action-2],
+[mk-action-2] {
+  --mkThemeBG: var(--mkThemeActionBG2B);
+  --mkThemeFG: var(--mkThemeActionFG2B);
+}
+
+[mk-theme="light"] [mk-action-1]:focus,
+[mk-theme="light"][mk-action-1]:focus,
+[mk-theme="dark"] [mk-action-1]:focus,
+[mk-theme="dark"][mk-action-1]:focus,
+[mk-theme-highlight] [mk-action-1]:focus,
+[mk-theme-highlight][mk-action-1]:focus,
+[mk-action-1]:focus {
+  --mkThemeBG: var(--mkThemeFocusBG1B);
+  --mkThemeFG: var(--mkThemeFocusFG1B);
+}
+
+[mk-theme="light"] [mk-action-2]:focus,
+[mk-theme="light"][mk-action-2]:focus,
+[mk-theme="dark"] [mk-action-2]:focus,
+[mk-theme="dark"][mk-action-2]:focus,
+[mk-theme-highlight] [mk-action-2]:focus,
+[mk-theme-highlight][mk-action-2]:focus,
+[mk-action-2]:focus {
+  --mkThemeBG: var(--mkThemeFocusBG2B);
+  --mkThemeFG: var(--mkThemeFocusFG2B);
+}
+
+[mk-theme="light"] [mk-action-1]:hover,
+[mk-theme="light"][mk-action-1]:hover,
+[mk-theme="dark"] [mk-action-1]:hover,
+[mk-theme="dark"][mk-action-1]:hover,
+[mk-theme-highlight] [mk-action-1]:hover,
+[mk-theme-highlight][mk-action-1]:hover,
+[mk-action-1]:hover {
+  --mkThemeBG: var(--mkThemeHoverBG1B);
+  --mkThemeFG: var(--mkThemeHoverFG1B);
+}
+
+[mk-theme="light"] [mk-action-2]:hover,
+[mk-theme="light"][mk-action-2]:hover,
+[mk-theme="dark"] [mk-action-2]:hover,
+[mk-theme="dark"][mk-action-2]:hover,
+[mk-theme-highlight] [mk-action-2]:hover,
+[mk-theme-highlight][mk-action-2]:hover,
+[mk-action-2]:hover {
+  --mkThemeBG: var(--mkThemeHoverBG2B);
+  --mkThemeFG: var(--mkThemeHoverFG2B);
+}
+
+[mk-theme="light"] [mk-action-1][mk-disabled],
+[mk-theme="light"][mk-action-1][mk-disabled],
+[mk-theme="dark"] [mk-action-1][mk-disabled],
+[mk-theme="dark"][mk-action-1][mk-disabled],
+[mk-theme-highlight] [mk-action-1][mk-disabled],
+[mk-theme-highlight][mk-action-1][mk-disabled],
+[mk-action-1][mk-disabled] {
+  --mkThemeBG: var(--mkThemeDisabledBG1B);
+  --mkThemeFG: var(--mkThemeDisabledFG1B);
+}
+
+[mk-theme="light"] [mk-action-2][mk-disabled],
+[mk-theme="light"][mk-action-2][mk-disabled],
+[mk-theme="dark"] [mk-action-2][mk-disabled],
+[mk-theme="dark"][mk-action-2][mk-disabled],
+[mk-theme-highlight] [mk-action-2][mk-disabled],
+[mk-theme-highlight][mk-action-2][mk-disabled],
+[mk-action-2][mk-disabled] {
+  --mkThemeBG: var(--mkThemeDisabledBG2B);
+  --mkThemeFG: var(--mkThemeDisabledFG2B);
+}
+
 /*************
  * Applied CSS
  *************/
@@ -352,6 +482,6 @@ dt {
 /* Themes */
 [mk-theme-highlight],
 [mk-theme] {
-  background: var(--mkThemePassiveBG);
-  color: var(--mkThemePassiveFG1);
+  background: var(--mkThemeBG);
+  color: var(--mkThemeFG);
 }

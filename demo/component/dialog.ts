@@ -3,7 +3,8 @@ import { element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
 import { switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $dialogService, $textIconButton, _p, Dialog as MaskDialog, TextIconButton, ThemedCustomElementCtrl } from '../../export';
+import { $dialogService, _p, Dialog as MaskDialog, ThemedCustomElementCtrl } from '../../export';
+import { $textIconButton, TextIconButton } from '../../export/deprecated';
 import { DemoLayout } from '../base/demo-layout';
 
 import template from './dialog.html';
