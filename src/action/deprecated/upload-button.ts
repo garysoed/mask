@@ -5,10 +5,10 @@ import { attributeIn, attributeOut, dispatcher, element, handler, hasAttribute, 
 import { merge, Observable } from 'rxjs';
 import { map, mapTo, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../app/app';
-import { ACTION_EVENT, ActionEvent } from '../event/action-event';
+import { _p } from '../../app/app';
+import { ACTION_EVENT, ActionEvent } from '../../event/action-event';
+import { $$ as $baseAction, BaseAction } from '../base-action';
 
-import { $$ as $baseAction, BaseAction } from './base-action';
 import { $$ as $textIconButton, TextIconButton } from './text-icon-button';
 import template from './upload-button.html';
 

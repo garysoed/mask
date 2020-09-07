@@ -8,7 +8,7 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 export const $$ = {
   api: {
-    disabled: hasAttribute('disabled'),
+    disabled: hasAttribute('mk-disabled'),
   },
 };
 

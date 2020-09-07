@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { _p, _v } from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
-import { $svgService, registerSvg } from '../../display/svg-service';
+import { $svgService, registerSvg } from '../../display-old/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 
 import layoutOverlayTemplate from './layout-overlay.html';

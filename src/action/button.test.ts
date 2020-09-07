@@ -5,7 +5,7 @@ import { fromEvent } from 'rxjs';
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 
-import { $, TextIconButton } from './text-icon-button';
+import { $, Button, $button } from './button';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -13,13 +13,13 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/action/button', init => {
   const _ = init(_ => {
-    const tester = testerFactory.build([TextIconButton], document);
-    const el = tester.createElement('mk-text-icon-button');
+    const tester = testerFactory.build([Button], document);
+    const el = tester.createElement($button.tag);
 
     return {el, tester};
   });
 
-  test('renderDispatchActions', _, init => {
+  test('onAction$', _, init => {
     const _ = init(_ => {
       const actionSubject = createSpySubject(fromEvent(_.el.element, 'mk-action'));
       return {..._, actionSubject};
@@ -52,106 +52,8 @@ test('@mask/action/button', init => {
     });
   });
 
-  test('renderHostAriaLabel', () => {
-    should(`render the aria label if given`, () => {
-      const newLabel = 'newLabel';
-      run(_.el.setAttribute($.host._.ariaLabelIn, newLabel));
-
-      assert(_.el.getAttribute($.host._.ariaLabelOut)).to.emitWith(newLabel);
-    });
-
-    should(`render the label if aria-label is not given`, () => {
-      const newLabel = 'newLabel';
-      run(_.el.setAttribute($.host._.label, newLabel));
-
-      assert(_.el.getAttribute($.host._.ariaLabelOut)).to.emitWith(newLabel);
-    });
-  });
-
-  test('renderIconMode', () => {
-    should(`render "action" if not primary, hovered, focused, or disabled`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, false));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, false));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('action');
-    });
-
-    should(`render "actionPrimary" if primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, true));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, false));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('actionPrimary');
-    });
-
-    should(`render "active" if active and not primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, false));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, true));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('active');
-    });
-
-    should(`render "active" if active and primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, true));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, true));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('active');
-    });
-
-    should(`render "focus" if hovered and not primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, false));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, false));
-      run(_.el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('focus');
-    });
-
-    should(`render "focus" if focused and not primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, false));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, false));
-      run(_.el.dispatchEvent($.host._.onFocus, new CustomEvent('focus')));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('focus');
-    });
-
-    should(`render "primaryFocus" if hovered and primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, true));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, false));
-      run(_.el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('primaryFocus');
-    });
-
-    should(`render "primaryFocus if focused and primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, true));
-      run(_.el.setHasAttribute($.host._.disabled, false));
-      run(_.el.setHasAttribute($.host._.active, false));
-      run(_.el.dispatchEvent($.host._.onFocus, new CustomEvent('focus')));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('primaryFocus');
-    });
-
-    should(`render "disabled" if disabled and not primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, false));
-      run(_.el.setHasAttribute($.host._.disabled, true));
-      run(_.el.setHasAttribute($.host._.active, false));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('disabled');
-    });
-
-    should(`render "primaryDisabled" if disabled and primary`, () => {
-      run(_.el.setHasAttribute($.host._.hasMkPrimary, true));
-      run(_.el.setHasAttribute($.host._.disabled, true));
-      run(_.el.setHasAttribute($.host._.active, false));
-
-      assert(_.el.getAttribute($.iconWithText._.mode)).to.emitWith('primaryDisabled');
-    });
+  test('isPrimaryAction$', () => {
+    should.only(`render mk-action-1 if primary`);
   });
 
   test('renderTabIndex', () => {

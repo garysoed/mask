@@ -10,10 +10,10 @@ import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
-import { $$ as $icon } from '../../display/icon';
-import { IconMode } from '../../display/icon-mode';
-import { IconWithText } from '../../display/icon-with-text';
-import { registerSvg } from '../../display/svg-service';
+import { $$ as $icon } from '../../display-old/icon';
+import { IconMode } from '../../display-old/icon-mode';
+import { IconWithText } from '../../display-old/icon-with-text';
+import { registerSvg } from '../../display-old/svg-service';
 
 import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 import template from './checkbox.html';

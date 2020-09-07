@@ -1,1 +1,1 @@
-export { TextIconButton, $$ as $textIconButton } from '../src/action/text-icon-button';
+export { TextIconButton, $$ as $textIconButton } from '../src/action/deprecated/text-icon-button';

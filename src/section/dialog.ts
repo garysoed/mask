@@ -5,11 +5,11 @@ import { classlist, element, onDom, PersonaContext, renderElement, single, textC
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
+import { $$ as $textIconButton, TextIconButton } from '../action/deprecated/text-icon-button';
 import { _p } from '../app/app';
 import dialogCloseSvg from '../asset/dialog_close.svg';
 import dialogConfirmSvg from '../asset/dialog_confirm.svg';
-import { registerSvg } from '../display/svg-service';
+import { registerSvg } from '../display-old/svg-service';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 

@@ -3,7 +3,7 @@ import { PersonaTesterFactory } from 'persona/export/testing';
 import { map, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
-import { IconMode } from '../../display/icon-mode';
+import { IconMode } from '../../display-old/icon-mode';
 
 import { Value } from './base-input';
 import { $, Checkbox, CheckedValue } from './checkbox';

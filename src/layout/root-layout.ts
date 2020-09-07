@@ -2,7 +2,7 @@ import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, me
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
-import { $$ as $textIconButton, TextIconButton } from '../action/text-icon-button';
+import { $$ as $textIconButton, TextIconButton } from '../action/deprecated/text-icon-button';
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { $$ as $drawer, Drawer } from '../section/drawer';

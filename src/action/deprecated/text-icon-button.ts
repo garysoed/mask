@@ -13,11 +13,11 @@ import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute,
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../app/app';
-import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
-import { ACTION_EVENT, ActionEvent } from '../event/action-event';
+import { _p } from '../../app/app';
+import { $$ as $iconWithText, IconWithText } from '../../display-old/icon-with-text';
+import { ACTION_EVENT, ActionEvent } from '../../event/action-event';
+import { $$ as $baseAction, BaseAction } from '../base-action';
 
-import { $$ as $baseAction, BaseAction } from './base-action';
 import textButtonTemplate from './text-icon-button.html';
 
 

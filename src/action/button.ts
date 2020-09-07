@@ -10,16 +10,15 @@
  */
 
 import { cache } from 'gs-tools/export/data';
-import { AriaRole, attributeIn, attributeOut, dispatcher, element, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, dispatcher, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, setAttribute, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, startWith, throttleTime, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, throttleTime, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
-import { $$ as $iconWithText, IconWithText } from '../display/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 
 import { $$ as $baseAction, BaseAction } from './base-action';
-import textButtonTemplate from './text-icon-button.html';
+import template from './button.html';
 
 
 const THROTTLE_MS = 500;
@@ -30,13 +29,7 @@ export const $button = {
     ...$baseAction.api,
     // TODO: Add autocomplete option.
     actionEvent: dispatcher(ACTION_EVENT),
-    active: hasAttribute('active'),
-    ariaLabelIn: attributeIn('aria-label', stringParser(), ''),
-    ariaLabelOut: attributeOut('aria-label', stringParser()),
-    disabled: hasAttribute('disabled'),
-    hasMkPrimary: hasAttribute('mk-primary'),
-    icon: attributeIn('icon', stringParser(), ''),
-    label: attributeIn('label', stringParser(), ''),
+    isSecondary: hasAttribute('is-secondary'),
     tabindex: attributeOut('tabindex', integerParser()),
   },
 };
@@ -44,12 +37,10 @@ export const $button = {
 export const $ = {
   host: host({
     ...$button.api,
-    onBlur: onDom('blur'),
+    action1: setAttribute('mk-action-1'),
+    action2: setAttribute('mk-action-2'),
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
-    onFocus: onDom('focus'),
-    onMouseEnter: onDom('mouseenter'),
-    onMouseLeave: onDom('mouseleave'),
     onSpaceDown: onKeydown(' '),
     role: attributeOut('role', stringParser()),
   }),
@@ -57,30 +48,25 @@ export const $ = {
 
 @_p.customElement({
   ...$button,
-  template: textButtonTemplate,
+  template,
 })
-export class TextIconButton extends BaseAction {
-  private readonly ariaLabel$ = this.declareInput($.host._.ariaLabelIn);
-  private readonly label$ = this.declareInput($.host._.label);
-  private readonly onClick$ = this.declareInput($.host._.onClick);
-  private readonly onEnterDown$ = this.declareInput($.host._.onEnterDown);
-  private readonly onSpaceDown$ = this.declareInput($.host._.onSpaceDown);
-
+export class Button extends BaseAction {
   constructor(context: PersonaContext) {
     super(noop(), context);
 
     this.render($.host._.role, observableOf(AriaRole.BUTTON));
     this.render($.host._.actionEvent, this.onAction$);
-    this.render($.host._.ariaLabelOut, this.hostAriaLabel$);
     this.render($.host._.tabindex, this.tabIndex$);
+    this.render($.host._.action1, this.isSecondaryAction$.pipe(map(isSecondary => !isSecondary)));
+    this.render($.host._.action2, this.isSecondaryAction$);
   }
 
   @cache()
   private get onAction$(): Observable<ActionEvent<void>> {
     return merge(
-            this.onClick$,
-            this.onEnterDown$,
-            this.onSpaceDown$,
+            this.declareInput($.host._.onClick),
+            this.declareInput($.host._.onEnterDown),
+            this.declareInput($.host._.onSpaceDown),
         )
         .pipe(
             throttleTime(THROTTLE_MS),
@@ -91,12 +77,8 @@ export class TextIconButton extends BaseAction {
   }
 
   @cache()
-  private get hostAriaLabel$(): Observable<string> {
-    return combineLatest([this.ariaLabel$, this.label$])
-        .pipe(
-            map(([hostAriaLabel, hostLabel]) => hostAriaLabel || hostLabel),
-            distinctUntilChanged(),
-        );
+  private get isSecondaryAction$(): Observable<boolean> {
+    return this.declareInput($.host._.isSecondary);
   }
 
   @cache()

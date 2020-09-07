@@ -2,7 +2,7 @@ import { arrayThat, assert, createSpySubject, run, setThat, should, test } from 
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
-import { TextIconButton } from '../action/text-icon-button';
+import { TextIconButton } from '../action/deprecated/text-icon-button';
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 

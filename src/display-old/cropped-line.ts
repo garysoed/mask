@@ -15,7 +15,7 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import croppedLineTemplate from './cropped-line.html';
 
-const $$ = {
+export const $croppedLine = {
   api: {
     text: attributeIn('text', stringParser(), ''),
   },
@@ -26,7 +26,7 @@ export const $ = {
   container: element('container', instanceofType(HTMLDivElement), {
     onCopy: onDom<ClipboardEvent>('copy'),
   }),
-  host: host($$.api),
+  host: host($croppedLine.api),
   postfix: element('postfix', instanceofType(HTMLElement), {
     text: textContent(),
   }),
@@ -38,7 +38,7 @@ export const $ = {
 const MAX_POSTFIX_LENGTH = 3;
 
 @_p.customElement({
-  ...$$,
+  ...$croppedLine,
   template: croppedLineTemplate,
 })
 export class CroppedLine extends ThemedCustomElementCtrl {

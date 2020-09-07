@@ -18,9 +18,9 @@
   --mkGridGap: 1rem;
 }
 
-/****************
- * Applied themes
- ****************/
+/*****************
+ * Theme variables
+ *****************/
 [mk-theme="light"],
 [mk-theme="dark"],
 [mk-theme-highlight],
@@ -126,6 +126,19 @@
 [mk-action-2][mk-disabled] {
   --mkThemeBG: var(--mkThemeDisabledBG2B);
   --mkThemeFG: var(--mkThemeDisabledFG2B);
+}
+
+/****************
+ * Applied themes
+ ****************/
+[mk-theme-highlight],
+[mk-theme],
+[mk-action-1],
+[mk-action-2],
+[mk-body-1],
+[mk-body-2] {
+  background: var(--mkThemeBG);
+  color: var(--mkThemeFG);
 }
 
 /*************
@@ -477,11 +490,4 @@ dt {
       inset 0 3px 4px 0 rgba(0,0,0,.14),
       inset 1.5px 3px 3px -2px rgba(0,0,0,.12);
   pointer-events: none;
-}
-
-/* Themes */
-[mk-theme-highlight],
-[mk-theme] {
-  background: var(--mkThemeBG);
-  color: var(--mkThemeFG);
 }
