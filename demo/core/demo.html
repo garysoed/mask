@@ -69,17 +69,26 @@
           mode="vertical"
           shadow="down"
       >
-        <div id="drawerContent">
-          <mk-icon-with-text label="Settings" icon="settings"></mk-icon-with-text>
+        <div id="drawerContent" mk-body-1>
+          <mk-list-item-layout>
+            <mk-icon icon="settings" slot="bullet"></mk-icon>
+            <p slot="label">Settings</p>
+          </mk-list-item-layout>
           <div id="basePaletteSection">
-            <mk-icon-with-text icon="palette" label="Base Palette"></mk-icon-with-text>
+            <mk-list-item-layout>
+              <mk-icon icon="palette" slot="bullet"></mk-icon>
+              <p slot="label">Base Palette</p>
+            </mk-list-item-layout>
             <div id="basePalette" shadow="down">
               <!-- content -->
             </div>
           </div>
 
           <div id="accentPaletteSection">
-            <mk-icon-with-text icon="highlight" label="Accent Palette"></mk-icon-with-text>
+            <mk-list-item-layout>
+              <mk-icon icon="highlight" slot="bullet"></mk-icon>
+              <p slot="label">Accent Palette</p>
+            </mk-list-item-layout>
             <div id="accentPalette" shadow="down">
               <!-- content -->
             </div>

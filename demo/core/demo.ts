@@ -7,9 +7,10 @@ import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElemen
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $button, $checkbox, $drawer, $rootLayout, _p, ACTION_EVENT, Button, Checkbox, CroppedLine, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
+import { $button, $checkbox, $drawer, $rootLayout, _p, ACTION_EVENT, Button, Checkbox, CroppedLine, Drawer, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
 import { $theme } from '../../src/app/app';
 import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
+import { ListItemLayout } from '../../src/layout/list-item-layout';
 
 import { COMPONENT_SPECS } from './component-spec';
 import template from './demo.html';
@@ -55,9 +56,9 @@ const COMPONENT_PATH_ATTR = 'path';
     Checkbox,
     CroppedLine,
     Drawer,
-    IconWithText,
     LayoutOverlay,
     LineLayout,
+    ListItemLayout,
     RootLayout,
   ],
   tag: 'mkd-demo',
