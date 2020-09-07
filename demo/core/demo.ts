@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged, filter, map, mapTo, switchMap, tap,
 
 import { $button, $checkbox, $drawer, $rootLayout, _p, ACTION_EVENT, Button, Checkbox, CroppedLine, Drawer, IconWithText, LayoutOverlay, Palette, RootLayout, ThemedCustomElementCtrl } from '../../export';
 import { $theme } from '../../src/app/app';
-import { $line, Line } from '../../src/display/line';
+import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
 
 import { COMPONENT_SPECS } from './component-spec';
 import template from './demo.html';
@@ -57,7 +57,7 @@ const COMPONENT_PATH_ATTR = 'path';
     Drawer,
     IconWithText,
     LayoutOverlay,
-    Line,
+    LineLayout,
     RootLayout,
   ],
   tag: 'mkd-demo',
@@ -136,7 +136,7 @@ export class Demo extends ThemedCustomElementCtrl {
           {
             attrs: new Map([[COMPONENT_PATH_ATTR, observableOf(`${path}`)]]),
             children: renderCustomElement(
-                $line,
+                $lineLayout,
                 {
                   attrs: new Map([
                     ['mk-body-1', observableOf('')],
