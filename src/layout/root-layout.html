@@ -35,9 +35,15 @@
       max-size="16rem"
       min-size="4rem"
       mk-theme-highlight
-      mode="vertical">
+      mode="vertical"
+      mk-body-1>
     <div id="drawerSection" fill-parent layout="column" shadow="down">
-      <mk-text-icon-button id="title"></mk-text-icon-button>
+      <mk-button id="titleButton">
+        <mk-list-item-layout>
+          <mk-icon slot="bullet" id="mainIcon"></mk-icon>
+          <p slot="label" id="title"></p>
+        </mk-list-item-layout>
+      </mk-button>
       <slot id="drawerSlot" name="drawer"></slot>
     </div>
   </mk-drawer>

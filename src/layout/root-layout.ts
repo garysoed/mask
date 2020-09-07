@@ -1,18 +1,22 @@
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser } from 'persona';
+import { instanceofType } from 'gs-types';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
-import { $$ as $textIconButton, TextIconButton } from '../action/deprecated/text-icon-button';
+import { $icon } from '../../export';
+import { $button, Button } from '../action/button';
 import { _p } from '../app/app';
+import { IconWithText } from '../display-old/icon-with-text';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { $$ as $drawer, Drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
+import { ListItemLayout } from './list-item-layout';
 import template from './root-layout.html';
 
 
-export const $$ = {
+export const $rootLayout = {
   api: {
     drawerExpanded: attributeOut('drawer-expanded', booleanParser()),
     icon: attributeIn('icon', stringParser(), ''),
@@ -27,27 +31,29 @@ export const $ = {
     onMouseOut: onDom('mouseout'),
     onMouseOver: onDom('mouseover'),
   }),
-  host: host($$.api),
-  title: element('title', $textIconButton, {}),
+  host: host($rootLayout.api),
+  mainIcon: element('mainIcon', $icon, {}),
+  title: element('title', instanceofType(HTMLParagraphElement), {
+    textContent: textContent(),
+  }),
+  titleButton: element('titleButton', $button, {}),
 };
 export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`);
 
 @_p.customElement({
-  ...$$,
+  ...$rootLayout,
   dependencies: [
+    Button,
     Drawer,
-    TextIconButton,
+    IconWithText,
+    ListItemLayout,
   ],
   template,
 })
 export class RootLayout extends ThemedCustomElementCtrl {
-  private readonly hostIcon$ = this.declareInput($.host._.icon);
-  private readonly hostLabel$ = this.declareInput($.host._.label);
   private readonly isDrawerOpen$ = new BehaviorSubject(false);
   private readonly onMouseOut$ = this.declareInput($.drawer._.onMouseOut);
   private readonly onMouseOver$ = this.declareInput($.drawer._.onMouseOver);
-  private readonly onTitleClick$ = this.declareInput($.title._.actionEvent);
-  private readonly qIsDesktop$ = this.declareInput($qIsDesktop);
 
   constructor(context: PersonaContext) {
     super(context);
@@ -55,13 +61,13 @@ export class RootLayout extends ThemedCustomElementCtrl {
     this.addSetup(this.setupHandleDrawerExpandCollapse());
     this.render($.host._.drawerExpanded, this.isDrawerOpen$);
     this.render($.drawer._.expanded, this.isDrawerOpen$);
-    this.render($.title._.label, this.hostLabel$);
-    this.render($.title._.icon, this.hostIcon$);
+    this.render($.title._.textContent, this.declareInput($.host._.label));
+    this.render($.mainIcon._.icon, this.declareInput($.host._.icon));
     this.render($.host._.onTitleClick, this.renderOnTitleClick());
   }
 
   private renderOnTitleClick(): Observable<ActionEvent<void>> {
-    return this.onTitleClick$.pipe(
+    return this.declareInput($.titleButton._.actionEvent).pipe(
         map(() => new ActionEvent(undefined)),
     );
   }
@@ -76,7 +82,7 @@ export class RootLayout extends ThemedCustomElementCtrl {
             startWith(false),
             distinctUntilChanged(),
         ),
-        this.qIsDesktop$,
+        this.declareInput($qIsDesktop),
       ])
       .pipe(
           map(([mouseHover, isDesktop]) => mouseHover || isDesktop),

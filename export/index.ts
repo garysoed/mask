@@ -16,9 +16,9 @@ export { $dialogService, $dialogState, DialogResult, DialogService } from '../sr
 export { $$ as $icon, Icon } from '../src/display-old/icon';
 export { IconWithText, $$ as $iconWithText } from '../src/display-old/icon-with-text';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';
-export { ListItem, $$ as $listItem } from '../src/layout/list-item';
+export { ListItem, $$ as $listItem } from '../src/layout/deprecated/list-item';
 export { Palette } from '../src/theme/palette';
-export { RootLayout, $$ as $rootLayout } from '../src/layout/root-layout';
+export { RootLayout, $rootLayout } from '../src/layout/root-layout';
 export { $theme, start } from '../src/app/app';
 export { SvgConfig } from '../src/display-old/svg-config';
 export { $svgService, SvgService } from '../src/display-old/svg-service';

@@ -3,9 +3,9 @@ import { attributeIn, attributeOut, classToggle, element, hasAttribute, host, on
 import { combineLatest, merge, Observable } from 'rxjs';
 import { map, mapTo, startWith } from 'rxjs/operators';
 
-import { _p } from '../app/app';
-import { $$ as $icon, Icon } from '../display-old/icon';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../../app/app';
+import { $$ as $icon, Icon } from '../../display-old/icon';
+import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
 
 import template from './list-item.html';
 
