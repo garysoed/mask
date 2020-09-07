@@ -5,9 +5,9 @@ import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
+import { registerSvg } from '../core/svg-service';
 
-import { $, Icon } from './icon';
-import { registerSvg } from './svg-service';
+import { $, $icon, Icon } from './icon';
 
 
 const SVG_NAME = 'svgName';
@@ -31,12 +31,12 @@ test('display.Icon', init => {
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);
     fakeFetch.install(window);
 
-    const el = tester.createElement('mk-icon');
+    const el = tester.createElement($icon.tag);
 
     return {el, mockInnerHtmlParseService, svgEl$, tester, fakeFetch};
   });
 
-  test('renderRootInnerHtml', () => {
+  test('rootSvg$', () => {
     should(`set the innerHTML correctly`, () => {
       const svgEl = document.createElement('svg');
       _.svgEl$.next(svgEl);

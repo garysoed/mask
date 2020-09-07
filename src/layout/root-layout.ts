@@ -3,10 +3,9 @@ import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, me
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
-import { $icon } from '../../export';
 import { $button, Button } from '../action/button';
 import { _p } from '../app/app';
-import { IconWithText } from '../display-old/icon-with-text';
+import { $icon, Icon } from '../display/icon';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { $$ as $drawer, Drawer } from '../section/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
@@ -45,7 +44,7 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
   dependencies: [
     Button,
     Drawer,
-    IconWithText,
+    Icon,
     ListItemLayout,
   ],
   template,

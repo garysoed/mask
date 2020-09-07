@@ -9,7 +9,7 @@ import { $$ as $textIconButton, TextIconButton } from '../action/deprecated/text
 import { _p } from '../app/app';
 import dialogCloseSvg from '../asset/dialog_close.svg';
 import dialogConfirmSvg from '../asset/dialog_confirm.svg';
-import { registerSvg } from '../display-old/svg-service';
+import { registerSvg } from '../core/svg-service';
 import { ACTION_EVENT } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 

@@ -7,9 +7,9 @@
  * @slot The glyph of the icon to display.
  */
 
+import { cache } from 'gs-tools/export/data';
 import { filterDefined } from 'gs-tools/export/rxjs';
-import { stringMatchConverter, typeBased } from 'gs-tools/export/serializer';
-import { getAllValues } from 'gs-tools/export/typescript';
+import { typeBased } from 'gs-tools/export/serializer';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
 import { AriaRole, attributeIn, attributeOut, element, host, PersonaContext, renderHtml, single, stringParser } from 'persona';
@@ -17,24 +17,22 @@ import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
+import { $svgService } from '../core/svg-service';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
-import { IconMode } from './icon-mode';
-import iconTemplate from './icon.html';
-import { $svgService } from './svg-service';
+import template from './icon.html';
 
 
-export const $$ = {
+export const $icon = {
   api: {
     icon: attributeIn('icon', stringParser(), ''),
-    mode: attributeIn('mode', stringMatchConverter(getAllValues<IconMode>(IconMode))),
   },
   tag: 'mk-icon',
 };
 
 export const $ = {
   host: host({
-    ...$$.api,
+    ...$icon.api,
     ariaHidden: attributeOut(
         'aria-hidden',
         compose<boolean, Serializable, string>(typeBased(booleanType), json()),
@@ -48,8 +46,8 @@ export const $ = {
 };
 
 @_p.customElement({
-  ...$$,
-  template: iconTemplate,
+  ...$icon,
+  template,
 })
 export class Icon extends ThemedCustomElementCtrl {
   private readonly icon$ = this.declareInput($.host._.icon);
@@ -59,10 +57,11 @@ export class Icon extends ThemedCustomElementCtrl {
 
     this.render($.host._.ariaHidden, observableOf(true));
     this.render($.host._.role, observableOf(AriaRole.PRESENTATION));
-    this.render($.root._.content, this.renderRootInnerHtml());
+    this.render($.root._.content, this.rootSvg$);
   }
 
-  private renderRootInnerHtml(): Observable<Node|null> {
+  @cache()
+  private get rootSvg$(): Observable<Node|null> {
     return combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),

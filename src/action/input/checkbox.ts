@@ -10,10 +10,10 @@ import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
-import { $$ as $icon } from '../../display-old/icon';
+import { registerSvg } from '../../core/svg-service';
 import { IconMode } from '../../display-old/icon-mode';
 import { IconWithText } from '../../display-old/icon-with-text';
-import { registerSvg } from '../../display-old/svg-service';
+import { $icon } from '../../display/icon';
 
 import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 import template from './checkbox.html';
@@ -126,7 +126,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
     this.addSetup(this.setupOnInput());
     this.render($.checkmark._.icon, this.value$.pipe(map(({value}) => value)));
-    this.render($.checkmark._.mode, this.renderIconMode());
+    // this.render($.checkmark._.mode, this.renderIconMode());
     this.render($.container._.hasText, this.renderHasText());
   }
 

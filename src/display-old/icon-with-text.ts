@@ -15,9 +15,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
+import { $icon, Icon } from '../display/icon';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
-import { $$ as $icon, Icon } from './icon';
 import iconWithTextTemplate from './icon-with-text.html';
 
 
