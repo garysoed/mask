@@ -44,8 +44,8 @@ const $ = {
     onAction: onDom(ACTION_EVENT),
   }),
   settingsDrawer: element('settingsDrawer', $drawer, {
-    onMouseOut: onDom('mouseout'),
-    onMouseOver: onDom('mouseover'),
+    onMouseEnter: onDom('mouseenter'),
+    onMouseLeave: onDom('mouseleave'),
   }),
 };
 
@@ -71,8 +71,6 @@ const COMPONENT_PATH_ATTR = 'path';
 export class Demo extends ThemedCustomElementCtrl {
   // private readonly onDrawerRootClick$ = this.declareInput($.components._.onClick);
   private readonly onRootLayoutAction$ = this.declareInput($.rootLayout._.onAction);
-  private readonly onSettingsDrawerMouseOut$ = this.declareInput($.settingsDrawer._.onMouseOut);
-  private readonly onSettingsDrawerMouseOver$ = this.declareInput($.settingsDrawer._.onMouseOver);
 
   constructor(context: PersonaContext) {
     super(context);
@@ -221,8 +219,8 @@ export class Demo extends ThemedCustomElementCtrl {
 
   private renderSettingsDrawerExpanded(): Observable<boolean> {
     return merge(
-        this.onSettingsDrawerMouseOut$.pipe(debounceTime(100), mapTo(false)),
-        this.onSettingsDrawerMouseOver$.pipe(debounceTime(100), mapTo(true)),
+        this.declareInput($.settingsDrawer._.onMouseLeave).pipe(mapTo(false)),
+        this.declareInput($.settingsDrawer._.onMouseEnter).pipe(mapTo(true)),
     )
     .pipe(
         distinctUntilChanged(),

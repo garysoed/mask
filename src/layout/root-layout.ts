@@ -1,7 +1,7 @@
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent } from 'persona';
 import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
 
 import { $button, Button } from '../action/button';
 import { _p } from '../app/app';
@@ -27,8 +27,8 @@ export const $rootLayout = {
 
 export const $ = {
   drawer: element('drawer', $drawer, {
-    onMouseOut: onDom('mouseout'),
-    onMouseOver: onDom('mouseover'),
+    onMouseLeave: onDom('mouseleave'),
+    onMouseEnter: onDom('mouseenter'),
   }),
   host: host($rootLayout.api),
   mainIcon: element('mainIcon', $icon, {}),
@@ -51,8 +51,6 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
 })
 export class RootLayout extends ThemedCustomElementCtrl {
   private readonly isDrawerOpen$ = new BehaviorSubject(false);
-  private readonly onMouseOut$ = this.declareInput($.drawer._.onMouseOut);
-  private readonly onMouseOver$ = this.declareInput($.drawer._.onMouseOver);
 
   constructor(context: PersonaContext) {
     super(context);
@@ -74,8 +72,8 @@ export class RootLayout extends ThemedCustomElementCtrl {
   private setupHandleDrawerExpandCollapse(): Observable<unknown> {
     return combineLatest([
         merge(
-            this.onMouseOut$.pipe(debounceTime(100), mapTo(false)),
-            this.onMouseOver$.pipe(debounceTime(100), mapTo(true)),
+            this.declareInput($.drawer._.onMouseLeave).pipe(mapTo(false)),
+            this.declareInput($.drawer._.onMouseEnter).pipe(mapTo(true)),
         )
         .pipe(
             startWith(false),

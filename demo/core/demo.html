@@ -16,14 +16,8 @@
     overflow: hidden;
   }
 
-  #drawerRoot {
-    height: 0%;
-    transition: height var(--mkAnimationTime);
-  }
-
-  #rootLayout[drawer-expanded="T"] #drawerRoot {
-    height: 100%;
-    transition: height var(--mkAnimationTime);
+  #rootLayout[drawer-expanded="F"] #drawerRoot {
+    display: none;
   }
 
   #content {

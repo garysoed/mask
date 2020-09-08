@@ -1,4 +1,4 @@
-import { assert, mockTime, run, should, test } from 'gs-testing';
+import { assert, run, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
@@ -17,22 +17,19 @@ test('layout.RootLayout', init => {
 
   test('handleDrawerExpandCollapse', () => {
     should(`open the drawer if hovered`, () => {
-      run(_.el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')));
+      run(_.el.dispatchEvent($.drawer._.onMouseEnter, new CustomEvent('mouseenter')));
 
-      _.tester.fakeTime.tick(100);
 
       assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
       assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(true);
     });
 
     should(`collapse the drawer if not hovered and is not desktop`, () => {
-      run(_.el.dispatchEvent($.drawer._.onMouseOver, new CustomEvent('mouseover')));
-      _.tester.fakeTime.tick(100);
+      run(_.el.dispatchEvent($.drawer._.onMouseEnter, new CustomEvent('mouseenter')));
 
       assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(true);
 
-      run(_.el.dispatchEvent($.drawer._.onMouseOut, new CustomEvent('mouseout')));
-      _.tester.fakeTime.tick(100);
+      run(_.el.dispatchEvent($.drawer._.onMouseLeave, new CustomEvent('mouseleave')));
 
       assert(_.el.getAttribute($.drawer._.expanded)).to.emitWith(false);
       assert(_.el.getAttribute($.host._.drawerExpanded)).to.emitWith(false);
