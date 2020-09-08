@@ -17,7 +17,7 @@
   }
 </style>
 
-<div fill-parent layout="column">
+<div fill-parent layout="column" mk-body-1>
   <div flex id="playContainer">
     <slot name="play"></slot>
   </div>
@@ -28,11 +28,12 @@
       mode="horizontal"
   >
     <div id="drawerRoot" layout="column">
-      <mk-text-icon-button
-          id="detailsButton"
-          label="Details"
-          mk-theme-highlight
-      >
+      <mk-button id="detailsButton" mk-theme-highlight>
+        <mk-list-item-layout>
+          <mk-icon id="bulletIcon" slot="bullet"></mk-icon>
+          <mk-line-layout id="detailsLabel" slot="details">Details</mk-line-layout>
+        </mk-list-item-layout>
+      </mk-button>
       </mk-text-icon-button>
       <div flex id="docsContainer">
         <slot name="docs"></slot>

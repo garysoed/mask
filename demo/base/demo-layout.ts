@@ -1,11 +1,18 @@
-import { attributeIn, element, host, PersonaContext, stringParser } from 'persona';
+import { cache } from 'gs-tools/export/data';
+import { attributeIn, element, host, PersonaContext, stringParser, textContent } from 'persona';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $drawer, _p, Drawer, ThemedCustomElementCtrl } from '../../export';
-import { $textIconButton, TextIconButton } from '../../export/deprecated';
+import { $button, Button } from '../../src/action/button';
+import { _p } from '../../src/app/app';
+import { $icon } from '../../src/display/icon';
+import { $lineLayout } from '../../src/layout/line-layout';
+import { ListItemLayout } from '../../src/layout/list-item-layout';
+import { $drawer, Drawer } from '../../src/section/drawer';
+import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
 import template from './demo-layout.html';
+
 
 const $$ = {
   api: {
@@ -15,49 +22,56 @@ const $$ = {
 };
 
 const $ = {
-  detailsButton: element('detailsButton', $textIconButton, {}),
+  bulletIcon: element('bulletIcon', $icon, {}),
+  detailsButton: element('detailsButton', $button, {}),
   detailsDrawer: element('detailsDrawer', $drawer, {}),
+  detailsLabel: element('detailsLabel', $lineLayout, {
+    textContent: textContent(),
+  }),
   host: host($$.api),
 };
 
 @_p.customElement({
   ...$$,
   dependencies: [
+    Button,
     Drawer,
-    TextIconButton,
+    ListItemLayout,
   ],
   template,
 })
 export class DemoLayout extends ThemedCustomElementCtrl {
-  private readonly hostLabel$ = this.declareInput($.host._.label);
   private readonly isDrawerExpanded$ = new BehaviorSubject(false);
-  private readonly onDetailsButtonClick$ = this.declareInput($.detailsButton._.actionEvent);
 
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.detailsButton._.icon, this.renderDetailsButtonIcon());
-    this.render($.detailsButton._.label, this.renderDetailsButtonLabel());
-    this.render($.detailsDrawer._.expanded, this.renderDetailsDrawerExpanded());
-    this.addSetup(this.setupOnDetailsButtonClick());
+    this.render($.bulletIcon._.icon, this.bulletIcon$);
+    this.render($.detailsLabel._.textContent, this.detailsButtonLabel$);
+    this.render($.detailsDrawer._.expanded, this.detailsDrawerExpanded$);
+    this.addSetup(this.onDetailsButtonClick$);
   }
 
-  private renderDetailsButtonIcon(): Observable<string> {
+  @cache()
+  private get bulletIcon$(): Observable<string> {
     return this.isDrawerExpanded$.pipe(
         map(isExpanded => isExpanded ? 'chevrondown' : 'chevronup'),
     );
   }
 
-  private renderDetailsButtonLabel(): Observable<string> {
-    return this.hostLabel$.pipe(map(label => `Details: ${label}`));
+  @cache()
+  private get detailsButtonLabel$(): Observable<string> {
+    return this.declareInput($.host._.label).pipe(map(label => `Details: ${label}`));
   }
 
-  private renderDetailsDrawerExpanded(): Observable<boolean> {
+  @cache()
+  private get detailsDrawerExpanded$(): Observable<boolean> {
     return this.isDrawerExpanded$;
   }
 
-  private setupOnDetailsButtonClick(): Observable<unknown> {
-    return this.onDetailsButtonClick$
+  @cache()
+  private get onDetailsButtonClick$(): Observable<unknown> {
+    return this.declareInput($.detailsButton._.actionEvent)
         .pipe(
             withLatestFrom(this.isDrawerExpanded$),
             tap(([, isExpanded]) => {

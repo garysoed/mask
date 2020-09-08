@@ -26,7 +26,7 @@ export enum Mode {
   VERTICAL = 'vertical',
 }
 
-export const $$ = {
+export const $drawer = {
   api: {
     expanded: attributeIn('expanded', booleanParser(), false),
     maxSize: attributeIn('max-size', stringParser(), ''),
@@ -42,7 +42,7 @@ export const $$ = {
 
 export const $ = {
   host: host({
-    ...$$.api,
+    ...$drawer.api,
     styleHeight: style('height'),
     styleOverflow: style('overflow'),
     styleWidth: style('width'),
@@ -51,7 +51,7 @@ export const $ = {
 };
 
 @_p.customElement({
-  ...$$,
+  ...$drawer,
   template: drawerTemplate,
 })
 export class Drawer extends ThemedCustomElementCtrl {

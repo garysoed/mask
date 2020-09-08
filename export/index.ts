@@ -18,7 +18,7 @@ export { Checkbox, $$ as $checkbox, CheckedValue } from '../src/action/input/che
 // display
 export { $icon, Icon } from '../src/display/icon';
 
-export { Drawer, Mode as DrawerMode, $$ as $drawer } from '../src/section/drawer';
+export { Drawer, Mode as DrawerMode, $drawer as $drawer } from '../src/section/drawer';
 export { Breadcrumb, $$ as $breadcrumb, CrumbData } from '../src/display-old/breadcrumb';
 export { addAnnotationSpec } from '../src/display-old/annotation-service';
 export { newBuilder as newAnnotationSpec, RenderFn as AnnotationRenderFn } from '../src/display-old/annotation-spec';
