@@ -12,16 +12,16 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #components {
+  #drawerRoot {
     overflow: hidden;
   }
 
-  #components {
+  #drawerRoot {
     height: 0%;
     transition: height var(--mkAnimationTime);
   }
 
-  #rootLayout[drawer-expanded="T"] #components {
+  #rootLayout[drawer-expanded="T"] #drawerRoot {
     height: 100%;
     transition: height var(--mkAnimationTime);
   }
@@ -52,9 +52,10 @@
 <section id="root" layout="row" mk-theme="dark" fill-parent>
   <mk-root-layout icon="logo" id="rootLayout" label="Mask: Demo">
     <div id="drawerRoot" slot="drawer">
-      <div id="components">
-        <!-- componentButtons -->
-      </div>
+      <mk-line-layout mk-body-2>
+        General
+      </mk-line-layout>
+      <!-- #generalContents -->
     </div>
 
     <div id="main" layout="row" slot="main">

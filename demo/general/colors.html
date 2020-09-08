@@ -1,0 +1,336 @@
+<style>
+  tr > td:first-child {
+    padding-right: 2rem;
+    text-align: end;
+  }
+
+  #col1 {
+    width: 16rem;
+  }
+
+  #col2, #col3, #col4, #col5 {
+    width: 12rem;
+  }
+
+  tbody tr {
+    height: 8em;
+  }
+
+  thead th {
+    text-align: center;
+  }
+
+  .action-1 {
+    --mkThemeFG: var(--mkThemeActionFG1B);
+    --mkThemeBG: var(--mkThemeActionBG1B);
+  }
+
+  .action-2 {
+    --mkThemeFG: var(--mkThemeActionFG2B);
+    --mkThemeBG: var(--mkThemeActionBG2B);
+  }
+
+  .action-1h {
+    --mkThemeFG: var(--mkThemeActionFG1H);
+    --mkThemeBG: var(--mkThemeActionBG1H);
+  }
+
+  .action-2h {
+    --mkThemeFG: var(--mkThemeActionFG2H);
+    --mkThemeBG: var(--mkThemeActionBG2H);
+  }
+
+  .focus-1 {
+    --mkThemeFG: var(--mkThemeFocusFG1B);
+    --mkThemeBG: var(--mkThemeFocusBG1B);
+  }
+
+  .focus-2 {
+    --mkThemeFG: var(--mkThemeFocusFG2B);
+    --mkThemeBG: var(--mkThemeFocusBG2B);
+  }
+
+  .focus-1h {
+    --mkThemeFG: var(--mkThemeFocusFG1H);
+    --mkThemeBG: var(--mkThemeFocusBG1H);
+  }
+
+  .focus-2h {
+    --mkThemeFG: var(--mkThemeFocusFG2H);
+    --mkThemeBG: var(--mkThemeFocusBG2H);
+  }
+
+  .hover-1 {
+    --mkThemeFG: var(--mkThemeHoverFG1B);
+    --mkThemeBG: var(--mkThemeHoverBG1B);
+  }
+
+  .hover-2 {
+    --mkThemeFG: var(--mkThemeHoverFG2B);
+    --mkThemeBG: var(--mkThemeHoverBG2B);
+  }
+
+  .hover-1h {
+    --mkThemeFG: var(--mkThemeHoverFG1H);
+    --mkThemeBG: var(--mkThemeHoverBG1H);
+  }
+
+  .hover-2h {
+    --mkThemeFG: var(--mkThemeHoverFG2H);
+    --mkThemeBG: var(--mkThemeHoverBG2H);
+  }
+
+  .disabled-1 {
+    --mkThemeFG: var(--mkThemeDisabledFG1B);
+    --mkThemeBG: var(--mkThemeDisabledBG1B);
+  }
+
+  .disabled-2 {
+    --mkThemeFG: var(--mkThemeDisabledFG2B);
+    --mkThemeBG: var(--mkThemeDisabledBG2B);
+  }
+
+  .disabled-1h {
+    --mkThemeFG: var(--mkThemeDisabledFG1H);
+    --mkThemeBG: var(--mkThemeDisabledBG1H);
+  }
+
+  .disabled-2h {
+    --mkThemeFG: var(--mkThemeDisabledFG2H);
+    --mkThemeBG: var(--mkThemeDisabledBG2H);
+  }
+
+  .action-1, .action-2,
+  .action-1h, .action-2h,
+  .focus-1, .focus-2,
+  .focus-1h, .focus-2h,
+  .hover-1, .hover-2,
+  .hover-1h, .hover-2h,
+  .disabled-1, .disabled-2,
+  .disabled-1h, .disabled-2h {
+    background-color: var(--mkThemeBG);
+    color: var(--mkThemeFG);
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+
+  .label.dark,
+  #table.dark .label.light {
+    display: none;
+  }
+
+  #table.dark .label.dark,
+  .label.light {
+    display: block;
+  }
+</style>
+
+<mkd-demo-layout label="Colors">
+  <div slot="play">
+    <table id="table">
+      <colgroup>
+        <col id="col1">
+        <col id="col2">
+        <col id="col3">
+        <col id="col4">
+        <col id="col5">
+      </colgroup>
+      <thead mk-body-2>
+        <tr>
+          <th></th>
+          <th colspan="2">normal</th>
+          <th colspan="2">highlight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Passive -->
+        <tr>
+          <td mk-body-2>passive</td>
+          <td mk-passive-1>
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">10-200</code>
+              <code class="label dark">200-0</code>
+            </div>
+          </td>
+          <td mk-passive-2>
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">10.65-200</code>
+              <code class="label dark">200.75-0</code>
+            </div>
+          </td>
+
+
+          <td mk-passive-1 mk-theme-highlight>
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">10-175</code>
+              <code class="label dark">200-50</code>
+            </div>
+          </td>
+          <td mk-passive-2 mk-theme-highlight>
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">10.65-175</code>
+              <code class="label dark">200.75-50</code>
+            </div>
+          </td>
+        </tr>
+
+
+        <!-- Action -->
+        <tr>
+          <td mk-body-2>action</td>
+          <td class="action-1">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">c-100</code>
+              <code class="label dark">c-100</code>
+            </div>
+          </td>
+          <td class="action-2">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">50-200</code>
+              <code class="label dark">175-0</code>
+            </div>
+          </td>
+
+
+          <td class="action-1h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">c-100</code>
+              <code class="label dark">c-100</code>
+            </div>
+          </td>
+          <td class="action-2h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">50-175</code>
+              <code class="label dark">175-50</code>
+            </div>
+          </td>
+        </tr>
+
+
+        <!-- Focus -->
+        <tr>
+          <td mk-body-2>action (focus)</td>
+          <td class="focus-1">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">50-175</code>
+              <code class="label dark">50-175</code>
+            </div>
+          </td>
+          <td class="focus-2">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">50.65-175</code>
+              <code class="label dark">50.65-175</code>
+            </div>
+          </td>
+
+
+          <td class="focus-1h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">50-175</code>
+              <code class="label dark">50-175</code>
+            </div>
+          </td>
+          <td class="focus-2h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">50.65-175</code>
+              <code class="label dark">50.65-175</code>
+            </div>
+          </td>
+        </tr>
+
+
+        <!-- Hover -->
+        <tr>
+          <td mk-body-2>action (hover)</td>
+          <td class="hover-1">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">c-100</code>
+              <code class="label dark">c-100</code>
+            </div>
+          </td>
+          <td class="hover-2">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">c.f-100</code>
+              <code class="label dark">c.f-100</code>
+            </div>
+          </td>
+
+
+          <td class="hover-1h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">c-100</code>
+              <code class="label dark">c-100</code>
+            </div>
+          </td>
+          <td class="hover-2h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">c.f-100</code>
+              <code class="label dark">c.f-100</code>
+            </div>
+          </td>
+        </tr>
+
+
+        <!-- Disabled -->
+        <tr>
+          <td mk-body-2>action (disabled)</td>
+          <td class="disabled-1">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">10.35-200</code>
+              <code class="label dark">200.45-0</code>
+            </div>
+          </td>
+          <td class="disabled-2">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">10.35-200</code>
+              <code class="label dark">200.45-0</code>
+            </div>
+          </td>
+
+
+          <td class="disabled-1h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>A</h3>
+              <code class="label light">10.35-175</code>
+              <code class="label dark">200.45-50</code>
+            </div>
+          </td>
+          <td class="disabled-2h">
+            <div flex-align="center" layout="column">
+              <h3 flex mk-display>a</h3>
+              <code class="label light">10.35-175</code>
+              <code class="label dark">200.45-50</code>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div slot="docs">
+    <p mk-body-1>
+      Mask supports theming based on the modes outlined above. These modes are applicable in both
+      light mode and dark mode.
+    </p>
+  </div>
+</mkd-demo-layout>
+

@@ -133,10 +133,9 @@
  ****************/
 [mk-theme-highlight],
 [mk-theme],
-[mk-action-1],
-[mk-action-2],
-[mk-body-1],
-[mk-body-2] {
+[mk-action-1], [mk-action-2],
+[mk-passive-1], [mk-passive-2],
+[mk-body-1], [mk-body-2] {
   background: var(--mkThemeBG);
   color: var(--mkThemeFG);
 }

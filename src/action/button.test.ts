@@ -5,7 +5,7 @@ import { fromEvent } from 'rxjs';
 import { _p } from '../app/app';
 import { ActionEvent } from '../event/action-event';
 
-import { $, Button, $button } from './button';
+import { $, $button, Button } from './button';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -53,7 +53,19 @@ test('@mask/action/button', init => {
   });
 
   test('isPrimaryAction$', () => {
-    should.only(`render mk-action-1 if primary`);
+    should(`render mk-action-1 if primary`, () => {
+      run(_.el.setHasAttribute($.host._.isSecondary, false));
+
+      assert(_.el.hasAttribute($.host._.action1)).to.emitSequence([true]);
+      assert(_.el.hasAttribute($.host._.action2)).to.emitSequence([false]);
+    });
+
+    should(`render mk-action-2 if secondary`, () => {
+      run(_.el.setHasAttribute($.host._.isSecondary, true));
+
+      assert(_.el.hasAttribute($.host._.action1)).to.emitSequence([false]);
+      assert(_.el.hasAttribute($.host._.action2)).to.emitSequence([true]);
+    });
   });
 
   test('renderTabIndex', () => {

@@ -10,9 +10,9 @@
  */
 
 import { cache } from 'gs-tools/export/data';
-import { AriaRole, attributeIn, attributeOut, dispatcher, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, setAttribute, stringParser } from 'persona';
-import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, filter, map, throttleTime, withLatestFrom } from 'rxjs/operators';
+import { AriaRole, attributeOut, dispatcher, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, setAttribute, stringParser } from 'persona';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { filter, map, throttleTime, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';

@@ -6,7 +6,6 @@ import { Alpha, getAlphaNumber } from './alpha';
 export enum ShadeId {
   S000HI = '000HI',
   S010HI = '010HI',
-  S010MH = '010MH',
   S010ML = '010ML',
   S010VL = '010VL',
   S050HI = '050HI',
@@ -14,6 +13,7 @@ export enum ShadeId {
   S100HI = '100HI',
   S175HI = '175HI',
   S200HI = '200HI',
+  S200MH = '200MH',
   S200LO = '200LO',
   CONTRA = 'CONTR',
   FCONTR = 'FCONT',
@@ -41,7 +41,6 @@ export interface ColorWithAlpha {
 export const SHADES: ReadonlyMap<NonContrastShadeId, Shade> = new Map([
   [ShadeId.S000HI, {isDarkMix: true,  mixRatio: 0   , alpha: Alpha.HIGH}],
   [ShadeId.S010HI, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.HIGH}],
-  [ShadeId.S010MH, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.MED_HIGH}],
   [ShadeId.S010ML, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.MED_LOW}],
   [ShadeId.S010VL, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.VERY_LOW}],
   [ShadeId.S050HI, {isDarkMix: true,  mixRatio: 0.5 , alpha: Alpha.HIGH}],
@@ -50,6 +49,7 @@ export const SHADES: ReadonlyMap<NonContrastShadeId, Shade> = new Map([
   [ShadeId.S175HI, {isDarkMix: false, mixRatio: 0.25, alpha: Alpha.HIGH}],
   [ShadeId.S200HI, {isDarkMix: false, mixRatio: 0   , alpha: Alpha.HIGH}],
   [ShadeId.S200LO, {isDarkMix: false, mixRatio: 0   , alpha: Alpha.LOW}],
+  [ShadeId.S200MH, {isDarkMix: false, mixRatio: 0   , alpha: Alpha.MED_HIGH}],
 ]);
 
 const BLACK = new RgbColor(0, 0, 0);
