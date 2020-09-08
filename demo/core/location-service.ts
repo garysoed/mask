@@ -13,7 +13,8 @@ export enum Views {
   // DRAWER = 'dr',
   // ICON = 'i',
   // ICON_WITH_TEXT = 'iwt',
-  MAIN = 'm',
+  MAIN = 'ma',
+  TEXT = 'tx',
   // TEXT_INPUT = 't',
   // UPLOAD_BUTTON = 'ub',
 }
@@ -24,6 +25,7 @@ const ROUTE_SPEC = {
   // [Views.CHECKBOX]: fromPattern('/checkbox', {}),
   // [Views.CODE_BLOCK]: fromPattern('/code-block', {}),
   [Views.COLORS]: fromPattern('/colors', {}),
+  [Views.TEXT]: fromPattern('/text', {}),
   // [Views.CROPPED_LINE]: fromPattern('/cropped-line', {}),
   // [Views.DIALOG]: fromPattern('/dialog', {}),
   // [Views.DRAWER]: fromPattern('/drawer', {}),

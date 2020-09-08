@@ -62,6 +62,17 @@
   --mkThemeFG: var(--mkThemeActionFG2B);
 }
 
+[mk-theme="light"] a,
+a[mk-theme="light"],
+[mk-theme="dark"] a,
+a[mk-theme="dark"],
+[mk-theme-highlight] a,
+a[mk-theme-highlight],
+a {
+  --mkThemeBG: var(--mkThemeActionBG2B);
+  --mkThemeFG: var(--mkThemeActionFG2B);
+}
+
 [mk-theme="light"] [mk-action-1]:focus,
 [mk-theme="light"][mk-action-1]:focus,
 [mk-theme="dark"] [mk-action-1]:focus,
@@ -84,6 +95,17 @@
   --mkThemeFG: var(--mkThemeFocusFG2B);
 }
 
+[mk-theme="light"] a:focus,
+a[mk-theme="light"]:focus,
+[mk-theme="dark"] a:focus,
+a[mk-theme="dark"]:focus,
+[mk-theme-highlight] a:focus,
+a[mk-theme-highlight]:focus,
+a:focus {
+  --mkThemeBG: var(--mkThemeFocusBG2B);
+  --mkThemeFG: var(--mkThemeFocusFG2B);
+}
+
 [mk-theme="light"] [mk-action-1]:hover,
 [mk-theme="light"][mk-action-1]:hover,
 [mk-theme="dark"] [mk-action-1]:hover,
@@ -102,6 +124,17 @@
 [mk-theme-highlight] [mk-action-2]:hover,
 [mk-theme-highlight][mk-action-2]:hover,
 [mk-action-2]:hover {
+  --mkThemeBG: var(--mkThemeHoverBG2B);
+  --mkThemeFG: var(--mkThemeHoverFG2B);
+}
+
+[mk-theme="light"] a:hover,
+a[mk-theme="light"]:hover,
+[mk-theme="dark"] a:hover,
+a[mk-theme="dark"]:hover,
+[mk-theme-highlight] a:hover,
+a[mk-theme-highlight]:hover,
+a:hover {
   --mkThemeBG: var(--mkThemeHoverBG2B);
   --mkThemeFG: var(--mkThemeHoverFG2B);
 }
@@ -135,7 +168,8 @@
 [mk-theme],
 [mk-action-1], [mk-action-2],
 [mk-passive-1], [mk-passive-2],
-[mk-body-1], [mk-body-2] {
+[mk-body-1], [mk-body-2],
+a {
   background: var(--mkThemeBG);
   color: var(--mkThemeFG);
 }
@@ -179,7 +213,6 @@ a {
   text-decoration: none;
 }
 
-a,
 a > code {
   color: var(--mkThemeActionFG1);
 }
@@ -189,8 +222,6 @@ a:hover, a:focus {
   text-decoration: underline;
 }
 
-a:hover,
-a:focus,
 a:hover > code,
 a:focus > code {
   color: var(--mkThemeActionFocusFG1);
@@ -200,67 +231,44 @@ a:focus {
   outline: none;
 }
 
-a[disabled] {
-  color: var(--mkThemeActionDisabledFG1);
-  cursor: default;
-}
-
 h1 {
   font-size: 5rem;
   font-weight: 300;
-}
-
-h1[mk-display] {
   line-height: 8rem;
 }
 
 h2 {
   font-size: 4rem;
   font-weight: 400;
-}
-
-h2[mk-display] {
   line-height: 8rem;
 }
 
 h3 {
   font-size: 3rem;
   font-weight: 400;
-}
-
-h3[mk-display] {
   line-height: 8rem;
 }
 
 h4 {
   font-size: 2rem;
   font-weight: 400;
-}
-
-h4[mk-display] {
   line-height: 4rem;
 }
 
 h5 {
   font-size: 1.75rem;
   font-weight: 500;
-}
-
-h5[mk-display] {
   line-height: 4rem;
 }
 
 h6 {
   font-size: 1.5rem;
   font-weight: 700;
-}
-
-h6[mk-display] {
   line-height: 4rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--mkThemePassiveFG1);
+  color: var(--mkThemeFG);
   font-family: var(--mkFontFamilyHeader);
   margin: 0;
 }
