@@ -1,26 +1,4 @@
 <style>
-  #root,
-  #container {
-    background-color: var(--mkCheckboxBG);
-    color: var(--mkCheckboxFG);
-  }
-
-  :host {
-    --mkCheckboxBG: var(--mkThemeActionBG);
-    --mkCheckboxFG: var(--mkThemeActionFG1);
-  }
-
-  :host([disabled]),
-  :host([disabled]:focus) {
-    --mkCheckboxFG: var(--mkThemeActionDisabledFG1);
-  }
-
-  :host(:not([disabled]):hover),
-  :host(:not([disabled]):focus) {
-    --mkCheckboxBG: var(--mkThemeActionFocusBG);
-    --mkCheckboxFG: var(--mkThemeActionFocusFG1);
-  }
-
   /* Customize the label (the container) */
   #container {
     display: block;

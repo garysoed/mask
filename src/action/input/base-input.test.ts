@@ -8,7 +8,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 
-import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
+import { $baseInput as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 
 const $$ = {
   tag: 'mk-test-base-input',

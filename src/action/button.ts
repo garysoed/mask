@@ -10,7 +10,7 @@
  */
 
 import { cache } from 'gs-tools/export/data';
-import { AriaRole, attributeOut, dispatcher, hasAttribute, host, integerParser, noop, onDom, onKeydown, PersonaContext, setAttribute, stringParser } from 'persona';
+import { AriaRole, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, throttleTime, withLatestFrom } from 'rxjs/operators';
 
@@ -29,7 +29,6 @@ export const $button = {
     ...$baseAction.api,
     // TODO: Add autocomplete option.
     actionEvent: dispatcher(ACTION_EVENT),
-    isSecondary: hasAttribute('is-secondary'),
     tabindex: attributeOut('tabindex', integerParser()),
   },
 };
@@ -37,8 +36,6 @@ export const $button = {
 export const $ = {
   host: host({
     ...$button.api,
-    action1: setAttribute('mk-action-1'),
-    action2: setAttribute('mk-action-2'),
     onClick: onDom('click'),
     onEnterDown: onKeydown('Enter'),
     onSpaceDown: onKeydown(' '),
@@ -57,8 +54,6 @@ export class Button extends BaseAction {
     this.render($.host._.role, observableOf(AriaRole.BUTTON));
     this.render($.host._.actionEvent, this.onAction$);
     this.render($.host._.tabindex, this.tabIndex$);
-    this.render($.host._.action1, this.isSecondaryAction$.pipe(map(isSecondary => !isSecondary)));
-    this.render($.host._.action2, this.isSecondaryAction$);
   }
 
   @cache()
@@ -74,11 +69,6 @@ export class Button extends BaseAction {
             filter(([, disabled]) => !disabled),
             map(() => new ActionEvent(undefined)),
         );
-  }
-
-  @cache()
-  private get isSecondaryAction$(): Observable<boolean> {
-    return this.declareInput($.host._.isSecondary);
   }
 
   @cache()

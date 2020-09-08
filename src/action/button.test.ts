@@ -52,22 +52,6 @@ test('@mask/action/button', init => {
     });
   });
 
-  test('isPrimaryAction$', () => {
-    should(`render mk-action-1 if primary`, () => {
-      run(_.el.setHasAttribute($.host._.isSecondary, false));
-
-      assert(_.el.hasAttribute($.host._.action1)).to.emitSequence([true]);
-      assert(_.el.hasAttribute($.host._.action2)).to.emitSequence([false]);
-    });
-
-    should(`render mk-action-2 if secondary`, () => {
-      run(_.el.setHasAttribute($.host._.isSecondary, true));
-
-      assert(_.el.hasAttribute($.host._.action1)).to.emitSequence([false]);
-      assert(_.el.hasAttribute($.host._.action2)).to.emitSequence([true]);
-    });
-  });
-
   test('renderTabIndex', () => {
     should(`render 0 if host is not disabled`, () => {
       run(_.el.setHasAttribute($.host._.disabled, false));

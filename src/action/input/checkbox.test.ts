@@ -65,35 +65,6 @@ test('@mask/input/checkbox', init => {
     });
   });
 
-  // test('renderIconMode', () => {
-  //   should(`render action`, () => {
-  //     run(_.el.setHasAttribute($.host._.disabled, false));
-
-  //     assert(_.el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.ACTION);
-  //   });
-
-  //   should(`render focus if hovered`, () => {
-  //     run(_.el.setHasAttribute($.host._.disabled, false));
-  //     run(_.el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')));
-
-  //     assert(_.el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.FOCUS);
-  //   });
-
-  //   should(`render focus if focused`, () => {
-  //     run(_.el.setHasAttribute($.host._.disabled, false));
-  //     run(_.el.dispatchEvent($.host._.onFocus, new CustomEvent('focus')));
-
-  //     assert(_.el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.FOCUS);
-  //   });
-
-  //   should(`render disabled if disabled`, () => {
-  //     run(_.el.setHasAttribute($.host._.disabled, true));
-  //     run(_.el.dispatchEvent($.host._.onMouseEnter, new CustomEvent('mouseenter')));
-
-  //     assert(_.el.getAttribute($.checkmark._.mode)).to.emitWith(IconMode.DISABLED);
-  //   });
-  // });
-
   test('setupOnInput', () => {
     should(`emit true if the value is true`, () => {
       run(_.el.getElement($.checkbox).pipe(

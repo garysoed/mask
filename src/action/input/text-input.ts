@@ -6,7 +6,7 @@ import { debounceTime, map, startWith, take, tap, withLatestFrom } from 'rxjs/op
 
 import { _p } from '../../app/app';
 
-import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
+import { $baseInput as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 import template from './text-input.html';
 
 

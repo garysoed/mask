@@ -15,6 +15,12 @@ not display anything, unless the appropriate slots are filled.
     bullet point and a details row.
 -   `mk-root-layout` (α): Provides a general root layout for the app.
 
+# Action
+
+Interactable components.
+
+-   `mk-button` (α): Represents a button.
+-   `mk-checkbox` (α): Represents a checkbox.
 
 # Note:
 

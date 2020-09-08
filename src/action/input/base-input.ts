@@ -2,10 +2,11 @@ import { cache } from 'gs-tools/export/data';
 import { attributeIn, handler, host, PersonaContext, stringParser } from 'persona';
 import { AttributeInput, Output, PropertyEmitter } from 'persona/export/internal';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { $$ as $baseAction, BaseAction } from '../base-action';
+
 
 export interface Value<T> {
   readonly trigger: 'input'|'default';
@@ -15,7 +16,7 @@ export interface Value<T> {
 export const DEFAULT_VALUE_ATTR_NAME = 'default-value';
 export const VALUE_PROPERTY_NAME = 'value$';
 
-export const $$ = {
+export const $baseInput = {
   api: {
     ...$baseAction.api,
     clearFn: handler('clear'),
@@ -24,7 +25,7 @@ export const $$ = {
 };
 
 export const $ = {
-  host: host($$.api),
+  host: host($baseInput.api),
 };
 
 @_p.baseCustomElement({})

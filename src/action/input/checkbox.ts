@@ -3,19 +3,17 @@ import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType, instanceofType } from 'gs-types';
 import { compose, Converter, firstSuccess, Result } from 'nabu';
 import { attributeIn, attributeOut, booleanParser, classToggle, element, emitter, host, onDom, onInput, PersonaContext, single, textContent } from 'persona';
-import { combineLatest, merge, Observable } from 'rxjs';
-import { map, mapTo, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import { registerSvg } from '../../core/svg-service';
-import { IconMode } from '../../display-old/icon-mode';
-import { IconWithText } from '../../display-old/icon-with-text';
-import { $icon } from '../../display/icon';
+import { $icon, Icon } from '../../display/icon';
 
-import { $$ as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
+import { $baseInput as $baseInput, BaseInput, DEFAULT_VALUE_ATTR_NAME, Value, VALUE_PROPERTY_NAME } from './base-input';
 import template from './checkbox.html';
 
 
@@ -110,7 +108,7 @@ export const $ = {
     );
   },
   dependencies: [
-    IconWithText,
+    Icon,
   ],
   template,
 })
@@ -126,7 +124,6 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
     this.addSetup(this.setupOnInput());
     this.render($.checkmark._.icon, this.value$.pipe(map(({value}) => value)));
-    // this.render($.checkmark._.mode, this.renderIconMode());
     this.render($.container._.hasText, this.renderHasText());
   }
 
@@ -147,39 +144,6 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
   private renderHasText(): Observable<boolean> {
     return this.declareInput($.host._.label).pipe(map(label => !!label));
-  }
-
-  private renderIconMode(): Observable<IconMode> {
-    const hovered$ = merge(
-        this.declareInput($.host._.onMouseEnter).pipe(mapTo(true)),
-        this.declareInput($.host._.onMouseLeave).pipe(mapTo(false)),
-    )
-    .pipe(startWith(false));
-
-    const focused$ = merge(
-        this.declareInput($.host._.onFocus).pipe(mapTo(true)),
-        this.declareInput($.host._.onBlur).pipe(mapTo(false)),
-    )
-    .pipe(startWith(false));
-
-    return combineLatest([
-      this.disabled$,
-      focused$,
-      hovered$,
-    ])
-    .pipe(
-        map(([disabled, focused, hover]) => {
-          if (disabled) {
-            return IconMode.DISABLED;
-          }
-
-          if (hover || focused) {
-            return IconMode.FOCUS;
-          }
-
-          return IconMode.ACTION;
-        }),
-    );
   }
 
   private setupOnInput(): Observable<unknown> {
