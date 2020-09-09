@@ -1,12 +1,13 @@
 import { source } from 'grapevine';
 import { fromPattern, LocationService } from 'persona';
 
-import { $window } from '../../export';
+import { $window } from '../../src/app/app';
 
 export enum Views {
   // BREADCRUMB = 'b',
   // CHECKBOX = 'ch',
   // CODE_BLOCK = 'cb',
+  BUTTON = 'bu',
   COLORS = 'co',
   // CROPPED_LINE = 'cl',
   // DIALOG = 'di',
@@ -21,6 +22,7 @@ export enum Views {
 
 const ROUTE_SPEC = {
   [Views.MAIN]: fromPattern('/', {}),
+  [Views.BUTTON]: fromPattern('/button', {}),
   // [Views.BREADCRUMB]: fromPattern('/breadcrumb', {}),
   // [Views.CHECKBOX]: fromPattern('/checkbox', {}),
   // [Views.CODE_BLOCK]: fromPattern('/code-block', {}),

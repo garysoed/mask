@@ -17,7 +17,7 @@ import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
 import template from './demo.html';
 import { $isDark } from './is-dark';
 import { $locationService, Views } from './location-service';
-import { GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
+import { ACTION_SPECS, ALL_SPECS, GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
 
 
 const $ = {
@@ -33,6 +33,7 @@ const $ = {
     content: single('content'),
   }),
   drawerRoot: element('drawerRoot', instanceofType(HTMLElement), {
+    actionContents: multi('#actionContents'),
     generalContents: multi('#generalContents'),
     onAction: onDom(ACTION_EVENT),
   }),
@@ -49,7 +50,7 @@ const $ = {
   }),
 };
 
-const PAGE_CTORS = GENERAL_SPECS.map(({ctor}) => ctor);
+const PAGE_CTORS = ALL_SPECS.map(({ctor}) => ctor);
 const COMPONENT_PATH_ATTR = 'path';
 
 @_p.customElement({
@@ -77,7 +78,8 @@ export class Demo extends ThemedCustomElementCtrl {
     this.render($.accentPalette._.content, this.accentPaletteContents$);
     this.render($.basePalette._.content, this.basePaletteContents$);
     this.render($.content._.content, this.mainContent$);
-    this.render($.drawerRoot._.generalContents, this.generalContentNodes$);
+    this.render($.drawerRoot._.actionContents, this.renderPageButtons(ACTION_SPECS));
+    this.render($.drawerRoot._.generalContents, this.renderPageButtons(GENERAL_SPECS));
     this.render($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded());
     this.render($.root._.theme, this.renderRootTheme());
     this.addSetup(this.onAccentPaletteClick$);
@@ -129,11 +131,6 @@ export class Demo extends ThemedCustomElementCtrl {
         });
 
     return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
-  }
-
-  @cache()
-  private get generalContentNodes$(): Observable<readonly Node[]> {
-    return this.renderPageButtons(GENERAL_SPECS);
   }
 
   @cache()

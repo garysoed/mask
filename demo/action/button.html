@@ -1,0 +1,30 @@
+<style>
+</style>
+
+<mkd-demo-layout label="Buttons">
+  <div slot="play" layout="column">
+    <mk-button>
+      <mk-line-layout>Text button</mk-line-layout>
+    </mk-button>
+
+    <mk-button>
+      <mk-list-item-layout>
+        <mk-icon icon="logo" slot="bullet"></mk-icon>
+        <p slot="label">Button with item and label</p>
+      </mk-list-item-layout>
+    </mk-button>
+
+    <mk-button>
+      <mk-line-layout>
+        <mk-icon icon="logo"></mk-icon>
+      </mk-line-layout>
+    </mk-button>
+  </div>
+  <div slot="docs">
+    <p mk-body-1>
+      Buttons can have custom contents. Mask will make sure that its foreground and background
+      colors follow the theme.
+    </p>
+  </div>
+</mkd-demo-layout>
+

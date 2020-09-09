@@ -19,7 +19,7 @@ not display anything, unless the appropriate slots are filled.
 
 Interactable components.
 
--   `mk-button` (α): Represents a button.
+-   `mk-button` (β): Represents a button.
 -   `mk-checkbox` (α): Represents a checkbox.
 
 # Note:
