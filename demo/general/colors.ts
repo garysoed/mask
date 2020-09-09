@@ -11,7 +11,7 @@ import { $isDark } from '../core/is-dark';
 import template from './colors.html';
 
 
-export const $colors = {
+export const $colorsDemo = {
   tag: 'mkd-colors',
   api: {},
 };
@@ -23,13 +23,13 @@ const $ = {
 };
 
 @_p.customElement({
-  ...$colors,
+  ...$colorsDemo,
   dependencies: [
     DemoLayout,
   ],
   template,
 })
-export class Colors extends ThemedCustomElementCtrl {
+export class ColorsDemo extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 

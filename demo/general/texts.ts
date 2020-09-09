@@ -7,19 +7,19 @@ import { DemoLayout } from '../base/demo-layout';
 import template from './texts.html';
 
 
-export const $texts = {
+export const $textsDemo = {
   tag: 'mkd-text',
   api: {},
 };
 
 @_p.customElement({
-  ...$texts,
+  ...$textsDemo,
   dependencies: [
     DemoLayout,
   ],
   template,
 })
-export class Texts extends ThemedCustomElementCtrl {
+export class TextsDemo extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
   }
