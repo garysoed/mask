@@ -5,7 +5,7 @@ import { cache } from 'gs-tools/export/data';
 import { elementWithTagType, enumType, instanceofType } from 'gs-types';
 import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { $button, $checkbox, $drawer, _p, Button, Checkbox, Drawer, LayoutOverlay, Palette, ThemedCustomElementCtrl } from '../../export';
 import { $theme } from '../../src/app/app';
@@ -13,6 +13,7 @@ import { ACTION_EVENT } from '../../src/event/action-event';
 import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
 import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
+import { PALETTE } from '../../src/theme/palette';
 
 import template from './demo.html';
 import { $isDark } from './is-dark';
@@ -261,22 +262,22 @@ export class Demo extends ThemedCustomElementCtrl {
 }
 
 const ORDERED_PALETTES: ReadonlyArray<[string, Color]> = [
-  ['RED', Palette.RED],
-  ['ORANGE', Palette.ORANGE],
-  ['AMBER', Palette.AMBER],
-  ['YELLOW', Palette.YELLOW],
-  ['LIME', Palette.LIME],
-  ['GREEN', Palette.GREEN],
-  ['TEAL', Palette.TEAL],
-  ['CYAN', Palette.CYAN],
-  ['AZURE', Palette.AZURE],
-  ['BLUE', Palette.BLUE],
-  ['VIOLET', Palette.VIOLET],
-  ['PURPLE', Palette.PURPLE],
-  ['MAGENTA', Palette.MAGENTA],
-  ['PINK', Palette.PINK],
-  ['BROWN', Palette.BROWN],
-  ['GREY', Palette.GREY],
+  ['RED', PALETTE.RED],
+  ['ORANGE', PALETTE.ORANGE],
+  ['AMBER', PALETTE.AMBER],
+  ['YELLOW', PALETTE.YELLOW],
+  ['LIME', PALETTE.LIME],
+  ['GREEN', PALETTE.GREEN],
+  ['TEAL', PALETTE.TEAL],
+  ['CYAN', PALETTE.CYAN],
+  ['AZURE', PALETTE.AZURE],
+  ['BLUE', PALETTE.BLUE],
+  ['VIOLET', PALETTE.VIOLET],
+  ['PURPLE', PALETTE.PURPLE],
+  ['MAGENTA', PALETTE.MAGENTA],
+  ['PINK', PALETTE.PINK],
+  ['BROWN', PALETTE.BROWN],
+  ['GREY', PALETTE.GREY],
 ];
 
 const COLOR_TO_NAME: ReadonlyMap<Color, string> = $pipe(
@@ -324,5 +325,5 @@ function getColor(event: MouseEvent): Color|null {
     return null;
   }
 
-  return (Palette as any)[colorName] || null;
+  return PALETTE[colorName as keyof Palette] || null;
 }

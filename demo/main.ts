@@ -1,6 +1,7 @@
 import { switchMap } from 'rxjs/operators';
 
-import { Palette, registerSvg, start as startMask, Theme } from '../export';
+import { registerSvg, start as startMask, Theme } from '../export';
+import { PALETTE } from '../src/theme/palette';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -12,7 +13,7 @@ import { Demo } from './core/demo';
 import { $locationService } from './core/location-service';
 
 
-const theme = new Theme(document, Palette.TEAL, Palette.PURPLE);
+const theme = new Theme(document, PALETTE.TEAL, PALETTE.PURPLE);
 
 const ICONS = new Map([
   ['chevrondown', chevronDownSvg],

@@ -1,4 +1,4 @@
-import { RgbColor } from 'gs-tools/export/color';
+import { Color, RgbColor } from 'gs-tools/export/color';
 
 const GREY = new RgbColor(128, 142, 154);
 const RED = new RgbColor(220, 28, 0);
@@ -17,7 +17,26 @@ const MAGENTA = new RgbColor(167, 29, 197);
 const PINK = new RgbColor(220, 0, 131);
 const BROWN = new RgbColor(136, 64, 0);
 
-export const Palette = {
+export interface Palette {
+  readonly AMBER: Color;
+  readonly AZURE: Color;
+  readonly BLUE: Color;
+  readonly BROWN: Color;
+  readonly CYAN: Color;
+  readonly GREEN: Color;
+  readonly GREY: Color;
+  readonly LIME: Color;
+  readonly MAGENTA: Color;
+  readonly ORANGE: Color;
+  readonly PINK: Color;
+  readonly PURPLE: Color;
+  readonly RED: Color;
+  readonly TEAL: Color;
+  readonly VIOLET: Color;
+  readonly YELLOW: Color;
+}
+
+export const PALETTE = {
   AMBER,
   AZURE,
   BLUE,

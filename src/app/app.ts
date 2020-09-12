@@ -3,14 +3,14 @@ import { PersonaBuilder } from 'persona';
 import { CustomElementCtrlCtor } from 'persona/export/internal';
 import { map, pairwise, startWith } from 'rxjs/operators';
 
-import { Palette } from '../theme/palette';
+import { PALETTE } from '../theme/palette';
 import { Theme } from '../theme/theme';
 
 
 export const _v = new VineBuilder();
 export const _p = new PersonaBuilder(_v);
 
-export const $theme = source('Theme', () => new Theme(document, Palette.ORANGE, Palette.GREEN));
+export const $theme = source('Theme', () => new Theme(document, PALETTE.ORANGE, PALETTE.GREEN));
 export const $window = source('window', () => window);
 
 export function start(
