@@ -7,7 +7,7 @@ import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElemen
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $button, $checkbox, $drawer, _p, Button, Checkbox, CroppedLine, Drawer, LayoutOverlay, Palette, ThemedCustomElementCtrl } from '../../export';
+import { $button, $checkbox, $drawer, _p, Button, Checkbox, Drawer, LayoutOverlay, Palette, ThemedCustomElementCtrl } from '../../export';
 import { $theme } from '../../src/app/app';
 import { ACTION_EVENT } from '../../src/event/action-event';
 import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
@@ -58,7 +58,6 @@ const COMPONENT_PATH_ATTR = 'path';
     ...PAGE_CTORS,
     Button,
     Checkbox,
-    CroppedLine,
     Drawer,
     LayoutOverlay,
     LineLayout,

@@ -1,42 +1,42 @@
-import { element, PersonaContext } from 'persona';
-import { Observable } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+// import { element, PersonaContext } from 'persona';
+// import { Observable } from 'rxjs';
+// import { mapTo } from 'rxjs/operators';
 
-import { $checkbox, _p, Checkbox as MaskCheckbox, ThemedCustomElementCtrl } from '../../export';
-import { $textIconButton, TextIconButton } from '../../export/deprecated';
-import { DemoLayout } from '../base/demo-layout';
+// import { $checkbox, _p, Checkbox as MaskCheckbox, ThemedCustomElementCtrl } from '../../export';
+// import { $textIconButton, TextIconButton } from '../../export/deprecated';
+// import { DemoLayout } from '../base/demo-layout';
 
-import template from './checkbox.html';
+// import template from './checkbox.html';
 
-export const $$ = {
-  tag: 'mkd-checkbox',
-  api: {},
-};
+// export const $$ = {
+//   tag: 'mkd-checkbox',
+//   api: {},
+// };
 
-const $ = {
-  resetButton: element('resetButton', $textIconButton, {}),
-  unknownCheckbox: element('unknownCheckbox', $checkbox, {}),
-};
+// const $ = {
+//   resetButton: element('resetButton', $textIconButton, {}),
+//   unknownCheckbox: element('unknownCheckbox', $checkbox, {}),
+// };
 
-@_p.customElement({
-  ...$$,
-  dependencies: [
-    DemoLayout,
-    MaskCheckbox,
-    TextIconButton,
-  ],
-  template,
-})
-export class Checkbox extends ThemedCustomElementCtrl {
-  private readonly onResetButtonAction$ = this.declareInput($.resetButton._.actionEvent);
+// @_p.customElement({
+//   ...$$,
+//   dependencies: [
+//     DemoLayout,
+//     MaskCheckbox,
+//     TextIconButton,
+//   ],
+//   template,
+// })
+// export class Checkbox extends ThemedCustomElementCtrl {
+//   private readonly onResetButtonAction$ = this.declareInput($.resetButton._.actionEvent);
 
-  constructor(context: PersonaContext) {
-    super(context);
+//   constructor(context: PersonaContext) {
+//     super(context);
 
-    this.render($.unknownCheckbox._.clearFn, this.renderClearUnknownCheckbox());
-  }
+//     this.render($.unknownCheckbox._.clearFn, this.renderClearUnknownCheckbox());
+//   }
 
-  private renderClearUnknownCheckbox(): Observable<[]> {
-    return this.onResetButtonAction$.pipe(mapTo([]));
-  }
-}
+//   private renderClearUnknownCheckbox(): Observable<[]> {
+//     return this.onResetButtonAction$.pipe(mapTo([]));
+//   }
+// }

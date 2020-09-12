@@ -1,21 +1,21 @@
-import { _p, Breadcrumb as MaskBreadcrumb, ThemedCustomElementCtrl } from '../../export';
-import { DemoLayout } from '../base/demo-layout';
+// import { _p, Breadcrumb as MaskBreadcrumb, ThemedCustomElementCtrl } from '../../export';
+// import { DemoLayout } from '../base/demo-layout';
 
-import template from './breadcrumb.html';
+// import template from './breadcrumb.html';
 
-export const $$ = {
-  tag: 'mkd-breadcrumb',
-  api: {},
-};
+// export const $$ = {
+//   tag: 'mkd-breadcrumb',
+//   api: {},
+// };
 
-@_p.customElement({
-  ...$$,
-  dependencies: [
-    DemoLayout,
-    MaskBreadcrumb,
-  ],
-  template,
-})
-export class Breadcrumb extends ThemedCustomElementCtrl {
+// @_p.customElement({
+//   ...$$,
+//   dependencies: [
+//     DemoLayout,
+//     MaskBreadcrumb,
+//   ],
+//   template,
+// })
+// export class Breadcrumb extends ThemedCustomElementCtrl {
 
-}
+// }

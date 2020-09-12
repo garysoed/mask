@@ -1,26 +1,26 @@
-import { element } from 'persona';
+// import { element } from 'persona';
 
-import { $uploadButton, _p, ThemedCustomElementCtrl, UploadButton as MaskUploadButton } from '../../export';
-import { DemoLayout } from '../base/demo-layout';
+// import { $uploadButton, _p, ThemedCustomElementCtrl, UploadButton as MaskUploadButton } from '../../export';
+// import { DemoLayout } from '../base/demo-layout';
 
-import template from './upload-button.html';
+// import template from './upload-button.html';
 
 
-export const $$ = {
-  tag: 'mkd-upload-button',
-  api: {},
-};
+// export const $$ = {
+//   tag: 'mkd-upload-button',
+//   api: {},
+// };
 
-const $ = {
-  button: element('button', $uploadButton, {}),
-};
+// const $ = {
+//   button: element('button', $uploadButton, {}),
+// };
 
-@_p.customElement({
-  ...$$,
-  dependencies: [
-    DemoLayout,
-    MaskUploadButton,
-  ],
-  template,
-})
-export class UploadButton extends ThemedCustomElementCtrl { }
+// @_p.customElement({
+//   ...$$,
+//   dependencies: [
+//     DemoLayout,
+//     MaskUploadButton,
+//   ],
+//   template,
+// })
+// export class UploadButton extends ThemedCustomElementCtrl { }
