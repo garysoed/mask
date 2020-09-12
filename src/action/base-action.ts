@@ -27,11 +27,11 @@ export class BaseAction extends ThemedCustomElementCtrl {
   protected readonly disabled$ = this.declareInput($.host._.disabled);
 
   constructor(
-      private readonly disabledOutput: Output<boolean>,
+      private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,
   ) {
     super(context);
-    this.render(this.disabledOutput, this.disabled$);
+    this.render(this.disabledDomOutput, this.disabled$);
     this.render($.host._.ariaDisabled, this.ariaDisabled$);
     this.render($.host._.action1, this.isSecondaryAction$.pipe(map(isSecondary => !isSecondary)));
     this.render($.host._.action2, this.isSecondaryAction$);

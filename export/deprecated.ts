@@ -5,3 +5,4 @@ export { AnnotatedText, $$ as $annotatedText } from '../src/display-old/annotate
 export { CodeBlock, $$ as $codeBlock } from '../src/display-old/code-block';
 export { CroppedLine, $croppedLine } from '../src/display-old/cropped-line';
 // export { UploadButton, $$ as $uploadButton } from '../src/action/deprecated/upload-button';
+// export { TextInput, $$ as $textInput } from '../src/action/input-old/text-input';

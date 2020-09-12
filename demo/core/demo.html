@@ -12,7 +12,7 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #darkMode {
+  #darkMode:not(:hover):not(:focus) {
     --mkThemeBG: transparent;
   }
 
@@ -93,12 +93,16 @@
             </div>
           </div>
 
-          <mk-checkbox
-              id="darkMode"
-              is-secondary
-              default-value="T"
-              label="Dark mode"
-          ></mk-checkbox>
+          <mk-checkbox id="darkMode" is-secondary apply-on-change="T">
+            <mk-list-item-layout slot="display_checked">
+              <mk-icon icon="mk.checkbox_checked" slot="bullet"></mk-icon>
+              <p slot="label">Dark mode</p>
+            </mk-list-item-layout>
+            <mk-list-item-layout slot="display_unchecked">
+              <mk-icon icon="mk.checkbox_unchecked" slot="bullet"></mk-icon>
+              <p slot="label">Light mode</p>
+            </mk-list-item-layout>
+          </mk-checkbox>
         </div>
       </mk-drawer>
       <mk-layout-overlay></mk-layout-overlay>

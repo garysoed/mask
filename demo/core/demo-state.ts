@@ -7,8 +7,9 @@ import { $stateService } from '../../src/core/state-service';
 import { Palette } from '../../src/theme/palette';
 
 export interface DemoState {
-  readonly $baseColorName: StateId<keyof Palette>;
   readonly $accentColorName: StateId<keyof Palette>;
+  readonly $baseColorName: StateId<keyof Palette>;
+  readonly $isDarkMode: StateId<boolean>;
 }
 
 export const $demoStateId = source<StateId<DemoState>|null>('demoStateId', () => null);

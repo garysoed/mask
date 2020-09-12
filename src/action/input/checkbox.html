@@ -2,16 +2,9 @@
   /* Customize the label (the container) */
   #container {
     display: block;
-    height: 2rem;
     position: relative;
-    line-height: 2rem;
-    padding: 1rem;
     cursor: pointer;
     user-select: none;
-  }
-
-  #container.hasText {
-    padding-left: 4rem;
   }
 
   /* Hide the browser's default checkbox */
@@ -33,9 +26,6 @@
   /* Create a custom checkbox */
   #checkmark {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    bottom: 1rem;
   }
 
   /* Create the checkmark/indicator (hidden when not checked) */
@@ -52,7 +42,6 @@
 </style>
 
 <label id="container" mk-body-2>
-  <span id="label"></span>
   <input id="checkbox" type="checkbox" checked="checked">
-  <mk-icon id="checkmark" mode="action" icon="checkbox_checked"></mk-icon>
+  <slot id="display"></slot>
 </label>

@@ -14,7 +14,7 @@ export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
 export { Button, $button } from '../src/action/button';
 
 // inputs
-export { Checkbox, $$ as $checkbox, CheckedValue } from '../src/action/input-old/checkbox';
+export { Checkbox, $checkbox as $checkbox, CheckedValue } from '../src/action/input/checkbox';
 
 // display
 export { $icon, Icon } from '../src/display/icon';
@@ -29,7 +29,5 @@ export { ListItemLayout, $listItemLayout } from '../src/layout/list-item-layout'
 export { Palette } from '../src/theme/palette';
 export { RootLayout, $rootLayout } from '../src/layout/root-layout';
 export { $theme, start } from '../src/app/app';
-export { TextInput, $$ as $textInput } from '../src/action/input-old/text-input';
 export { Theme } from '../src/theme/theme';
 export { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
-export { Value } from '../src/action/input-old/base-input';

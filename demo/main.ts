@@ -104,7 +104,12 @@ function initFromLocalStorage(stateService: StateService): StateId<DemoState>|nu
 }
 
 function init(stateService: StateService): StateId<DemoState> {
-  const $baseColorName = stateService.add<keyof Palette>(BASE_COLOR_NAME);
   const $accentColorName = stateService.add<keyof Palette>(ACCENT_COLOR_NAME);
-  return stateService.add<DemoState>({$baseColorName, $accentColorName});
+  const $baseColorName = stateService.add<keyof Palette>(BASE_COLOR_NAME);
+  const $isDarkMode = stateService.add<boolean>(true);
+  return stateService.add<DemoState>({
+    $accentColorName,
+    $baseColorName,
+    $isDarkMode,
+  });
 }

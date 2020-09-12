@@ -1,24 +1,28 @@
 import { Vine } from 'grapevine';
-import { $asMap, $map, $pipe } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
 import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
+import { StateId } from 'gs-tools/export/state';
 import { elementWithTagType, enumType, instanceofType } from 'gs-types';
 import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { $button, $checkbox, $drawer, _p, Button, Checkbox, Drawer, LayoutOverlay, Palette, ThemedCustomElementCtrl } from '../../export';
+import { $button, Button } from '../../src/action/button';
+import { $checkbox, Checkbox } from '../../src/action/input/checkbox';
+import { _p } from '../../src/app/app';
 import { $stateService } from '../../src/core/state-service';
 import { ACTION_EVENT } from '../../src/event/action-event';
 import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
 import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
-import { PALETTE } from '../../src/theme/palette';
+import { LayoutOverlay } from '../../src/layout/util/layout-overlay';
+import { $drawer, Drawer } from '../../src/section/drawer';
+import { PALETTE, Palette } from '../../src/theme/palette';
+import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
 import { $demoState } from './demo-state';
 import template from './demo.html';
-import { $isDark } from './is-dark';
 import { $locationService, Views } from './location-service';
 import { ACTION_SPECS, ALL_SPECS, GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
 
@@ -79,6 +83,7 @@ export class Demo extends ThemedCustomElementCtrl {
     super(context);
     this.render($.accentPalette._.content, this.accentPaletteContents$);
     this.render($.basePalette._.content, this.basePaletteContents$);
+    this.render($.darkMode._.stateId, this.darkModeStateId$);
     this.render($.content._.content, this.mainContent$);
     this.render($.drawerRoot._.actionContents, this.renderPageButtons(ACTION_SPECS));
     this.render($.drawerRoot._.generalContents, this.renderPageButtons(GENERAL_SPECS));
@@ -86,7 +91,6 @@ export class Demo extends ThemedCustomElementCtrl {
     this.render($.root._.theme, this.renderRootTheme());
     this.addSetup(this.onAccentPaletteClick$);
     this.addSetup(this.onBasePaletteClick$);
-    this.addSetup(this.onCheckboxValue$);
     this.addSetup(this.onDrawerRootClick$);
     this.addSetup(this.setupOnRootLayoutAction(context.vine));
   }
@@ -150,13 +154,16 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get onCheckboxValue$(): Observable<unknown> {
-    return this.declareInput($.darkMode._.value).pipe(
-        tap(darkMode => {
-          $isDark.set(this.vine, () => {
-            return typeof darkMode.value === 'boolean' && darkMode.value;
-          });
+  private get darkModeStateId$(): Observable<StateId<boolean>> {
+    return $demoState.get(this.vine).pipe(
+        map(demoState => {
+          if (!demoState) {
+            return null;
+          }
+
+          return demoState.$isDarkMode;
         }),
+        filterNonNull(),
     );
   }
 
@@ -226,8 +233,16 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   private renderRootTheme(): Observable<'light'|'dark'> {
-    return $isDark.get(this.vine)
-        .pipe(map(isDarkMode => isDarkMode ? 'dark' : 'light'));
+    return combineLatest([$demoState.get(this.vine), $stateService.get(this.vine)]).pipe(
+        switchMap(([demoState, stateService]) => {
+          if (!demoState) {
+            return observableOf(null);
+          }
+
+          return stateService.get(demoState.$isDarkMode);
+        }),
+        map(isDarkMode => isDarkMode ? 'dark' : 'light'),
+    );
   }
 
   private renderSettingsDrawerExpanded(): Observable<boolean> {
