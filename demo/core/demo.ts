@@ -2,19 +2,21 @@ import { Vine } from 'grapevine';
 import { $asMap, $map, $pipe } from 'gs-tools/export/collect';
 import { Color } from 'gs-tools/export/color';
 import { cache } from 'gs-tools/export/data';
+import { filterNonNull } from 'gs-tools/export/rxjs';
 import { elementWithTagType, enumType, instanceofType } from 'gs-types';
 import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { $button, $checkbox, $drawer, _p, Button, Checkbox, Drawer, LayoutOverlay, Palette, ThemedCustomElementCtrl } from '../../export';
-import { $theme } from '../../src/app/app';
+import { $stateService } from '../../src/core/state-service';
 import { ACTION_EVENT } from '../../src/event/action-event';
 import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
 import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
 import { PALETTE } from '../../src/theme/palette';
 
+import { $demoState } from './demo-state';
 import template from './demo.html';
 import { $isDark } from './is-dark';
 import { $locationService, Views } from './location-service';
@@ -91,15 +93,22 @@ export class Demo extends ThemedCustomElementCtrl {
 
   @cache()
   private get accentPaletteContents$(): Observable<readonly Node[]> {
-    const selectedColor$ = this.theme$.pipe(map(theme => theme.accentColor));
+    const selectedColor$ = combineLatest([
+      $demoState.get(this.vine),
+      $stateService.get(this.vine),
+    ])
+    .pipe(
+        switchMap(([demoState, stateService]) => {
+          if (!demoState) {
+            return observableOf(null);
+          }
+
+          return stateService.get(demoState.$accentColorName);
+        }),
+    );
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
-          const isSelected$ = selectedColor$.pipe(
-              map(selected => {
-                const selectedName = COLOR_TO_NAME.get(selected);
-                return selectedName === colorName;
-              }),
-          );
+          const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
           return renderPaletteData(
               colorName,
               color,
@@ -113,15 +122,22 @@ export class Demo extends ThemedCustomElementCtrl {
 
   @cache()
   private get basePaletteContents$(): Observable<readonly Node[]> {
-    const selectedColor$ = this.theme$.pipe(map(theme => theme.baseColor));
+    const selectedColor$ = combineLatest([
+      $demoState.get(this.vine),
+      $stateService.get(this.vine),
+    ])
+    .pipe(
+        switchMap(([demoState, stateService]) => {
+          if (!demoState) {
+            return observableOf(null);
+          }
+
+          return stateService.get(demoState.$baseColorName);
+        }),
+    );
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
-          const isSelected$ = selectedColor$.pipe(
-              map(selected => {
-                const selectedName = COLOR_TO_NAME.get(selected);
-                return selectedName === colorName;
-              }),
-          );
+          const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
           return renderPaletteData(
               colorName,
               color,
@@ -229,10 +245,14 @@ export class Demo extends ThemedCustomElementCtrl {
     return this.declareInput($.accentPalette._.onClick)
         .pipe(
             map(event => getColor(event)),
-            filter((color): color is Color => !!color),
-            withLatestFrom(this.theme$),
-            tap(([color, theme]) => {
-              $theme.set(this.vine, () => theme.setHighlightColor(color));
+            filterNonNull(),
+            withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
+            tap(([color, demoState, stateService]) => {
+              if (!demoState) {
+                return;
+              }
+
+              stateService.set(demoState.$accentColorName, color);
             }),
         );
   }
@@ -242,10 +262,14 @@ export class Demo extends ThemedCustomElementCtrl {
     return this.declareInput($.basePalette._.onClick)
         .pipe(
             map(event => getColor(event)),
-            filter((color): color is Color => !!color),
-            withLatestFrom(this.theme$),
-            tap(([color, theme]) => {
-              $theme.set(this.vine, () => theme.setBaseColor(color));
+            filterNonNull(),
+            withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
+            tap(([color, demoState, stateService]) => {
+              if (!demoState) {
+                return;
+              }
+
+              stateService.set(demoState.$baseColorName, color);
             }),
         );
   }
@@ -261,7 +285,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 }
 
-const ORDERED_PALETTES: ReadonlyArray<[string, Color]> = [
+const ORDERED_PALETTES: ReadonlyArray<[keyof Palette, Color]> = [
   ['RED', PALETTE.RED],
   ['ORANGE', PALETTE.ORANGE],
   ['AMBER', PALETTE.AMBER],
@@ -279,12 +303,6 @@ const ORDERED_PALETTES: ReadonlyArray<[string, Color]> = [
   ['BROWN', PALETTE.BROWN],
   ['GREY', PALETTE.GREY],
 ];
-
-const COLOR_TO_NAME: ReadonlyMap<Color, string> = $pipe(
-    ORDERED_PALETTES,
-    $map(([colorName, color]) => [color, colorName] as [Color, string]),
-    $asMap(),
-);
 
 function renderPaletteData(
     colorName: string,
@@ -314,7 +332,7 @@ function renderPaletteData(
   );
 }
 
-function getColor(event: MouseEvent): Color|null {
+function getColor(event: MouseEvent): keyof Palette|null {
   const target = event.target;
   if (!(target instanceof HTMLElement)) {
     return null;
@@ -325,5 +343,5 @@ function getColor(event: MouseEvent): Color|null {
     return null;
   }
 
-  return PALETTE[colorName as keyof Palette] || null;
+  return colorName as keyof Palette;
 }
