@@ -3,6 +3,7 @@ export { _p, _v, $window } from '../src/app/app';
 
 // core
 export { registerSvg, $svgService, SvgService } from '../src/core/svg-service';
+export { stateIdParser } from '../src/core/state-id-parser';
 export { SvgConfig } from '../src/core/svg-config';
 
 // events
