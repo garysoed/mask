@@ -5,6 +5,7 @@ export { _p, _v, $window } from '../src/app/app';
 export { registerSvg, $svgService, SvgService } from '../src/core/svg-service';
 export { stateIdParser } from '../src/core/state-id-parser';
 export { SvgConfig } from '../src/core/svg-config';
+export { $stateService } from '../src/core/state-service';
 
 // events
 export { ActionEvent, ACTION_EVENT } from '../src/event/action-event';
@@ -26,8 +27,9 @@ export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { LineLayout, $lineLayout } from '../src/layout/line-layout';
 export { ListItem, $$ as $listItem } from '../src/layout/deprecated/list-item';
 export { ListItemLayout, $listItemLayout } from '../src/layout/list-item-layout';
-export { Palette } from '../src/theme/palette';
+export { Palette, PALETTE } from '../src/theme/palette';
 export { RootLayout, $rootLayout } from '../src/layout/root-layout';
 export { $theme, start } from '../src/app/app';
 export { Theme } from '../src/theme/theme';
 export { ThemedCustomElementCtrl } from '../src/theme/themed-custom-element-ctrl';
+
