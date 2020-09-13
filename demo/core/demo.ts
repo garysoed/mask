@@ -21,7 +21,7 @@ import { $drawer, Drawer } from '../../src/section/drawer';
 import { PALETTE, Palette } from '../../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
-import { $demoState$ } from './demo-state';
+import { $demoState } from './demo-state';
 import template from './demo.html';
 import { $locationService, Views } from './location-service';
 import { ACTION_SPECS, ALL_SPECS, GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
@@ -98,7 +98,7 @@ export class Demo extends ThemedCustomElementCtrl {
   @cache()
   private get accentPaletteContents$(): Observable<readonly Node[]> {
     const selectedColor$ = combineLatest([
-      $demoState$.get(this.vine).pipe(switchMap(obs => obs)),
+      $demoState.get(this.vine),
       $stateService.get(this.vine),
     ])
     .pipe(
@@ -127,7 +127,7 @@ export class Demo extends ThemedCustomElementCtrl {
   @cache()
   private get basePaletteContents$(): Observable<readonly Node[]> {
     const selectedColor$ = combineLatest([
-      $demoState$.get(this.vine).pipe(switchMap(obs => obs)),
+      $demoState.get(this.vine),
       $stateService.get(this.vine),
     ])
     .pipe(
@@ -155,8 +155,7 @@ export class Demo extends ThemedCustomElementCtrl {
 
   @cache()
   private get darkModeStateId$(): Observable<StateId<boolean>> {
-    return $demoState$.get(this.vine).pipe(
-        switchMap(obs => obs),
+    return $demoState.get(this.vine).pipe(
         map(demoState => {
           if (!demoState) {
             return null;
@@ -234,11 +233,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   private renderRootTheme(): Observable<'light'|'dark'> {
-    return combineLatest([
-      $demoState$.get(this.vine).pipe(switchMap(obs => obs)),
-      $stateService.get(this.vine),
-    ])
-    .pipe(
+    return combineLatest([$demoState.get(this.vine), $stateService.get(this.vine)]).pipe(
         switchMap(([demoState, stateService]) => {
           if (!demoState) {
             return observableOf(null);
@@ -266,10 +261,7 @@ export class Demo extends ThemedCustomElementCtrl {
         .pipe(
             map(event => getColor(event)),
             filterNonNull(),
-            withLatestFrom(
-                $demoState$.get(this.vine).pipe(switchMap(obs => obs)),
-                $stateService.get(this.vine),
-            ),
+            withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
             tap(([color, demoState, stateService]) => {
               if (!demoState) {
                 return;
@@ -286,10 +278,7 @@ export class Demo extends ThemedCustomElementCtrl {
         .pipe(
             map(event => getColor(event)),
             filterNonNull(),
-            withLatestFrom(
-                $demoState$.get(this.vine).pipe(switchMap(obs => obs)),
-                $stateService.get(this.vine),
-            ),
+            withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
             tap(([color, demoState, stateService]) => {
               if (!demoState) {
                 return;

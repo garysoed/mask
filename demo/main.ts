@@ -17,7 +17,7 @@ import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import { Demo } from './core/demo';
-import { $demoState$, $demoStateId, DemoState } from './core/demo-state';
+import { $demoState, $demoStateId, CheckboxDemoState, DemoState } from './core/demo-state';
 import { $locationService } from './core/location-service';
 
 
@@ -54,7 +54,7 @@ window.addEventListener('load', () => {
 
   // Update the theme based on the demo state.
   combineLatest([
-    $demoState$.get(vine).pipe(switchMap(obs => obs)),
+    $demoState.get(vine),
     $stateService.get(vine),
   ])
   .pipe(

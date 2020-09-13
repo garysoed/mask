@@ -8,7 +8,7 @@ import { _p } from '../../src/app/app';
 import { $stateService } from '../../src/core/state-service';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 import { DemoLayout } from '../base/demo-layout';
-import { $demoState$ } from '../core/demo-state';
+import { $demoState } from '../core/demo-state';
 
 import template from './colors.html';
 
@@ -41,7 +41,7 @@ export class ColorsDemo extends ThemedCustomElementCtrl {
   @cache()
   private get isDark$(): Observable<boolean> {
     return combineLatest([
-      $demoState$.get(this.vine).pipe(switchMap(obs => obs)),
+      $demoState.get(this.vine),
       $stateService.get(this.vine),
     ])
     .pipe(
