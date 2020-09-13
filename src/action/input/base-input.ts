@@ -103,12 +103,11 @@ export abstract class BaseInput<T> extends BaseAction {
   }
 
   @cache()
-  protected get onChange$(): Observable<ChangeEvent<T>> {
+protected get onChange$(): Observable<ChangeEvent<T>> {
     return this.domValue$.pipe(
         pairwise(),
         filter(([oldValue, newValue]) => oldValue !== newValue),
         map(([oldValue]) => new ChangeEvent(oldValue)),
     );
   }
-
 }

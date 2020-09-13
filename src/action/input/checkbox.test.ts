@@ -5,7 +5,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { $stateService } from '../../core/state-service';
-import { $, Checkbox, CheckedValue } from '../input/checkbox';
+import { $, $checkbox, Checkbox, CheckedValue } from '../input/checkbox';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -13,7 +13,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/input/checkbox', init => {
   const _ = init(() => {
     const tester = testerFactory.build([Checkbox], document);
-    const el = tester.createElement('mk-checkbox');
+    const el = tester.createElement($checkbox.tag);
     const displaySlotName$ = el.getAttribute($.display._.name);
 
     const stateService = new StateService();
