@@ -2,7 +2,7 @@ import { cache } from 'gs-tools/export/data';
 import { StateId } from 'gs-tools/export/state';
 import { attributeIn, booleanParser, handler, host, PersonaContext } from 'persona';
 import { AttributeInput, DispatcherOutput, Output } from 'persona/export/internal';
-import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
+import { combineLatest, merge, Observable, of as observableOf, Subject } from 'rxjs';
 import { filter, map, pairwise, startWith, switchMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
@@ -28,6 +28,7 @@ export const $ = {
 
 @_p.baseCustomElement({})
 export abstract class BaseInput<T> extends BaseAction {
+  protected readonly onDomValueUpdatedByScript$ = new Subject<unknown>();
   private readonly stateId$ = this.declareInput(this.$stateId);
 
   constructor(
@@ -95,6 +96,9 @@ export abstract class BaseInput<T> extends BaseAction {
         startWith({}),
         withLatestFrom(this.currentStateValue$),
         switchMap(([, value]) => this.updateDomValue(value)),
+        tap(() => {
+          this.onDomValueUpdatedByScript$.next();
+        }),
     );
   }
 
@@ -106,4 +110,5 @@ export abstract class BaseInput<T> extends BaseAction {
         map(([oldValue]) => new ChangeEvent(oldValue)),
     );
   }
+
 }

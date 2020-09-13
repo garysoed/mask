@@ -61,6 +61,13 @@ test('@mask/input/checkbox', init => {
 
       assert(_.displaySlotName$).to.emitWith('display_unknown');
     });
+
+    should(`update the slot name if the value is set by calling clear`, () => {
+      _.stateService.set(_.$state, true);
+      run(_.el.callFunction($.host._.clearFn, []));
+
+      assert(_.displaySlotName$).to.emitWith('display_checked');
+    });
   });
 
   test('domValue$', () => {

@@ -3,6 +3,7 @@ import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
 import { combineLatest, EMPTY, merge } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
+import { CheckedValue } from '../export';
 import { $theme, start } from '../src/app/app';
 import { $stateService } from '../src/core/state-service';
 import { registerSvg } from '../src/core/svg-service';
@@ -16,7 +17,7 @@ import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import { Demo } from './core/demo';
-import { $demoState, $demoStateId, DemoState } from './core/demo-state';
+import { $demoState, $demoStateId, CheckboxDemoState, DemoState } from './core/demo-state';
 import { $locationService } from './core/location-service';
 
 
@@ -104,6 +105,10 @@ function initFromLocalStorage(stateService: StateService): StateId<DemoState>|nu
 }
 
 function init(stateService: StateService): StateId<DemoState> {
+  const $unknownCheckboxState = stateService.add<CheckedValue>('unknown');
+  const $disabledCheckboxState = stateService.add<CheckedValue>(true);
+  const $miscCheckboxState = stateService.add<CheckedValue>(false);
+
   const $accentColorName = stateService.add<keyof Palette>(ACCENT_COLOR_NAME);
   const $baseColorName = stateService.add<keyof Palette>(BASE_COLOR_NAME);
   const $isDarkMode = stateService.add<boolean>(true);
@@ -111,5 +116,10 @@ function init(stateService: StateService): StateId<DemoState> {
     $accentColorName,
     $baseColorName,
     $isDarkMode,
+    checkboxDemo: {
+      $unknownCheckboxState,
+      $disabledCheckboxState,
+      $labelCheckboxState: $miscCheckboxState,
+    },
   });
 }

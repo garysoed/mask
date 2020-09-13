@@ -1,8 +1,8 @@
 import { Vine } from 'grapevine';
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, onInput, PersonaContext, stringParser } from 'persona';
-import { Observable } from 'rxjs';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
+import { merge, Observable } from 'rxjs';
 import { map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
@@ -31,7 +31,7 @@ export const $checkbox = {
 export const $ = {
   checkbox: element('checkbox', instanceofType(HTMLInputElement), {
     onInput: onInput(),
-    readonly: attributeOut('readonly', booleanParser(), false),
+    disabled: setAttribute('disabled'),
   }),
   display: element('display', instanceofType(HTMLSlotElement), {
     name: attributeOut('name', stringParser()),
@@ -66,7 +66,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   constructor(context: PersonaContext) {
     super(
         false,
-        $.checkbox._.readonly,
+        $.checkbox._.disabled,
         $.host._.stateId,
         $.host._.onChange,
         context,
@@ -91,18 +91,21 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
   @cache()
   protected get domValue$(): Observable<CheckedValue> {
-    return this.declareInput($.checkbox._.onInput)
-        .pipe(
-            startWith({}),
-            withLatestFrom(this.declareInput($.checkbox)),
-            map(([, element]) => {
-              if (element.indeterminate) {
-                return 'unknown';
-              }
+    return merge(
+        this.declareInput($.checkbox._.onInput),
+        this.onDomValueUpdatedByScript$,
+    )
+    .pipe(
+        startWith({}),
+        withLatestFrom(this.declareInput($.checkbox)),
+        map(([, element]) => {
+          if (element.indeterminate) {
+            return 'unknown';
+          }
 
-              return element.checked;
-            }),
-        );
+          return element.checked;
+        }),
+    );
   }
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {

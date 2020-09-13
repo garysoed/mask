@@ -1,12 +1,12 @@
 import { source } from 'grapevine';
-import { assert, createSpySubject, run, should, test } from 'gs-testing';
+import { assert, createSpy, createSpySubject, run, should, test } from 'gs-testing';
 import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { StateId, StateService } from 'gs-tools/export/state';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, onDom, PersonaContext, stringParser } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
-import { combineLatest, Observable, of as observableOf } from 'rxjs';
+import { combineLatest, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
@@ -34,6 +34,10 @@ const $ = {
 };
 
 const $domValueId = source<StateId<string>|null>('domValueId', () => null);
+const $domValueUpdatedByScript$ = source<Subject<unknown>>(
+    'domValueUpdatedByScript$',
+    () => new Subject(),
+);
 
 const DEFAULT_VALUE = 'DEFAULT_VALUE';
 
@@ -50,6 +54,8 @@ class TestInput extends BaseInput<string> {
         $.host._.onChange,
         context,
     );
+
+    this.addSetup(this.forwardDomValueUpdatedByScript$);
   }
 
   @cache()
@@ -67,6 +73,19 @@ class TestInput extends BaseInput<string> {
           return stateService.get(domValueId);
         }),
         filterNonNull(),
+    );
+  }
+
+  @cache()
+  protected get forwardDomValueUpdatedByScript$(): Observable<unknown> {
+    return $domValueUpdatedByScript$.get(this.vine).pipe(
+        switchMap(subject => {
+          return this.onDomValueUpdatedByScript$.pipe(
+              tap(event => {
+                subject.next(event);
+              }),
+          );
+        }),
     );
   }
 
@@ -108,7 +127,16 @@ test('@mask/input/base-input', init => {
     // Clear the component to make test more predictable.
     run(el.callFunction($.host._.clearFn, []));
 
-    return {el, stateService, $domValue, $value};
+    const onDomValueUpdatedByScript$ = new Subject<unknown>();
+    $domValueUpdatedByScript$.set(tester.vine, () => onDomValueUpdatedByScript$);
+
+    return {
+      el,
+      onDomValueUpdatedByScript$,
+      stateService,
+      $domValue,
+      $value,
+    };
   });
 
   test('currentStateValue$', () => {
@@ -180,13 +208,19 @@ test('@mask/input/base-input', init => {
       const newStateValue = 'newStateValue';
       _.stateService.set(_.$value, newStateValue);
 
+      const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
+
       run(_.el.callFunction($.host._.clearFn, []));
 
       assert(_.stateService.get(_.$domValue)).to.emitWith(newStateValue);
+      assert(onDomValueUpdatedByScript$).to.emit();
     });
 
     should(`set the default value at the start`, () => {
+      const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
+
       assert(_.stateService.get(_.$domValue)).to.emitWith(INIT_STATE_VALUE);
+      assert(onDomValueUpdatedByScript$).toNot.emit();
     });
   });
 
