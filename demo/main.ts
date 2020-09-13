@@ -109,6 +109,12 @@ function init(stateService: StateService): StateId<DemoState> {
   const $disabledCheckboxState = stateService.add<CheckedValue>(true);
   const $miscCheckboxState = stateService.add<CheckedValue>(false);
 
+  const $disabledTextInputState = stateService.add<string>('Disabled text input value');
+  const $enabledTextInputState = stateService.add<string>('Init value');
+  const $emailTextInputState = stateService.add<string>('email@host.com');
+  const $telTextInputState = stateService.add<string>('1 (845) 949 1234');
+  const $urlTextInputState = stateService.add<string>('www.url.com');
+
   const $accentColorName = stateService.add<keyof Palette>(ACCENT_COLOR_NAME);
   const $baseColorName = stateService.add<keyof Palette>(BASE_COLOR_NAME);
   const $isDarkMode = stateService.add<boolean>(true);
@@ -120,6 +126,13 @@ function init(stateService: StateService): StateId<DemoState> {
       $unknownCheckboxState,
       $disabledCheckboxState,
       $labelCheckboxState: $miscCheckboxState,
+    },
+    textInputDemo: {
+      $disabledTextInputState,
+      $enabledTextInputState,
+      $emailTextInputState,
+      $telTextInputState,
+      $urlTextInputState,
     },
   });
 }

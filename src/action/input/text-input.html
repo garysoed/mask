@@ -1,36 +1,26 @@
 <style>
-  :host {
-    --mkInputLineColor: var(--mkThemeActionFG2);
-    --mkInputLineWidth: 100%;
-  }
-
   #input {
     border: none;
-    color: var(--mkInputFG);
+    color: var(--mkThemeFG);
     line-height: 2rem;
     padding: 0;
   }
 
   #input:-webkit-autofill {
     background-color: transparent !important;
-    color: var(--mkInputFG) !important;
+    color: var(--mkThemeFG) !important;
   }
 
-  #line {
-    background-color: var(--mkInputLineColor);
-    height: 2px;
-    width: var(--mkInputLineWidth);
-
-    transition: width var(--mkAnimationTime);
+  #label {
+    text-align: end;
   }
 
   #root {
     height: 4rem;
+    background-color: var(--mkThemeBG);
   }
 
   :host([disabled]) {
-    --mkInputFG: var(--mkThemeActionDisabledFG1);
-    --mkInputLineWidth: 0;
     cursor: default;
   }
 
@@ -41,28 +31,18 @@
     outline: none;
   }
 
-  :host(:not([disabled]):hover),
-  #input:not([disabled]):hover + * {
-    --mkInputLineColor: var(--mkThemeActionFocusFG2);
-  }
-
-  :host(:not([disabled]):focus),
-  #input:not([disabled]):focus + * {
-    --mkInputLineColor: var(--mkThemeActionFocusFG1);
-  }
-
+/*
   input[type=number]::-webkit-inner-spin-button,
   input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
+  } */
 </style>
-<div id="root" flex-justify="center" layout="column">
-  <label mk-secondary for="input" id="label">
+<div id="root" layout="row">
+  <mk-line-layout id="label" mk-theme-highlight mk-body-2>
     <slot></slot>
-  </label>
-  <input id="input" mk-body-1 type="text">
-  <div flex-justify="center" layout="row">
-    <div id="line"></div>
-  </div>
+  </mk-line-layout>
+  <mk-line-layout flex>
+    <input id="input" mk-body-1 type="text">
+  </mk-line-layout>
 </div>

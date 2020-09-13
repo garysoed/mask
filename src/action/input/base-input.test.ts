@@ -1,10 +1,10 @@
 import { source } from 'grapevine';
-import { assert, createSpy, createSpySubject, run, should, test } from 'gs-testing';
+import { assert, createSpySubject, run, should, test } from 'gs-testing';
 import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { StateId, StateService } from 'gs-tools/export/state';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, onDom, PersonaContext, stringParser } from 'persona';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { combineLatest, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -173,7 +173,7 @@ test('@mask/input/base-input', init => {
     });
 
     should(`set the new value of the state on change if apply-on-change is true`, () => {
-      run(_.el.setAttribute($.host._.applyOnChange, true));
+      run(_.el.setHasAttribute($.host._.applyOnChange, true));
 
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);

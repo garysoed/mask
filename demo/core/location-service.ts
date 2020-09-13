@@ -16,7 +16,7 @@ export enum Views {
   // ICON_WITH_TEXT = 'iwt',
   MAIN = 'ma',
   TEXT = 'tx',
-  // TEXT_INPUT = 't',
+  TEXT_INPUT = 'ti',
   // UPLOAD_BUTTON = 'ub',
 }
 
@@ -28,12 +28,12 @@ const ROUTE_SPEC = {
   // [Views.CODE_BLOCK]: fromPattern('/code-block', {}),
   [Views.COLORS]: fromPattern('/colors', {}),
   [Views.TEXT]: fromPattern('/text', {}),
+  [Views.TEXT_INPUT]: fromPattern('/text-input', {}),
   // [Views.CROPPED_LINE]: fromPattern('/cropped-line', {}),
   // [Views.DIALOG]: fromPattern('/dialog', {}),
   // [Views.DRAWER]: fromPattern('/drawer', {}),
   // [Views.ICON]: fromPattern('/icon', {}),
   // [Views.ICON_WITH_TEXT]: fromPattern('/icon-with-text', {}),
-  // [Views.TEXT_INPUT]: fromPattern('/text-input', {}),
   // [Views.UPLOAD_BUTTON]: fromPattern('/upload-button', {}),
 };
 

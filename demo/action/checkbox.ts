@@ -2,12 +2,11 @@ import { cache } from 'gs-tools/export/data';
 import { StateId } from 'gs-tools/export/state';
 import { element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
-import { map, mapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { map, mapTo } from 'rxjs/operators';
 
 import { $button } from '../../src/action/button';
 import { $checkbox, Checkbox, CheckedValue } from '../../src/action/input/checkbox';
 import { _p } from '../../src/app/app';
-import { $stateService } from '../../src/core/state-service';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 import { DemoLayout } from '../base/demo-layout';
 import { $demoState } from '../core/demo-state';

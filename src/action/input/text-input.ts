@@ -18,7 +18,6 @@ const LOGGER = new Logger('mask.TextInput');
 
 enum InputType {
   EMAIL = 'email',
-  NUMBER = 'number',
   TEL = 'tel',
   TEXT = 'text',
   URL = 'url',
@@ -48,7 +47,7 @@ export const $textInput = {
     ...$baseInput.api,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
     onChange: dispatcher(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser()),
+    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<string>()),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
   },
   tag: 'mk-text-input',

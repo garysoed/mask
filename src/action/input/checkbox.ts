@@ -1,7 +1,7 @@
 import { Vine } from 'grapevine';
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
+import { attributeIn, attributeOut, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
 import { merge, Observable } from 'rxjs';
 import { map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export const $checkbox = {
   api: {
     ...$baseInput.api,
     onChange: dispatcher<ChangeEvent<CheckedValue>>(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser()),
+    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<CheckedValue>()),
   },
   tag: 'mk-checkbox',
 };

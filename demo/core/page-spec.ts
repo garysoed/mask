@@ -7,6 +7,7 @@ import { $colorsDemo, ColorsDemo } from '../general/colors';
 import { $textsDemo, TextsDemo } from '../general/texts';
 
 import { Views } from './location-service';
+import { TextInputDemo, $textInputDemo } from '../action/text-input';
 
 
 export interface PageSpec {
@@ -19,6 +20,7 @@ export interface PageSpec {
 export const ACTION_SPECS: readonly PageSpec[] = [
   {ctor: ButtonDemo, componentSpec: $buttonDemo, name: 'Button', path: Views.BUTTON},
   {ctor: CheckboxDemo, componentSpec: $checkboxDemo, name: 'Checkbox', path: Views.CHECKBOX},
+  {ctor: TextInputDemo, componentSpec: $textInputDemo, name: 'Text input', path: Views.TEXT_INPUT},
 ];
 
 export const GENERAL_SPECS: readonly PageSpec[] = [

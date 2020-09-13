@@ -13,11 +13,20 @@ export interface CheckboxDemoState {
   readonly $labelCheckboxState: StateId<CheckedValue>;
 }
 
+export interface TextInputDemoState {
+  readonly $enabledTextInputState: StateId<string>;
+  readonly $disabledTextInputState: StateId<string>;
+  readonly $emailTextInputState: StateId<string>;
+  readonly $telTextInputState: StateId<string>;
+  readonly $urlTextInputState: StateId<string>;
+}
+
 export interface DemoState {
   readonly $accentColorName: StateId<keyof Palette>;
   readonly $baseColorName: StateId<keyof Palette>;
   readonly $isDarkMode: StateId<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
+  readonly textInputDemo: TextInputDemoState;
 }
 
 export const $demoStateId = source<StateId<DemoState>|null>('demoStateId', () => null);

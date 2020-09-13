@@ -73,35 +73,35 @@ a {
   --mkThemeFG: var(--mkThemeActionFG2B);
 }
 
-[mk-theme="light"] [mk-action-1]:focus,
-[mk-theme="light"][mk-action-1]:focus,
-[mk-theme="dark"] [mk-action-1]:focus,
-[mk-theme="dark"][mk-action-1]:focus,
-[mk-theme-highlight] [mk-action-1]:focus,
-[mk-theme-highlight][mk-action-1]:focus,
-[mk-action-1]:focus {
+[mk-theme="light"] [mk-action-1]:focus-within,
+[mk-theme="light"][mk-action-1]:focus-within,
+[mk-theme="dark"] [mk-action-1]:focus-within,
+[mk-theme="dark"][mk-action-1]:focus-within,
+[mk-theme-highlight] [mk-action-1]:focus-within,
+[mk-theme-highlight][mk-action-1]:focus-within,
+[mk-action-1]:focus-within {
   --mkThemeBG: var(--mkThemeFocusBG1B);
   --mkThemeFG: var(--mkThemeFocusFG1B);
 }
 
-[mk-theme="light"] [mk-action-2]:focus,
-[mk-theme="light"][mk-action-2]:focus,
-[mk-theme="dark"] [mk-action-2]:focus,
-[mk-theme="dark"][mk-action-2]:focus,
-[mk-theme-highlight] [mk-action-2]:focus,
-[mk-theme-highlight][mk-action-2]:focus,
-[mk-action-2]:focus {
+[mk-theme="light"] [mk-action-2]:focus-within,
+[mk-theme="light"][mk-action-2]:focus-within,
+[mk-theme="dark"] [mk-action-2]:focus-within,
+[mk-theme="dark"][mk-action-2]:focus-within,
+[mk-theme-highlight] [mk-action-2]:focus-within,
+[mk-theme-highlight][mk-action-2]:focus-within,
+[mk-action-2]:focus-within {
   --mkThemeBG: var(--mkThemeFocusBG2B);
   --mkThemeFG: var(--mkThemeFocusFG2B);
 }
 
-[mk-theme="light"] a:focus,
-a[mk-theme="light"]:focus,
-[mk-theme="dark"] a:focus,
-a[mk-theme="dark"]:focus,
-[mk-theme-highlight] a:focus,
-a[mk-theme-highlight]:focus,
-a:focus {
+[mk-theme="light"] a:focus-within,
+a[mk-theme="light"]:focus-within,
+[mk-theme="dark"] a:focus-within,
+a[mk-theme="dark"]:focus-within,
+[mk-theme-highlight] a:focus-within,
+a[mk-theme-highlight]:focus-within,
+a:focus-within {
   --mkThemeBG: var(--mkThemeFocusBG2B);
   --mkThemeFG: var(--mkThemeFocusFG2B);
 }
