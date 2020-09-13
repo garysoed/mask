@@ -40,12 +40,15 @@ export class AnnotatedText extends ThemedCustomElementCtrl {
     return this.declareInput($.host._.annotations).pipe(
         map(annotations => annotations || []),
         withLatestFrom($annotationService.get(this.vine)),
-        map(([annotationIds, service]) => $pipe(
-            annotationIds,
-            $map(annotationId => service.getSpec(annotationId)),
-            $filterNonNull(),
-            $asArray(),
-        )),
+        switchMap(([annotationIds, service]) => {
+          const spec$list = $pipe(
+              annotationIds,
+              $map(annotationId => service.getSpec(annotationId)),
+              $asArray(),
+          );
+          return spec$list.length <= 0 ? observableOf([]) : combineLatest(spec$list);
+        }),
+        map(specs => $pipe(specs, $filterNonNull(), $asArray())),
     );
   }
 

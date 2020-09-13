@@ -22,7 +22,7 @@ export { $icon, Icon } from '../src/display/icon';
 
 export { Drawer, Mode as DrawerMode, $drawer as $drawer } from '../src/section/drawer';
 // export { Dialog } from '../src/section/dialog';
-export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section/dialog-service';
+export { $dialogService, DialogResult, DialogService } from '../src/section/dialog-service';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { LineLayout, $lineLayout } from '../src/layout/line-layout';
 export { ListItem, $$ as $listItem } from '../src/layout/deprecated/list-item';

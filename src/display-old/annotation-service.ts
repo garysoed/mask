@@ -1,14 +1,17 @@
-import { source, stream, Vine } from 'grapevine';
+import { source, Vine } from 'grapevine';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AnnotationSpec } from './annotation-spec';
 
 
 class AnnotationService {
-  constructor(private readonly annotations: ReadonlyMap<string, AnnotationSpec>) { }
+  constructor(private readonly vine: Vine) { }
 
-  getSpec(annotationId: string): AnnotationSpec|null {
-    return this.annotations.get(annotationId) || null;
+  getSpec(annotationId: string): Observable<AnnotationSpec|null> {
+    return $annotationConfig.get(this.vine).pipe(
+        map(annotations => annotations.get(annotationId) || null),
+    );
   }
 }
 
@@ -18,9 +21,7 @@ export function addAnnotationSpec(vine: Vine, annotationId: string, spec: Annota
   $annotationConfig.set(vine, configMap => new Map([...configMap, [annotationId, spec]]));
 }
 
-export const $annotationService = stream(
+export const $annotationService = source(
     'AnnotationService',
-    vine => $annotationConfig.get(vine)
-        .pipe(map(config => new AnnotationService(config))),
-    globalThis,
+    vine => new AnnotationService(vine),
 );

@@ -1,14 +1,13 @@
-import { Vine } from 'grapevine';
 import { instanceofType } from 'gs-types';
 import { classlist, element, PersonaContext } from 'persona';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
 import backdropTemplate from './backdrop.html';
-import { $dialogState } from './dialog-service';
+import { $dialogService } from './dialog-service';
 
 
 export const $ = {
@@ -29,7 +28,8 @@ export class Backdrop extends ThemedCustomElementCtrl {
   }
 
   renderRootClasslist(): Observable<ReadonlySet<string>> {
-    return $dialogState.get(this.vine).pipe(
+    return $dialogService.get(this.vine).pipe(
+        switchMap(service => service.getStateObs()),
         map(dialogState => {
           if (dialogState.isOpen) {
             return new Set(['isVisible']);

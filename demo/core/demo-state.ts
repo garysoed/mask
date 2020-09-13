@@ -1,4 +1,4 @@
-import { source, stream } from 'grapevine';
+import { source } from 'grapevine';
 import { StateId } from 'gs-tools/export/state';
 import { combineLatest, of as observableOf } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { CheckedValue } from '../../src/action/input/checkbox';
 import { $stateService } from '../../src/core/state-service';
 import { Palette } from '../../src/theme/palette';
+
 
 export interface CheckboxDemoState {
   readonly $unknownCheckboxState: StateId<CheckedValue>;
@@ -31,8 +32,8 @@ export interface DemoState {
 
 export const $demoStateId = source<StateId<DemoState>|null>('demoStateId', () => null);
 
-export const $demoState = stream(
-    'demoState',
+export const $demoState$ = source(
+    'demoState$',
     vine => {
       return combineLatest([
         $stateService.get(vine),
@@ -48,5 +49,4 @@ export const $demoState = stream(
           }),
       );
     },
-    globalThis,
 );

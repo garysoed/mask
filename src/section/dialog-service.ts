@@ -1,8 +1,7 @@
-import { Source, source, stream, Vine } from 'grapevine';
+import { Source, source, Vine } from 'grapevine';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { _v } from '../app/app';
 
 export interface CloseState {
   isOpen: false;
@@ -78,11 +77,3 @@ export class DialogService {
   }
 }
 export const $dialogService = source('DialogService', vine => new DialogService(vine));
-
-export const $dialogState = stream(
-    'dialogState',
-    vine => $dialogService
-        .get(vine)
-        .pipe(switchMap(dialogService => dialogService.getStateObs())),
-    globalThis,
-);

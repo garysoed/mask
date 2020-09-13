@@ -1,4 +1,5 @@
-import { source, stream, Vine } from 'grapevine';
+import { source, Vine } from 'grapevine';
+import { cache } from 'gs-tools/export/data';
 import { defer, from as observableFrom, Observable, of as observableOf } from 'rxjs';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 
@@ -14,14 +15,10 @@ const __run = Symbol('SvgService.run');
  * @thModule display
  */
 export class SvgService {
-  private readonly svgObsMap: Map<string, Observable<string>>;
-
   /**
    * @internal
    */
-  constructor(svgConfig: ReadonlyMap<string, SvgConfig>) {
-    this.svgObsMap = createSvgObs(svgConfig);
-  }
+  constructor(private readonly vine: Vine) { }
 
   /**
    * @internal
@@ -42,19 +39,22 @@ export class SvgService {
    * @returns Observable that emits the SVG string if exists, null otherwise.
    */
   getSvg(name: string): Observable<string|null> {
-    return this.svgObsMap.get(name) || observableOf(null);
-  }
-}
-
-function createSvgObs(
-    configs: ReadonlyMap<string, SvgConfig>,
-): Map<string, Observable<string>> {
-  const obsMap = new Map<string, Observable<string>>();
-  for (const [key, config] of configs) {
-    obsMap.set(key, loadSvg(config));
+    return this.svgObsMap$.pipe(switchMap(svgObsMap => svgObsMap.get(name) || observableOf(null)));
   }
 
-  return obsMap;
+  @cache()
+  private get svgObsMap$(): Observable<ReadonlyMap<string, Observable<string>>> {
+    return $svgConfig.get(this.vine).pipe(
+        map(configs => {
+          const obsMap = new Map<string, Observable<string>>();
+          for (const [key, config] of configs) {
+            obsMap.set(key, loadSvg(config));
+          }
+
+          return obsMap;
+        }),
+    );
+  }
 }
 
 function loadSvg(config: SvgConfig): Observable<string> {
@@ -86,16 +86,11 @@ export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
  *
  * @thModule display
  */
-export const $svgService = stream(
+export const $svgService = source(
     'SvgService',
-    vine => $svgConfig.get(vine)
-        .pipe(
-          map(config => {
-            const service = new SvgService(config);
-            service[__run]();
-
-            return service;
-          }),
-        ),
-    globalThis,
+    vine => {
+      const service = new SvgService(vine);
+      service[__run]();
+      return service;
+    },
 );
