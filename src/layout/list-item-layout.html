@@ -1,17 +1,25 @@
 <style>
-  #bullet::slotted(*) {
-    margin: 1rem;
+  #bulletContainer {
+    overflow: hidden;
+    width: 4rem;
   }
 
   #contents {
     overflow: hidden;
   }
+
+  #label::slotted(*),
+  #details::slotted(*) {
+    padding: 0 1rem;
+  }
 </style>
 
 <div layout="row">
-  <slot id="bullet" name="bullet"></slot>
+  <div id="bulletContainer" layout="row" flex-align="center" flex-justify="center">
+    <slot name="bullet"></slot>
+  </div>
   <div layout="column" id="contents" flex>
-    <slot name="label"></slot>
-    <slot name="details"></slot>
+    <slot id="label" name="label"></slot>
+    <slot id="details" name="details"></slot>
   </div>
 </div>
