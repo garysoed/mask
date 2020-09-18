@@ -12,9 +12,14 @@
   #details::slotted(*) {
     padding: 0 1rem;
   }
+
+  #root {
+    background-color: var(--mkThemeBG);
+    color: var(--mkThemeFG);
+  }
 </style>
 
-<div layout="row">
+<div id="root" layout="row">
   <div id="bulletContainer" layout="row" flex-align="center" flex-justify="center">
     <slot name="bullet"></slot>
   </div>

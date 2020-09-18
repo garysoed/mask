@@ -7,16 +7,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   data-name="Layer 1"
-   viewBox="0 0 100 100"
-   x="0px"
-   y="0px"
-   version="1.1"
-   id="svg115"
+   inkscape:version="1.0 (4035a4f, 2020-05-01)"
+   height="24"
+   width="24"
    sodipodi:docname="settings.svg"
-   width="100"
-   height="100"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+   id="svg115"
+   version="1.1"
+   y="0px"
+   x="0px"
+   viewBox="0 0 24 24"
+   data-name="Layer 1">
   <metadata
      id="metadata121">
     <rdf:RDF>
@@ -32,43 +32,45 @@
   <defs
      id="defs119" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1301"
-     inkscape:window-height="917"
-     id="namedview117"
-     showgrid="false"
-     inkscape:zoom="3.168"
-     inkscape:cx="-43.499832"
-     inkscape:cy="58.592919"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="svg115"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg115" />
+     inkscape:window-y="23"
+     inkscape:window-x="0"
+     inkscape:cy="19.269039"
+     inkscape:cx="14.343706"
+     inkscape:zoom="5.9453245"
+     showgrid="false"
+     id="namedview117"
+     inkscape:window-height="917"
+     inkscape:window-width="1301"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
   <title
      id="title105">setng cog</title>
   <path
-     inkscape:connector-curvature="0"
+     style="stroke-width:0.240025"
+     d="m 23.920238,10.67141 c -0.03841,-0.338434 -0.432044,-0.59046 -0.772879,-0.59046 A 2.6402689,2.6402689 0 0 1 21.332775,5.4700805 0.66726798,0.66726798 0 0 0 21.407182,4.5603878 12.097232,12.097232 0 0 0 19.503788,2.6401922 0.66966822,0.66966822 0 0 0 18.589295,2.7145998 2.7578809,2.7578809 0 0 1 15.59859,3.3890685 2.6738724,2.6738724 0 0 1 13.980825,0.78240292 0.67206846,0.67206846 0 0 0 13.390365,0.07913129 12.090032,12.090032 0 0 0 10.69249,0.07193056 0.66966822,0.66966822 0 0 0 10.09723,0.75600024 2.6666716,2.6666716 0 0 1 8.4530627,3.3146609 2.7842836,2.7842836 0 0 1 5.4815601,2.6401922 0.66726798,0.66726798 0 0 0 4.5766679,2.5657847 11.914814,11.914814 0 0 0 2.6372703,4.4859802 a 0.67446871,0.67446871 0 0 0 0.069607,0.9144932 2.6570707,2.6570707 0 0 1 0.6792692,3.0003057 2.7746827,2.7746827 0 0 1 -2.61146611,1.6129649 0.65286651,0.65286651 0 0 0 -0.69127041,0.59046 11.797201,11.797201 0 0 0 0,2.726677 c 0.03120318,0.350436 0.43924473,0.59046 0.7824797,0.59046 a 2.6402689,2.6402689 0 0 1 2.46745142,1.646569 2.6714722,2.6714722 0 0 1 -0.6696682,2.966702 0.66726798,0.66726798 0 0 0 -0.074408,0.907292 11.871609,11.871609 0 0 0 1.8985934,1.920195 0.66966822,0.66966822 0 0 0 0.9144932,-0.0696 2.7674819,2.7674819 0 0 1 2.9955051,-0.67927 2.6570707,2.6570707 0 0 1 1.6201644,2.604266 0.67206846,0.67206846 0 0 0 0.59046,0.703271 12.363659,12.363659 0 0 0 1.38254,0.07921 11.281149,11.281149 0 0 0 1.317735,-0.0744 0.66966822,0.66966822 0 0 0 0.595261,-0.68887 2.6618712,2.6618712 0 0 1 1.639366,-2.558662 2.7698822,2.7698822 0 0 1 2.964303,0.68407 0.66726798,0.66726798 0 0 0 0.904892,0.0744 12.104434,12.104434 0 0 0 1.939398,-1.920196 0.66966822,0.66966822 0 0 0 -0.06961,-0.914493 2.6402689,2.6402689 0 0 1 1.785782,-4.620471 h 0.148816 a 0.67206846,0.67206846 0 0 0 0.703271,-0.59046 12.298853,12.298853 0 0 0 0,-2.719477 z m -11.902812,5.354946 a 4.0012076,4.0012076 0 1 1 4.001207,-4.001208 4.0060081,4.0060081 0 0 1 -4.001207,4.001208 z"
      id="foreground"
-     d="m 99.639307,44.469894 c -0.16,-1.41 -1.8,-2.46 -3.22,-2.46 a 11,11 0 0 1 -7.56,-19.21 2.78,2.78 0 0 0 0.31,-3.79 50.4,50.4 0 0 0 -7.93,-8 2.79,2.79 0 0 0 -3.81,0.31 11.49,11.49 0 0 1 -12.46,2.81 11.14,11.14 0 0 1 -6.74,-10.8600001 2.8,2.8 0 0 0 -2.46,-2.92999995 50.37,50.37 0 0 0 -11.24,-0.03 2.79,2.79 0 0 0 -2.48,2.84999995 11.11,11.11 0 0 1 -6.85,10.6600001 11.6,11.6 0 0 1 -12.38,-2.81 2.78,2.78 0 0 0 -3.77,-0.31 49.64,49.64 0 0 0 -8.08,8 2.81,2.81 0 0 0 0.29,3.81 11.07,11.07 0 0 1 2.83,12.5 11.56,11.56 0 0 1 -10.8800004,6.72 2.72,2.72 0 0 0 -2.87999996,2.46 49.15,49.15 0 0 0 0,11.36 c 0.13,1.46 1.82999996,2.46 3.25999996,2.46 a 11,11 0 0 1 10.2800004,6.86 11.13,11.13 0 0 1 -2.79,12.36 2.78,2.78 0 0 0 -0.31,3.78 49.46,49.46 0 0 0 7.91,8 2.79,2.79 0 0 0 3.81,-0.29 11.53,11.53 0 0 1 12.48,-2.83 11.07,11.07 0 0 1 6.75,10.85 2.8,2.8 0 0 0 2.46,2.93 51.51,51.51 0 0 0 5.76,0.33 47,47 0 0 0 5.49,-0.31 2.79,2.79 0 0 0 2.48,-2.87 11.09,11.09 0 0 1 6.83,-10.66 11.54,11.54 0 0 1 12.35,2.85 2.78,2.78 0 0 0 3.77,0.31 50.43,50.43 0 0 0 8.08,-8 2.79,2.79 0 0 0 -0.29,-3.81 11,11 0 0 1 7.44,-19.25 h 0.62 a 2.8,2.8 0 0 0 2.93,-2.46 51.24,51.24 0 0 0 0,-11.33 z m -49.59,22.31 a 16.67,16.67 0 1 1 16.67,-16.67 16.69,16.69 0 0 1 -16.67,16.67 z" />
+     inkscape:connector-curvature="0" />
   <text
-     x="-2.2095959"
-     y="113.35858"
-     font-size="5px"
-     font-weight="bold"
+     style="font-weight:bold;font-size:5px;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000"
      id="text111"
-     style="font-weight:bold;font-size:5px;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">Created by i cons</text>
-  <text
-     x="-2.2095959"
-     y="118.35858"
-     font-size="5px"
      font-weight="bold"
+     font-size="5px"
+     y="113.35858"
+     x="-2.2095959">Created by i cons</text>
+  <text
+     style="font-weight:bold;font-size:5px;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000"
      id="text113"
-     style="font-weight:bold;font-size:5px;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">from the Noun Project</text>
+     font-weight="bold"
+     font-size="5px"
+     y="118.35858"
+     x="-2.2095959">from the Noun Project</text>
 </svg>

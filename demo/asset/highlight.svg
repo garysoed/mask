@@ -7,14 +7,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   data-name="Layer 1"
-   viewBox="0 0 24 30"
-   x="0px"
-   y="0px"
-   id="svg2"
+   height="24"
+   width="24"
+   sodipodi:docname="highlight.svg"
+   inkscape:version="1.0 (4035a4f, 2020-05-01)"
    version="1.1"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
-   sodipodi:docname="highlight.svg">
+   id="svg2"
+   y="0px"
+   x="0px"
+   viewBox="0 0 24 24"
+   data-name="Layer 1">
   <metadata
      id="metadata22">
     <rdf:RDF>
@@ -30,43 +32,45 @@
   <defs
      id="defs20" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1257"
-     inkscape:window-height="817"
-     id="namedview18"
-     showgrid="false"
-     inkscape:zoom="7.8666667"
-     inkscape:cx="-10.245763"
-     inkscape:cy="15"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="svg2"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg2" />
+     inkscape:window-y="23"
+     inkscape:window-x="0"
+     inkscape:cy="15.889831"
+     inkscape:cx="-8.4025427"
+     inkscape:zoom="7.8666667"
+     showgrid="false"
+     id="namedview18"
+     inkscape:window-height="817"
+     inkscape:window-width="1257"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
   <title
      id="title4">Icons</title>
   <path
-     d="m 14,6 -9,9 v 1 l 3,3 h 1 l 9,-9 z M 4,17 2,19 0.7109375,20.289062 A 1,1 0 0 0 1.4101562,22 H 5 l 2,-2 z m 4,3 -2,2 h 15 v -2 z"
+     style="stroke-width:1.16585"
+     inkscape:connector-curvature="0"
      id="foreground"
-     inkscape:connector-curvature="0" />
+     d="M 15.839041,2.6731897 5.3463801,13.165851 v 1.165851 l 3.4975538,3.497554 H 10.009785 L 20.502446,7.3365947 Z M 4.1805288,15.497553 1.8488262,17.829256 0.34597099,19.33211 a 1.1658513,1.1658513 0 0 0 0.81518511,1.9947 h 4.185224 L 7.6780826,18.995107 Z M 8.8439339,18.995107 6.5122314,21.32681 H 24 v -2.331703 z" />
   <text
-     x="0"
-     y="39"
-     font-size="5px"
-     font-weight="bold"
+     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000"
      id="text14"
-     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">Created by Yasin Masukor</text>
-  <text
-     x="0"
-     y="44"
-     font-size="5px"
      font-weight="bold"
+     font-size="5px"
+     y="39"
+     x="0">Created by Yasin Masukor</text>
+  <text
+     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000"
      id="text16"
-     style="font-weight:bold;font-size:5px;line-height:0%;font-family:'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif;fill:#000000">from the Noun Project</text>
+     font-weight="bold"
+     font-size="5px"
+     y="44"
+     x="0">from the Noun Project</text>
 </svg>
