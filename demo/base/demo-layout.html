@@ -15,6 +15,10 @@
     background-color: var(--mkThemeBG);
     height: 32rem;
   }
+
+  .iconContainer {
+    height: 2rem;
+  }
 </style>
 
 <div fill-parent layout="column" mk-body-1>
@@ -30,7 +34,9 @@
     <div id="drawerRoot" layout="column">
       <mk-button id="detailsButton" mk-theme-highlight>
         <mk-list-item-layout>
-          <mk-icon id="bulletIcon" slot="bullet"></mk-icon>
+          <div class="iconContainer" slot="bullet">
+            <mk-icon id="bulletIcon"></mk-icon>
+          </div>
           <mk-line-layout id="detailsLabel" slot="details">Details</mk-line-layout>
         </mk-list-item-layout>
       </mk-button>

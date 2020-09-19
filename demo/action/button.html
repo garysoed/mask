@@ -1,4 +1,7 @@
 <style>
+  .iconContainer {
+    height: 4rem;
+  }
 </style>
 
 <mkd-demo-layout label="Buttons">
@@ -15,9 +18,11 @@
     </mk-button>
 
     <mk-button>
-      <mk-line-layout>
-        <mk-icon icon="logo"></mk-icon>
-      </mk-line-layout>
+      <mk-list-item-layout>
+        <div class="iconContainer" slot="bullet">
+          <mk-icon icon="logo"></mk-icon>
+        </div>
+      </mk-list-item-layout>
     </mk-button>
   </div>
   <div slot="docs">

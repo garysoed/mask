@@ -33,6 +33,10 @@
     width: 16rem;
   }
 
+  .iconContainer {
+    height: 2rem;
+  }
+
   .palette {
     cursor: pointer;
     display: inline-block;
@@ -70,12 +74,16 @@
       >
         <div id="drawerContent" mk-body-1>
           <mk-list-item-layout>
-            <mk-icon icon="settings" slot="bullet"></mk-icon>
+            <div class="iconContainer" slot="bullet">
+              <mk-icon icon="settings"></mk-icon>
+            </div>
             <p slot="label">Settings</p>
           </mk-list-item-layout>
           <div id="basePaletteSection">
             <mk-list-item-layout>
-              <mk-icon icon="palette" slot="bullet"></mk-icon>
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="palette"></mk-icon>
+              </div>
               <p slot="label">Base Palette</p>
             </mk-list-item-layout>
             <div id="basePalette" shadow="down">
@@ -85,7 +93,9 @@
 
           <div id="accentPaletteSection">
             <mk-list-item-layout>
-              <mk-icon icon="highlight" slot="bullet"></mk-icon>
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="highlight"></mk-icon>
+              </div>
               <p slot="label">Accent Palette</p>
             </mk-list-item-layout>
             <div id="accentPalette" shadow="down">
@@ -95,11 +105,15 @@
 
           <mk-checkbox id="darkMode" is-secondary apply-on-change="T">
             <mk-list-item-layout slot="display_checked">
-              <mk-icon icon="mk.checkbox_checked" slot="bullet"></mk-icon>
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="mk.checkbox_checked"></mk-icon>
+              </div>
               <p slot="label">Dark mode</p>
             </mk-list-item-layout>
             <mk-list-item-layout slot="display_unchecked">
-              <mk-icon icon="mk.checkbox_unchecked" slot="bullet"></mk-icon>
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="mk.checkbox_unchecked"></mk-icon>
+              </div>
               <p slot="label">Light mode</p>
             </mk-list-item-layout>
           </mk-checkbox>

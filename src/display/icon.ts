@@ -12,9 +12,9 @@ import { filterDefined } from 'gs-tools/export/rxjs';
 import { typeBased } from 'gs-tools/export/serializer';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, host, PersonaContext, renderHtml, single, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, enumParser, host, PersonaContext, renderHtml, single, stringParser } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, share, switchMap, tap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { $svgService } from '../core/svg-service';
@@ -23,9 +23,16 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import template from './icon.html';
 
 
+export enum FitTo {
+  HEIGHT = 'height',
+  WIDTH = 'width',
+}
+
+
 export const $icon = {
   api: {
     icon: attributeIn('icon', stringParser(), ''),
+    fitTo: attributeIn('fit-to', enumParser<FitTo>(FitTo), FitTo.HEIGHT),
   },
   tag: 'mk-icon',
 };
@@ -62,7 +69,7 @@ export class Icon extends ThemedCustomElementCtrl {
 
   @cache()
   private get rootSvg$(): Observable<Node|null> {
-    return combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
+    const node$ = combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
             switchMap(svg => {
@@ -72,5 +79,23 @@ export class Icon extends ThemedCustomElementCtrl {
               return renderHtml(svg, 'image/svg+xml', this.context);
             }),
         );
+
+    return combineLatest([node$, this.declareInput($.host._.fitTo)]).pipe(
+        tap(([node, fitTo]) => {
+          if (!(node instanceof Element)) {
+            return;
+          }
+
+          if (fitTo === FitTo.HEIGHT) {
+            node.removeAttribute('width');
+            node.setAttribute('height', 'auto');
+          } else {
+            node.removeAttribute('height');
+            node.setAttribute('width', 'auto');
+          }
+        }),
+        map(([node]) => node),
+        share(),
+    );
   }
 }

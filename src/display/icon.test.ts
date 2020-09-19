@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { _p } from '../app/app';
 import { registerSvg } from '../core/svg-service';
 
-import { $, $icon, Icon } from './icon';
+import { $, $icon, FitTo, Icon } from './icon';
 
 
 const SVG_NAME = 'svgName';
@@ -37,15 +37,40 @@ test('display.Icon', init => {
   });
 
   test('rootSvg$', () => {
-    should(`set the innerHTML correctly`, () => {
+    should(`set the innerHTML correctly and set the height to auto`, () => {
       const svgEl = document.createElement('svg');
+      svgEl.setAttribute('width', '123');
       _.svgEl$.next(svgEl);
 
+      run(_.el.setAttribute($.host._.fitTo, FitTo.HEIGHT));
       run(_.el.setAttribute($.host._.icon, SVG_NAME));
 
       assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.tagName)))
           .to.emitWith('SVG');
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
+
+      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.hasAttribute('width'))))
+          .to.emitWith(false);
+      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.getAttribute('height'))))
+          .to.emitWith('auto');
+    });
+
+    should(`set the innerHTML correctly and set the width to auto`, () => {
+      const svgEl = document.createElement('svg');
+      svgEl.setAttribute('height', '123');
+      _.svgEl$.next(svgEl);
+
+      run(_.el.setAttribute($.host._.fitTo, FitTo.WIDTH));
+      run(_.el.setAttribute($.host._.icon, SVG_NAME));
+
+      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.tagName)))
+          .to.emitWith('SVG');
+      assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
+
+      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.hasAttribute('height'))))
+          .to.emitWith(false);
+      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.getAttribute('width'))))
+          .to.emitWith('auto');
     });
 
     should(`set the innerHTML correctly if there are no SVG names specified`, () => {

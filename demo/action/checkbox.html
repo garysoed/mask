@@ -20,21 +20,31 @@
     grid-row: 3 / 3;
     grid-column: 1 / 3;
   }
+
+.iconContainer {
+  height: 2rem;
+}
 </style>
 
 <mkd-demo-layout label="Checkbox">
   <div id="play" slot="play" layout="grid">
     <mk-checkbox id="unknownCheckbox">
       <mk-list-item-layout slot="display_unknown">
-        <mk-icon icon="mk.checkbox_unknown" slot="bullet"></mk-icon>
+        <div class="iconContainer" slot="bullet">
+          <mk-icon icon="mk.checkbox_unknown"></mk-icon>
+        </div>
         <p slot="label">Initially unknown</p>
       </mk-list-item-layout>
       <mk-list-item-layout slot="display_checked">
-        <mk-icon icon="mk.checkbox_checked" slot="bullet"></mk-icon>
+        <div class="iconContainer" slot="bullet">
+          <mk-icon icon="mk.checkbox_checked"></mk-icon>
+        </div>
         <p slot="label">Checked</p>
       </mk-list-item-layout>
       <mk-list-item-layout slot="display_unchecked">
-        <mk-icon icon="mk.checkbox_unchecked" slot="bullet"></mk-icon>
+        <div class="iconContainer" slot="bullet">
+          <mk-icon icon="mk.checkbox_unchecked"></mk-icon>
+        </div>
         <p slot="label">Unchecked</p>
       </mk-list-item-layout>
     </mk-checkbox>
