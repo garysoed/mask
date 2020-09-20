@@ -1,0 +1,66 @@
+
+<style>
+  #iconContainer {
+    min-width: 16rem;
+    overflow: hidden;
+    resize: both;
+  }
+
+  #iconSection {
+    width: 16rem;
+  }
+
+  #fitToWidthIconContainer,
+  .iconContainer {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  #fitToWidthIconContainer {
+    transform: rotateZ(90deg);
+  }
+</style>
+
+<mkd-demo-layout label="Icon">
+  <div slot="play" layout="row">
+    <div id="iconContainer">
+      <mk-icon id="icon" icon="logo"></mk-icon>
+    </div>
+
+    <div flex>
+      <mk-checkbox id="isActionCheckbox" apply-on-change>
+        <mk-list-item-layout slot="display_unchecked">
+          <div slot="bullet" class="iconContainer"><mk-icon icon="mk.checkbox_unchecked"></mk-icon></div>
+          <p slot="label">Is action</p>
+        </mk-list-item-layout>
+        <mk-list-item-layout slot="display_checked">
+          <div slot="bullet" class="iconContainer"><mk-icon icon="mk.checkbox_checked"></mk-icon></div>
+          <p slot="label">Is action</p>
+        </mk-list-item-layout>
+      </mk-checkbox>
+
+      <mk-checkbox id="fitToWidthCheckbox" apply-on-change>
+        <mk-list-item-layout slot="display_unchecked">
+          <div slot="bullet" class="iconContainer"><mk-icon icon="fit_to_height"></mk-icon></div>
+          <p slot="label">Fit to height</p>
+        </mk-list-item-layout>
+        <mk-list-item-layout slot="display_checked">
+          <div id="fitToWidthIconContainer" slot="bullet"><mk-icon icon="fit_to_height"></mk-icon></div>
+          <p slot="label">Fit to width</p>
+        </mk-list-item-layout>
+      </mk-checkbox>
+    </div>
+  </div>
+  <div slot="docs">
+    <p mk-body-1>
+      Mask uses SVGs for icons. These icons should be monochromatic and have one polygon with the
+      <code>foreground</code> ID. This node will be colored the same color as the text in different
+      modes, as shown above.
+    </p>
+    <p>
+      Note that the icon is always scaled to fit the container. So its container needs a specified
+      size.
+    </p>
+  </div>
+</mkd-demo-layout>
+

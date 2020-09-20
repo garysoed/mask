@@ -13,6 +13,11 @@ export interface CheckboxDemoState {
   readonly $labelCheckboxState: StateId<CheckedValue>;
 }
 
+export interface IconDemoState {
+  readonly $isAction: StateId<CheckedValue>;
+  readonly $fitToWidth: StateId<CheckedValue>;
+}
+
 export interface TextInputDemoState {
   readonly $enabledTextInputState: StateId<string>;
   readonly $disabledTextInputState: StateId<string>;
@@ -26,6 +31,7 @@ export interface DemoState {
   readonly $baseColorName: StateId<keyof Palette>;
   readonly $isDarkMode: StateId<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
+  readonly iconDemo: IconDemoState;
   readonly textInputDemo: TextInputDemoState;
 }
 

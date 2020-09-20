@@ -24,7 +24,7 @@ import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-c
 import { $demoState } from './demo-state';
 import template from './demo.html';
 import { $locationService, Views } from './location-service';
-import { ACTION_SPECS, ALL_SPECS, GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
+import { ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
 
 
 const $ = {
@@ -41,6 +41,7 @@ const $ = {
   }),
   drawerRoot: element('drawerRoot', instanceofType(HTMLElement), {
     actionContents: multi('#actionContents'),
+    displayContents: multi('#displayContents'),
     generalContents: multi('#generalContents'),
     onAction: onDom(ACTION_EVENT),
   }),
@@ -86,6 +87,7 @@ export class Demo extends ThemedCustomElementCtrl {
     this.render($.darkMode._.stateId, this.darkModeStateId$);
     this.render($.content._.content, this.mainContent$);
     this.render($.drawerRoot._.actionContents, this.renderPageButtons(ACTION_SPECS));
+    this.render($.drawerRoot._.displayContents, this.renderPageButtons(DISPLAY_SPECS));
     this.render($.drawerRoot._.generalContents, this.renderPageButtons(GENERAL_SPECS));
     this.render($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded());
     this.render($.root._.theme, this.renderRootTheme());

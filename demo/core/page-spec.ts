@@ -3,11 +3,12 @@ import { CustomElementCtrlCtor } from 'persona/export/internal';
 
 import { $buttonDemo, ButtonDemo } from '../action/button';
 import { $checkboxDemo, CheckboxDemo } from '../action/checkbox';
+import { $textInputDemo, TextInputDemo } from '../action/text-input';
+import { $iconDemo, IconDemo } from '../display/icon';
 import { $colorsDemo, ColorsDemo } from '../general/colors';
 import { $textsDemo, TextsDemo } from '../general/texts';
 
 import { Views } from './location-service';
-import { TextInputDemo, $textInputDemo } from '../action/text-input';
 
 
 export interface PageSpec {
@@ -23,6 +24,10 @@ export const ACTION_SPECS: readonly PageSpec[] = [
   {ctor: TextInputDemo, componentSpec: $textInputDemo, name: 'Text input', path: Views.TEXT_INPUT},
 ];
 
+export const DISPLAY_SPECS: readonly PageSpec[] = [
+  {ctor: IconDemo, componentSpec: $iconDemo, name: 'Icon', path: Views.ICON},
+];
+
 export const GENERAL_SPECS: readonly PageSpec[] = [
   {ctor: ColorsDemo, componentSpec: $colorsDemo, name: 'Colors', path: Views.COLORS},
   {ctor: TextsDemo, componentSpec: $textsDemo, name: 'Texts', path: Views.TEXT},
@@ -30,6 +35,7 @@ export const GENERAL_SPECS: readonly PageSpec[] = [
 
 export const ALL_SPECS = [
   ...ACTION_SPECS,
+  ...DISPLAY_SPECS,
   ...GENERAL_SPECS,
 ];
 

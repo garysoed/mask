@@ -1,6 +1,6 @@
 import { cache } from 'gs-tools/export/data';
 import { StateId } from 'gs-tools/export/state';
-import { attributeIn, booleanParser, handler, hasAttribute, host, PersonaContext } from 'persona';
+import { handler, hasAttribute, host, PersonaContext } from 'persona';
 import { AttributeInput, DispatcherOutput, Output } from 'persona/export/internal';
 import { combineLatest, merge, Observable, of as observableOf, Subject } from 'rxjs';
 import { filter, map, pairwise, startWith, switchMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';

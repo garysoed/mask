@@ -105,6 +105,9 @@ function initFromLocalStorage(stateService: StateService): StateId<DemoState>|nu
 }
 
 function init(stateService: StateService): StateId<DemoState> {
+  const $isAction = stateService.add<CheckedValue>(false);
+  const $fitToWidth = stateService.add<CheckedValue>(false);
+
   const $unknownCheckboxState = stateService.add<CheckedValue>('unknown');
   const $disabledCheckboxState = stateService.add<CheckedValue>(true);
   const $miscCheckboxState = stateService.add<CheckedValue>(false);
@@ -126,6 +129,10 @@ function init(stateService: StateService): StateId<DemoState> {
       $unknownCheckboxState,
       $disabledCheckboxState,
       $labelCheckboxState: $miscCheckboxState,
+    },
+    iconDemo: {
+      $isAction,
+      $fitToWidth,
     },
     textInputDemo: {
       $disabledTextInputState,
