@@ -15,7 +15,8 @@ export { ChangeEvent, CHANGE_EVENT } from '../src/event/change-event';
 export { Button, $button } from '../src/action/button';
 
 // inputs
-export { Checkbox, $checkbox as $checkbox, CheckedValue } from '../src/action/input/checkbox';
+export { Checkbox, $checkbox, CheckedValue } from '../src/action/input/checkbox';
+export { SimpleCheckbox, $simpleCheckbox } from '../src/action/simple/simple-checkbox';
 
 // display
 export { $icon, Icon } from '../src/display/icon';

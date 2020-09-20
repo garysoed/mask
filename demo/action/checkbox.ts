@@ -6,6 +6,7 @@ import { map, mapTo } from 'rxjs/operators';
 
 import { $button } from '../../src/action/button';
 import { $checkbox, Checkbox, CheckedValue } from '../../src/action/input/checkbox';
+import { SimpleCheckbox } from '../../src/action/simple/simple-checkbox';
 import { _p } from '../../src/app/app';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 import { DemoLayout } from '../base/demo-layout';
@@ -31,6 +32,7 @@ const $ = {
   dependencies: [
     Checkbox,
     DemoLayout,
+    SimpleCheckbox,
   ],
   template,
 })
