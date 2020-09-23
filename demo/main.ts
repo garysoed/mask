@@ -108,6 +108,8 @@ function init(stateService: StateService): StateId<DemoState> {
   const $isAction = stateService.add<CheckedValue>(false);
   const $fitToWidth = stateService.add<CheckedValue>(false);
 
+  const $selectedIndex = stateService.add<number|null>(null);
+
   const $unknownCheckboxState = stateService.add<CheckedValue>('unknown');
   const $disabledCheckboxState = stateService.add<CheckedValue>(true);
   const $miscCheckboxState = stateService.add<CheckedValue>(false);
@@ -133,6 +135,9 @@ function init(stateService: StateService): StateId<DemoState> {
     iconDemo: {
       $isAction,
       $fitToWidth,
+    },
+    radioInputDemo: {
+      $selectedIndex,
     },
     textInputDemo: {
       $disabledTextInputState,

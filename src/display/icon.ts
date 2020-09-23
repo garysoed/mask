@@ -82,7 +82,7 @@ export class Icon extends ThemedCustomElementCtrl {
 
     return combineLatest([node$, this.declareInput($.host._.fitTo)]).pipe(
         tap(([node, fitTo]) => {
-          if (!(node instanceof SVGSVGElement)) {
+          if (!(node instanceof HTMLElement)) {
             return;
           }
 

@@ -22,6 +22,7 @@ Interactable components.
 -   `mk-button` (β): Represents a button.
 -   `mk-checkbox` (β): Represents a checkbox.
 -   mk-number-input
+-   `mk-radio-input` (β): Radio input.
 -   `mk-text-input` (β): Represents a text input.
 
 # Note:

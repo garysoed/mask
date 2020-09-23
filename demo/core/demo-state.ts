@@ -18,6 +18,10 @@ export interface IconDemoState {
   readonly $fitToWidth: StateId<CheckedValue>;
 }
 
+export interface RadioInputDemoState {
+  readonly $selectedIndex: StateId<number|null>;
+}
+
 export interface TextInputDemoState {
   readonly $enabledTextInputState: StateId<string>;
   readonly $disabledTextInputState: StateId<string>;
@@ -32,6 +36,7 @@ export interface DemoState {
   readonly $isDarkMode: StateId<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
   readonly iconDemo: IconDemoState;
+  readonly radioInputDemo: RadioInputDemoState;
   readonly textInputDemo: TextInputDemoState;
 }
 

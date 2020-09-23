@@ -63,7 +63,7 @@ const $ = {
     ListItemLayout,
   ],
 })
-export class SimpleCheckbox extends ThemedCustomElementCtrl {
+export class SimpleRadioInput extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
     this.render($.checkbox._.stateId, this.declareInput($.host._.stateId).pipe(filterDefined()));

@@ -1,4 +1,3 @@
-import { Vine } from 'grapevine';
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
@@ -6,11 +5,7 @@ import { merge, Observable } from 'rxjs';
 import { map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
-import checkboxChecked from '../../asset/checkbox_checked.svg';
-import checkboxEmpty from '../../asset/checkbox_empty.svg';
-import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import { stateIdParser } from '../../core/state-id-parser';
-import { registerSvg } from '../../core/svg-service';
 import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
 import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../input/base-input';
 
@@ -43,23 +38,6 @@ export const $ = {
 
 @_p.customElement({
   ...$checkbox,
-  configure(vine: Vine): void {
-    registerSvg(
-        vine,
-        'mk.checkbox_checked',
-        {type: 'embed', content: checkboxChecked},
-    );
-    registerSvg(
-        vine,
-        'mk.checkbox_unchecked',
-        {type: 'embed', content: checkboxEmpty},
-    );
-    registerSvg(
-        vine,
-        'mk.checkbox_unknown',
-        {type: 'embed', content: checkboxUnknown},
-    );
-  },
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue> {

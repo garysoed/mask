@@ -3,6 +3,7 @@ import { CustomElementCtrlCtor } from 'persona/export/internal';
 
 import { $buttonDemo, ButtonDemo } from '../action/button';
 import { $checkboxDemo, CheckboxDemo } from '../action/checkbox';
+import { $radioInputDemo, RadioInputDemo } from '../action/radio-input';
 import { $textInputDemo, TextInputDemo } from '../action/text-input';
 import { $iconDemo, IconDemo } from '../display/icon';
 import { $colorsDemo, ColorsDemo } from '../general/colors';
@@ -21,6 +22,12 @@ export interface PageSpec {
 export const ACTION_SPECS: readonly PageSpec[] = [
   {ctor: ButtonDemo, componentSpec: $buttonDemo, name: 'Button', path: Views.BUTTON},
   {ctor: CheckboxDemo, componentSpec: $checkboxDemo, name: 'Checkbox', path: Views.CHECKBOX},
+  {
+    ctor: RadioInputDemo,
+    componentSpec: $radioInputDemo,
+    name: 'Radio input',
+    path: Views.RADIO_INPUT,
+  },
   {ctor: TextInputDemo, componentSpec: $textInputDemo, name: 'Text input', path: Views.TEXT_INPUT},
 ];
 
