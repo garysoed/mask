@@ -17,6 +17,8 @@ export { Button, $button } from '../src/action/button';
 // inputs
 export { Checkbox, $checkbox, CheckedValue } from '../src/action/input/checkbox';
 export { SimpleCheckbox, $simpleCheckbox } from '../src/action/simple/simple-checkbox';
+export { RadioInput, $radioInput } from '../src/action/input/radio-input';
+export { SimpleRadioInput, $simpleRadioInput } from '../src/action/simple/simple-radio-input';
 
 // display
 export { $icon, Icon } from '../src/display/icon';

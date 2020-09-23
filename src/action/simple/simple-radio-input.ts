@@ -5,56 +5,51 @@ import { instanceofType } from 'gs-types';
 import { attributeIn, element, host, PersonaContext, stringParser, textContent } from 'persona';
 
 import { _p } from '../../app/app';
-import checkboxChecked from '../../asset/checkbox_checked.svg';
-import checkboxEmpty from '../../asset/checkbox_empty.svg';
-import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import { stateIdParser } from '../../core/state-id-parser';
 import { registerSvg } from '../../core/svg-service';
 import { Icon } from '../../display/icon';
 import { ListItemLayout } from '../../layout/list-item-layout';
+import radioUnchecked from '../../src/asset/checkbox_empty.svg';
+import radioChecked from '../../src/asset/radio_checked.svg';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
-import { $checkbox, Checkbox, CheckedValue } from '../input/checkbox';
+import { Checkbox } from '../input/checkbox';
+import { $radioInput } from '../input/radio-input';
 
-import template from './simple-checkbox.html';
+import template from './simple-radio-input.html';
 
 
-export const $simpleCheckbox = {
-  tag: 'mk-simple-checkbox',
+export const $simpleRadioInput = {
+  tag: 'mk-simple-radio-input',
   api: {
-    stateId: attributeIn<StateId<CheckedValue>>('state-id', stateIdParser()),
+    stateId: attributeIn<StateId<number|null>>('state-id', stateIdParser()),
     label: attributeIn('label', stringParser(), ''),
   },
 };
 
 const $ = {
-  checkbox: element('checkbox', $checkbox, {}),
+  input: element('input', $radioInput, {}),
   checkedLabel: element('checkedLabel', instanceofType(HTMLParagraphElement), {
     text: textContent(),
   }),
-  host: host($simpleCheckbox.api),
+  host: host($simpleRadioInput.api),
   uncheckedLabel: element('uncheckedLabel', instanceofType(HTMLParagraphElement), {
     text: textContent(),
   }),
 };
 
 @_p.customElement({
-  ...$simpleCheckbox,
+  ...$simpleRadioInput,
   template,
   configure(vine: Vine): void {
     registerSvg(
         vine,
-        'mk.checkbox_checked',
-        {type: 'embed', content: checkboxChecked},
+        'mk.radio_checked',
+        {type: 'embed', content: radioChecked},
     );
     registerSvg(
         vine,
-        'mk.checkbox_unchecked',
-        {type: 'embed', content: checkboxEmpty},
-    );
-    registerSvg(
-        vine,
-        'mk.checkbox_unknown',
-        {type: 'embed', content: checkboxUnknown},
+        'mk.radio_unchecked',
+        {type: 'embed', content: radioUnchecked},
     );
   },
   dependencies: [
@@ -66,7 +61,7 @@ const $ = {
 export class SimpleRadioInput extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
-    this.render($.checkbox._.stateId, this.declareInput($.host._.stateId).pipe(filterDefined()));
+    this.render($.input._.stateId, this.declareInput($.host._.stateId).pipe(filterDefined()));
     this.render($.checkedLabel._.text, this.declareInput($.host._.label));
     this.render($.uncheckedLabel._.text, this.declareInput($.host._.label));
   }
