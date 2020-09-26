@@ -5,7 +5,7 @@
   }
 </style>
 
-<mkd-demo-layout label="Drawer">
+<mkd-demo-layout label="Drawer layout">
   <div slot="play">
     <section fill-parent id="rootPlay" layout="row">
       <mk-drawer-layout
@@ -22,8 +22,10 @@
       </mk-drawer-layout>
 
       <section flex>
-        <mk-checkbox id="horizontalModeCheckbox" label="Horizontal mode"></mk-checkbox>
-        <mk-checkbox id="expandCheckbox" label="Expand"></mk-checkbox>
+        <mk-simple-checkbox id="horizontalModeCheckbox" label="Horizontal mode" apply-on-change>
+        </mk-simple-checkbox>
+        <mk-simple-checkbox id="expandCheckbox" label="Expand" apply-on-change>
+        </mk-simple-checkbox>
       </section>
     </section>
   </div>

@@ -3,7 +3,7 @@ import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
 import { combineLatest, EMPTY, merge } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { CheckedValue } from '../export';
+import { CheckedValue } from '../src/action/input/checkbox';
 import { $theme, start } from '../src/app/app';
 import { $stateService } from '../src/core/state-service';
 import { registerSvg } from '../src/core/svg-service';
@@ -17,7 +17,7 @@ import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import { Demo } from './core/demo';
-import { $demoState, $demoStateId, CheckboxDemoState, DemoState } from './core/demo-state';
+import { $demoState, $demoStateId, DemoState } from './core/demo-state';
 import { $locationService } from './core/location-service';
 
 
@@ -105,46 +105,32 @@ function initFromLocalStorage(stateService: StateService): StateId<DemoState>|nu
 }
 
 function init(stateService: StateService): StateId<DemoState> {
-  const $isAction = stateService.add<CheckedValue>(false);
-  const $fitToWidth = stateService.add<CheckedValue>(false);
-
-  const $selectedIndex = stateService.add<number|null>(null);
-
-  const $unknownCheckboxState = stateService.add<CheckedValue>('unknown');
-  const $disabledCheckboxState = stateService.add<CheckedValue>(true);
-  const $miscCheckboxState = stateService.add<CheckedValue>(false);
-
-  const $disabledTextInputState = stateService.add<string>('Disabled text input value');
-  const $enabledTextInputState = stateService.add<string>('Init value');
-  const $emailTextInputState = stateService.add<string>('email@host.com');
-  const $telTextInputState = stateService.add<string>('1 (845) 949 1234');
-  const $urlTextInputState = stateService.add<string>('www.url.com');
-
-  const $accentColorName = stateService.add<keyof Palette>(ACCENT_COLOR_NAME);
-  const $baseColorName = stateService.add<keyof Palette>(BASE_COLOR_NAME);
-  const $isDarkMode = stateService.add<boolean>(true);
   return stateService.add<DemoState>({
-    $accentColorName,
-    $baseColorName,
-    $isDarkMode,
+    $accentColorName: stateService.add<keyof Palette>(ACCENT_COLOR_NAME),
+    $baseColorName: stateService.add<keyof Palette>(BASE_COLOR_NAME),
+    $isDarkMode: stateService.add<boolean>(true),
     checkboxDemo: {
-      $unknownCheckboxState,
-      $disabledCheckboxState,
-      $labelCheckboxState: $miscCheckboxState,
+      $unknownCheckboxState: stateService.add<CheckedValue>('unknown'),
+      $disabledCheckboxState: stateService.add<CheckedValue>(true),
+      $labelCheckboxState: stateService.add<CheckedValue>(false),
+    },
+    drawerLayoutDemo: {
+      $isExpanded: stateService.add<CheckedValue>(false),
+      $isHorizontalMode: stateService.add<CheckedValue>(true),
     },
     iconDemo: {
-      $isAction,
-      $fitToWidth,
+      $isAction: stateService.add<CheckedValue>(false),
+      $fitToWidth: stateService.add<CheckedValue>(false),
     },
     radioInputDemo: {
-      $selectedIndex,
+      $selectedIndex: stateService.add<number|null>(null),
     },
     textInputDemo: {
-      $disabledTextInputState,
-      $enabledTextInputState,
-      $emailTextInputState,
-      $telTextInputState,
-      $urlTextInputState,
+      $disabledTextInputState: stateService.add<string>('Disabled text input value'),
+      $enabledTextInputState: stateService.add<string>('Init value'),
+      $emailTextInputState: stateService.add<string>('email@host.com'),
+      $telTextInputState: stateService.add<string>('1 (845) 949 1234'),
+      $urlTextInputState: stateService.add<string>('www.url.com'),
     },
   });
 }

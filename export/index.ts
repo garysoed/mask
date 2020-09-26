@@ -24,7 +24,7 @@ export { SimpleRadioInput, $simpleRadioInput } from '../src/action/simple/simple
 export { $icon, Icon } from '../src/display/icon';
 export { $codeBlock, CodeBlock } from '../src/display/code-block';
 
-export { DrawerLayout, Mode as DrawerMode, $drawerLayout } from '../src/layout/drawer-layout';
+export { DrawerLayout, DrawerMode, $drawerLayout } from '../src/layout/drawer-layout';
 // export { Dialog } from '../src/section/dialog';
 export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section-old/dialog-service';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';

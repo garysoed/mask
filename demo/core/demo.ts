@@ -24,7 +24,7 @@ import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-c
 import { $demoState } from './demo-state';
 import template from './demo.html';
 import { $locationService, Views } from './location-service';
-import { ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, PageSpec } from './page-spec';
+import { ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec } from './page-spec';
 
 
 const $ = {
@@ -43,6 +43,7 @@ const $ = {
     actionContents: multi('#actionContents'),
     displayContents: multi('#displayContents'),
     generalContents: multi('#generalContents'),
+    layoutContents: multi('#layoutContents'),
     onAction: onDom(ACTION_EVENT),
   }),
   darkMode: element('darkMode', $checkbox, {}),
@@ -89,6 +90,7 @@ export class Demo extends ThemedCustomElementCtrl {
     this.render($.drawerRoot._.actionContents, this.renderPageButtons(ACTION_SPECS));
     this.render($.drawerRoot._.displayContents, this.renderPageButtons(DISPLAY_SPECS));
     this.render($.drawerRoot._.generalContents, this.renderPageButtons(GENERAL_SPECS));
+    this.render($.drawerRoot._.layoutContents, this.renderPageButtons(LAYOUT_SPECS));
     this.render($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded());
     this.render($.root._.theme, this.renderRootTheme());
     this.addSetup(this.onAccentPaletteClick$);

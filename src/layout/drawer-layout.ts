@@ -12,7 +12,7 @@
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { instanceofType } from 'gs-types';
 import { attributeIn, booleanParser, element, host, PersonaContext, stringParser, style } from 'persona';
-import { combineLatest, Observable, of as observableOf } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
@@ -21,7 +21,7 @@ import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 import drawerTemplate from './drawer-layout.html';
 
 
-export enum Mode {
+export enum DrawerMode {
   HORIZONTAL = 'horizontal',
   VERTICAL = 'vertical',
 }
@@ -33,8 +33,8 @@ export const $drawerLayout = {
     minSize: attributeIn('min-size', stringParser(), '0'),
     mode: attributeIn(
         'mode',
-        stringMatchConverter(new Set([Mode.HORIZONTAL, Mode.VERTICAL])),
-        Mode.VERTICAL,
+        stringMatchConverter(new Set([DrawerMode.HORIZONTAL, DrawerMode.VERTICAL])),
+        DrawerMode.VERTICAL,
     ),
   },
   tag: 'mk-drawer-layout',
@@ -77,7 +77,7 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
         ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
-              if (mode === Mode.VERTICAL) {
+              if (mode === DrawerMode.VERTICAL) {
                 return '';
               }
 
@@ -95,7 +95,7 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
     ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
-              if (mode === Mode.HORIZONTAL) {
+              if (mode === DrawerMode.HORIZONTAL) {
                 return '';
               }
 

@@ -9,6 +9,7 @@ import { $codeBlockDemo, CodeBlockDemo } from '../display/code-block';
 import { $iconDemo, IconDemo } from '../display/icon';
 import { $colorsDemo, ColorsDemo } from '../general/colors';
 import { $textsDemo, TextsDemo } from '../general/texts';
+import { $drawerLayoutDemo, DrawerLayoutDemo } from '../layout/drawer-layout';
 
 import { Views } from './location-service';
 
@@ -42,10 +43,20 @@ export const GENERAL_SPECS: readonly PageSpec[] = [
   {ctor: TextsDemo, componentSpec: $textsDemo, name: 'Texts', path: Views.TEXT},
 ];
 
+export const LAYOUT_SPECS: readonly PageSpec[] = [
+  {
+    ctor: DrawerLayoutDemo,
+    componentSpec: $drawerLayoutDemo,
+    name: 'Drawer Layout',
+    path: Views.DRAWER_LAYOUT,
+  },
+];
+
 export const ALL_SPECS = [
   ...ACTION_SPECS,
   ...DISPLAY_SPECS,
   ...GENERAL_SPECS,
+  ...LAYOUT_SPECS,
 ];
 
 export function getPageSpec(searchedPath: Views): PageSpec|null {

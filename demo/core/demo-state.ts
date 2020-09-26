@@ -13,6 +13,11 @@ export interface CheckboxDemoState {
   readonly $labelCheckboxState: StateId<CheckedValue>;
 }
 
+export interface DrawerLayoutDemoState {
+  readonly $isExpanded: StateId<CheckedValue>;
+  readonly $isHorizontalMode: StateId<CheckedValue>;
+}
+
 export interface IconDemoState {
   readonly $isAction: StateId<CheckedValue>;
   readonly $fitToWidth: StateId<CheckedValue>;
@@ -35,6 +40,7 @@ export interface DemoState {
   readonly $baseColorName: StateId<keyof Palette>;
   readonly $isDarkMode: StateId<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
+  readonly drawerLayoutDemo: DrawerLayoutDemoState;
   readonly iconDemo: IconDemoState;
   readonly radioInputDemo: RadioInputDemoState;
   readonly textInputDemo: TextInputDemoState;
