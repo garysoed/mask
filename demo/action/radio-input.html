@@ -44,18 +44,18 @@
         </mk-list-item-layout>
       </mk-radio-input>
 
-      <mk-radio-input id="optionB" index="1">
+      <mk-radio-input id="optionB" index="1" is-secondary>
         <mk-list-item-layout slot="display_unchecked">
           <div class="iconContainer" slot="bullet">
             <mk-icon icon="mk.radio_unchecked"></mk-icon>
           </div>
-          <p slot="label">Option B</p>
+          <p slot="label">Secondary Option B</p>
         </mk-list-item-layout>
         <mk-list-item-layout slot="display_checked">
           <div class="iconContainer" slot="bullet">
             <mk-icon icon="mk.radio_checked"></mk-icon>
           </div>
-          <p slot="label">Option B (checked)</p>
+          <p slot="label">Secondary Option B (checked)</p>
         </mk-list-item-layout>
       </mk-radio-input>
 
@@ -73,6 +73,9 @@
           <p slot="label">Option C (checked)</p>
         </mk-list-item-layout>
       </mk-radio-input>
+
+      <mk-simple-radio-input id="optionD" index="3" label="Simple Radio Input">
+      </mk-simple=radio-input>
     </div>
     <div flex>
       <mk-button id="resetButton">

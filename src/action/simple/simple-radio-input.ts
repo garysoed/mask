@@ -2,18 +2,17 @@ import { Vine } from 'grapevine';
 import { filterDefined } from 'gs-tools/export/rxjs';
 import { StateId } from 'gs-tools/export/state';
 import { instanceofType } from 'gs-types';
-import { attributeIn, element, host, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, element, host, integerParser, PersonaContext, stringParser, textContent } from 'persona';
 
 import { _p } from '../../app/app';
+import radioUnchecked from '../../asset/checkbox_empty.svg';
+import radioChecked from '../../asset/radio_checked.svg';
 import { stateIdParser } from '../../core/state-id-parser';
 import { registerSvg } from '../../core/svg-service';
 import { Icon } from '../../display/icon';
 import { ListItemLayout } from '../../layout/list-item-layout';
-import radioUnchecked from '../../src/asset/checkbox_empty.svg';
-import radioChecked from '../../src/asset/radio_checked.svg';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
-import { Checkbox } from '../input/checkbox';
-import { $radioInput } from '../input/radio-input';
+import { $radioInput, RadioInput } from '../input/radio-input';
 
 import template from './simple-radio-input.html';
 
@@ -23,6 +22,7 @@ export const $simpleRadioInput = {
   api: {
     stateId: attributeIn<StateId<number|null>>('state-id', stateIdParser()),
     label: attributeIn('label', stringParser(), ''),
+    index: attributeIn('index', integerParser()),
   },
 };
 
@@ -53,15 +53,16 @@ const $ = {
     );
   },
   dependencies: [
-    Checkbox,
     Icon,
     ListItemLayout,
+    RadioInput,
   ],
 })
 export class SimpleRadioInput extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
     this.render($.input._.stateId, this.declareInput($.host._.stateId).pipe(filterDefined()));
+    this.render($.input._.index, this.declareInput($.host._.index));
     this.render($.checkedLabel._.text, this.declareInput($.host._.label));
     this.render($.uncheckedLabel._.text, this.declareInput($.host._.label));
   }
