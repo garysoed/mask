@@ -5,9 +5,9 @@ import { $window } from '../../src/app/app';
 
 export enum Views {
   // BREADCRUMB = 'b',
-  // CODE_BLOCK = 'cb',
   BUTTON = 'bu',
   CHECKBOX = 'ch',
+  CODE_BLOCK = 'cb',
   COLORS = 'co',
   // CROPPED_LINE = 'cl',
   // DIALOG = 'di',
@@ -26,7 +26,7 @@ const ROUTE_SPEC = {
   [Views.BUTTON]: fromPattern('/button', {}),
   // [Views.BREADCRUMB]: fromPattern('/breadcrumb', {}),
   [Views.CHECKBOX]: fromPattern('/checkbox', {}),
-  // [Views.CODE_BLOCK]: fromPattern('/code-block', {}),
+  [Views.CODE_BLOCK]: fromPattern('/code-block', {}),
   [Views.COLORS]: fromPattern('/colors', {}),
   [Views.ICON]: fromPattern('/icon', {}),
   [Views.RADIO_INPUT]: fromPattern('/radio-input', {}),

@@ -5,6 +5,7 @@ import { $buttonDemo, ButtonDemo } from '../action/button';
 import { $checkboxDemo, CheckboxDemo } from '../action/checkbox';
 import { $radioInputDemo, RadioInputDemo } from '../action/radio-input';
 import { $textInputDemo, TextInputDemo } from '../action/text-input';
+import { $codeBlockDemo, CodeBlockDemo } from '../display/code-block';
 import { $iconDemo, IconDemo } from '../display/icon';
 import { $colorsDemo, ColorsDemo } from '../general/colors';
 import { $textsDemo, TextsDemo } from '../general/texts';
@@ -32,6 +33,7 @@ export const ACTION_SPECS: readonly PageSpec[] = [
 ];
 
 export const DISPLAY_SPECS: readonly PageSpec[] = [
+  {ctor: CodeBlockDemo, componentSpec: $codeBlockDemo, name: 'Code Block', path: Views.CODE_BLOCK},
   {ctor: IconDemo, componentSpec: $iconDemo, name: 'Icon', path: Views.ICON},
 ];
 

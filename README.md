@@ -3,7 +3,8 @@
 Displays are components that cannot be interacted with. Their purpose is for display only. They
 enforce some styling, but cannot be composed with other components.
 
--   `mk-icon` (α): Displays an SVG icon.
+-   `mk-code-block` (β): Displays a block of code, with syntax highlighting.
+-   `mk-icon` (β): Displays an SVG icon.
 
 # Layout
 

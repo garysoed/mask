@@ -22,6 +22,7 @@ export { SimpleRadioInput, $simpleRadioInput } from '../src/action/simple/simple
 
 // display
 export { $icon, Icon } from '../src/display/icon';
+export { $codeBlock, CodeBlock } from '../src/display/code-block';
 
 export { Drawer, Mode as DrawerMode, $drawer as $drawer } from '../src/section/drawer';
 // export { Dialog } from '../src/section/dialog';
