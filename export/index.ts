@@ -24,12 +24,11 @@ export { SimpleRadioInput, $simpleRadioInput } from '../src/action/simple/simple
 export { $icon, Icon } from '../src/display/icon';
 export { $codeBlock, CodeBlock } from '../src/display/code-block';
 
-export { Drawer, Mode as DrawerMode, $drawer as $drawer } from '../src/section/drawer';
+export { Drawer, Mode as DrawerMode, $drawer as $drawer } from '../src/section-old/drawer';
 // export { Dialog } from '../src/section/dialog';
-export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section/dialog-service';
+export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section-old/dialog-service';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { LineLayout, $lineLayout } from '../src/layout/line-layout';
-export { ListItem, $$ as $listItem } from '../src/layout/deprecated/list-item';
 export { ListItemLayout, $listItemLayout } from '../src/layout/list-item-layout';
 export { Palette, PALETTE } from '../src/theme/palette';
 export { RootLayout, $rootLayout } from '../src/layout/root-layout';

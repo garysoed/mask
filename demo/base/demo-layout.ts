@@ -8,7 +8,7 @@ import { _p } from '../../src/app/app';
 import { $icon } from '../../src/display/icon';
 import { $lineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
-import { $drawer, Drawer } from '../../src/section/drawer';
+import { $drawer, Drawer } from '../../src/section-old/drawer';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
 import template from './demo-layout.html';

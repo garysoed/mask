@@ -7,7 +7,7 @@ import { $button, Button } from '../action/button';
 import { _p } from '../app/app';
 import { $icon, Icon } from '../display/icon';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { $drawer, Drawer } from '../section/drawer';
+import { $drawer, Drawer } from '../section-old/drawer';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 

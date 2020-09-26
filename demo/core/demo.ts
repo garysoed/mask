@@ -17,7 +17,7 @@ import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
 import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
 import { LayoutOverlay } from '../../src/layout/util/layout-overlay';
-import { $drawer, Drawer } from '../../src/section/drawer';
+import { $drawer, Drawer } from '../../src/section-old/drawer';
 import { PALETTE, Palette } from '../../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
