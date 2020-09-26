@@ -30,7 +30,7 @@
 </style>
 
 <section id="root" layout="row" fill-parent>
-  <mk-drawer
+  <mk-drawer-layout
       id="drawer"
       max-size="16rem"
       min-size="4rem"
@@ -46,9 +46,8 @@
       </mk-button>
       <slot id="drawerSlot" name="drawer"></slot>
     </div>
-  </mk-drawer>
+  </mk-drawer-layout>
   <section flex id="container">
     <slot id="mainSlot" name="main"></slot>
   </section>
-  <slot name="post"></slot>
 </section>

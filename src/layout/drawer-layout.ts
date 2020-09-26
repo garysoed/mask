@@ -18,7 +18,7 @@ import { map } from 'rxjs/operators';
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
-import drawerTemplate from './drawer.html';
+import drawerTemplate from './drawer-layout.html';
 
 
 export enum Mode {
@@ -26,7 +26,7 @@ export enum Mode {
   VERTICAL = 'vertical',
 }
 
-export const $drawer = {
+export const $drawerLayout = {
   api: {
     expanded: attributeIn('expanded', booleanParser(), false),
     maxSize: attributeIn('max-size', stringParser(), ''),
@@ -37,12 +37,12 @@ export const $drawer = {
         Mode.VERTICAL,
     ),
   },
-  tag: 'mk-drawer',
+  tag: 'mk-drawer-layout',
 };
 
 export const $ = {
   host: host({
-    ...$drawer.api,
+    ...$drawerLayout.api,
     styleHeight: style('height'),
     styleOverflow: style('overflow'),
     styleWidth: style('width'),
@@ -51,10 +51,10 @@ export const $ = {
 };
 
 @_p.customElement({
-  ...$drawer,
+  ...$drawerLayout,
   template: drawerTemplate,
 })
-export class Drawer extends ThemedCustomElementCtrl {
+export class DrawerLayout extends ThemedCustomElementCtrl {
   private readonly expandedObs = this.declareInput($.host._.expanded);
   private readonly maxSizeObs = this.declareInput($.host._.maxSize);
   private readonly minSizeObs = this.declareInput($.host._.minSize);

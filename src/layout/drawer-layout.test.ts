@@ -3,14 +3,14 @@ import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
 
-import { $, Drawer, Mode } from './drawer';
+import { $, DrawerLayout, Mode } from './drawer-layout';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('section.Drawer', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([Drawer], document);
+    const tester = testerFactory.build([DrawerLayout], document);
     const el = tester.createElement('mk-drawer');
 
     return {el};

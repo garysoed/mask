@@ -6,9 +6,9 @@ import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { $button, Button } from '../../src/action/button';
 import { _p } from '../../src/app/app';
 import { $icon } from '../../src/display/icon';
+import { $drawerLayout, DrawerLayout } from '../../src/layout/drawer-layout';
 import { $lineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
-import { $drawer, Drawer } from '../../src/section-old/drawer';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
 import template from './demo-layout.html';
@@ -24,7 +24,7 @@ const $$ = {
 const $ = {
   bulletIcon: element('bulletIcon', $icon, {}),
   detailsButton: element('detailsButton', $button, {}),
-  detailsDrawer: element('detailsDrawer', $drawer, {}),
+  detailsDrawer: element('detailsDrawer', $drawerLayout, {}),
   detailsLabel: element('detailsLabel', $lineLayout, {
     textContent: textContent(),
   }),
@@ -35,7 +35,7 @@ const $ = {
   ...$$,
   dependencies: [
     Button,
-    Drawer,
+    DrawerLayout,
     ListItemLayout,
   ],
   template,

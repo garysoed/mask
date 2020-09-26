@@ -13,11 +13,11 @@ import { $checkbox, Checkbox } from '../../src/action/input/checkbox';
 import { _p } from '../../src/app/app';
 import { $stateService } from '../../src/core/state-service';
 import { ACTION_EVENT } from '../../src/event/action-event';
+import { $drawerLayout, DrawerLayout } from '../../src/layout/drawer-layout';
 import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
 import { ListItemLayout } from '../../src/layout/list-item-layout';
 import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
 import { LayoutOverlay } from '../../src/layout/util/layout-overlay';
-import { $drawer, Drawer } from '../../src/section-old/drawer';
 import { PALETTE, Palette } from '../../src/theme/palette';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 
@@ -52,7 +52,7 @@ const $ = {
   rootLayout: element('rootLayout', $rootLayout, {
     onAction: onDom(ACTION_EVENT),
   }),
-  settingsDrawer: element('settingsDrawer', $drawer, {
+  settingsDrawer: element('settingsDrawer', $drawerLayout, {
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
   }),
@@ -66,7 +66,7 @@ const COMPONENT_PATH_ATTR = 'path';
     ...PAGE_CTORS,
     Button,
     Checkbox,
-    Drawer,
+    DrawerLayout,
     LayoutOverlay,
     LineLayout,
     ListItemLayout,

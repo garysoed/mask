@@ -7,7 +7,7 @@ import { $button, Button } from '../action/button';
 import { _p } from '../app/app';
 import { $icon, Icon } from '../display/icon';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { $drawer, Drawer } from '../section-old/drawer';
+import { $drawerLayout, DrawerLayout } from '../layout/drawer-layout';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
 
@@ -26,7 +26,7 @@ export const $rootLayout = {
 };
 
 export const $ = {
-  drawer: element('drawer', $drawer, {
+  drawer: element('drawer', $drawerLayout, {
     onMouseLeave: onDom('mouseleave'),
     onMouseEnter: onDom('mouseenter'),
   }),
@@ -43,7 +43,7 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
   ...$rootLayout,
   dependencies: [
     Button,
-    Drawer,
+    DrawerLayout,
     Icon,
     ListItemLayout,
   ],
