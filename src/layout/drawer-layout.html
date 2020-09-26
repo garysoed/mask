@@ -1,6 +1,11 @@
 <style>
-  :host {
+  #root {
+    background-color: var(--mkThemeBG);
+    overflow: hidden;
     transition: width var(--mkAnimationTime), height var(--mkAnimationTime);
   }
 </style>
-<slot></slot>
+
+<div id="root">
+  <slot></slot>
+</div>

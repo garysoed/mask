@@ -3,7 +3,7 @@ import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
 
-import { $, DrawerLayout, Mode } from './drawer-layout';
+import { $, $drawerLayout, DrawerLayout, Mode } from './drawer-layout';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -11,7 +11,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('section.Drawer', init => {
   const _ = init(() => {
     const tester = testerFactory.build([DrawerLayout], document);
-    const el = tester.createElement('mk-drawer');
+    const el = tester.createElement($drawerLayout.tag);
 
     return {el};
   });
@@ -23,7 +23,7 @@ test('section.Drawer', init => {
       run(_.el.setAttribute($.host._.maxSize, size));
       run(_.el.setAttribute($.host._.expanded, true));
 
-      assert(_.el.getStyle($.host._.styleHeight)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith(size);
     });
 
     should(`render the min size if horizontal and collapsed`, () => {
@@ -32,7 +32,7 @@ test('section.Drawer', init => {
       run(_.el.setAttribute($.host._.minSize, size));
       run(_.el.setAttribute($.host._.expanded, false));
 
-      assert(_.el.getStyle($.host._.styleHeight)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith(size);
     });
 
     should(`render '' if vertical`, () => {
@@ -40,7 +40,7 @@ test('section.Drawer', init => {
       run(_.el.setAttribute($.host._.minSize, '123px'));
       run(_.el.setAttribute($.host._.expanded, true));
 
-      assert(_.el.getStyle($.host._.styleHeight)).to.emitWith('');
+      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith('');
     });
   });
 
@@ -51,7 +51,7 @@ test('section.Drawer', init => {
       run(_.el.setAttribute($.host._.maxSize, size));
       run(_.el.setAttribute($.host._.expanded, true));
 
-      assert(_.el.getStyle($.host._.styleWidth)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith(size);
     });
 
     should(`render the min size if vertical and collapsed`, () => {
@@ -60,7 +60,7 @@ test('section.Drawer', init => {
       run(_.el.setAttribute($.host._.minSize, size));
       run(_.el.setAttribute($.host._.expanded, false));
 
-      assert(_.el.getStyle($.host._.styleWidth)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith(size);
     });
 
     should(`render '' if horizontal`, () => {
@@ -68,7 +68,7 @@ test('section.Drawer', init => {
       run(_.el.setAttribute($.host._.minSize, '123px'));
       run(_.el.setAttribute($.host._.expanded, true));
 
-      assert(_.el.getStyle($.host._.styleWidth)).to.emitWith('');
+      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith('');
     });
   });
 });

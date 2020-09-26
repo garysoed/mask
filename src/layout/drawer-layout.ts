@@ -43,8 +43,9 @@ export const $drawerLayout = {
 export const $ = {
   host: host({
     ...$drawerLayout.api,
+  }),
+  root: element('root', instanceofType(HTMLDivElement), {
     styleHeight: style('height'),
-    styleOverflow: style('overflow'),
     styleWidth: style('width'),
   }),
   theme: element('theme', instanceofType(HTMLStyleElement), {}),
@@ -63,9 +64,8 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.host._.styleHeight, this.renderStyleHeight());
-    this.render($.host._.styleWidth, this.renderStyleWidth());
-    this.render($.host._.styleOverflow, observableOf('hidden'));
+    this.render($.root._.styleHeight, this.renderStyleHeight());
+    this.render($.root._.styleWidth, this.renderStyleWidth());
   }
 
   private renderStyleHeight(): Observable<string> {
