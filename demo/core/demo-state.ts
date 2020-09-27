@@ -1,11 +1,18 @@
-import { source, stream } from 'grapevine';
+import { stream, Stream } from 'grapevine';
+import { debug } from 'gs-tools/export/rxjs';
 import { StateId } from 'gs-tools/export/state';
 import { combineLatest, of as observableOf } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Logger } from 'santa';
 
 import { CheckedValue } from '../../src/action/input/checkbox';
+import { $rootId } from '../../src/core/save-service';
 import { $stateService } from '../../src/core/state-service';
 import { Palette } from '../../src/theme/palette';
+
+
+const LOGGER = new Logger('mkd.demo');
+
 
 export interface CheckboxDemoState {
   readonly $unknownCheckboxState: StateId<CheckedValue>;
@@ -46,7 +53,11 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const $demoStateId = source<StateId<DemoState>|null>('demoStateId', () => null);
+export const $demoStateId: Stream<StateId<DemoState>|null, typeof globalThis> = stream(
+    'demoStateId',
+    vine => $rootId.get(vine).pipe(debug(LOGGER, 'demoStateId')),
+    globalThis,
+);
 
 export const $demoState = stream(
     'demoState',

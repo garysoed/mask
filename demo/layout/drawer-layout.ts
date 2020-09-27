@@ -1,4 +1,5 @@
 import { cache } from 'gs-tools/export/data';
+import { filterDefined } from 'gs-tools/export/rxjs';
 import { StateId } from 'gs-tools/export/state';
 import { elementWithTagType } from 'gs-types';
 import { attributeOut, element, PersonaContext, stringParser } from 'persona';
@@ -69,13 +70,19 @@ export class DrawerLayoutDemo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get $isExpanded$(): Observable<StateId<CheckedValue>|undefined> {
-    return $demoState.get(this.vine).pipe(map(state => state?.drawerLayoutDemo.$isExpanded));
+  private get $isExpanded$(): Observable<StateId<CheckedValue>> {
+    return $demoState.get(this.vine).pipe(
+        map(state => state?.drawerLayoutDemo.$isExpanded),
+        filterDefined(),
+    );
   }
 
   @cache()
-  private get $isHorizontalMode$(): Observable<StateId<CheckedValue>|undefined> {
-    return $demoState.get(this.vine).pipe(map(state => state?.drawerLayoutDemo.$isHorizontalMode));
+  private get $isHorizontalMode$(): Observable<StateId<CheckedValue>> {
+    return $demoState.get(this.vine).pipe(
+        map(state => state?.drawerLayoutDemo.$isHorizontalMode),
+        filterDefined(),
+    );
   }
 
   @cache()

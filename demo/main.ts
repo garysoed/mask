@@ -1,10 +1,14 @@
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
+import { LocalStorage } from 'gs-tools/export/store';
+import { identity, json } from 'nabu';
 import { combineLatest, EMPTY, merge } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
+import { ON_LOG_$, WebConsoleDestination } from 'santa';
 
 import { CheckedValue } from '../src/action/input/checkbox';
 import { $theme, start } from '../src/app/app';
+import { $saveConfig, $saveService } from '../src/core/save-service';
 import { $stateService } from '../src/core/state-service';
 import { registerSvg } from '../src/core/svg-service';
 import { PALETTE, Palette } from '../src/theme/palette';
@@ -17,14 +21,19 @@ import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import { Demo } from './core/demo';
-import { $demoState, $demoStateId, DemoState } from './core/demo-state';
+import { $demoState, DemoState } from './core/demo-state';
 import { $locationService } from './core/location-service';
 
 
-const DEMO_STATE_KEY = 'mkd.demoState';
+const DEMO_STATE_KEY = 'demoState';
 const BASE_COLOR_NAME = 'TEAL';
 const ACCENT_COLOR_NAME = 'PURPLE';
 const theme = new Theme(document, PALETTE[BASE_COLOR_NAME], PALETTE[ACCENT_COLOR_NAME]);
+
+const consoleDestination = new WebConsoleDestination({installTrigger: true});
+ON_LOG_$.subscribe(entry => {
+  consoleDestination.log(entry);
+});
 
 const ICONS = new Map([
   ['chevrondown', chevronDownSvg],
@@ -82,27 +91,27 @@ window.addEventListener('load', () => {
   )
   .subscribe();
 
-  // Initialize the state service.
-  $stateService.get(vine)
-      .pipe(take(1))
-      .subscribe(stateService => {
-        const rootStateId = initFromLocalStorage(stateService) || init(stateService);
-        $demoStateId.set(vine, () => rootStateId);
-      });
+  $saveService.get(vine)
+      .pipe(
+          tap(saveService => {
+            saveService.setSaving(true);
+          }),
+          switchMap(saveService => saveService.run()),
+      )
+      .subscribe();
+
+  $saveConfig.set(vine, () => ({
+    saveId: DEMO_STATE_KEY,
+    initFn: init,
+    storage: new LocalStorage<Snapshot<any>>(
+        window,
+        'mkd',
+        // TODO: Make this easier.
+        identity() as any,
+        json(),
+    ),
+  }));
 });
-
-function initFromLocalStorage(stateService: StateService): StateId<DemoState>|null {
-  const stateStr = localStorage.getItem(DEMO_STATE_KEY);
-  if (!stateStr) {
-    return null;
-  }
-
-  try {
-    return stateService.init(JSON.parse(stateStr) as Snapshot<DemoState>);
-  } catch (e) {
-    return null;
-  }
-}
 
 function init(stateService: StateService): StateId<DemoState> {
   return stateService.add<DemoState>({
