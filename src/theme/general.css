@@ -194,7 +194,8 @@ body {
 [mk-body-2],
 a,
 code,
-pre {
+pre,
+kbd {
   font-size: 1.25rem;
   line-height: 2rem;
 }
@@ -283,8 +284,8 @@ hr {
   border-right: none;
 }
 
-code, pre {
-  color: var(--mkThemePassiveFG2);
+code, pre, kbd {
+  color: var(--mkThemeFG);
   font-family: var(--mkFontFamilyMono);
 }
 
