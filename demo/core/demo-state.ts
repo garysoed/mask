@@ -53,10 +53,9 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const $demoStateId: Stream<StateId<DemoState>|null, typeof globalThis> = stream(
+export const $demoStateId: Stream<StateId<DemoState>|null> = stream(
     'demoStateId',
     vine => $rootId.get(vine).pipe(debug(LOGGER, 'demoStateId')),
-    globalThis,
 );
 
 export const $demoState = stream(
@@ -76,5 +75,4 @@ export const $demoState = stream(
           }),
       );
     },
-    globalThis,
 );

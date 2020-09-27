@@ -97,5 +97,4 @@ export const $svgService = stream(
             return service;
           }),
         ),
-    globalThis,
 );

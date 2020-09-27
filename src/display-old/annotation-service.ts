@@ -22,5 +22,4 @@ export const $annotationService = stream(
     'AnnotationService',
     vine => $annotationConfig.get(vine)
         .pipe(map(config => new AnnotationService(config))),
-    globalThis,
 );

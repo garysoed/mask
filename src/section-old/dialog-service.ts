@@ -84,5 +84,4 @@ export const $dialogState = stream(
     vine => $dialogService
         .get(vine)
         .pipe(switchMap(dialogService => dialogService.getStateObs())),
-    globalThis,
 );
