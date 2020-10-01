@@ -1,8 +1,8 @@
 import { cache } from 'gs-tools/export/data';
 import { enumType, instanceofType, Type } from 'gs-types';
-import { element, host, multi, mutationObservable, PersonaContext, renderElement, renderTextNode, textContent, textIn } from 'persona';
+import { element, host, multi, PersonaContext, renderElement, renderTextNode, textIn } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -24,7 +24,7 @@ export const $ = {
   }),
 };
 
-enum SpecialKeys {
+export enum SpecialKeys {
   ALT = 'alt',
   BACKSPACE = 'back',
   CAPSLOCK = 'caps',
