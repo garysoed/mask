@@ -3,13 +3,14 @@ import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
 import { EditableStorage } from 'gs-tools/export/store';
-import { BehaviorSubject, combineLatest, EMPTY, merge, Observable } from 'rxjs';
-import { switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf } from 'rxjs';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 import { $stateService } from './state-service';
 
 
 interface SaveConfig {
+  readonly loadOnInit: boolean;
   readonly saveId: string;
   readonly storage: EditableStorage<Snapshot<any>>;
   initFn(stateService: StateService): StateId<any>;
@@ -25,13 +26,22 @@ export class SaveService {
     return $saveConfig.get(this.vine).pipe(
         filterNonNull(),
         take(1),
-        withLatestFrom(this.savedState$, $stateService.get(this.vine)),
-        tap(([config, state, stateService]) => {
-          if (state) {
-            stateService.init(state);
-          }
-          const rootStateId = state?.rootId ?? config.initFn(stateService);
-          $rootId.set(this.vine, () => rootStateId);
+        switchMap(config => {
+          const onLoaded$ = config.loadOnInit ? this.load() : observableOf(false);
+          return onLoaded$.pipe(
+              switchMap(isLoaded => {
+                if (isLoaded) {
+                  return EMPTY;
+                }
+
+                return $stateService.get(this.vine).pipe(
+                    take(1),
+                    tap(stateService => {
+                      $rootId.set(this.vine, () => config.initFn(stateService));
+                    }),
+                );
+              }),
+          );
         }),
     );
   }
@@ -55,6 +65,21 @@ export class SaveService {
                 return saveConfig.storage.update(saveConfig.saveId, stateService.snapshot(rootId));
               }),
           );
+        }),
+    );
+  }
+
+  load(): Observable<boolean> {
+    return combineLatest([this.savedState$, $stateService.get(this.vine)]).pipe(
+        take(1),
+        map(([state, stateService]) => {
+          if (state) {
+            stateService.init(state);
+            $rootId.set(this.vine, () => state.rootId);
+            return true;
+          }
+
+          return false;
         }),
     );
   }

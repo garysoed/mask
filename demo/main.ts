@@ -101,6 +101,7 @@ window.addEventListener('load', () => {
       .subscribe();
 
   $saveConfig.set(vine, () => ({
+    loadOnInit: true,
     saveId: DEMO_STATE_KEY,
     initFn: init,
     storage: new LocalStorage<Snapshot<any>>(

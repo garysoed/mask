@@ -39,6 +39,7 @@ test('@mask/core/save-service', init => {
       $saveConfig.set(
           _.vine,
           () => ({
+            loadOnInit: true,
             saveId,
             storage,
             initFn: stateService => stateService.add<TestState>({a: 0, s: ''}),
@@ -49,6 +50,36 @@ test('@mask/core/save-service', init => {
           objectThat<TestState>().haveProperties({a: 123, s: 'abc'}),
       );
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId.id);
+    });
+
+    should(`not initialize the state service with an existing save if loadOnInit is false`, () => {
+      const saveId = 'saveId';
+      const savedRootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const snapshot = _.stateService.snapshot(savedRootId);
+
+      const storage = new InMemoryStorage<Snapshot<TestState>>();
+      run(storage.update(saveId, snapshot));
+
+      // Clear the state service, then set the storage.
+      _.stateService.clear();
+      let rootId: StateId<TestState>|null = null;
+      $saveConfig.set(
+          _.vine,
+          () => ({
+            loadOnInit: false,
+            saveId,
+            storage,
+            initFn: stateService => {
+              rootId = stateService.add<TestState>({a: 345, s: 'cde'});
+              return rootId;
+            },
+          }),
+      );
+
+      assert(_.stateService.get(rootId!)).to.emitWith(
+          objectThat<TestState>().haveProperties({a: 345, s: 'cde'}),
+      );
+      assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
     });
 
     should(`initialize the state service with the init function if there are no existing states`, () => {
@@ -62,6 +93,7 @@ test('@mask/core/save-service', init => {
       $saveConfig.set(
           _.vine,
           () => ({
+            loadOnInit: true,
             saveId,
             storage,
             initFn: stateService => {
@@ -105,6 +137,7 @@ test('@mask/core/save-service', init => {
       $saveConfig.set(
           _.vine,
           () => ({
+            loadOnInit: true,
             saveId,
             storage,
             initFn: stateService => stateService.add<TestState>({a: 0, s: ''}),
@@ -132,6 +165,7 @@ test('@mask/core/save-service', init => {
       $saveConfig.set(
           _.vine,
           () => ({
+            loadOnInit: false,
             saveId: SAVE_ID,
             storage,
             initFn: stateService => stateService.add<TestState>({a: 123, s: 'abc'}),
@@ -193,6 +227,7 @@ test('@mask/core/save-service', init => {
       $saveConfig.set(
           _.vine,
           () => ({
+            loadOnInit: true,
             saveId,
             storage,
             initFn: stateService => stateService.add<TestState>({a: 0, s: ''}),
