@@ -204,11 +204,6 @@ kbd {
   font-weight: 700;
 }
 
-[mk-secondary] {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 a {
   font-weight: var(--mkFontWeightBold);
   text-decoration: none;
