@@ -9,6 +9,7 @@
  * @slot The content of the drawer.
  */
 
+import { cache } from 'gs-tools/export/data';
 import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { instanceofType } from 'gs-types';
 import { attributeIn, booleanParser, element, host, PersonaContext, stringParser, style } from 'persona';
@@ -64,11 +65,12 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
   constructor(context: PersonaContext) {
     super(context);
 
-    this.render($.root._.styleHeight, this.renderStyleHeight());
-    this.render($.root._.styleWidth, this.renderStyleWidth());
+    this.render($.root._.styleHeight, this.styleHeight$);
+    this.render($.root._.styleWidth, this.styleWidth$);
   }
 
-  private renderStyleHeight(): Observable<string> {
+  @cache()
+  private get styleHeight$(): Observable<string> {
     return combineLatest([
           this.expandedObs,
           this.maxSizeObs,
@@ -78,7 +80,7 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
               if (mode === DrawerMode.VERTICAL) {
-                return '';
+                return '100%';
               }
 
               return expanded ? maxSize : minSize;
@@ -86,7 +88,8 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
         );
   }
 
-  private renderStyleWidth(): Observable<string> {
+  @cache()
+  private get styleWidth$(): Observable<string> {
     return combineLatest([
         this.expandedObs,
         this.maxSizeObs,
@@ -96,7 +99,7 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
               if (mode === DrawerMode.HORIZONTAL) {
-                return '';
+                return '100%';
               }
 
               return expanded ? maxSize : minSize;

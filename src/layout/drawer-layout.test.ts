@@ -8,7 +8,7 @@ import { $, $drawerLayout, DrawerLayout, DrawerMode } from './drawer-layout';
 
 const testerFactory = new PersonaTesterFactory(_p);
 
-test('section.Drawer', init => {
+test('@mask/layout/drawer-layout', init => {
   const _ = init(() => {
     const tester = testerFactory.build([DrawerLayout], document);
     const el = tester.createElement($drawerLayout.tag);
@@ -16,7 +16,7 @@ test('section.Drawer', init => {
     return {el};
   });
 
-  test('renderStyleHeight_', () => {
+  test('styleHeight$', () => {
     should(`render the max size if horizontal and expanded`, () => {
       const size = '123px';
       run(_.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL));
@@ -35,16 +35,16 @@ test('section.Drawer', init => {
       assert(_.el.getStyle($.root._.styleHeight)).to.emitWith(size);
     });
 
-    should(`render '' if vertical`, () => {
+    should(`render '100%' if vertical`, () => {
       run(_.el.setAttribute($.host._.mode, DrawerMode.VERTICAL));
       run(_.el.setAttribute($.host._.minSize, '123px'));
       run(_.el.setAttribute($.host._.expanded, true));
 
-      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith('');
+      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith('100%');
     });
   });
 
-  test('renderStyleWidth_', () => {
+  test('styleWidth$', () => {
     should(`render the max size if vertical and expanded`, () => {
       const size = '123px';
       run(_.el.setAttribute($.host._.mode, DrawerMode.VERTICAL));
@@ -63,12 +63,12 @@ test('section.Drawer', init => {
       assert(_.el.getStyle($.root._.styleWidth)).to.emitWith(size);
     });
 
-    should(`render '' if horizontal`, () => {
+    should(`render '100%' if horizontal`, () => {
       run(_.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL));
       run(_.el.setAttribute($.host._.minSize, '123px'));
       run(_.el.setAttribute($.host._.expanded, true));
 
-      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith('');
+      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith('100%');
     });
   });
 });
