@@ -4,7 +4,7 @@ import { filterNonNull } from 'gs-tools/export/rxjs';
 import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
 import { EditableStorage } from 'gs-tools/export/store';
 import { BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { $stateService } from './state-service';
 
@@ -62,10 +62,15 @@ export class SaveService {
 
           return stateService.onChange$.pipe(
               switchMap(() => {
-                return saveConfig.storage.update(saveConfig.saveId, stateService.snapshot(rootId));
+                const snapshot = stateService.snapshot(rootId);
+                if (!snapshot) {
+                  return saveConfig.storage.delete(saveConfig.saveId);
+                }
+                return saveConfig.storage.update(saveConfig.saveId, snapshot);
               }),
           );
         }),
+        share(),
     );
   }
 

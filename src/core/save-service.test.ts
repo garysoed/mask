@@ -29,7 +29,7 @@ test('@mask/core/save-service', init => {
     should(`initialize the state service with an existing save`, () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
-      const snapshot = _.stateService.snapshot(rootId);
+      const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
       run(storage.update(saveId, snapshot));
@@ -55,7 +55,7 @@ test('@mask/core/save-service', init => {
     should(`not initialize the state service with an existing save if loadOnInit is false`, () => {
       const saveId = 'saveId';
       const savedRootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
-      const snapshot = _.stateService.snapshot(savedRootId);
+      const snapshot = _.stateService.snapshot(savedRootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
       run(storage.update(saveId, snapshot));
@@ -112,7 +112,7 @@ test('@mask/core/save-service', init => {
     should(`not initialize if the config is not set`, () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
-      const snapshot = _.stateService.snapshot(rootId);
+      const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
       run(storage.update(saveId, snapshot));
@@ -127,7 +127,7 @@ test('@mask/core/save-service', init => {
     should(`only initialize once`, () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
-      const snapshot = _.stateService.snapshot(rootId);
+      const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
       run(storage.update(saveId, snapshot));
@@ -211,13 +211,31 @@ test('@mask/core/save-service', init => {
 
       assert(_.storage.read(SAVE_ID)).to.emitWith(null);
     });
+
+    should(`delete the entry if root ID is deleted`, () => {
+      _.service.setSaving(true);
+
+      // Add another payload.
+      _.stateService.add<number>(123);
+
+      // Delete the root ID.
+      run($rootId.get(_.vine).pipe(
+          take(1),
+          tap(rootId => {
+            _.stateService.delete(rootId!);
+          }),
+      ));
+
+      const save$ = _.storage.read(SAVE_ID);
+      assert(save$).to.emitWith(null);
+    });
   });
 
   test('savedState$', () => {
     should(`emit with the saved state`, () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
-      const snapshot = _.stateService.snapshot(rootId);
+      const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
       run(storage.update(saveId, snapshot));
@@ -250,7 +268,7 @@ test('@mask/core/save-service', init => {
     should(`not emit if config is missing`, () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
-      const snapshot = _.stateService.snapshot(rootId);
+      const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
       run(storage.update(saveId, snapshot));
