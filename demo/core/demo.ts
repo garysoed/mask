@@ -7,6 +7,7 @@ import { elementWithTagType, enumType, instanceofType } from 'gs-types';
 import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Overlay } from '../../src/core/overlay';
 
 import { $button, Button } from '../../src/action/button';
 import { $checkbox, Checkbox } from '../../src/action/input/checkbox';
@@ -68,6 +69,7 @@ const COMPONENT_PATH_ATTR = 'path';
     Button,
     Checkbox,
     DrawerLayout,
+    Overlay,
     LayoutOverlay,
     LineLayout,
     ListItemLayout,
