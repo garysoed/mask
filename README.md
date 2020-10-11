@@ -26,6 +26,7 @@ Interactable components.
 -   mk-number-input
 -   `mk-radio-input` (β): Radio input.
 -   `mk-text-input` (β): Represents a text input.
+-   mk-select
 
 # Note:
 

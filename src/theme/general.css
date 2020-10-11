@@ -288,17 +288,17 @@ pre {
   padding: 1rem;
 }
 
-fieldset {
+/* fieldset {
   border: 2px solid var(--mkThemeActionFG1);
   padding: 1rem 1rem 2rem 1rem;
 }
 
 fieldset:hover, fieldset:focus {
   border-color: var(--mkThemeActionFocusFG1);
-}
+} */
 
 input {
-  background-color: var(--mkThemePassiveBG);
+  background-color: var(--mkThemeBG);
 }
 
 input:-webkit-autofill,
@@ -310,23 +310,23 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--mkThemePassiveFG1);
+  -webkit-text-fill-color: var(--mkThemeFG);
   transition: background-color 5000s ease-in-out 0s;
 }
 
 label {
-  color: var(--mkThemePassiveFG2);
+  color: var(--mkThemeFG);
   font-size: 1.25rem;
   line-height: 2rem;
 }
 
-legend {
+/* legend {
   color: var(--mkThemeActionFG1);
-}
+} */
 
-fieldset:hover > legend, fieldset:focus > legend {
+/* fieldset:hover > legend, fieldset:focus > legend {
   color: var(--mkThemeActionFocusFG1);
-}
+} */
 
 p, pre {
   margin-block-start: 1rem;
@@ -336,13 +336,13 @@ p, pre {
 /* Table styling */
 table {
   border-collapse: collapse;
-  color: var(--mkThemePassiveFG1);
+  color: var(--mkThemeFG);
   font-size: var(--gsFontSizeRoot);
   table-layout: fixed;
 }
 
 table tr:nth-child(2n) {
-  background-color: var(--mkThemePassiveBG);
+  background-color: var(--mkThemeBG);
 }
 
 th {
@@ -352,7 +352,7 @@ th {
 }
 
 td, th {
-  border: 1px solid var(--mkThemeActionDisabledFG2);
+  border: 1px solid var(--mkThemeFG);
   padding: 1rem;
 }
 
