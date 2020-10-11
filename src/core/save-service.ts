@@ -61,12 +61,17 @@ export class SaveService {
           }
 
           return stateService.onChange$.pipe(
-              switchMap(() => {
+              tap(() => {
                 const snapshot = stateService.snapshot(rootId);
                 if (!snapshot) {
-                  return saveConfig.storage.delete(saveConfig.saveId);
+                  saveConfig.storage.delete(saveConfig.saveId);
+                  return;
                 }
-                return saveConfig.storage.update(saveConfig.saveId, snapshot);
+
+                const updated = saveConfig.storage.update(saveConfig.saveId, snapshot);
+                if (updated) {
+                  return;
+                }
               }),
           );
         }),
@@ -93,7 +98,7 @@ export class SaveService {
     return merge(this.handleOnSave$, this.handleInit$);
   }
 
-  get savedState$(): Observable<Snapshot<unknown>|null> {
+  get savedState$(): Observable<Snapshot<unknown>|undefined> {
     return $saveConfig.get(this.vine).pipe(
         switchMap(config => {
           if (!config) {

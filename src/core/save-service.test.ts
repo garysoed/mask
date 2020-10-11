@@ -32,7 +32,7 @@ test('@mask/core/save-service', init => {
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
@@ -58,7 +58,7 @@ test('@mask/core/save-service', init => {
       const snapshot = _.stateService.snapshot(savedRootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
@@ -115,7 +115,7 @@ test('@mask/core/save-service', init => {
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
@@ -130,7 +130,7 @@ test('@mask/core/save-service', init => {
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
@@ -148,7 +148,7 @@ test('@mask/core/save-service', init => {
       _.stateService.clear();
       $rootId.set(_.vine, () => null);
 
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       assert(_.stateService.get(rootId)).to.emitWith(null);
       assert($rootId.get(_.vine)).to.emitWith(null);
@@ -209,7 +209,7 @@ test('@mask/core/save-service', init => {
           }),
       ));
 
-      assert(_.storage.read(SAVE_ID)).to.emitWith(null);
+      assert(_.storage.read(SAVE_ID)).to.emitWith(undefined);
     });
 
     should(`delete the entry if root ID is deleted`, () => {
@@ -227,7 +227,7 @@ test('@mask/core/save-service', init => {
       ));
 
       const save$ = _.storage.read(SAVE_ID);
-      assert(save$).to.emitWith(null);
+      assert(save$).to.emitWith(undefined);
     });
   });
 
@@ -238,7 +238,7 @@ test('@mask/core/save-service', init => {
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
@@ -271,7 +271,7 @@ test('@mask/core/save-service', init => {
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
-      run(storage.update(saveId, snapshot));
+      storage.update(saveId, snapshot);
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
