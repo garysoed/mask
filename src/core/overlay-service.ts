@@ -1,9 +1,21 @@
 import { source } from 'grapevine';
 import { Observable, Subject } from 'rxjs';
 
+export enum Anchor {
+  START = 's',
+  MIDDLE = 'm',
+  END = 'e',
+}
+
+export interface NodeSpec<E> {
+  readonly node: E;
+  readonly horizontal: Anchor;
+  readonly vertical: Anchor;
+}
+
 export interface ShowEvent {
-  readonly target: Element;
-  readonly nodes: DocumentFragment;
+  readonly target: NodeSpec<Element>;
+  readonly content: NodeSpec<Node>;
 }
 
 export class OverlayService {
@@ -13,8 +25,8 @@ export class OverlayService {
     return this.#onShow$;
   }
 
-  show(target: Element, nodes: DocumentFragment): void {
-    this.#onShow$.next({target, nodes});
+  show(event: ShowEvent): void {
+    this.#onShow$.next(event);
   }
 }
 
