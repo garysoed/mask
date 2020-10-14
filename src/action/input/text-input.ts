@@ -1,6 +1,6 @@
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, enumParser, host, onInput, PersonaContext, stringParser, textContent } from 'persona';
+import { attributeIn, attributeOut, booleanParser, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser, textContent } from 'persona';
 import { merge, Observable } from 'rxjs';
 import { map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Logger } from 'santa';
@@ -57,7 +57,7 @@ export const $ = {
   host: host($textInput.api),
   input: element('input', instanceofType(HTMLInputElement), {
     autocomplete: attributeOut('autocomplete', stringParser()),
-    disabled: attributeOut('disabled', booleanParser(), false),
+    disabled: setAttribute('disabled'),
     // TODO: This should cause compile error if the Element type is not InputElement.
     onInput: onInput(),
     type: attributeOut('type', enumParser(InputType)),

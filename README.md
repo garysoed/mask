@@ -15,6 +15,7 @@ not display anything, unless the appropriate slots are filled.
 -   `mk-line-layout` (α): Displays things in a line.
 -   `mk-list-item-layout` (α): Layouts out the items as a list item. This means adding a slot for
     bullet point and a details row.
+-   `mk-overlay-layout`
 -   `mk-root-layout` (α): Provides a general root layout for the app.
 
 # Action
@@ -26,7 +27,6 @@ Interactable components.
 -   mk-number-input
 -   `mk-radio-input` (β): Radio input.
 -   `mk-text-input` (β): Represents a text input.
--   mk-select
 
 # Note:
 

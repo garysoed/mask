@@ -1,6 +1,5 @@
 import { ComponentSpec } from 'persona';
 import { CustomElementCtrlCtor } from 'persona/export/internal';
-
 import { $buttonDemo, ButtonDemo } from '../action/button';
 import { $checkboxDemo, CheckboxDemo } from '../action/checkbox';
 import { $radioInputDemo, RadioInputDemo } from '../action/radio-input';
@@ -11,8 +10,10 @@ import { $keyboardDemo, KeyboardDemo } from '../display/keyboard';
 import { $colorsDemo, ColorsDemo } from '../general/colors';
 import { $textsDemo, TextsDemo } from '../general/texts';
 import { $drawerLayoutDemo, DrawerLayoutDemo } from '../layout/drawer-layout';
-
+import { $overlayLayoutDemo, OverlayLayoutDemo } from '../layout/overlay-layout';
 import { Views } from './location-service';
+
+
 
 
 export interface PageSpec {
@@ -52,6 +53,12 @@ export const LAYOUT_SPECS: readonly PageSpec[] = [
     name: 'Drawer Layout',
     path: Views.DRAWER_LAYOUT,
   },
+  {
+    ctor: OverlayLayoutDemo,
+    componentSpec: $overlayLayoutDemo,
+    name: 'Overlay Layout',
+    path: Views.OVERLAY_LAYOUT,
+  }
 ];
 
 export const ALL_SPECS = [
