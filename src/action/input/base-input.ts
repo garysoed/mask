@@ -2,14 +2,17 @@ import { cache } from 'gs-tools/export/data';
 import { StateId } from 'gs-tools/export/state';
 import { handler, hasAttribute, host, PersonaContext } from 'persona';
 import { AttributeInput, DispatcherOutput, Output } from 'persona/export/internal';
-import { combineLatest, merge, Observable, of as observableOf, Subject } from 'rxjs';
-import { filter, map, pairwise, startWith, switchMap, switchMapTo, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, EMPTY, merge, Observable, of as observableOf, Subject } from 'rxjs';
+import { filter, map, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Logger } from 'santa';
 
 import { _p } from '../../app/app';
 import { $stateService } from '../../core/state-service';
 import { ChangeEvent } from '../../event/change-event';
 import { $$ as $baseAction, BaseAction } from '../base-action';
 
+
+const LOGGER = new Logger('mask.BaseInput');
 
 export const STATE_ID_ATTR_NAME = 'state-id';
 
@@ -70,8 +73,13 @@ export abstract class BaseInput<T> extends BaseAction {
   @cache()
   private get handleOnApply$(): Observable<unknown> {
     const onAutoApply$ = this.declareInput($.host._.applyOnChange).pipe(
-        filter(applyOnChange => !!applyOnChange),
-        switchMapTo(this.onChange$),
+        switchMap(applyOnChange => {
+          if (!applyOnChange) {
+            return EMPTY;
+          }
+
+          return this.onChange$;
+        }),
     );
 
     return merge(
@@ -103,7 +111,7 @@ export abstract class BaseInput<T> extends BaseAction {
   }
 
   @cache()
-protected get onChange$(): Observable<ChangeEvent<T>> {
+  protected get onChange$(): Observable<ChangeEvent<T>> {
     return this.domValue$.pipe(
         pairwise(),
         filter(([oldValue, newValue]) => oldValue !== newValue),

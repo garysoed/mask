@@ -33,7 +33,7 @@ const ROUTE_SPEC = {
   [Views.DRAWER_LAYOUT]: fromPattern('/drawer-layout', {}),
   [Views.ICON]: fromPattern('/icon', {}),
   [Views.KEYBOARD]: fromPattern('/keyboard', {}),
-  [Views.OVERLAY_LAYOUT]: fromPattern('/overlay-layou', {}),
+  [Views.OVERLAY_LAYOUT]: fromPattern('/overlay-layout', {}),
   [Views.RADIO_INPUT]: fromPattern('/radio-input', {}),
   [Views.TEXT]: fromPattern('/text', {}),
   [Views.TEXT_INPUT]: fromPattern('/text-input', {}),

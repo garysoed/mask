@@ -1,9 +1,10 @@
 import { cache } from 'gs-tools/export/data';
-import { filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
+import { debug, filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
-import { EMPTY, merge, Observable } from 'rxjs';
+import { concat, EMPTY, merge, Observable } from 'rxjs';
 import { filter, map, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { Logger } from 'santa';
 
 import { _p } from '../../app/app';
 import { stateIdParser } from '../../core/state-id-parser';
@@ -12,6 +13,8 @@ import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../inpu
 
 import { $onRadioInput$ } from './on-radio-input';
 import template from './radio-input.html';
+
+const LOGGER = new Logger('mask.RadioInput');
 
 
 export const $radioInput = {
@@ -69,8 +72,11 @@ export class RadioInput extends BaseInput<number|null> {
   }
 
   @cache()
-  protected get domValue$(): Observable<number> {
-    return this.nullableDomValue$.pipe(filterNonNull());
+  protected get domValue$(): Observable<number|null> {
+    return concat(
+        this.nullableDomValue$.pipe(take(1)),
+        this.nullableDomValue$.pipe(filterNonNull()),
+    );
   }
 
   @cache()

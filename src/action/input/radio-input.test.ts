@@ -55,10 +55,18 @@ test('@mask/action/input/radio-input', init => {
   });
 
   test('domValue$', () => {
-    should(`emit if the value is non null`, () => {
-      // Set the state to some number.
-      _.stateService.set(_.$state, 123);
+    should(`set the state correctly`, () => {
+      const el1 = _.tester.createElement($radioInput.tag);
+      run(el1.setAttribute($.host._.stateId, _.$state));
+      run(el1.setAttribute($.host._.index, 1));
 
+      const el2 = _.tester.createElement($radioInput.tag);
+      run(el2.setAttribute($.host._.stateId, _.$state));
+      run(el2.setAttribute($.host._.index, 2));
+
+      const state$ = createSpySubject(_.stateService.get(_.$state));
+
+      // Click on the third one.
       run(_.el.getElement($.input).pipe(
           tap(el => {
             el.checked = true;
@@ -67,23 +75,16 @@ test('@mask/action/input/radio-input', init => {
       run(_.el.dispatchEvent($.input._.onInput));
       run(_.el.callFunction($.host._.applyFn, []));
 
-      assert(_.stateService.get(_.$state)).to.emitWith(INDEX);
-    });
-
-    should(`not emit if the value is null`, () => {
-      const value = 123;
-      // Set the state to some number.
-      _.stateService.set(_.$state, value);
-
-      run(_.el.getElement($.input).pipe(
+      // Then the second one.
+      run(el2.getElement($.input).pipe(
           tap(el => {
-            el.checked = false;
+            el.checked = true;
           }),
       ));
-      run(_.el.dispatchEvent($.input._.onInput));
-      run(_.el.callFunction($.host._.applyFn, []));
+      run(el2.dispatchEvent($.input._.onInput));
+      run(el2.callFunction($.host._.applyFn, []));
 
-      assert(_.stateService.get(_.$state)).to.emitWith(value);
+      assert(state$).to.emitSequence([null, 3, 2]);
     });
   });
 
@@ -201,7 +202,7 @@ test('@mask/action/input/radio-input', init => {
       run(_.el.dispatchEvent($.input._.onInput));
       run(_.el.callFunction($.host._.applyFn, []));
 
-      assert(_.stateService.get(_.$state)).to.emitWith(value);
+      assert(_.stateService.get(_.$state)).to.emitWith(null);
     });
   });
 

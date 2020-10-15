@@ -29,7 +29,7 @@
 <mkd-demo-layout label="Radio inputs">
   <div id="play" slot="play" layout="row">
     <div layout="column" flex>
-      <mk-radio-input id="optionA" index="0">
+      <mk-radio-input id="optionA" index="0" apply-on-change>
         <mk-list-item-layout slot="display_unchecked">
           <div class="iconContainer" slot="bullet">
             <mk-icon icon="mk.radio_unchecked"></mk-icon>
@@ -44,7 +44,7 @@
         </mk-list-item-layout>
       </mk-radio-input>
 
-      <mk-radio-input id="optionB" index="1" is-secondary>
+      <mk-radio-input id="optionB" index="1" is-secondary apply-on-change>
         <mk-list-item-layout slot="display_unchecked">
           <div class="iconContainer" slot="bullet">
             <mk-icon icon="mk.radio_unchecked"></mk-icon>
@@ -59,7 +59,7 @@
         </mk-list-item-layout>
       </mk-radio-input>
 
-      <mk-radio-input id="optionC" index="2">
+      <mk-radio-input id="optionC" index="2" apply-on-change>
         <mk-list-item-layout slot="display_unchecked">
           <div class="iconContainer" slot="bullet">
             <mk-icon icon="mk.radio_unchecked"></mk-icon>

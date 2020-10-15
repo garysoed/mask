@@ -30,6 +30,13 @@ export interface IconDemoState {
   readonly $fitToWidth: StateId<CheckedValue>;
 }
 
+export interface OverlayLayoutDemoState {
+  readonly $targetHorizontalIndex: StateId<number|null>;
+  readonly $targetVerticalIndex: StateId<number|null>;
+  readonly $overlayHorizontalIndex: StateId<number|null>;
+  readonly $overlayVerticalIndex: StateId<number|null>;
+}
+
 export interface RadioInputDemoState {
   readonly $selectedIndex: StateId<number|null>;
 }
@@ -49,6 +56,7 @@ export interface DemoState {
   readonly checkboxDemo: CheckboxDemoState;
   readonly drawerLayoutDemo: DrawerLayoutDemoState;
   readonly iconDemo: IconDemoState;
+  readonly overlayLayoutDemo: OverlayLayoutDemoState;
   readonly radioInputDemo: RadioInputDemoState;
   readonly textInputDemo: TextInputDemoState;
 }

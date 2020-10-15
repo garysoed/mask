@@ -132,6 +132,12 @@ function init(stateService: StateService): StateId<DemoState> {
       $isAction: stateService.add<CheckedValue>(false),
       $fitToWidth: stateService.add<CheckedValue>(false),
     },
+    overlayLayoutDemo: {
+      $targetHorizontalIndex: stateService.add(0),
+      $targetVerticalIndex: stateService.add(0),
+      $overlayHorizontalIndex: stateService.add(0),
+      $overlayVerticalIndex: stateService.add(0),
+    },
     radioInputDemo: {
       $selectedIndex: stateService.add<number|null>(null),
     },
