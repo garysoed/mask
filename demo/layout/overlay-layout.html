@@ -9,12 +9,17 @@
   }
 
   #buttonContainer {
+    min-width: 20rem;
     padding: 1rem;
   }
 
   #drawerContent {
     padding: 1rem;
     width: 10rem;
+  }
+
+  #overlayHeader {
+    margin-top: 4rem;
   }
 </style>
 
@@ -36,7 +41,7 @@
         <!-- #targetVerticalAnchors -->
       </div>
 
-      <h4>Overlay anchor</h4>
+      <h4 id="overlayHeader">Overlay anchor</h4>
       <div id="overlayHorizontal">
         <div>Horizontal</div>
         <!-- #overlayHorizontalAnchors -->
@@ -47,8 +52,8 @@
       </div>
     </div>
 
-    <mk-overlay-layout target="target">
-      <div>Overlay content</div>
+    <mk-overlay-layout id="overlay" target-id="target">
+      <mk-line-layout>Overlay content</mk-line-layout>
     </mk-overlay-layout>
   </div>
   <div slot="docs">

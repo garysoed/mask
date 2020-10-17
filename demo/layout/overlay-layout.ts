@@ -1,13 +1,14 @@
 import { instanceofType } from 'gs-types';
 import { element, multi, PersonaContext, renderCustomElement } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 
-import { Button } from '../../src/action/button';
+import { $stateService } from '../../export';
+import { $button, Button } from '../../src/action/button';
 import { $simpleRadioInput, SimpleRadioInput } from '../../src/action/simple/simple-radio-input';
 import { _p } from '../../src/app/app';
 import { Anchor } from '../../src/core/overlay-service';
-import { OverlayLayout } from '../../src/layout/overlay-layout';
+import { $overlayLayout, OverlayLayout } from '../../src/layout/overlay-layout';
 import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
 import { DemoLayout } from '../base/demo-layout';
 import { $demoState, OverlayLayoutDemoState } from '../core/demo-state';
@@ -21,17 +22,19 @@ export const $overlayLayoutDemo = {
 };
 
 const $ = {
-  targetHorizontal: element('targetHorizontal', instanceofType(HTMLDivElement), {
-    targetHorizontalAnchors: multi('#targetHorizontalAnchors'),
-  }),
-  targetVertical: element('targetVertical', instanceofType(HTMLDivElement), {
-    targetVerticalAnchors: multi('#targetVerticalAnchors'),
-  }),
+  overlay: element('overlay', $overlayLayout, {}),
   overlayHorizontal: element('overlayHorizontal', instanceofType(HTMLDivElement), {
     overlayHorizontalAnchors: multi('#overlayHorizontalAnchors'),
   }),
   overlayVertical: element('overlayVertical', instanceofType(HTMLDivElement), {
     overlayVerticalAnchors: multi('#overlayVerticalAnchors'),
+  }),
+  target: element('target', $button, {}),
+  targetHorizontal: element('targetHorizontal', instanceofType(HTMLDivElement), {
+    targetHorizontalAnchors: multi('#targetHorizontalAnchors'),
+  }),
+  targetVertical: element('targetVertical', instanceofType(HTMLDivElement), {
+    targetVerticalAnchors: multi('#targetVerticalAnchors'),
   }),
 };
 
@@ -67,6 +70,27 @@ export class OverlayLayoutDemo extends ThemedCustomElementCtrl {
     this.render(
         $.targetVertical._.targetVerticalAnchors,
         this.getAnchorNodes('$targetVerticalIndex'),
+    );
+    this.render($.overlay._.showFn, this.declareInput($.target._.actionEvent).pipe(mapTo([])));
+    this.render($.overlay._.contentHorizontal, this.getAnchor('$overlayHorizontalIndex'));
+    this.render($.overlay._.contentVertical, this.getAnchor('$overlayVerticalIndex'));
+    this.render($.overlay._.targetHorizontal, this.getAnchor('$targetHorizontalIndex'));
+    this.render($.overlay._.targetVertical, this.getAnchor('$targetVerticalIndex'));
+  }
+
+  private getAnchor(anchorIdKey: keyof OverlayLayoutDemoState): Observable<Anchor> {
+    const overlayLayoutDemoState$ = $demoState.get(this.vine).pipe(
+        map(demoState => demoState?.overlayLayoutDemo ?? null),
+    );
+    return combineLatest([overlayLayoutDemoState$, $stateService.get(this.vine)]).pipe(
+        switchMap(([state, stateService]) => {
+          if (!state) {
+            return observableOf(null);
+          }
+
+          return stateService.get(state[anchorIdKey]);
+        }),
+        map(anchor => ANCHORS[anchor ?? 0]),
     );
   }
 

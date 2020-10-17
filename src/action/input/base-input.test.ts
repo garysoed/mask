@@ -150,11 +150,7 @@ test('@mask/input/base-input', init => {
     });
 
     should(`emit the default value if state ID is not set`, () => {
-      run(_.el.getElement($.host).pipe(
-          tap(element => {
-            element.setAttribute($.host._.stateId.attrName, '');
-          }),
-      ));
+      _.el.element.setAttribute($.host._.stateId.attrName, '');
 
       run(_.el.callFunction($.host._.clearFn, []));
 
@@ -189,11 +185,7 @@ test('@mask/input/base-input', init => {
     });
 
     should(`do nothing if state ID is not specified`, () => {
-      run(_.el.getElement($.host).pipe(
-          tap(element => {
-            element.setAttribute($.host._.stateId.attrName, '');
-          }),
-      ));
+      _.el.element.setAttribute($.host._.stateId.attrName, '');
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);
 
