@@ -52,11 +52,8 @@ export class OverlayLayout extends ThemedCustomElementCtrl {
 
   @cache()
   private get handleOnShow$(): Observable<unknown> {
-    const targetEl$ = combineLatest([
-      this.declareInput($.host),
-      this.declareInput($.host._.targetId),
-    ])
-    .pipe(map(([hostEl, targetId]) => this.getTargetEl(hostEl, targetId ?? '')));
+    const targetEl$ = this.declareInput($.host._.targetId)
+        .pipe(map(targetId => this.getTargetEl($.host.getElement(this.context), targetId ?? '')));
 
     const contentNode$ = this.declareInput($.slot._.slotted)
         .pipe(map(slottedNodes => this.wrapContentNode(slottedNodes)));

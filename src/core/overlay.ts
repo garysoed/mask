@@ -2,8 +2,8 @@ import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
 import { classToggle, element, host, onDom, PersonaContext, resizeObservable, single, style } from 'persona';
-import { combineLatest, merge, Observable, Subject } from 'rxjs';
-import { debounceTime, delay, filter, map, mapTo, share, shareReplay, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, merge, Observable } from 'rxjs';
+import { filter, map, mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { Logger } from 'santa';
 
 import { _p } from '../app/app';
@@ -98,16 +98,13 @@ export class Overlay extends ThemedCustomElementCtrl {
 
   @cache()
   private get contentRect$(): Observable<DOMRect> {
-    return this.declareInput($.content).pipe(
-        switchMap(contentEl => {
-          return resizeObservable(contentEl, {}).pipe(
-              map(entries => {
-                return entries[entries.length - 1]?.contentRect ?? null;
-              }),
-              filterNonNull(),
-              startWith(contentEl.getBoundingClientRect()),
-          );
+    const contentEl = $.content.getElement(this.context);
+    return resizeObservable(contentEl, {}).pipe(
+        map(entries => {
+          return entries[entries.length - 1]?.contentRect ?? null;
         }),
+        filterNonNull(),
+        startWith(contentEl.getBoundingClientRect()),
         shareReplay({bufferSize: 1, refCount: false}),
     );
   }
@@ -136,13 +133,13 @@ export class Overlay extends ThemedCustomElementCtrl {
 
   @cache()
   private get showStatus$(): Observable<ShowEvent|null> {
+    const rootEl = $.root.getElement(this.context);
     const onShow$ = $overlayService.get(this.vine).pipe(
         switchMap(service => service.onShow$),
     );
 
     const onClick$ = this.declareInput($.root._.onClick).pipe(
-        withLatestFrom(this.declareInput($.root)),
-        filter(([event, rootEl]) => event.target === rootEl),
+        filter(event => event.target === rootEl),
         mapTo(null),
     );
 

@@ -1,5 +1,5 @@
 import { cache } from 'gs-tools/export/data';
-import { debug, filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
+import { filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
 import { concat, EMPTY, merge, Observable } from 'rxjs';
@@ -13,6 +13,7 @@ import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../inpu
 
 import { $onRadioInput$ } from './on-radio-input';
 import template from './radio-input.html';
+
 
 const LOGGER = new Logger('mask.RadioInput');
 
@@ -135,8 +136,9 @@ export class RadioInput extends BaseInput<number|null> {
     )
     .pipe(
         startWith({}),
-        withLatestFrom(this.declareInput($.input), this.declareInput($.host._.index)),
-        map(([, element, index]) => {
+        withLatestFrom(this.declareInput($.host._.index)),
+        map(([, index]) => {
+          const element = $.input.getElement(this.context);
           if (index === undefined) {
             return null;
           }
@@ -147,10 +149,10 @@ export class RadioInput extends BaseInput<number|null> {
   }
 
   protected updateDomValue(newValue: number|null): Observable<unknown> {
-    return this.declareInput($.input).pipe(
-        withLatestFrom(this.declareInput($.host._.index)),
+    return this.declareInput($.host._.index).pipe(
         take(1),
-        tap(([el, index]) => {
+        tap(index => {
+          const el = $.input.getElement(this.context);
           el.checked = index !== undefined && newValue === index;
         }),
     );

@@ -1,8 +1,8 @@
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
-import { merge, Observable } from 'rxjs';
-import { map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
+import { defer, merge, Observable, of as observableOf } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 import { _p } from '../../app/app';
 import { stateIdParser } from '../../core/state-id-parser';
@@ -75,8 +75,8 @@ export class Checkbox extends BaseInput<CheckedValue> {
     )
     .pipe(
         startWith({}),
-        withLatestFrom(this.declareInput($.checkbox)),
-        map(([, element]) => {
+        map(() => {
+          const element = $.checkbox.getElement(this.context);
           if (element.indeterminate) {
             return 'unknown';
           }
@@ -87,17 +87,17 @@ export class Checkbox extends BaseInput<CheckedValue> {
   }
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {
-    return this.declareInput($.checkbox).pipe(
-        take(1),
-        tap(el => {
-          if (newValue === 'unknown') {
-            el.indeterminate = true;
-            el.checked = false;
-          } else {
-            el.indeterminate = false;
-            el.checked = newValue;
-          }
-        }),
-    );
+    return defer(() => {
+      const el = $.checkbox.getElement(this.context);
+      if (newValue === 'unknown') {
+        el.indeterminate = true;
+        el.checked = false;
+      } else {
+        el.indeterminate = false;
+        el.checked = newValue;
+      }
+
+      return observableOf({});
+    });
   }
 }

@@ -55,8 +55,8 @@ export class AnnotatedText extends ThemedCustomElementCtrl {
       this.annotations$,
     ])
     .pipe(
-        withLatestFrom(this.declareInput($.host)),
-        switchMap(([[text, annotations], hostEl]) => {
+        switchMap(([text, annotations]) => {
+          const hostEl = $.host.getElement(this.context);
           return applyAnnotations(document.createTextNode(text), annotations).pipe(
               map(nodes => ({nodes, hostEl})),
           );

@@ -1,7 +1,7 @@
 import { instanceofType } from 'gs-types';
 import { element, host, mutationObservable, PersonaContext, textContent } from 'persona';
 import { Observable } from 'rxjs';
-import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, tap } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
@@ -39,19 +39,15 @@ export class CodeBlock extends ThemedCustomElementCtrl {
   }
 
   private setupRenderCode(): Observable<unknown> {
-    return this.declareInput($.host).pipe(
-        switchMap(hostEl => {
-          return mutationObservable(hostEl, {childList: true})
-              .pipe(
-                  startWith({}),
-                  map(() => hostEl.textContent || ''),
-              );
-        }),
-        $.root._.text.output(this.context),
-        withLatestFrom(this.declareInput($.root)),
-        tap(([, rootEl]) => {
-          hljs.highlightBlock(rootEl);
-        }),
-    );
+    const hostEl = $.host.getElement(this.context);
+    return mutationObservable(hostEl, {childList: true})
+        .pipe(
+            startWith({}),
+            map(() => hostEl.textContent || ''),
+            $.root._.text.output(this.context),
+            tap(() => {
+              hljs.highlightBlock($.root.getElement(this.context));
+            }),
+        );
   }
 }

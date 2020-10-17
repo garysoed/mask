@@ -1,8 +1,8 @@
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser, textContent } from 'persona';
-import { merge, Observable } from 'rxjs';
-import { map, startWith, take, tap, withLatestFrom } from 'rxjs/operators';
+import { attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
+import { defer, merge, Observable, of as observableOf } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { Logger } from 'santa';
 
 import { _p } from '../../app/app';
@@ -84,20 +84,20 @@ export class TextInput extends BaseInput<string> {
 
   @cache()
   protected get domValue$(): Observable<string> {
+    const el = $.input.getElement(this.context);
     return merge(this.declareInput($.input._.onInput), this.onDomValueUpdatedByScript$)
         .pipe(
             startWith({}),
-            withLatestFrom(this.declareInput($.input)),
-            map(([, el]) => el.value),
+            map(() => el.value),
         );
   }
 
   protected updateDomValue(newValue: string): Observable<unknown> {
-    return this.declareInput($.input).pipe(
-        take(1),
-        tap(el => {
-          el.value = newValue;
-        }),
-    );
+    return defer(() => {
+      const el = $.input.getElement(this.context);
+      el.value = newValue;
+
+      return observableOf({});
+    });
   }
 }
