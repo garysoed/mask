@@ -105,7 +105,7 @@ export class OverlayLayout extends ThemedCustomElementCtrl {
 
     const docFragment = ownerDocument.createDocumentFragment();
     for (const assignedNode of slottedNodes) {
-      docFragment.appendChild(assignedNode);
+      docFragment.appendChild(assignedNode.cloneNode(true));
     }
 
     return docFragment;

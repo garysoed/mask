@@ -32,6 +32,9 @@ export { $dialogService, $dialogState, DialogResult, DialogService } from '../sr
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { LineLayout, $lineLayout } from '../src/layout/line-layout';
 export { ListItemLayout, $listItemLayout } from '../src/layout/list-item-layout';
+export { OverlayLayout, $overlayLayout } from '../src/layout/overlay-layout';
+export { Overlay } from '../src/core/overlay';
+export { OverlayService } from '../src/core/overlay-service';
 export { Palette, PALETTE } from '../src/theme/palette';
 export { RootLayout, $rootLayout } from '../src/layout/root-layout';
 export { $theme, start } from '../src/app/app';

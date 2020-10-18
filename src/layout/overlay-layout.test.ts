@@ -31,6 +31,7 @@ test('@mask/layout/overlay-layout', init => {
       run(_.el.setAttribute($.host._.targetVertical, targetVertical));
 
       const contentNode = document.createElement('div');
+      contentNode.id = 'content';
       run(_.el.addSlotElement($.slot, contentNode));
       const contentHorizontal = Anchor.MIDDLE;
       run(_.el.setAttribute($.host._.contentHorizontal, contentHorizontal));
@@ -50,7 +51,7 @@ test('@mask/layout/overlay-layout', init => {
         }),
         content: objectThat<NodeSpec<Node>>().haveProperties({
           node: anyThat<Node>().passPredicate(
-              node => node.childNodes[0] === contentNode,
+              node => (node.childNodes[0] as HTMLElement).id === 'content',
               'match content node',
           ),
           horizontal: contentHorizontal,
