@@ -1,7 +1,7 @@
 import { $asArray, $filterDefined, $map, $pipe } from 'gs-tools/export/collect';
 import { objectConverter } from 'gs-tools/export/serializer';
 import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, host, listParser, multi, onDom, PersonaContext, renderCustomElement, stringParser } from 'persona';
+import { attributeIn, dispatcher, element, host, listParser, multi, onDom, PersonaContext, renderCustomElement, stringParser, NodeWithId } from 'persona';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
@@ -63,7 +63,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
     this.addSetup(this.setupCrumbDataForwarding());
   }
 
-  private renderCrumbs(): Observable<readonly Node[]> {
+  private renderCrumbs(): Observable<readonly NodeWithId[]> {
     return this.pathKey$
         .pipe(
             withLatestFrom(this.pathData$),
@@ -81,6 +81,7 @@ export class Breadcrumb extends ThemedCustomElementCtrl {
                         },
                         attrs: new Map([['tabindex', observableOf('0')]]),
                       },
+                      crumbData.key,
                       this.context,
                   )),
                   $asArray(),

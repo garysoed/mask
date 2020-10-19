@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { element, multi, PersonaContext, renderCustomElement } from 'persona';
+import { element, multi, NodeWithId, PersonaContext, renderCustomElement } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
@@ -94,7 +94,9 @@ export class OverlayLayoutDemo extends ThemedCustomElementCtrl {
     );
   }
 
-  private getAnchorNodes(anchorIdKey: keyof OverlayLayoutDemoState): Observable<readonly Node[]> {
+  private getAnchorNodes(
+      anchorIdKey: keyof OverlayLayoutDemoState,
+  ): Observable<readonly NodeWithId[]> {
     return $demoState.get(this.vine).pipe(
         switchMap(state => {
           if (!state) {
@@ -112,6 +114,7 @@ export class OverlayLayoutDemo extends ThemedCustomElementCtrl {
                     stateId: observableOf($anchor),
                   },
                 },
+                index,
                 this.context,
             );
           });

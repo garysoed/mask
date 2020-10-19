@@ -1,6 +1,6 @@
 import { cache } from 'gs-tools/export/data';
 import { enumType, instanceofType, Type } from 'gs-types';
-import { element, host, multi, PersonaContext, renderElement, renderTextNode, textIn } from 'persona';
+import { element, host, multi, NodeWithId, PersonaContext, renderElement, renderTextNode, textIn } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -50,7 +50,7 @@ export class Keyboard extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get keyboardSegments$(): Observable<readonly Node[]> {
+  private get keyboardSegments$(): Observable<readonly NodeWithId[]> {
     return this.declareInput($.host._.text).pipe(
         map(keyStr => keyStr.split(' ')),
         switchMap(keys => {
@@ -59,12 +59,12 @@ export class Keyboard extends ThemedCustomElementCtrl {
           }
 
           const [firstKey, ...rest] = keys;
-          const keyNode$list: Array<Observable<Node>> = [
+          const keyNode$list: Array<Observable<NodeWithId>> = [
             this.renderKey(firstKey),
           ];
 
           for (const key of rest) {
-            keyNode$list.push(renderTextNode(observableOf('+'), this.context));
+            keyNode$list.push(renderTextNode(observableOf('+'), {}, this.context));
             keyNode$list.push(this.renderKey(key));
           }
 
@@ -73,7 +73,7 @@ export class Keyboard extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderKey(key: string): Observable<Node> {
+  private renderKey(key: string): Observable<NodeWithId> {
     return renderElement(
         'kbd',
         {
@@ -82,6 +82,7 @@ export class Keyboard extends ThemedCustomElementCtrl {
           ]),
           textContent: observableOf(keyToString(key)),
         },
+        {},
         this.context,
     );
   }

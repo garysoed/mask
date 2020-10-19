@@ -12,7 +12,7 @@ import { filterDefined } from 'gs-tools/export/rxjs';
 import { typeBased } from 'gs-tools/export/serializer';
 import { booleanType, instanceofType } from 'gs-types';
 import { compose, json, Serializable } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, enumParser, host, PersonaContext, renderHtml, single, stringParser } from 'persona';
+import { AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
 
@@ -68,7 +68,7 @@ export class Icon extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get rootSvg$(): Observable<Node|null> {
+  private get rootSvg$(): Observable<NodeWithId|null> {
     const node$ = combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
@@ -76,7 +76,7 @@ export class Icon extends ThemedCustomElementCtrl {
               if (!svg) {
                 return observableOf(null);
               }
-              return renderHtml(svg, 'image/svg+xml', this.context);
+              return renderHtml(svg, 'image/svg+xml', svg, this.context);
             }),
         );
 

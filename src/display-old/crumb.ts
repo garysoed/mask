@@ -1,5 +1,5 @@
 import { instanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, host, onDom, PersonaContext, renderHtml, single, stringParser, textContent } from 'persona';
+import { attributeIn, dispatcher, element, host, NodeWithId, onDom, PersonaContext, renderHtml, single, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
@@ -53,7 +53,7 @@ export class Crumb extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderSvgContent(): Observable<Node|null> {
-    return renderHtml(separatorSvg, 'image/svg+xml', this.context);
+  private renderSvgContent(): Observable<NodeWithId|null> {
+    return renderHtml(separatorSvg, 'image/svg+xml', separatorSvg, this.context);
   }
 }

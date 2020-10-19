@@ -4,14 +4,14 @@ import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { StateId } from 'gs-tools/export/state';
 import { elementWithTagType, enumType, instanceofType } from 'gs-types';
-import { attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
+import { attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
 import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
 import { distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { Overlay } from '../../src/core/overlay';
 
 import { $button, Button } from '../../src/action/button';
 import { $checkbox, Checkbox } from '../../src/action/input/checkbox';
 import { _p } from '../../src/app/app';
+import { Overlay } from '../../src/core/overlay';
 import { $stateService } from '../../src/core/state-service';
 import { ACTION_EVENT } from '../../src/event/action-event';
 import { $drawerLayout, DrawerLayout } from '../../src/layout/drawer-layout';
@@ -102,7 +102,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get accentPaletteContents$(): Observable<readonly Node[]> {
+  private get accentPaletteContents$(): Observable<readonly NodeWithId[]> {
     const selectedColor$ = combineLatest([
       $demoState.get(this.vine),
       $stateService.get(this.vine),
@@ -131,7 +131,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get basePaletteContents$(): Observable<readonly Node[]> {
+  private get basePaletteContents$(): Observable<readonly NodeWithId[]> {
     const selectedColor$ = combineLatest([
       $demoState.get(this.vine),
       $stateService.get(this.vine),
@@ -195,7 +195,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get mainContent$(): Observable<Node|null> {
+  private get mainContent$(): Observable<NodeWithId|null> {
     return $locationService.get(this.vine).pipe(
         switchMap(locationService => locationService.getLocation()),
         map(location => getPageSpec(location.type)),
@@ -204,12 +204,12 @@ export class Demo extends ThemedCustomElementCtrl {
             return observableOf(null);
           }
 
-          return renderCustomElement(spec.componentSpec, {}, this.context);
+          return renderCustomElement(spec.componentSpec, {}, {}, this.context);
         }),
     );
   }
 
-  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<readonly Node[]> {
+  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<readonly NodeWithId[]> {
     const node$List = pageSpecs
         .map(({path, name}) => {
             return renderCustomElement(
@@ -224,6 +224,7 @@ export class Demo extends ThemedCustomElementCtrl {
                         ]),
                         textContent: observableOf(name),
                       },
+                      name,
                       this.context,
                   )
                   .pipe(map(node => [node] || [])),
@@ -231,6 +232,7 @@ export class Demo extends ThemedCustomElementCtrl {
                     isSecondary: observableOf(true),
                   },
                 },
+                name,
                 this.context,
             );
         });
@@ -330,7 +332,7 @@ function renderPaletteData(
     color: Color,
     selected$: Observable<boolean>,
     context: PersonaContext,
-): Observable<Node> {
+): Observable<NodeWithId> {
   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
   const classes$ = selected$.pipe(
@@ -349,6 +351,7 @@ function renderPaletteData(
           ['style', observableOf(`background-color: ${colorCss};`)],
         ]),
       },
+      colorName,
       context,
   );
 }
