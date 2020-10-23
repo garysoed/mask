@@ -1,5 +1,5 @@
 import { cache } from 'gs-tools/export/data';
-import { filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
+import { debug, filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
 import { concat, EMPTY, merge, Observable } from 'rxjs';
@@ -145,6 +145,7 @@ export class RadioInput extends BaseInput<number|null> {
 
           return element.checked ? index : null;
         }),
+        debug(LOGGER, 'nullableValue'),
     );
   }
 

@@ -84,7 +84,58 @@ test('@mask/action/input/radio-input', init => {
       run(el2.dispatchEvent($.input._.onInput));
       run(el2.callFunction($.host._.applyFn, []));
 
-      assert(state$).to.emitSequence([null, 3, 2]);
+      // Click on the third one again.
+      run(_.el.getElement($.input).pipe(
+          tap(el => {
+            el.checked = true;
+          }),
+      ));
+      run(_.el.dispatchEvent($.input._.onInput));
+      run(_.el.callFunction($.host._.applyFn, []));
+
+      assert(state$).to.emitSequence([null, 3, 2, 3]);
+    });
+
+    should(`set the state correctly with apply on change`, () => {
+      run(_.el.setHasAttribute($.host._.applyOnChange, true));
+
+      const el1 = _.tester.createElement($radioInput.tag);
+      run(el1.setAttribute($.host._.stateId, _.$state));
+      run(el1.setAttribute($.host._.index, 1));
+      run(el1.setHasAttribute($.host._.applyOnChange, true));
+
+      const el2 = _.tester.createElement($radioInput.tag);
+      run(el2.setAttribute($.host._.stateId, _.$state));
+      run(el2.setAttribute($.host._.index, 2));
+      run(el2.setHasAttribute($.host._.applyOnChange, true));
+
+      const state$ = createSpySubject(_.stateService.get(_.$state));
+
+      // Click on the third one.
+      run(_.el.getElement($.input).pipe(
+          tap(el => {
+            el.checked = true;
+          }),
+      ));
+      run(_.el.dispatchEvent($.input._.onInput));
+
+      // Then the second one.
+      run(el2.getElement($.input).pipe(
+          tap(el => {
+            el.checked = true;
+          }),
+      ));
+      run(el2.dispatchEvent($.input._.onInput));
+
+      // Click on the third one again.
+      run(_.el.getElement($.input).pipe(
+          tap(el => {
+            el.checked = true;
+          }),
+      ));
+      run(_.el.dispatchEvent($.input._.onInput));
+
+      assert(state$).to.emitSequence([null, 3, 2, 3]);
     });
   });
 
