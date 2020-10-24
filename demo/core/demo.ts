@@ -102,7 +102,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get accentPaletteContents$(): Observable<readonly NodeWithId[]> {
+  private get accentPaletteContents$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
     const selectedColor$ = combineLatest([
       $demoState.get(this.vine),
       $stateService.get(this.vine),
@@ -131,7 +131,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get basePaletteContents$(): Observable<readonly NodeWithId[]> {
+  private get basePaletteContents$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
     const selectedColor$ = combineLatest([
       $demoState.get(this.vine),
       $stateService.get(this.vine),
@@ -195,7 +195,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get mainContent$(): Observable<NodeWithId|null> {
+  private get mainContent$(): Observable<NodeWithId<Node>|null> {
     return $locationService.get(this.vine).pipe(
         switchMap(locationService => locationService.getLocation()),
         map(location => getPageSpec(location.type)),
@@ -209,7 +209,7 @@ export class Demo extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<readonly NodeWithId[]> {
+  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<ReadonlyArray<NodeWithId<Node>>> {
     const node$List = pageSpecs
         .map(({path, name}) => {
             return renderCustomElement(
@@ -332,7 +332,7 @@ function renderPaletteData(
     color: Color,
     selected$: Observable<boolean>,
     context: PersonaContext,
-): Observable<NodeWithId> {
+): Observable<NodeWithId<Node>> {
   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
   const classes$ = selected$.pipe(

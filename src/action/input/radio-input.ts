@@ -1,9 +1,9 @@
 import { cache } from 'gs-tools/export/data';
-import { debug, filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
+import { filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
 import { attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
 import { concat, EMPTY, merge, Observable } from 'rxjs';
-import { filter, map, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Logger } from 'santa';
 
 import { _p } from '../../app/app';
@@ -64,7 +64,7 @@ export class RadioInput extends BaseInput<number|null> {
 
   @cache()
   private get displaySlot$(): Observable<string> {
-    return this.nullableDomValue$.pipe(
+    return this.domValue$.pipe(
         withLatestFrom(this.declareInput($.host._.index)),
         map(([checkState, index]) => {
           return checkState === index ? 'display_checked' : 'display_unchecked';
@@ -74,9 +74,22 @@ export class RadioInput extends BaseInput<number|null> {
 
   @cache()
   protected get domValue$(): Observable<number|null> {
-    return concat(
-        this.nullableDomValue$.pipe(take(1)),
-        this.nullableDomValue$.pipe(filterNonNull()),
+    return merge(
+        this.declareInput($.input._.onInput),
+        this.onDomValueUpdatedByScript$,
+    )
+    .pipe(
+        startWith({}),
+        withLatestFrom(this.declareInput($.host._.index)),
+        map(([, index]) => {
+          const element = $.input.getElement(this.context);
+          if (index === undefined) {
+            return null;
+          }
+
+          return element.checked ? index : null;
+        }),
+        shareReplay({bufferSize: 1, refCount: true}),
     );
   }
 
@@ -88,7 +101,7 @@ export class RadioInput extends BaseInput<number|null> {
         filter(([event, stateId, index]) => {
           return event.index !== index && event.stateId.id === stateId?.id;
         }),
-        withLatestFrom(this.nullableDomValue$),
+        withLatestFrom(this.domValue$),
         switchMap(([, domValue]) => {
           if (domValue === null) {
             return EMPTY;
@@ -110,7 +123,7 @@ export class RadioInput extends BaseInput<number|null> {
     )
     .pipe(
       withLatestFrom(
-          this.nullableDomValue$,
+          this.domValue$,
           this.declareInput($.host._.stateId),
           this.declareInput($.host._.index),
           $onRadioInput$.get(this.vine),
@@ -129,23 +142,16 @@ export class RadioInput extends BaseInput<number|null> {
   }
 
   @cache()
-  private get nullableDomValue$(): Observable<number|null> {
-    return merge(
-        this.declareInput($.input._.onInput),
-        this.onDomValueUpdatedByScript$,
-    )
-    .pipe(
-        startWith({}),
-        withLatestFrom(this.declareInput($.host._.index)),
-        map(([, index]) => {
-          const element = $.input.getElement(this.context);
-          if (index === undefined) {
-            return null;
-          }
+  protected get onChange$(): Observable<ChangeEvent<number|null>> {
+    const onChange$ = this.domValue$.pipe(
+        pairwise(),
+        filter(([oldValue, newValue]) => oldValue !== newValue),
+        map(([oldValue]) => new ChangeEvent(oldValue)),
+    );
 
-          return element.checked ? index : null;
-        }),
-        debug(LOGGER, 'nullableValue'),
+    return concat(
+        onChange$.pipe(take(1)),
+        onChange$.pipe(skip(1), filterNonNull()),
     );
   }
 

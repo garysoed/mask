@@ -96,7 +96,7 @@ export class OverlayLayoutDemo extends ThemedCustomElementCtrl {
 
   private getAnchorNodes(
       anchorIdKey: keyof OverlayLayoutDemoState,
-  ): Observable<readonly NodeWithId[]> {
+  ): Observable<ReadonlyArray<NodeWithId<Node>>> {
     return $demoState.get(this.vine).pipe(
         switchMap(state => {
           if (!state) {

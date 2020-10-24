@@ -50,7 +50,7 @@ export class Keyboard extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get keyboardSegments$(): Observable<readonly NodeWithId[]> {
+  private get keyboardSegments$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
     return this.declareInput($.host._.text).pipe(
         map(keyStr => keyStr.split(' ')),
         switchMap(keys => {
@@ -59,7 +59,7 @@ export class Keyboard extends ThemedCustomElementCtrl {
           }
 
           const [firstKey, ...rest] = keys;
-          const keyNode$list: Array<Observable<NodeWithId>> = [
+          const keyNode$list: Array<Observable<NodeWithId<Node>>> = [
             this.renderKey(firstKey),
           ];
 
@@ -73,7 +73,7 @@ export class Keyboard extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderKey(key: string): Observable<NodeWithId> {
+  private renderKey(key: string): Observable<NodeWithId<Node>> {
     return renderElement(
         'kbd',
         {

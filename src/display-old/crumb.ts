@@ -53,7 +53,7 @@ export class Crumb extends ThemedCustomElementCtrl {
     );
   }
 
-  private renderSvgContent(): Observable<NodeWithId|null> {
+  private renderSvgContent(): Observable<NodeWithId<Node>|null> {
     return renderHtml(separatorSvg, 'image/svg+xml', separatorSvg, this.context);
   }
 }

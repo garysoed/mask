@@ -68,7 +68,7 @@ export class Icon extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get rootSvg$(): Observable<NodeWithId|null> {
+  private get rootSvg$(): Observable<NodeWithId<Node>|null> {
     const node$ = combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),

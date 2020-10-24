@@ -127,7 +127,7 @@ export class Overlay extends ThemedCustomElementCtrl {
   }
 
   @cache()
-  private get overlayContent$(): Observable<NodeWithId|null> {
+  private get overlayContent$(): Observable<NodeWithId<Node>|null> {
     return this.showStatus$.pipe(map(status => {
       if (!status) {
         return null;
