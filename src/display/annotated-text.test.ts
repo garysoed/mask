@@ -1,17 +1,22 @@
-import { assert, run, should, test } from 'gs-testing';
+import { assert, run, runEnvironment, setup, should, test } from 'gs-testing';
+import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { of as observableOf } from 'rxjs';
 
 import { _p } from '../app/app';
 
 import { $, $$, AnnotatedText } from './annotated-text';
-import { addAnnotationSpec } from './annotation-service';
-import { newBuilder } from '../display-old/annotation-spec';
+import { $annotationConfig } from './annotation-service';
+import * as snapshots from './snapshots.json';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 
 test('@mask/display/annotated-text', init => {
+  setup(() => {
+    runEnvironment(new BrowserSnapshotsEnv(snapshots));
+  });
+
   const _ = init(() => {
     const tester = TESTER_FACTORY.build([AnnotatedText], document);
     const el = tester.createElement($$.tag);
@@ -21,32 +26,31 @@ test('@mask/display/annotated-text', init => {
   test('setupRenderText', () => {
     should(`apply the annotations in order`, () => {
       // Register the annotation specs.
-      addAnnotationSpec(
-        _.tester.vine,
-        'atob',
-        newBuilder(_.tester.vine)
-            .withRegexp(/a/)
-            .render(node => {
-              node.textContent = 'b';
-              return observableOf([node]);
-            }),
-      );
-
-      addAnnotationSpec(
+      $annotationConfig.set(
           _.tester.vine,
-          'btoc',
-          newBuilder(_.tester.vine)
-              .withRegexp(/b/)
-              .render(node => {
-                node.textContent = 'c';
+          configs => new Map([
+            ...configs,
+            [
+              'atob',
+              node => {
+                node.textContent = node.textContent!.replace(/a/g, 'b');
                 return observableOf([node]);
-              }),
+              },
+            ],
+            [
+              'btoc',
+              node => {
+                node.textContent = node.textContent!.replace(/b/g, 'c');
+                return observableOf([node]);
+              },
+            ],
+          ]),
       );
 
       run(_.el.setAttribute($.host._.annotations, ['atob', 'btoc']));
-      run(_.el.setAttribute($.host._.text, 'banana'));
+      run(_.el.setText($.host, 'banana'));
 
-      assert(_.el.getTextContent($.host)).to.emitWith('ccncnc');
+      assert(_.el.element.shadowRoot?.innerHTML).to.matchSnapshot('annotatedText');
     });
   });
 });

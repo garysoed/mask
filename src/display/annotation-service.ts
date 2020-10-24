@@ -1,11 +1,15 @@
-import { source, stream, Vine } from 'grapevine';
-import { map } from 'rxjs/operators';
+import { source } from 'grapevine';
+import { NodeWithId, PersonaContext } from 'persona';
+import { Observable } from 'rxjs';
 
-import { AnnotationSpec } from '../display-old/annotation-spec';
+export type AnnotationSpec = (
+    node: NodeWithId<Node>,
+    context: PersonaContext,
+) => Observable<ReadonlyArray<NodeWithId<Node>>>;
 
 export type AnnotationConfig = ReadonlyMap<string, AnnotationSpec>;
 
-const $annotationConfig = source<AnnotationConfig>(
+export const $annotationConfig = source<AnnotationConfig>(
     'annotationConfig',
     () => new Map<string, AnnotationSpec>(),
 );
