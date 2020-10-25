@@ -12,6 +12,7 @@ import { $colorsDemo, ColorsDemo } from '../general/colors';
 import { $textsDemo, TextsDemo } from '../general/texts';
 import { $drawerLayoutDemo, DrawerLayoutDemo } from '../layout/drawer-layout';
 import { $overlayLayoutDemo, OverlayLayoutDemo } from '../layout/overlay-layout';
+import { $annotatedTextDemo, AnnotatedTextDemo } from '../display/annotated-text';
 
 import { Views } from './location-service';
 
@@ -36,6 +37,12 @@ export const ACTION_SPECS: readonly PageSpec[] = [
 ];
 
 export const DISPLAY_SPECS: readonly PageSpec[] = [
+  {
+    ctor: AnnotatedTextDemo,
+    componentSpec: $annotatedTextDemo,
+    name: 'Annotated Text',
+    path: Views.ANNOTATED_TEXT,
+  },
   {ctor: CodeBlockDemo, componentSpec: $codeBlockDemo, name: 'Code Block', path: Views.CODE_BLOCK},
   {ctor: IconDemo, componentSpec: $iconDemo, name: 'Icon', path: Views.ICON},
   {ctor: KeyboardDemo, componentSpec: $keyboardDemo, name: 'Keyboard', path: Views.KEYBOARD},

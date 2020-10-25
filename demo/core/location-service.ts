@@ -5,6 +5,7 @@ import { $window } from '../../src/app/app';
 
 export enum Views {
   // BREADCRUMB = 'b',
+  ANNOTATED_TEXT = 'at',
   BUTTON = 'bu',
   CHECKBOX = 'ch',
   CODE_BLOCK = 'cb',
@@ -25,6 +26,7 @@ export enum Views {
 
 const ROUTE_SPEC = {
   [Views.MAIN]: fromPattern('/', {}),
+  [Views.ANNOTATED_TEXT]: fromPattern('/annotated-text', {}),
   [Views.BUTTON]: fromPattern('/button', {}),
   // [Views.BREADCRUMB]: fromPattern('/breadcrumb', {}),
   [Views.CHECKBOX]: fromPattern('/checkbox', {}),

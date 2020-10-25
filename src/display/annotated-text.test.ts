@@ -5,7 +5,7 @@ import { of as observableOf } from 'rxjs';
 
 import { _p } from '../app/app';
 
-import { $, $$, AnnotatedText } from './annotated-text';
+import { $, $annotatedText, AnnotatedText } from './annotated-text';
 import { $annotationConfig } from './annotation-service';
 import * as snapshots from './snapshots.json';
 
@@ -19,7 +19,7 @@ test('@mask/display/annotated-text', init => {
 
   const _ = init(() => {
     const tester = TESTER_FACTORY.build([AnnotatedText], document);
-    const el = tester.createElement($$.tag);
+    const el = tester.createElement($annotatedText.tag);
     return {el, tester};
   });
 

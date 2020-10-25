@@ -13,7 +13,7 @@ import { $annotationConfig, AnnotationSpec } from './annotation-service';
 
 const LOGGER = new Logger('mask.AnnotatedText');
 
-export const $$ = {
+export const $annotatedText = {
   tag: 'mk-annotated-text',
   api: {
     annotations: attributeIn('annotations', listParser(stringParser()), []),
@@ -22,14 +22,14 @@ export const $$ = {
 };
 
 export const $ = {
-  host: host($$.api),
+  host: host($annotatedText.api),
   root: root({
     content: multi('#contents'),
   }),
 };
 
 @_p.customElement({
-  ...$$,
+  ...$annotatedText,
   template: '<!-- #contents -->',
 })
 export class AnnotatedText extends ThemedCustomElementCtrl {

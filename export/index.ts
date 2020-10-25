@@ -22,6 +22,7 @@ export { RadioInput, $radioInput } from '../src/action/input/radio-input';
 export { SimpleRadioInput, $simpleRadioInput } from '../src/action/simple/simple-radio-input';
 
 // display
+export { $annotatedText, AnnotatedText} from '../src/display/annotated-text';
 export { $codeBlock, CodeBlock } from '../src/display/code-block';
 export { $icon, Icon } from '../src/display/icon';
 export { $keyboard, Keyboard, SpecialKeys } from '../src/display/keyboard';
