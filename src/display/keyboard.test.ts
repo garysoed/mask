@@ -21,8 +21,7 @@ test('@mask/display/keyboard', init => {
     should(`render the nodes correctly`, () => {
       run(_.el.setText($.host, 'meta alt enter 3'));
 
-      assert(_.el.element.shadowRoot!.getElementById('root')!.innerHTML)
-          .to.matchSnapshot('keyboard.render');
+      assert(_.el.element.shadowRoot!.innerHTML).to.matchSnapshot('keyboard.render');
     });
   });
 });
