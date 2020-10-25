@@ -1,7 +1,6 @@
-import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
+import { assert, createSpySubject, objectThat, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
-import { fromEvent, of as observableOf } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 import { _p } from '../app/app';
 
@@ -38,13 +37,11 @@ test('display.Breadcrumb', init => {
 
       const actionSubject = createSpySubject(fromEvent(_.el.element, BREADCRUMB_CLICK_EVENT));
 
-      run(_.el.setAttribute($.host._.path, data));
+      _.el.setAttribute($.host._.path, data);
 
       // Wait until all the crumbs are rendered.
-      run(
-          _.el.getNodesAfter($.row._.crumbsSlot)
-              .pipe(tap(childrenNodes => (childrenNodes![0] as HTMLElement).click())),
-      );
+      const childrenNodes = _.el.getNodesAfter($.row._.crumbsSlot);
+      (childrenNodes![0] as HTMLElement).click();
 
       const eventMatcher = objectThat<BreadcrumbClickEvent>()
           .beAnInstanceOf(BreadcrumbClickEvent);
@@ -70,28 +67,23 @@ test('display.Breadcrumb', init => {
         },
       ];
 
-      run(_.el.setAttribute($.host._.path, data));
+      _.el.setAttribute($.host._.path, data);
 
       // Wait until all the crumbs are rendered.
-      const elements$ = _.el.getNodesAfter($.row._.crumbsSlot)
-          .pipe(
-              map(nodes => {
-                return nodes.filter((item): item is HTMLElement => item instanceof HTMLElement);
-              }),
-              switchMap(els => observableOf(...els)),
-          );
+      const nodes = _.el.getNodesAfter($.row._.crumbsSlot);
+      const elements = nodes.filter((item): item is HTMLElement => item instanceof HTMLElement);
 
-      assert(elements$.pipe(map(el => el.tagName.toLowerCase()))).to.emitSequence([
+      assert(elements.map(el => el.tagName.toLowerCase())).to.haveExactElements([
         'mk-crumb',
         'mk-crumb',
         'mk-crumb',
       ]);
-      assert(elements$.pipe(map(el => el.getAttribute('display')))).to.emitSequence([
+      assert(elements.map(el => el.getAttribute('display'))).to.haveExactElements([
         'displayA',
         'displayB',
         'displayC',
       ]);
-      assert(elements$.pipe(map(el => el.getAttribute('key')))).to.emitSequence([
+      assert(elements.map(el => el.getAttribute('key'))).to.haveExactElements([
         'a',
         'b',
         'c',

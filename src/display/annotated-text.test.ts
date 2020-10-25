@@ -47,8 +47,8 @@ test('@mask/display/annotated-text', init => {
           ]),
       );
 
-      run(_.el.setAttribute($.host._.annotations, ['atob', 'btoc']));
-      run(_.el.setText($.host, 'banana'));
+      _.el.setAttribute($.host._.annotations, ['atob', 'btoc']);
+      _.el.setText($.host, 'banana');
 
       assert(_.el.element.shadowRoot?.innerHTML).to.matchSnapshot('annotatedText');
     });

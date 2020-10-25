@@ -119,13 +119,13 @@ test('@mask/input/base-input', init => {
     $stateService.set(tester.vine, () => stateService);
 
     const $value = stateService.add(INIT_STATE_VALUE);
-    run(el.setAttribute($.host._.stateId, $value));
+    el.setAttribute($.host._.stateId, $value);
 
     const $domValue = stateService.add('init dom value');
     $domValueId.set(tester.vine, () => $domValue);
 
     // Clear the component to make test more predictable.
-    run(el.callFunction($.host._.clearFn, []));
+    el.callFunction($.host._.clearFn, []);
 
     const onDomValueUpdatedByScript$ = new Subject<unknown>();
     $domValueUpdatedByScript$.set(tester.vine, () => onDomValueUpdatedByScript$);
@@ -144,7 +144,7 @@ test('@mask/input/base-input', init => {
       const value = 'value';
       _.stateService.set(_.$value, value);
 
-      run(_.el.callFunction($.host._.clearFn, []));
+      _.el.callFunction($.host._.clearFn, []);
 
       assert(_.stateService.get(_.$domValue)).to.emitWith(value);
     });
@@ -152,7 +152,7 @@ test('@mask/input/base-input', init => {
     should(`emit the default value if state ID is not set`, () => {
       _.el.element.setAttribute($.host._.stateId.attrName, '');
 
-      run(_.el.callFunction($.host._.clearFn, []));
+      _.el.callFunction($.host._.clearFn, []);
 
       assert(_.stateService.get(_.$domValue)).to.emitWith(DEFAULT_VALUE);
     });
@@ -163,13 +163,13 @@ test('@mask/input/base-input', init => {
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);
 
-      run(_.el.callFunction($.host._.applyFn, []));
+      _.el.callFunction($.host._.applyFn, []);
 
       assert(_.stateService.get(_.$value)).to.emitWith(newDomValue);
     });
 
     should(`set the new value of the state on change if apply-on-change is true`, () => {
-      run(_.el.setHasAttribute($.host._.applyOnChange, true));
+      _.el.setHasAttribute($.host._.applyOnChange, true);
 
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);
@@ -189,7 +189,7 @@ test('@mask/input/base-input', init => {
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);
 
-      run(_.el.callFunction($.host._.applyFn, []));
+      _.el.callFunction($.host._.applyFn, []);
 
       assert(_.stateService.get(_.$value)).to.emitWith(INIT_STATE_VALUE);
     });
@@ -202,7 +202,7 @@ test('@mask/input/base-input', init => {
 
       const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
 
-      run(_.el.callFunction($.host._.clearFn, []));
+      _.el.callFunction($.host._.clearFn, []);
 
       assert(_.stateService.get(_.$domValue)).to.emitWith(newStateValue);
       assert(onDomValueUpdatedByScript$).to.emit();

@@ -1,7 +1,6 @@
-import { assert, mockTime, run, runEnvironment, should, test } from 'gs-testing';
+import { assert, runEnvironment, should, test } from 'gs-testing';
 import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
 import { dispatchResizeEvent, PersonaTesterFactory } from 'persona/export/testing';
-import { take, tap } from 'rxjs/operators';
 import { ON_LOG_$, WebConsoleDestination } from 'santa';
 
 import { _p } from '../app/app';
@@ -43,12 +42,8 @@ test('@mask/core/overlay', init => {
     });
 
     function dispatchResize(): void {
-      run(_.el.getElement($.content).pipe(
-          take(1),
-          tap(contentEl => {
-            dispatchResizeEvent(contentEl, [{contentRect: new DOMRect(0, 0, 80, 60)}]);
-          }),
-      ));
+      const contentEl = _.el.getElement($.content);
+      dispatchResizeEvent(contentEl, [{contentRect: new DOMRect(0, 0, 80, 60)}]);
     }
 
     should(`set the left and top correctly if content and target anchors are START - START`, () => {
@@ -59,8 +54,8 @@ test('@mask/core/overlay', init => {
 
       dispatchResize();
 
-      assert(_.el.getStyle($.content._.styleLeft)).to.emitWith('10px');
-      assert(_.el.getStyle($.content._.styleTop)).to.emitWith('30px');
+      assert(_.el.getStyle($.content._.styleLeft)).to.equal('10px');
+      assert(_.el.getStyle($.content._.styleTop)).to.equal('30px');
     });
 
     should(`set the left and top correctly if content and target anchors are MIDDLE - MIDDLE`, () => {
@@ -71,8 +66,8 @@ test('@mask/core/overlay', init => {
 
       dispatchResize();
 
-      assert(_.el.getStyle($.content._.styleLeft)).to.emitWith('-10px');
-      assert(_.el.getStyle($.content._.styleTop)).to.emitWith('10px');
+      assert(_.el.getStyle($.content._.styleLeft)).to.equal('-10px');
+      assert(_.el.getStyle($.content._.styleTop)).to.equal('10px');
     });
 
     should(`set the left and top correctly if content and target anchors are END - END`, () => {
@@ -83,8 +78,8 @@ test('@mask/core/overlay', init => {
 
       dispatchResize();
 
-      assert(_.el.getStyle($.content._.styleLeft)).to.emitWith('-30px');
-      assert(_.el.getStyle($.content._.styleTop)).to.emitWith('-10px');
+      assert(_.el.getStyle($.content._.styleLeft)).to.equal('-30px');
+      assert(_.el.getStyle($.content._.styleTop)).to.equal('-10px');
     });
   });
 
@@ -127,7 +122,7 @@ test('@mask/core/overlay', init => {
       };
       _.overlayService.show(event);
 
-      assert(_.el.getHasClass($.root._.hidden)).to.emitWith(false);
+      assert(_.el.hasClass($.root._.hidden)).to.equal(false);
     });
 
     should(`hide the overlay on clicking root element`, () => {
@@ -144,9 +139,9 @@ test('@mask/core/overlay', init => {
         },
       };
       _.overlayService.show(event);
-      run(_.el.dispatchEvent($.root._.onClick));
+      _.el.dispatchEvent($.root._.onClick);
 
-      assert(_.el.getHasClass($.root._.hidden)).to.emitWith(true);
+      assert(_.el.hasClass($.root._.hidden)).to.equal(true);
     });
 
     should(`not hide the overlay when clicking something other than the root element`, () => {
@@ -165,7 +160,7 @@ test('@mask/core/overlay', init => {
       _.overlayService.show(event);
       _.el.element.shadowRoot!.getElementById('content')!.dispatchEvent(new CustomEvent('click'));
 
-      assert(_.el.getHasClass($.root._.hidden)).to.emitWith(false);
+      assert(_.el.hasClass($.root._.hidden)).to.equal(false);
     });
   });
 });

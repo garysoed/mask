@@ -39,14 +39,14 @@ export class CodeBlock extends ThemedCustomElementCtrl {
   }
 
   private setupRenderCode(): Observable<unknown> {
-    const hostEl = $.host.getElement(this.context);
+    const hostEl = $.host.getSelectable(this.context);
     return mutationObservable(hostEl, {childList: true})
         .pipe(
             startWith({}),
             map(() => hostEl.textContent || ''),
             $.root._.text.output(this.context),
             tap(() => {
-              hljs.highlightBlock($.root.getElement(this.context));
+              hljs.highlightBlock($.root.getSelectable(this.context));
             }),
         );
   }

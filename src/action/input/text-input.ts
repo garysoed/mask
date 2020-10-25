@@ -84,7 +84,7 @@ export class TextInput extends BaseInput<string> {
 
   @cache()
   protected get domValue$(): Observable<string> {
-    const el = $.input.getElement(this.context);
+    const el = $.input.getSelectable(this.context);
     return merge(this.declareInput($.input._.onInput), this.onDomValueUpdatedByScript$)
         .pipe(
             startWith({}),
@@ -94,7 +94,7 @@ export class TextInput extends BaseInput<string> {
 
   protected updateDomValue(newValue: string): Observable<unknown> {
     return defer(() => {
-      const el = $.input.getElement(this.context);
+      const el = $.input.getSelectable(this.context);
       el.value = newValue;
 
       return observableOf({});

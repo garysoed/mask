@@ -1,4 +1,4 @@
-import { assert, run, should, test } from 'gs-testing';
+import { assert, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
 import { attributeOut, booleanParser, element, host, PersonaContext, setAttribute } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
@@ -40,11 +40,11 @@ test('@mask/action/base-action', init => {
 
   test('ariaDisabled$', () => {
     should(`set the aria value correctly`, () => {
-      run(_.el.setHasAttribute($.host._.disabled, true));
+      _.el.setHasAttribute($.host._.disabled, true);
 
       assert(_.el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('true');
 
-      run(_.el.setHasAttribute($.host._.disabled, false));
+      _.el.setHasAttribute($.host._.disabled, false);
 
       assert(_.el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('');
     });
@@ -52,17 +52,17 @@ test('@mask/action/base-action', init => {
 
   test('isPrimaryAction$', () => {
     should(`render mk-action-1 if primary`, () => {
-      run(_.el.setHasAttribute($.host._.isSecondary, false));
+      _.el.setHasAttribute($.host._.isSecondary, false);
 
-      assert(_.el.hasAttribute($.host._.action1)).to.emitSequence([true]);
-      assert(_.el.hasAttribute($.host._.action2)).to.emitSequence([false]);
+      assert(_.el.hasAttribute($.host._.action1)).to.equal(true);
+      assert(_.el.hasAttribute($.host._.action2)).to.equal(false);
     });
 
     should(`render mk-action-2 if secondary`, () => {
-      run(_.el.setHasAttribute($.host._.isSecondary, true));
+      _.el.setHasAttribute($.host._.isSecondary, true);
 
-      assert(_.el.hasAttribute($.host._.action1)).to.emitSequence([false]);
-      assert(_.el.hasAttribute($.host._.action2)).to.emitSequence([true]);
+      assert(_.el.hasAttribute($.host._.action1)).to.equal(false);
+      assert(_.el.hasAttribute($.host._.action2)).to.equal(true);
     });
   });
 });

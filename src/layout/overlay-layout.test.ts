@@ -1,4 +1,4 @@
-import { anyThat, assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
+import { anyThat, assert, createSpySubject, objectThat, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { switchMap } from 'rxjs/operators';
 
@@ -23,25 +23,25 @@ test('@mask/layout/overlay-layout', init => {
       const targetId = 'targetId';
       targetEl.id = targetId;
       document.body.appendChild(targetEl);
-      run(_.el.setAttribute($.host._.targetId, targetId));
+      _.el.setAttribute($.host._.targetId, targetId);
 
       const targetHorizontal = Anchor.START;
-      run(_.el.setAttribute($.host._.targetHorizontal, targetHorizontal));
+      _.el.setAttribute($.host._.targetHorizontal, targetHorizontal);
       const targetVertical = Anchor.END;
-      run(_.el.setAttribute($.host._.targetVertical, targetVertical));
+      _.el.setAttribute($.host._.targetVertical, targetVertical);
 
       const contentNode = document.createElement('div');
       contentNode.id = 'content';
-      run(_.el.addSlotElement($.slot, contentNode));
+      _.el.addSlotElement($.slot, contentNode);
       const contentHorizontal = Anchor.MIDDLE;
-      run(_.el.setAttribute($.host._.contentHorizontal, contentHorizontal));
+      _.el.setAttribute($.host._.contentHorizontal, contentHorizontal);
       const contentVertical = Anchor.END;
-      run(_.el.setAttribute($.host._.contentVertical, contentVertical));
+      _.el.setAttribute($.host._.contentVertical, contentVertical);
 
       const showEvent$ = createSpySubject($overlayService.get(_.tester.vine).pipe(
           switchMap(service => service.onShow$),
       ));
-      run(_.el.callFunction($.host._.showFn, []));
+      _.el.callFunction($.host._.showFn, []);
 
       assert(showEvent$).to.emitWith(objectThat<ShowEvent>().haveProperties({
         target: objectThat<NodeSpec<Element>>().haveProperties({

@@ -1,4 +1,4 @@
-import { anyThat, assert, createSpySubject, run, should, test } from 'gs-testing';
+import { anyThat, assert, createSpySubject, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent } from 'rxjs';
 
@@ -33,19 +33,19 @@ test('@mask/action/button', init => {
     });
 
     should(`fire the action event on pressing Enter`, () => {
-      run(_.el.simulateKeypress($.host, [{key: 'Enter'}]));
+      _.el.simulateKeypress($.host, [{key: 'Enter'}]);
       assert(_.actionSubject).to
           .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
     });
 
     should(`fire the action event on pressing space`, () => {
-      run(_.el.simulateKeypress($.host, [{key: ' '}]));
+      _.el.simulateKeypress($.host, [{key: ' '}]);
       assert(_.actionSubject).to
           .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
     });
 
     should(`not fire the action event if disabled`, () => {
-      run(_.el.setHasAttribute($.host._.disabled, true));
+      _.el.setHasAttribute($.host._.disabled, true);
 
       _.el.element.click();
       assert(_.actionSubject).toNot.emit();
@@ -54,12 +54,12 @@ test('@mask/action/button', init => {
 
   test('renderTabIndex', () => {
     should(`render 0 if host is not disabled`, () => {
-      run(_.el.setHasAttribute($.host._.disabled, false));
+      _.el.setHasAttribute($.host._.disabled, false);
       assert(_.el.getAttribute($.host._.tabindex)).to.emitWith(0);
     });
 
     should(`return -1 if host is disabled`, () => {
-      run(_.el.setHasAttribute($.host._.disabled, true));
+      _.el.setHasAttribute($.host._.disabled, true);
       assert(_.el.getAttribute($.host._.tabindex)).to.emitWith(-1);
     });
   });

@@ -1,8 +1,7 @@
-import { assert, createSpyInstance, fake, FakeFetch, run, should, test } from 'gs-testing';
+import { assert, createSpyInstance, fake, FakeFetch, should, test } from 'gs-testing';
 import { $innerHtmlParseService, InnerHtmlParseService } from 'persona';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { _p } from '../app/app';
 import { registerSvg } from '../core/svg-service';
@@ -42,17 +41,14 @@ test('display.Icon', init => {
       svgEl.setAttribute('width', '123');
       _.svgEl$.next(svgEl);
 
-      run(_.el.setAttribute($.host._.fitTo, FitTo.HEIGHT));
-      run(_.el.setAttribute($.host._.icon, SVG_NAME));
+      _.el.setAttribute($.host._.fitTo, FitTo.HEIGHT);
+      _.el.setAttribute($.host._.icon, SVG_NAME);
 
-      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.tagName)))
-          .to.emitWith('SVG');
+      assert(_.el.getElement($.root).children.item(0)!.tagName).to.equal('SVG');
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
 
-      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.hasAttribute('width'))))
-          .to.emitWith(false);
-      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.getAttribute('height'))))
-          .to.emitWith('auto');
+      assert(_.el.getElement($.root).children.item(0)!.hasAttribute('width')).to.equal(false);
+      assert(_.el.getElement($.root).children.item(0)!.getAttribute('height')).to.equal('auto');
     });
 
     should(`set the innerHTML correctly and set the width to auto`, () => {
@@ -60,21 +56,18 @@ test('display.Icon', init => {
       svgEl.setAttribute('height', '123');
       _.svgEl$.next(svgEl);
 
-      run(_.el.setAttribute($.host._.fitTo, FitTo.WIDTH));
-      run(_.el.setAttribute($.host._.icon, SVG_NAME));
+      _.el.setAttribute($.host._.fitTo, FitTo.WIDTH);
+      _.el.setAttribute($.host._.icon, SVG_NAME);
 
-      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.tagName)))
-          .to.emitWith('SVG');
+      assert(_.el.getElement($.root).children.item(0)!.tagName).to.equal('SVG');
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
 
-      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.hasAttribute('height'))))
-          .to.emitWith(false);
-      assert(_.el.getElement($.root).pipe(map(el => el.children.item(0)!.getAttribute('width'))))
-          .to.emitWith('auto');
+      assert(_.el.getElement($.root).children.item(0)!.hasAttribute('height')).to.equal(false);
+      assert(_.el.getElement($.root).children.item(0)!.getAttribute('width')).to.equal('auto');
     });
 
     should(`set the innerHTML correctly if there are no SVG names specified`, () => {
-      assert(_.el.getElement($.root).pipe(map(el => el.children.length))).to.emitWith(0);
+      assert(_.el.getElement($.root).children.length).to.equal(0);
     });
   });
 });

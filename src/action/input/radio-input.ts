@@ -82,7 +82,7 @@ export class RadioInput extends BaseInput<number|null> {
         startWith({}),
         withLatestFrom(this.declareInput($.host._.index)),
         map(([, index]) => {
-          const element = $.input.getElement(this.context);
+          const element = $.input.getSelectable(this.context);
           if (index === undefined) {
             return null;
           }
@@ -159,7 +159,7 @@ export class RadioInput extends BaseInput<number|null> {
     return this.declareInput($.host._.index).pipe(
         take(1),
         tap(index => {
-          const el = $.input.getElement(this.context);
+          const el = $.input.getSelectable(this.context);
           el.checked = index !== undefined && newValue === index;
         }),
     );

@@ -1,4 +1,4 @@
-import { assert, run, should, test } from 'gs-testing';
+import { assert, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
@@ -19,56 +19,56 @@ test('@mask/layout/drawer-layout', init => {
   test('styleHeight$', () => {
     should(`render the max size if horizontal and expanded`, () => {
       const size = '123px';
-      run(_.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL));
-      run(_.el.setAttribute($.host._.maxSize, size));
-      run(_.el.setAttribute($.host._.expanded, true));
+      _.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL);
+      _.el.setAttribute($.host._.maxSize, size);
+      _.el.setAttribute($.host._.expanded, true);
 
-      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleHeight)).to.equal(size);
     });
 
     should(`render the min size if horizontal and collapsed`, () => {
       const size = '123px';
-      run(_.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL));
-      run(_.el.setAttribute($.host._.minSize, size));
-      run(_.el.setAttribute($.host._.expanded, false));
+      _.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL);
+      _.el.setAttribute($.host._.minSize, size);
+      _.el.setAttribute($.host._.expanded, false);
 
-      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleHeight)).to.equal(size);
     });
 
     should(`render '100%' if vertical`, () => {
-      run(_.el.setAttribute($.host._.mode, DrawerMode.VERTICAL));
-      run(_.el.setAttribute($.host._.minSize, '123px'));
-      run(_.el.setAttribute($.host._.expanded, true));
+      _.el.setAttribute($.host._.mode, DrawerMode.VERTICAL);
+      _.el.setAttribute($.host._.minSize, '123px');
+      _.el.setAttribute($.host._.expanded, true);
 
-      assert(_.el.getStyle($.root._.styleHeight)).to.emitWith('100%');
+      assert(_.el.getStyle($.root._.styleHeight)).to.equal('100%');
     });
   });
 
   test('styleWidth$', () => {
     should(`render the max size if vertical and expanded`, () => {
       const size = '123px';
-      run(_.el.setAttribute($.host._.mode, DrawerMode.VERTICAL));
-      run(_.el.setAttribute($.host._.maxSize, size));
-      run(_.el.setAttribute($.host._.expanded, true));
+      _.el.setAttribute($.host._.mode, DrawerMode.VERTICAL);
+      _.el.setAttribute($.host._.maxSize, size);
+      _.el.setAttribute($.host._.expanded, true);
 
-      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleWidth)).to.equal(size);
     });
 
     should(`render the min size if vertical and collapsed`, () => {
       const size = '123px';
-      run(_.el.setAttribute($.host._.mode, DrawerMode.VERTICAL));
-      run(_.el.setAttribute($.host._.minSize, size));
-      run(_.el.setAttribute($.host._.expanded, false));
+      _.el.setAttribute($.host._.mode, DrawerMode.VERTICAL);
+      _.el.setAttribute($.host._.minSize, size);
+      _.el.setAttribute($.host._.expanded, false);
 
-      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith(size);
+      assert(_.el.getStyle($.root._.styleWidth)).to.equal(size);
     });
 
     should(`render '100%' if horizontal`, () => {
-      run(_.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL));
-      run(_.el.setAttribute($.host._.minSize, '123px'));
-      run(_.el.setAttribute($.host._.expanded, true));
+      _.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL);
+      _.el.setAttribute($.host._.minSize, '123px');
+      _.el.setAttribute($.host._.expanded, true);
 
-      assert(_.el.getStyle($.root._.styleWidth)).to.emitWith('100%');
+      assert(_.el.getStyle($.root._.styleWidth)).to.equal('100%');
     });
   });
 });

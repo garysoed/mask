@@ -1,4 +1,4 @@
-import { assert, createSpySubject, run, should, test } from 'gs-testing';
+import { assert, createSpySubject, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,7 +24,7 @@ test('@mask/display/crumb', init => {
       const actionKey$ = createSpySubject(
           fromEvent<ActionEvent<string>>(_.el.element, ACTION_EVENT).pipe(map(e => e.payload)),
       );
-      run(_.el.setAttribute($.host._.key, key));
+      _.el.setAttribute($.host._.key, key);
 
       _.el.element.click();
 

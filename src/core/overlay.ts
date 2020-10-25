@@ -98,7 +98,7 @@ export class Overlay extends ThemedCustomElementCtrl {
 
   @cache()
   private get contentRect$(): Observable<DOMRect> {
-    const contentEl = $.content.getElement(this.context);
+    const contentEl = $.content.getSelectable(this.context);
     return resizeObservable(contentEl, {}).pipe(
         map(entries => {
           return entries[entries.length - 1]?.contentRect ?? null;
@@ -139,7 +139,7 @@ export class Overlay extends ThemedCustomElementCtrl {
 
   @cache()
   private get showStatus$(): Observable<ShowEvent|null> {
-    const rootEl = $.root.getElement(this.context);
+    const rootEl = $.root.getSelectable(this.context);
     const onShow$ = $overlayService.get(this.vine).pipe(
         switchMap(service => service.onShow$),
     );

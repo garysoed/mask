@@ -76,7 +76,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
     .pipe(
         startWith({}),
         map(() => {
-          const element = $.checkbox.getElement(this.context);
+          const element = $.checkbox.getSelectable(this.context);
           if (element.indeterminate) {
             return 'unknown';
           }
@@ -88,7 +88,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {
     return defer(() => {
-      const el = $.checkbox.getElement(this.context);
+      const el = $.checkbox.getSelectable(this.context);
       if (newValue === 'unknown') {
         el.indeterminate = true;
         el.checked = false;
