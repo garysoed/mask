@@ -22,14 +22,12 @@ export { RadioInput, $radioInput } from '../src/action/input/radio-input';
 export { SimpleRadioInput, $simpleRadioInput } from '../src/action/simple/simple-radio-input';
 
 // display
-export { $annotatedText, AnnotatedText} from '../src/display/annotated-text';
+export { $annotatedText, AnnotatedText } from '../src/display/annotated-text';
 export { $codeBlock, CodeBlock } from '../src/display/code-block';
 export { $icon, Icon } from '../src/display/icon';
 export { $keyboard, Keyboard, SpecialKeys } from '../src/display/keyboard';
 
 export { DrawerLayout, DrawerMode, $drawerLayout } from '../src/layout/drawer-layout';
-// export { Dialog } from '../src/section/dialog';
-export { $dialogService, $dialogState, DialogResult, DialogService } from '../src/section-old/dialog-service';
 export { LayoutOverlay } from '../src/layout/util/layout-overlay';
 export { LineLayout, $lineLayout } from '../src/layout/line-layout';
 export { ListItemLayout, $listItemLayout } from '../src/layout/list-item-layout';
