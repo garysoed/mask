@@ -104,11 +104,10 @@ window.addEventListener('load', () => {
     loadOnInit: true,
     saveId: DEMO_STATE_KEY,
     initFn: init,
-    storage: new LocalStorage<Snapshot<any>>(
+    storage: new LocalStorage<Snapshot<DemoState>, any>(
         window,
         'mkd',
-        // TODO: Make this easier.
-        identity() as any,
+        identity(),
         json(),
     ),
   }));

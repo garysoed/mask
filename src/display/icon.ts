@@ -11,7 +11,7 @@ import { cache } from 'gs-tools/export/data';
 import { filterDefined } from 'gs-tools/export/rxjs';
 import { typeBased } from 'gs-tools/export/serializer';
 import { booleanType, instanceofType } from 'gs-types';
-import { compose, json, Serializable } from 'nabu';
+import { compose, json } from 'nabu';
 import { AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser } from 'persona';
 import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
@@ -42,7 +42,7 @@ export const $ = {
     ...$icon.api,
     ariaHidden: attributeOut(
         'aria-hidden',
-        compose<boolean, Serializable, string>(typeBased(booleanType), json()),
+        compose<boolean, unknown, string>(typeBased(booleanType), json()),
         false,
     ),
     role: attributeOut('role', stringParser()),
