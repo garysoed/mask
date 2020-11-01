@@ -1,9 +1,9 @@
-import { assert, should, test } from 'gs-testing';
-import { StateService } from 'gs-tools/export/state';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { StateService } from 'gs-tools/export/state';
+import { assert, should, test } from 'gs-testing';
 
-import { _p } from '../../app/app';
 import { $stateService } from '../../core/state-service';
+import { _p } from '../../app/app';
 
 import { $, $textInput, TextInput } from './text-input';
 
@@ -25,7 +25,7 @@ test('@mask/input/text-input', init => {
   });
 
   test('domValue$', () => {
-    should(`emit the correct value`, () => {
+    should('emit the correct value', () => {
       // Change the input and wait for the value to update.
       const value = 'value';
       _.el.setInputValue($.input, value);
@@ -38,7 +38,7 @@ test('@mask/input/text-input', init => {
   });
 
   test('updateDomValue', () => {
-    should(`set the value correctly`, () => {
+    should('set the value correctly', () => {
       const value = 'value';
 
       _.stateService.set(_.$state, value);

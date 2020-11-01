@@ -1,17 +1,18 @@
-import { cache } from 'gs-tools/export/data';
-import { StateId } from 'gs-tools/export/state';
-import { handler, hasAttribute, host, PersonaContext } from 'persona';
 import { AttributeInput, DispatcherOutput, Output } from 'persona/export/internal';
-import { combineLatest, EMPTY, merge, Observable, of as observableOf, Subject } from 'rxjs';
-import { filter, map, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, Observable, Subject, combineLatest, merge, of as observableOf } from 'rxjs';
 import { Logger } from 'santa';
+import { PersonaContext, handler, hasAttribute, host } from 'persona';
+import { StateId } from 'gs-tools/export/state';
+import { cache } from 'gs-tools/export/data';
+import { filter, map, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../../app/app';
+import { $$ as $baseAction, BaseAction } from '../base-action';
 import { $stateService } from '../../core/state-service';
 import { ChangeEvent } from '../../event/change-event';
-import { $$ as $baseAction, BaseAction } from '../base-action';
+import { _p } from '../../app/app';
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LOGGER = new Logger('mask.BaseInput');
 
 export const STATE_ID_ATTR_NAME = 'state-id';
@@ -58,16 +59,16 @@ export abstract class BaseInput<T> extends BaseAction {
       $stateService.get(this.vine),
       this.stateId$,
     ])
-    .pipe(
-        switchMap(([stateService, $stateId]) => {
-          if (!$stateId) {
-            return observableOf(null);
-          }
+        .pipe(
+            switchMap(([stateService, $stateId]) => {
+              if (!$stateId) {
+                return observableOf(null);
+              }
 
-          return stateService.get($stateId);
-        }),
-        map(value => value ?? this.defaultValue),
-    );
+              return stateService.get($stateId);
+            }),
+            map(value => value ?? this.defaultValue),
+        );
   }
 
   @cache()
@@ -86,16 +87,16 @@ export abstract class BaseInput<T> extends BaseAction {
         this.declareInput($.host._.applyFn),
         onAutoApply$,
     )
-    .pipe(
-        withLatestFrom(this.domValue$, this.stateId$, $stateService.get(this.vine)),
-        tap(([, domValue, stateId, stateService]) => {
-          if (!stateId) {
-            return;
-          }
+        .pipe(
+            withLatestFrom(this.domValue$, this.stateId$, $stateService.get(this.vine)),
+            tap(([, domValue, stateId, stateService]) => {
+              if (!stateId) {
+                return;
+              }
 
-          stateService.set(stateId, domValue);
-        }),
-    );
+              stateService.set(stateId, domValue);
+            }),
+        );
   }
 
   @cache()

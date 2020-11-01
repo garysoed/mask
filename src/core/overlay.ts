@@ -1,18 +1,19 @@
+import { Logger } from 'santa';
+import { NodeWithId, PersonaContext, classToggle, element, host, onDom, resizeObservable, setId, single, style } from 'persona';
+import { Observable, combineLatest, merge } from 'rxjs';
 import { cache } from 'gs-tools/export/data';
+import { filter, map, mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
-import { classToggle, element, host, NodeWithId, onDom, PersonaContext, resizeObservable, setId, single, style } from 'persona';
-import { combineLatest, merge, Observable } from 'rxjs';
-import { filter, map, mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
-import { Logger } from 'santa';
 
-import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import { $overlayService, Anchor, NodeSpec, ShowEvent } from './overlay-service';
 import template from './overlay.html';
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LOGGER = new Logger('mask.Overlay');
 
 interface Position {
@@ -71,29 +72,29 @@ export class Overlay extends ThemedCustomElementCtrl {
       this.showStatus$,
       this.contentRect$,
     ])
-    .pipe(
-        map(([showStatus, contentRect]) => {
-          if (!showStatus) {
-            return null;
-          }
+        .pipe(
+            map(([showStatus, contentRect]) => {
+              if (!showStatus) {
+                return null;
+              }
 
-          const targetRect = showStatus.target.node.getBoundingClientRect();
-          const targetPosition = {
-            left: computeAnchorLeft(targetRect, showStatus.target),
-            top: computeAnchorTop(targetRect, showStatus.target),
-          };
-          const contentPosition = {
-            left: computeAnchorLeft(contentRect, showStatus.content),
-            top: computeAnchorTop(contentRect, showStatus.content),
-          };
+              const targetRect = showStatus.target.node.getBoundingClientRect();
+              const targetPosition = {
+                left: computeAnchorLeft(targetRect, showStatus.target),
+                top: computeAnchorTop(targetRect, showStatus.target),
+              };
+              const contentPosition = {
+                left: computeAnchorLeft(contentRect, showStatus.content),
+                top: computeAnchorTop(contentRect, showStatus.content),
+              };
 
-          return {
-            left: contentRect.left - contentPosition.left + targetPosition.left,
-            top: contentRect.top - contentPosition.top + targetPosition.top,
-          };
-        }),
-        shareReplay({bufferSize: 1, refCount: true}),
-    );
+              return {
+                left: contentRect.left - contentPosition.left + targetPosition.left,
+                top: contentRect.top - contentPosition.top + targetPosition.top,
+              };
+            }),
+            shareReplay({bufferSize: 1, refCount: true}),
+        );
   }
 
   @cache()

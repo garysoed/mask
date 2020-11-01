@@ -1,6 +1,6 @@
+import { CustomElementCtrl } from 'persona';
 import { Vine } from 'grapevine';
 import { arrayThat, assert, createSpyInstance, fake, should, spy, test } from 'gs-testing';
-import { CustomElementCtrl } from 'persona';
 
 import { Theme } from '../theme/theme';
 
@@ -11,7 +11,7 @@ type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;
 
 test('app.App', () => {
   test('start', () => {
-    should(`build all the constructors and configure all the configs`, () => {
+    should('build all the constructors and configure all the configs', () => {
       const styleEl = document.createElement('style');
       const personaBuilderBuildSpy = spy(_p, 'build');
 

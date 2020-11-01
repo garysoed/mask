@@ -1,17 +1,15 @@
 import { $asArray, $filterDefined, $map, $pipe } from 'gs-tools/export/collect';
-import { objectConverter } from 'gs-tools/export/serializer';
-import { elementWithTagType } from 'gs-types';
-import { attributeIn, dispatcher, element, host, listParser, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, stringParser } from 'persona';
-import { BehaviorSubject, combineLatest, EMPTY, Observable, of as observableOf } from 'rxjs';
-import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-
-import { _p } from '../app/app';
-import { ACTION_EVENT } from '../event/action-event';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-
-import { BreadcrumbClickEvent } from './breadcrumb-event';
-import breadcrumbTemplate from './breadcrumb.html';
 import { $crumb, Crumb } from './crumb';
+import { ACTION_EVENT } from '../event/action-event';
+import { BehaviorSubject, Observable, combineLatest, of as observableOf } from 'rxjs';
+import { BreadcrumbClickEvent } from './breadcrumb-event';
+import { NodeWithId, PersonaContext, attributeIn, dispatcher, element, host, listParser, multi, onDom, renderCustomElement, stringParser } from 'persona';
+import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
+import { elementWithTagType } from 'gs-types';
+import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { objectConverter } from 'gs-tools/export/serializer';
+import breadcrumbTemplate from './breadcrumb.html';
 
 
 export interface CrumbData {

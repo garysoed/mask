@@ -1,6 +1,6 @@
-import { source } from 'grapevine';
 import { StateId } from 'gs-tools/export/state';
 import { Subject } from 'rxjs';
+import { source } from 'grapevine';
 
 export interface OnRadioInput {
   readonly index: number;

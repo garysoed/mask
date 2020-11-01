@@ -1,13 +1,13 @@
-import { source, Vine } from 'grapevine';
-import { instanceofType } from 'gs-types';
-import { classlist, element, PersonaContext, style } from 'persona';
 import { Observable } from 'rxjs';
+import { PersonaContext, classlist, element, style } from 'persona';
+import { Vine, source } from 'grapevine';
+import { instanceofType } from 'gs-types';
 import { map, switchMap } from 'rxjs/operators';
 
-import { _p, _v } from '../../app/app';
-import layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import { $svgService, registerSvg } from '../../core/svg-service';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
+import { _p, _v } from '../../app/app';
+import layoutOverlaySvg from '../../asset/layout_overlay.svg';
 
 import layoutOverlayTemplate from './layout-overlay.html';
 

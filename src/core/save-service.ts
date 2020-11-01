@@ -1,9 +1,9 @@
-import { source, Vine } from 'grapevine';
+import { BehaviorSubject, EMPTY, Observable, combineLatest, merge, of as observableOf } from 'rxjs';
+import { EditableStorage } from 'gs-tools/export/store';
+import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
+import { Vine, source } from 'grapevine';
 import { cache } from 'gs-tools/export/data';
 import { filterNonNull } from 'gs-tools/export/rxjs';
-import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
-import { EditableStorage } from 'gs-tools/export/store';
-import { BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf } from 'rxjs';
 import { map, share, switchMap, take, tap } from 'rxjs/operators';
 
 import { $stateService } from './state-service';
@@ -54,29 +54,29 @@ export class SaveService {
       $saveConfig.get(this.vine),
       $rootId.get(this.vine),
     ])
-    .pipe(
-        switchMap(([isSaving, stateService, saveConfig, rootId]) => {
-          if (!isSaving || !saveConfig || !rootId) {
-            return EMPTY;
-          }
+        .pipe(
+            switchMap(([isSaving, stateService, saveConfig, rootId]) => {
+              if (!isSaving || !saveConfig || !rootId) {
+                return EMPTY;
+              }
 
-          return stateService.onChange$.pipe(
-              tap(() => {
-                const snapshot = stateService.snapshot(rootId);
-                if (!snapshot) {
-                  saveConfig.storage.delete(saveConfig.saveId);
-                  return;
-                }
+              return stateService.onChange$.pipe(
+                  tap(() => {
+                    const snapshot = stateService.snapshot(rootId);
+                    if (!snapshot) {
+                      saveConfig.storage.delete(saveConfig.saveId);
+                      return;
+                    }
 
-                const updated = saveConfig.storage.update(saveConfig.saveId, snapshot);
-                if (updated) {
-                  return;
-                }
-              }),
-          );
-        }),
-        share(),
-    );
+                    const updated = saveConfig.storage.update(saveConfig.saveId, snapshot);
+                    if (updated) {
+                      return;
+                    }
+                  }),
+              );
+            }),
+            share(),
+        );
   }
 
   load(): Observable<boolean> {

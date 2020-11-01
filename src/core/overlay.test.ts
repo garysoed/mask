@@ -1,13 +1,13 @@
-import { assert, runEnvironment, should, test } from 'gs-testing';
 import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
-import { dispatchResizeEvent, PersonaTesterFactory } from 'persona/export/testing';
 import { ON_LOG_$, WebConsoleDestination } from 'santa';
+import { PersonaTesterFactory, dispatchResizeEvent } from 'persona/export/testing';
+import { assert, runEnvironment, should, test } from 'gs-testing';
 
 import { _p } from '../app/app';
 
+import * as snapshots from './snapshots.json';
 import { $, $overlay, Overlay } from './overlay';
 import { $overlayService, Anchor, OverlayService } from './overlay-service';
-import * as snapshots from './snapshots.json';
 
 
 const dest = new WebConsoleDestination({installTrigger: true});
@@ -46,7 +46,7 @@ test('@mask/core/overlay', init => {
       dispatchResizeEvent(contentEl, [{contentRect: new DOMRect(0, 0, 80, 60)}]);
     }
 
-    should(`set the left and top correctly if content and target anchors are START - START`, () => {
+    should('set the left and top correctly if content and target anchors are START - START', () => {
       _.overlayService.show({
         target: {node: _.targetEl, horizontal: Anchor.START, vertical: Anchor.START},
         content: {node: _.contentEl, horizontal: Anchor.START, vertical: Anchor.START},
@@ -58,7 +58,7 @@ test('@mask/core/overlay', init => {
       assert(_.el.getStyle($.content._.styleTop)).to.equal('30px');
     });
 
-    should(`set the left and top correctly if content and target anchors are MIDDLE - MIDDLE`, () => {
+    should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
       _.overlayService.show({
         target: {node: _.targetEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
         content: {node: _.contentEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
@@ -70,7 +70,7 @@ test('@mask/core/overlay', init => {
       assert(_.el.getStyle($.content._.styleTop)).to.equal('10px');
     });
 
-    should(`set the left and top correctly if content and target anchors are END - END`, () => {
+    should('set the left and top correctly if content and target anchors are END - END', () => {
       _.overlayService.show({
         target: {node: _.targetEl, horizontal: Anchor.END, vertical: Anchor.END},
         content: {node: _.contentEl, horizontal: Anchor.END, vertical: Anchor.END},
@@ -84,7 +84,7 @@ test('@mask/core/overlay', init => {
   });
 
   test('overlayContent$', () => {
-    should(`display the content el when shown`, () => {
+    should('display the content el when shown', () => {
       const contentEl = document.createElement('div');
       contentEl.id = 'content';
       const event = {
@@ -107,7 +107,7 @@ test('@mask/core/overlay', init => {
   });
 
   test('showStatus', () => {
-    should(`display the overlay onShow`, () => {
+    should('display the overlay onShow', () => {
       const event = {
         target: {
           node: document.createElement('div'),
@@ -125,7 +125,7 @@ test('@mask/core/overlay', init => {
       assert(_.el.hasClass($.root._.hidden)).to.equal(false);
     });
 
-    should(`hide the overlay on clicking root element`, () => {
+    should('hide the overlay on clicking root element', () => {
       const event = {
         target: {
           node: document.createElement('div'),
@@ -144,7 +144,7 @@ test('@mask/core/overlay', init => {
       assert(_.el.hasClass($.root._.hidden)).to.equal(true);
     });
 
-    should(`not hide the overlay when clicking something other than the root element`, () => {
+    should('not hide the overlay when clicking something other than the root element', () => {
       const event = {
         target: {
           node: document.createElement('div'),

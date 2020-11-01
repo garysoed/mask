@@ -1,5 +1,5 @@
-import { assert, createSpyInstance, should, spy, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { assert, createSpyInstance, should, spy, test } from 'gs-testing';
 
 import { _p } from '../app/app';
 
@@ -17,7 +17,7 @@ test('display.CroppedLine', init => {
   });
 
   test('onContainerCopy', () => {
-    should(`set the clipboard data correctly`, () => {
+    should('set the clipboard data correctly', () => {
       const value = 'value';
 
       _.el.setAttribute($.host._.text, value);
@@ -38,7 +38,7 @@ test('display.CroppedLine', init => {
   });
 
   test('renderPostfixTextContent', () => {
-    should(`set the postfix text correctly`, () => {
+    should('set the postfix text correctly', () => {
       _.el.setAttribute($.host._.text, 'abcde');
 
       assert(_.el.getTextContent($.postfix)).to.equal('cde');
@@ -46,7 +46,7 @@ test('display.CroppedLine', init => {
   });
 
   test('renderPrefixTextContent', () => {
-    should(`set the prefix text correctly`, () => {
+    should('set the prefix text correctly', () => {
       _.el.setAttribute($.host._.text, 'abcde');
 
       assert(_.el.getTextContent($.prefix)).to.equal('ab');

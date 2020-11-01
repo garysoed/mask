@@ -9,15 +9,15 @@
  * @slot The content of the drawer.
  */
 
+import { Observable, combineLatest } from 'rxjs';
+import { PersonaContext, attributeIn, booleanParser, element, host, stringParser, style } from 'persona';
 import { cache } from 'gs-tools/export/data';
-import { stringMatchConverter } from 'gs-tools/export/serializer';
 import { instanceofType } from 'gs-types';
-import { attributeIn, booleanParser, element, host, PersonaContext, stringParser, style } from 'persona';
-import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { stringMatchConverter } from 'gs-tools/export/serializer';
 
-import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import drawerTemplate from './drawer-layout.html';
 
@@ -72,11 +72,11 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
   @cache()
   private get styleHeight$(): Observable<string> {
     return combineLatest([
-          this.expandedObs,
-          this.maxSizeObs,
-          this.minSizeObs,
-          this.modeObs,
-        ])
+      this.expandedObs,
+      this.maxSizeObs,
+      this.minSizeObs,
+      this.modeObs,
+    ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
               if (mode === DrawerMode.VERTICAL) {
@@ -91,10 +91,10 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
   @cache()
   private get styleWidth$(): Observable<string> {
     return combineLatest([
-        this.expandedObs,
-        this.maxSizeObs,
-        this.minSizeObs,
-        this.modeObs,
+      this.expandedObs,
+      this.maxSizeObs,
+      this.minSizeObs,
+      this.modeObs,
     ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {

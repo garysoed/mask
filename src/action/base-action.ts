@@ -1,7 +1,7 @@
-import { cache } from 'gs-tools/export/data';
-import { attributeOut, hasAttribute, host, PersonaContext, setAttribute, stringParser } from 'persona';
-import { Output } from 'persona/export/internal';
 import { Observable } from 'rxjs';
+import { Output } from 'persona/export/internal';
+import { PersonaContext, attributeOut, hasAttribute, host, setAttribute, stringParser } from 'persona';
+import { cache } from 'gs-tools/export/data';
 import { map } from 'rxjs/operators';
 
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';

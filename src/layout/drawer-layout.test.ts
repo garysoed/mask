@@ -1,5 +1,5 @@
-import { assert, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { assert, should, test } from 'gs-testing';
 
 import { _p } from '../app/app';
 
@@ -17,7 +17,7 @@ test('@mask/layout/drawer-layout', init => {
   });
 
   test('styleHeight$', () => {
-    should(`render the max size if horizontal and expanded`, () => {
+    should('render the max size if horizontal and expanded', () => {
       const size = '123px';
       _.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL);
       _.el.setAttribute($.host._.maxSize, size);
@@ -26,7 +26,7 @@ test('@mask/layout/drawer-layout', init => {
       assert(_.el.getStyle($.root._.styleHeight)).to.equal(size);
     });
 
-    should(`render the min size if horizontal and collapsed`, () => {
+    should('render the min size if horizontal and collapsed', () => {
       const size = '123px';
       _.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL);
       _.el.setAttribute($.host._.minSize, size);
@@ -35,7 +35,7 @@ test('@mask/layout/drawer-layout', init => {
       assert(_.el.getStyle($.root._.styleHeight)).to.equal(size);
     });
 
-    should(`render '100%' if vertical`, () => {
+    should('render \'100%\' if vertical', () => {
       _.el.setAttribute($.host._.mode, DrawerMode.VERTICAL);
       _.el.setAttribute($.host._.minSize, '123px');
       _.el.setAttribute($.host._.expanded, true);
@@ -45,7 +45,7 @@ test('@mask/layout/drawer-layout', init => {
   });
 
   test('styleWidth$', () => {
-    should(`render the max size if vertical and expanded`, () => {
+    should('render the max size if vertical and expanded', () => {
       const size = '123px';
       _.el.setAttribute($.host._.mode, DrawerMode.VERTICAL);
       _.el.setAttribute($.host._.maxSize, size);
@@ -54,7 +54,7 @@ test('@mask/layout/drawer-layout', init => {
       assert(_.el.getStyle($.root._.styleWidth)).to.equal(size);
     });
 
-    should(`render the min size if vertical and collapsed`, () => {
+    should('render the min size if vertical and collapsed', () => {
       const size = '123px';
       _.el.setAttribute($.host._.mode, DrawerMode.VERTICAL);
       _.el.setAttribute($.host._.minSize, size);
@@ -63,7 +63,7 @@ test('@mask/layout/drawer-layout', init => {
       assert(_.el.getStyle($.root._.styleWidth)).to.equal(size);
     });
 
-    should(`render '100%' if horizontal`, () => {
+    should('render \'100%\' if horizontal', () => {
       _.el.setAttribute($.host._.mode, DrawerMode.HORIZONTAL);
       _.el.setAttribute($.host._.minSize, '123px');
       _.el.setAttribute($.host._.expanded, true);

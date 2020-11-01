@@ -1,10 +1,10 @@
-import { assert, createSpySubject, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { assert, createSpySubject, should, test } from 'gs-testing';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
+import { _p } from '../app/app';
 
 import { $, Crumb } from './crumb';
 
@@ -19,7 +19,7 @@ test('@mask/display/crumb', init => {
   });
 
   test('renderDispatchAction', () => {
-    should(`emit correct event if clicked`, () => {
+    should('emit correct event if clicked', () => {
       const key = 'key';
       const actionKey$ = createSpySubject(
           fromEvent<ActionEvent<string>>(_.el.element, ACTION_EVENT).pipe(map(e => e.payload)),

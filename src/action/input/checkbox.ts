@@ -1,13 +1,13 @@
+import { Observable, defer, merge, of as observableOf } from 'rxjs';
+import { PersonaContext, attributeIn, attributeOut, dispatcher, element, host, onInput, setAttribute, stringParser } from 'persona';
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
-import { defer, merge, Observable, of as observableOf } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../input/base-input';
+import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
 import { _p } from '../../app/app';
 import { stateIdParser } from '../../core/state-id-parser';
-import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
-import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../input/base-input';
 
 import template from './checkbox.html';
 
@@ -73,17 +73,17 @@ export class Checkbox extends BaseInput<CheckedValue> {
         this.declareInput($.checkbox._.onInput),
         this.onDomValueUpdatedByScript$,
     )
-    .pipe(
-        startWith({}),
-        map(() => {
-          const element = $.checkbox.getSelectable(this.context);
-          if (element.indeterminate) {
-            return 'unknown';
-          }
+        .pipe(
+            startWith({}),
+            map(() => {
+              const element = $.checkbox.getSelectable(this.context);
+              if (element.indeterminate) {
+                return 'unknown';
+              }
 
-          return element.checked;
-        }),
-    );
+              return element.checked;
+            }),
+        );
   }
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {

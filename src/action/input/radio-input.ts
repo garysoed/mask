@@ -1,20 +1,21 @@
+import { EMPTY, Observable, concat, merge } from 'rxjs';
+import { Logger } from 'santa';
+import { PersonaContext, attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, setAttribute, stringParser } from 'persona';
 import { cache } from 'gs-tools/export/data';
+import { filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
 import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser } from 'persona';
-import { concat, EMPTY, merge, Observable } from 'rxjs';
-import { filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
-import { Logger } from 'santa';
 
+import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../input/base-input';
+import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
 import { _p } from '../../app/app';
 import { stateIdParser } from '../../core/state-id-parser';
-import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
-import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../input/base-input';
 
 import { $onRadioInput$ } from './on-radio-input';
 import template from './radio-input.html';
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const LOGGER = new Logger('mask.RadioInput');
 
 
@@ -78,19 +79,19 @@ export class RadioInput extends BaseInput<number|null> {
         this.declareInput($.input._.onInput),
         this.onDomValueUpdatedByScript$,
     )
-    .pipe(
-        startWith({}),
-        withLatestFrom(this.declareInput($.host._.index)),
-        map(([, index]) => {
-          const element = $.input.getSelectable(this.context);
-          if (index === undefined) {
-            return null;
-          }
+        .pipe(
+            startWith({}),
+            withLatestFrom(this.declareInput($.host._.index)),
+            map(([, index]) => {
+              const element = $.input.getSelectable(this.context);
+              if (index === undefined) {
+                return null;
+              }
 
-          return element.checked ? index : null;
-        }),
-        shareReplay({bufferSize: 1, refCount: true}),
-    );
+              return element.checked ? index : null;
+            }),
+            shareReplay({bufferSize: 1, refCount: true}),
+        );
   }
 
   @cache()
@@ -121,24 +122,24 @@ export class RadioInput extends BaseInput<number|null> {
         this.declareInput($.input._.onInput),
         this.onDomValueUpdatedByScript$,
     )
-    .pipe(
-      withLatestFrom(
-          this.domValue$,
-          this.declareInput($.host._.stateId),
-          this.declareInput($.host._.index),
-          $onRadioInput$.get(this.vine),
-      ),
-      tap(([, currentValue, stateId, index, subject]) => {
-        if (!stateId || index === undefined) {
-          return;
-        }
+        .pipe(
+            withLatestFrom(
+                this.domValue$,
+                this.declareInput($.host._.stateId),
+                this.declareInput($.host._.index),
+                $onRadioInput$.get(this.vine),
+            ),
+            tap(([, currentValue, stateId, index, subject]) => {
+              if (!stateId || index === undefined) {
+                return;
+              }
 
-        if (currentValue === null) {
-          return;
-        }
-        subject.next({index, stateId});
-      }),
-    );
+              if (currentValue === null) {
+                return;
+              }
+              subject.next({index, stateId});
+            }),
+        );
   }
 
   @cache()

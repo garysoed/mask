@@ -1,18 +1,18 @@
+import { PersonaContext, attributeIn, element, host, integerParser, stringParser, textContent } from 'persona';
+import { StateId } from 'gs-tools/export/state';
 import { Vine } from 'grapevine';
 import { filterDefined } from 'gs-tools/export/rxjs';
-import { StateId } from 'gs-tools/export/state';
 import { instanceofType } from 'gs-types';
-import { attributeIn, element, host, integerParser, PersonaContext, stringParser, textContent } from 'persona';
 
-import { _p } from '../../app/app';
-import radioUnchecked from '../../asset/checkbox_empty.svg';
-import radioChecked from '../../asset/radio_checked.svg';
-import { stateIdParser } from '../../core/state-id-parser';
-import { registerSvg } from '../../core/svg-service';
+import { $radioInput, RadioInput } from '../input/radio-input';
 import { Icon } from '../../display/icon';
 import { ListItemLayout } from '../../layout/list-item-layout';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
-import { $radioInput, RadioInput } from '../input/radio-input';
+import { _p } from '../../app/app';
+import { registerSvg } from '../../core/svg-service';
+import { stateIdParser } from '../../core/state-id-parser';
+import radioChecked from '../../asset/radio_checked.svg';
+import radioUnchecked from '../../asset/checkbox_empty.svg';
 
 import template from './simple-radio-input.html';
 

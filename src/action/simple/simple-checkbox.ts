@@ -1,19 +1,19 @@
+import { PersonaContext, attributeIn, element, host, stringParser, textContent } from 'persona';
+import { StateId } from 'gs-tools/export/state';
 import { Vine } from 'grapevine';
 import { filterDefined } from 'gs-tools/export/rxjs';
-import { StateId } from 'gs-tools/export/state';
 import { instanceofType } from 'gs-types';
-import { attributeIn, element, host, PersonaContext, stringParser, textContent } from 'persona';
 
-import { _p } from '../../app/app';
-import checkboxChecked from '../../asset/checkbox_checked.svg';
-import checkboxEmpty from '../../asset/checkbox_empty.svg';
-import checkboxUnknown from '../../asset/checkbox_unknown.svg';
-import { stateIdParser } from '../../core/state-id-parser';
-import { registerSvg } from '../../core/svg-service';
+import { $checkbox, Checkbox, CheckedValue } from '../input/checkbox';
 import { Icon } from '../../display/icon';
 import { ListItemLayout } from '../../layout/list-item-layout';
 import { ThemedCustomElementCtrl } from '../../theme/themed-custom-element-ctrl';
-import { $checkbox, Checkbox, CheckedValue } from '../input/checkbox';
+import { _p } from '../../app/app';
+import { registerSvg } from '../../core/svg-service';
+import { stateIdParser } from '../../core/state-id-parser';
+import checkboxChecked from '../../asset/checkbox_checked.svg';
+import checkboxEmpty from '../../asset/checkbox_empty.svg';
+import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 
 import template from './simple-checkbox.html';
 

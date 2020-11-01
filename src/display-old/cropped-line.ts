@@ -5,13 +5,13 @@
  * @attr {<string} text Text to display.
  */
 
+import { Observable, combineLatest } from 'rxjs';
+import { PersonaContext, attributeIn, element, host, onDom, stringParser, textContent } from 'persona';
 import { instanceofType } from 'gs-types';
-import { attributeIn, element, host, onDom, PersonaContext, stringParser, textContent } from 'persona';
-import { combineLatest, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import croppedLineTemplate from './cropped-line.html';
 

@@ -1,5 +1,5 @@
-import { createId, StateId } from 'gs-tools/export/state';
 import { Converter, Result } from 'nabu';
+import { StateId, createId } from 'gs-tools/export/state';
 
 export function stateIdParser<T>(): Converter<StateId<T>, string> {
   return {

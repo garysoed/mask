@@ -7,18 +7,18 @@
  * @slot The glyph of the icon to display.
  */
 
-import { cache } from 'gs-tools/export/data';
-import { filterDefined } from 'gs-tools/export/rxjs';
-import { typeBased } from 'gs-tools/export/serializer';
+import { AriaRole, NodeWithId, PersonaContext, attributeIn, attributeOut, element, enumParser, host, renderHtml, single, stringParser } from 'persona';
+import { Observable, combineLatest, of as observableOf } from 'rxjs';
 import { booleanType, instanceofType } from 'gs-types';
+import { cache } from 'gs-tools/export/data';
 import { compose, json } from 'nabu';
-import { AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser } from 'persona';
-import { combineLatest, Observable, of as observableOf } from 'rxjs';
+import { filterDefined } from 'gs-tools/export/rxjs';
 import { map, share, switchMap, tap } from 'rxjs/operators';
+import { typeBased } from 'gs-tools/export/serializer';
 
-import { _p } from '../app/app';
 import { $svgService } from '../core/svg-service';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import template from './icon.html';
 

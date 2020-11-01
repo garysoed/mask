@@ -1,10 +1,10 @@
-import { assert, should, test } from 'gs-testing';
-import { StateService } from 'gs-tools/export/state';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { StateService } from 'gs-tools/export/state';
+import { assert, should, test } from 'gs-testing';
 
-import { _p } from '../../app/app';
-import { $stateService } from '../../core/state-service';
 import { $, $checkbox, Checkbox, CheckedValue } from '../input/checkbox';
+import { $stateService } from '../../core/state-service';
+import { _p } from '../../app/app';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -25,7 +25,7 @@ test('@mask/input/checkbox', init => {
   });
 
   test('displaySlot$', () => {
-    should(`set the slot name to display_checked if checked`, () => {
+    should('set the slot name to display_checked if checked', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = false;
       el.checked = true;
@@ -34,7 +34,7 @@ test('@mask/input/checkbox', init => {
       assert(_.displaySlotName$).to.emitWith('display_checked');
     });
 
-    should(`set the slot name to display_unchecked if unchecked`, () => {
+    should('set the slot name to display_unchecked if unchecked', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = false;
       el.checked = false;
@@ -43,7 +43,7 @@ test('@mask/input/checkbox', init => {
       assert(_.displaySlotName$).to.emitWith('display_unchecked');
     });
 
-    should(`set the slot name to display_unknown if unknown`, () => {
+    should('set the slot name to display_unknown if unknown', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = true;
       el.checked = true;
@@ -52,7 +52,7 @@ test('@mask/input/checkbox', init => {
       assert(_.displaySlotName$).to.emitWith('display_unknown');
     });
 
-    should(`update the slot name if the value is set by calling clear`, () => {
+    should('update the slot name if the value is set by calling clear', () => {
       _.stateService.set(_.$state, true);
       _.el.callFunction($.host._.clearFn, []);
 
@@ -61,7 +61,7 @@ test('@mask/input/checkbox', init => {
   });
 
   test('domValue$', () => {
-    should(`emit true if the checked`, () => {
+    should('emit true if the checked', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = false;
       el.checked = true;
@@ -71,7 +71,7 @@ test('@mask/input/checkbox', init => {
       assert(_.stateService.get(_.$state)).to.emitWith(true);
     });
 
-    should(`emit false if the unchecked`, () => {
+    should('emit false if the unchecked', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = false;
       el.checked = false;
@@ -81,7 +81,7 @@ test('@mask/input/checkbox', init => {
       assert(_.stateService.get(_.$state)).to.emitWith(false);
     });
 
-    should(`emit unknown if the value is indeterminate`, () => {
+    should('emit unknown if the value is indeterminate', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = true;
       el.checked = true;
@@ -93,7 +93,7 @@ test('@mask/input/checkbox', init => {
   });
 
   test('updateDomValue', () => {
-    should(`set true value correctly`, () => {
+    should('set true value correctly', () => {
       _.stateService.set(_.$state, true);
 
       _.el.callFunction($.host._.clearFn, []);
@@ -102,7 +102,7 @@ test('@mask/input/checkbox', init => {
       assert(_.el.getElement($.checkbox).indeterminate).to.equal(false);
     });
 
-    should(`set false value correctly`, () => {
+    should('set false value correctly', () => {
       _.stateService.set(_.$state, false);
 
       _.el.callFunction($.host._.clearFn, []);
@@ -111,7 +111,7 @@ test('@mask/input/checkbox', init => {
       assert(_.el.getElement($.checkbox).indeterminate).to.equal(false);
     });
 
-    should(`set unknown value correctly`, () => {
+    should('set unknown value correctly', () => {
       _.stateService.set(_.$state, 'unknown');
 
       _.el.callFunction($.host._.clearFn, []);

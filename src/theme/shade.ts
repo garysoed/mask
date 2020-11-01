@@ -1,4 +1,4 @@
-import { Color, getContrast, mix, RgbColor } from 'gs-tools/export/color';
+import { Color, RgbColor, getContrast, mix } from 'gs-tools/export/color';
 
 import { Alpha, getAlphaNumber } from './alpha';
 

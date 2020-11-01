@@ -1,6 +1,6 @@
-import { assert, runEnvironment, setup, should, test } from 'gs-testing';
 import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
 import { HslColor } from 'gs-tools/export/color';
+import { assert, runEnvironment, setup, should, test } from 'gs-testing';
 
 import * as snapshots from './snapshots.json';
 import { Theme } from './theme';
@@ -12,7 +12,7 @@ test('@mask/theme/theme', () => {
   });
 
   test('inject', () => {
-    should(`not throw`, () => {
+    should('not throw', () => {
       const styleEl = new Theme(
           document,
           new HslColor(45, 0.75, 0.5),

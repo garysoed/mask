@@ -1,5 +1,5 @@
+import { StateId, createId } from 'gs-tools/export/state';
 import { assert, objectThat, should, test } from 'gs-testing';
-import { createId, StateId } from 'gs-tools/export/state';
 
 import { stateIdParser } from './state-id-parser';
 
@@ -11,7 +11,7 @@ test('@mask/core/state-id-parser', init => {
   });
 
   test('convertBackward', () => {
-    should(`use the string as the inner ID`, () => {
+    should('use the string as the inner ID', () => {
       const id = 'id';
       assert(_.parser.convertBackward(id)).to.haveProperties({
         success: true,
@@ -21,7 +21,7 @@ test('@mask/core/state-id-parser', init => {
   });
 
   test('convertForward', () => {
-    should(`return the inner ID`, () => {
+    should('return the inner ID', () => {
       const id = 'id';
       assert(_.parser.convertForward(createId(id))).to.haveProperties({
         success: true,

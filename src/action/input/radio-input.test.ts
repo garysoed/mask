@@ -1,13 +1,13 @@
-import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
-import { StateId, StateService } from 'gs-tools/export/state';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { StateId, StateService } from 'gs-tools/export/state';
+import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { _p } from '../../app/app';
 import { $stateService } from '../../core/state-service';
+import { _p } from '../../app/app';
 
-import { $onRadioInput$, OnRadioInput } from './on-radio-input';
 import { $, $radioInput, RadioInput } from './radio-input';
+import { $onRadioInput$, OnRadioInput } from './on-radio-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -31,7 +31,7 @@ test('@mask/action/input/radio-input', init => {
   });
 
   test('displaySlot$', () => {
-    should(`set the slot to display_checked if checked`, () => {
+    should('set the slot to display_checked if checked', () => {
       const el = _.el.getElement($.input);
       el.checked = true;
       _.el.dispatchEvent($.input._.onInput);
@@ -39,7 +39,7 @@ test('@mask/action/input/radio-input', init => {
       assert(_.displaySlotName$).to.emitWith('display_checked');
     });
 
-    should(`set the slot to display_unchecked if unchecked`, () => {
+    should('set the slot to display_unchecked if unchecked', () => {
       const el = _.el.getElement($.input);
       el.checked = false;
       _.el.dispatchEvent($.input._.onInput);
@@ -49,7 +49,7 @@ test('@mask/action/input/radio-input', init => {
   });
 
   test('domValue$', () => {
-    should(`set the state correctly`, () => {
+    should('set the state correctly', () => {
       const el1 = _.tester.createElement($radioInput.tag);
       el1.setAttribute($.host._.stateId, _.$state);
       el1.setAttribute($.host._.index, 1);
@@ -79,7 +79,7 @@ test('@mask/action/input/radio-input', init => {
       assert(state$).to.emitSequence([null, 3, 2, 3]);
     });
 
-    should(`set the state correctly with apply on change`, () => {
+    should('set the state correctly with apply on change', () => {
       _.el.setHasAttribute($.host._.applyOnChange, true);
 
       const el1 = _.tester.createElement($radioInput.tag);
@@ -119,7 +119,7 @@ test('@mask/action/input/radio-input', init => {
       return _;
     });
 
-    should(`reset the dom value if global radio input emits for other index and the ID match`, () => {
+    should('reset the dom value if global radio input emits for other index and the ID match', () => {
       run($onRadioInput$.get(_.tester.vine).pipe(
           take(1),
           tap(subject => {
@@ -130,7 +130,7 @@ test('@mask/action/input/radio-input', init => {
       assert(_.displaySlotName$).to.emitWith('display_unchecked');
     });
 
-    should(`do nothing if the global radio input emits for the current index`, () => {
+    should('do nothing if the global radio input emits for the current index', () => {
       run($onRadioInput$.get(_.tester.vine).pipe(
           take(1),
           tap(subject => {
@@ -141,7 +141,7 @@ test('@mask/action/input/radio-input', init => {
       assert(_.displaySlotName$).to.emitWith('display_checked');
     });
 
-    should(`do nothing if the global radio input emits and the ID doesn't match`, () => {
+    should('do nothing if the global radio input emits and the ID doesn\'t match', () => {
       const $otherStateId = _.stateService.add<number|null>(null);
       run($onRadioInput$.get(_.tester.vine).pipe(
           take(1),
@@ -155,7 +155,7 @@ test('@mask/action/input/radio-input', init => {
   });
 
   test('handleOnRadioInput$', () => {
-    should(`emit the global radio input`, () => {
+    should('emit the global radio input', () => {
       const onRadioInput$ = createSpySubject(
           $onRadioInput$.get(_.tester.vine).pipe(switchMap(subject => subject)),
       );
@@ -170,7 +170,7 @@ test('@mask/action/input/radio-input', init => {
       }));
     });
 
-    should(`do nothing if the value is null`, () => {
+    should('do nothing if the value is null', () => {
       const onRadioInput$ = createSpySubject(
           $onRadioInput$.get(_.tester.vine).pipe(switchMap(subject => subject)),
       );
@@ -184,7 +184,7 @@ test('@mask/action/input/radio-input', init => {
   });
 
   test('nullableDomValue$', () => {
-    should(`emit the index if element is checked`, () => {
+    should('emit the index if element is checked', () => {
       // Set the state to some number.
       _.stateService.set(_.$state, 123);
 
@@ -195,7 +195,7 @@ test('@mask/action/input/radio-input', init => {
       assert(_.stateService.get(_.$state)).to.emitWith(INDEX);
     });
 
-    should(`emit null if element is unchecked`, () => {
+    should('emit null if element is unchecked', () => {
       const value = 123;
       // Set the state to some number.
       _.stateService.set(_.$state, value);
@@ -209,7 +209,7 @@ test('@mask/action/input/radio-input', init => {
   });
 
   test('updateDomValue', () => {
-    should(`check the element if new value is the same as the index`, () => {
+    should('check the element if new value is the same as the index', () => {
       _.stateService.set(_.$state, INDEX);
 
       _.el.callFunction($.host._.clearFn, []);
@@ -217,7 +217,7 @@ test('@mask/action/input/radio-input', init => {
       assert(_.el.getElement($.input).checked).to.equal(true);
     });
 
-    should(`uncheck the element if the new value is different from the index`, () => {
+    should('uncheck the element if the new value is different from the index', () => {
       _.stateService.set(_.$state, 1);
 
       _.el.callFunction($.host._.clearFn, []);

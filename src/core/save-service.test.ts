@@ -1,7 +1,7 @@
+import { InMemoryStorage } from 'gs-tools/export/store';
+import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
 import { Vine } from 'grapevine';
 import { arrayThat, assert, objectThat, run, should, test } from 'gs-testing';
-import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
-import { InMemoryStorage } from 'gs-tools/export/store';
 import { map, take, tap } from 'rxjs/operators';
 
 import { $rootId, $saveConfig, SaveService } from './save-service';
@@ -26,7 +26,7 @@ test('@mask/core/save-service', init => {
   });
 
   test('handleInit$', () => {
-    should(`initialize the state service with an existing save`, () => {
+    should('initialize the state service with an existing save', () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
       const snapshot = _.stateService.snapshot(rootId)!;
@@ -52,7 +52,7 @@ test('@mask/core/save-service', init => {
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId.id);
     });
 
-    should(`not initialize the state service with an existing save if loadOnInit is false`, () => {
+    should('not initialize the state service with an existing save if loadOnInit is false', () => {
       const saveId = 'saveId';
       const savedRootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
       const snapshot = _.stateService.snapshot(savedRootId)!;
@@ -82,7 +82,7 @@ test('@mask/core/save-service', init => {
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
     });
 
-    should(`initialize the state service with the init function if there are no existing states`, () => {
+    should('initialize the state service with the init function if there are no existing states', () => {
       const saveId = 'saveId';
       const storage = new InMemoryStorage<Snapshot<TestState>>();
 
@@ -109,7 +109,7 @@ test('@mask/core/save-service', init => {
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
     });
 
-    should(`not initialize if the config is not set`, () => {
+    should('not initialize if the config is not set', () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
       const snapshot = _.stateService.snapshot(rootId)!;
@@ -124,7 +124,7 @@ test('@mask/core/save-service', init => {
       assert($rootId.get(_.vine)).to.emitWith(null);
     });
 
-    should(`only initialize once`, () => {
+    should('only initialize once', () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
       const snapshot = _.stateService.snapshot(rootId)!;
@@ -175,7 +175,7 @@ test('@mask/core/save-service', init => {
       return {..._, storage};
     });
 
-    should(`update the storage on state change`, () => {
+    should('update the storage on state change', () => {
       _.service.setSaving(true);
 
       // Change the state
@@ -198,7 +198,7 @@ test('@mask/core/save-service', init => {
       assert(state$).to.emitWith(objectThat<TestState>().haveProperties({a: 345, s: 'cde'}));
     });
 
-    should(`not update if not saving`, () => {
+    should('not update if not saving', () => {
       _.service.setSaving(false);
 
       // Change the state
@@ -212,7 +212,7 @@ test('@mask/core/save-service', init => {
       assert(_.storage.read(SAVE_ID)).to.emitWith(undefined);
     });
 
-    should(`delete the entry if root ID is deleted`, () => {
+    should('delete the entry if root ID is deleted', () => {
       _.service.setSaving(true);
 
       // Add another payload.
@@ -232,7 +232,7 @@ test('@mask/core/save-service', init => {
   });
 
   test('savedState$', () => {
-    should(`emit with the saved state`, () => {
+    should('emit with the saved state', () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
       const snapshot = _.stateService.snapshot(rootId)!;
@@ -265,7 +265,7 @@ test('@mask/core/save-service', init => {
       );
     });
 
-    should(`not emit if config is missing`, () => {
+    should('not emit if config is missing', () => {
       const saveId = 'saveId';
       const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
       const snapshot = _.stateService.snapshot(rootId)!;

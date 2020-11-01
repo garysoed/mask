@@ -1,15 +1,15 @@
-import { instanceofType } from 'gs-types';
-import { attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent } from 'persona';
-import { BehaviorSubject, combineLatest, merge, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, merge } from 'rxjs';
+import { PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, stringParser, textContent } from 'persona';
 import { distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
+import { instanceofType } from 'gs-types';
 
 import { $button, Button } from '../action/button';
-import { _p } from '../app/app';
+import { $drawerLayout, DrawerLayout } from '../layout/drawer-layout';
 import { $icon, Icon } from '../display/icon';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { $drawerLayout, DrawerLayout } from '../layout/drawer-layout';
 import { MEDIA_QUERY } from '../theme/media-query';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import { ListItemLayout } from './list-item-layout';
 import template from './root-layout.html';
@@ -71,19 +71,19 @@ export class RootLayout extends ThemedCustomElementCtrl {
 
   private setupHandleDrawerExpandCollapse(): Observable<unknown> {
     return combineLatest([
-        merge(
-            this.declareInput($.drawer._.onMouseLeave).pipe(mapTo(false)),
-            this.declareInput($.drawer._.onMouseEnter).pipe(mapTo(true)),
-        )
+      merge(
+          this.declareInput($.drawer._.onMouseLeave).pipe(mapTo(false)),
+          this.declareInput($.drawer._.onMouseEnter).pipe(mapTo(true)),
+      )
+          .pipe(
+              startWith(false),
+              distinctUntilChanged(),
+          ),
+      this.declareInput($qIsDesktop),
+    ])
         .pipe(
-            startWith(false),
-            distinctUntilChanged(),
-        ),
-        this.declareInput($qIsDesktop),
-      ])
-      .pipe(
-          map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
-          tap(showDrawer => this.isDrawerOpen$.next(showDrawer)),
-      );
+            map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
+            tap(showDrawer => this.isDrawerOpen$.next(showDrawer)),
+        );
   }
 }

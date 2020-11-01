@@ -1,6 +1,6 @@
-import { source, Vine, VineBuilder } from 'grapevine';
-import { PersonaBuilder } from 'persona';
 import { CustomElementCtrlCtor } from 'persona/export/internal';
+import { PersonaBuilder } from 'persona';
+import { Vine, VineBuilder, source } from 'grapevine';
 import { map, pairwise, startWith } from 'rxjs/operators';
 
 import { PALETTE } from '../theme/palette';

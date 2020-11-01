@@ -9,13 +9,13 @@
  * @attr {<string} icon Icon ligature
  */
 
+import { AriaRole, PersonaContext, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, stringParser } from 'persona';
+import { Observable, merge, of as observableOf } from 'rxjs';
 import { cache } from 'gs-tools/export/data';
-import { AriaRole, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser } from 'persona';
-import { merge, Observable, of as observableOf } from 'rxjs';
 import { filter, map, throttleTime, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../app/app';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
+import { _p } from '../app/app';
 
 import { $$ as $baseAction, BaseAction } from './base-action';
 import template from './button.html';
@@ -59,10 +59,10 @@ export class Button extends BaseAction {
   @cache()
   private get onAction$(): Observable<ActionEvent<void>> {
     return merge(
-            this.declareInput($.host._.onClick),
-            this.declareInput($.host._.onEnterDown),
-            this.declareInput($.host._.onSpaceDown),
-        )
+        this.declareInput($.host._.onClick),
+        this.declareInput($.host._.onEnterDown),
+        this.declareInput($.host._.onSpaceDown),
+    )
         .pipe(
             throttleTime(THROTTLE_MS),
             withLatestFrom(this.disabled$),

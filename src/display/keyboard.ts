@@ -1,11 +1,11 @@
+import { NodeWithId, PersonaContext, host, multi, renderElement, renderTextNode, root, textIn } from 'persona';
+import { Observable, combineLatest, of as observableOf } from 'rxjs';
+import { Type, enumType } from 'gs-types';
 import { cache } from 'gs-tools/export/data';
-import { enumType, Type } from 'gs-types';
-import { host, multi, NodeWithId, PersonaContext, renderElement, renderTextNode, root, textIn } from 'persona';
-import { combineLatest, Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import template from './keyboard.html';
 

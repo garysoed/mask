@@ -1,5 +1,5 @@
-import { assert, createSpySubject, objectThat, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { assert, createSpySubject, objectThat, should, test } from 'gs-testing';
 import { fromEvent } from 'rxjs';
 
 import { _p } from '../app/app';
@@ -19,7 +19,7 @@ test('display.Breadcrumb', init => {
   });
 
   test('onRowAction', () => {
-    should(`dispatch the correct event`, () => {
+    should('dispatch the correct event', () => {
       const data = [
         {
           display: 'displayA',
@@ -51,7 +51,7 @@ test('display.Breadcrumb', init => {
   });
 
   test('renderCrumbs', () => {
-    should(`render the crumbs correctly`, () => {
+    should('render the crumbs correctly', () => {
       const data = [
         {
           display: 'displayA',

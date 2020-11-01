@@ -1,13 +1,13 @@
 import { $asArray, $filterNonNull, $map, $pipe } from 'gs-tools/export/collect';
+import { Logger } from 'santa';
+import { NodeWithId, PersonaContext, attributeIn, host, listParser, multi, root, setId, stringParser, textIn } from 'persona';
+import { Observable, combineLatest, concat, of as observableOf } from 'rxjs';
+import { bufferCount, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { cache } from 'gs-tools/export/data';
 import { debug, filterDefined } from 'gs-tools/export/rxjs';
-import { attributeIn, host, listParser, multi, NodeWithId, PersonaContext, root, setId, stringParser, textIn } from 'persona';
-import { combineLatest, concat, Observable, of as observableOf } from 'rxjs';
-import { bufferCount, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { Logger } from 'santa';
 
-import { _p } from '../app/app';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import { $annotationConfig, AnnotationSpec } from './annotation-service';
 
@@ -87,11 +87,11 @@ export class AnnotatedText extends ThemedCustomElementCtrl {
       this.declareInput($.host._.text).pipe(filterDefined()),
       this.annotations$,
     ])
-    .pipe(
-        switchMap(([text, annotations]) => {
-          return this.applyAnnotations(document.createTextNode(text), annotations);
-        }),
-        debug(LOGGER, 'content'),
-    );
+        .pipe(
+            switchMap(([text, annotations]) => {
+              return this.applyAnnotations(document.createTextNode(text), annotations);
+            }),
+            debug(LOGGER, 'content'),
+        );
   }
 }

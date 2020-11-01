@@ -1,12 +1,12 @@
-import { instanceofType } from 'gs-types';
-import { attributeIn, dispatcher, element, host, NodeWithId, onDom, PersonaContext, renderHtml, single, stringParser, textContent } from 'persona';
+import { NodeWithId, PersonaContext, attributeIn, dispatcher, element, host, onDom, renderHtml, single, stringParser, textContent } from 'persona';
 import { Observable } from 'rxjs';
+import { instanceofType } from 'gs-types';
 import { map, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../app/app';
-import separatorSvg from '../asset/separator.svg';
 import { ACTION_EVENT, ActionEvent } from '../event/action-event';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
+import separatorSvg from '../asset/separator.svg';
 
 import crumbTemplate from './crumb.html';
 

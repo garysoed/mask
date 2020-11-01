@@ -1,11 +1,11 @@
+import { PersonaContext, attributeOut, booleanParser, element, host, setAttribute } from 'persona';
+import { PersonaTesterFactory } from 'persona/export/testing';
 import { assert, should, test } from 'gs-testing';
 import { instanceofType } from 'gs-types';
-import { attributeOut, booleanParser, element, host, PersonaContext, setAttribute } from 'persona';
-import { PersonaTesterFactory } from 'persona/export/testing';
 
 import { _p } from '../app/app';
 
-import { $ as $baseAction, $$ as $$baseAction, BaseAction } from './base-action';
+import { $$ as $$baseAction, $ as $baseAction, BaseAction } from './base-action';
 
 
 const $ = {
@@ -39,7 +39,7 @@ test('@mask/action/base-action', init => {
   });
 
   test('ariaDisabled$', () => {
-    should(`set the aria value correctly`, () => {
+    should('set the aria value correctly', () => {
       _.el.setHasAttribute($.host._.disabled, true);
 
       assert(_.el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('true');
@@ -51,14 +51,14 @@ test('@mask/action/base-action', init => {
   });
 
   test('isPrimaryAction$', () => {
-    should(`render mk-action-1 if primary`, () => {
+    should('render mk-action-1 if primary', () => {
       _.el.setHasAttribute($.host._.isSecondary, false);
 
       assert(_.el.hasAttribute($.host._.action1)).to.equal(true);
       assert(_.el.hasAttribute($.host._.action2)).to.equal(false);
     });
 
-    should(`render mk-action-2 if secondary`, () => {
+    should('render mk-action-2 if secondary', () => {
       _.el.setHasAttribute($.host._.isSecondary, true);
 
       assert(_.el.hasAttribute($.host._.action1)).to.equal(false);

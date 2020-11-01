@@ -1,12 +1,12 @@
+import { Observable, combineLatest } from 'rxjs';
+import { PersonaContext, attributeIn, element, enumParser, handler, host, slotted, stringParser } from 'persona';
 import { cache } from 'gs-tools/export/data';
 import { instanceofType } from 'gs-types';
-import { attributeIn, element, enumParser, handler, host, PersonaContext, slotted, stringParser } from 'persona';
-import { combineLatest, Observable } from 'rxjs';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 
-import { _p } from '../app/app';
 import { $overlayService, Anchor } from '../core/overlay-service';
 import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
+import { _p } from '../app/app';
 
 import template from './overlay-layout.html';
 
@@ -64,11 +64,11 @@ export class OverlayLayout extends ThemedCustomElementCtrl {
       this.declareInput($.host._.targetHorizontal),
       this.declareInput($.host._.targetVertical),
     ])
-    .pipe(
-        map(([contentHorizontal, contentVertical, targetHorizontal, targetVertical]) => {
-          return {contentHorizontal, contentVertical, targetHorizontal, targetVertical};
-        }),
-    );
+        .pipe(
+            map(([contentHorizontal, contentVertical, targetHorizontal, targetVertical]) => {
+              return {contentHorizontal, contentVertical, targetHorizontal, targetVertical};
+            }),
+        );
 
     return this.declareInput($.host._.showFn).pipe(
         withLatestFrom(

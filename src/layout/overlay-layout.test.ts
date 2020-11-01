@@ -1,9 +1,9 @@
-import { anyThat, assert, createSpySubject, objectThat, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
+import { anyThat, assert, createSpySubject, objectThat, should, test } from 'gs-testing';
 import { switchMap } from 'rxjs/operators';
 
-import { _p } from '../app/app';
 import { $overlayService, Anchor, NodeSpec, ShowEvent } from '../core/overlay-service';
+import { _p } from '../app/app';
 
 import { $, $overlayLayout, OverlayLayout } from './overlay-layout';
 
@@ -18,7 +18,7 @@ test('@mask/layout/overlay-layout', init => {
   });
 
   test('handleOnShow$', () => {
-    should(`show the content with the correct options`, () => {
+    should('show the content with the correct options', () => {
       const targetEl = document.createElement('div');
       const targetId = 'targetId';
       targetEl.id = targetId;

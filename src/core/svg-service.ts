@@ -1,5 +1,5 @@
-import { source, stream, Vine } from 'grapevine';
-import { defer, from as observableFrom, Observable, of as observableOf } from 'rxjs';
+import { Observable, defer, from as observableFrom, of as observableOf } from 'rxjs';
+import { Vine, source, stream } from 'grapevine';
 import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
 
 import { SvgConfig } from './svg-config';
@@ -90,11 +90,11 @@ export const $svgService = stream(
     'SvgService',
     vine => $svgConfig.get(vine)
         .pipe(
-          map(config => {
-            const service = new SvgService(config);
-            service[__run]();
+            map(config => {
+              const service = new SvgService(config);
+              service[__run]();
 
-            return service;
-          }),
+              return service;
+            }),
         ),
 );

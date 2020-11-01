@@ -1,5 +1,5 @@
-import { assert, createSpyInstance, fake, FakeFetch, should, test } from 'gs-testing';
 import { $innerHtmlParseService, InnerHtmlParseService } from 'persona';
+import { FakeFetch, assert, createSpyInstance, fake, should, test } from 'gs-testing';
 import { PersonaTesterFactory } from 'persona/export/testing';
 import { ReplaySubject } from 'rxjs';
 
@@ -19,7 +19,7 @@ test('display.Icon', init => {
 
   const _ = init(() => {
     const tester = testerFactory.build([Icon], document);
-    registerSvg(tester.vine, SVG_NAME, {type: 'remote' as 'remote', url: SVG_URL});
+    registerSvg(tester.vine, SVG_NAME, {type: 'remote' as const, url: SVG_URL});
 
     const svgEl$ = new ReplaySubject<Element>(1);
     const mockInnerHtmlParseService = createSpyInstance(InnerHtmlParseService);
@@ -36,7 +36,7 @@ test('display.Icon', init => {
   });
 
   test('rootSvg$', () => {
-    should(`set the innerHTML correctly and set the height to auto`, () => {
+    should('set the innerHTML correctly and set the height to auto', () => {
       const svgEl = document.createElement('svg');
       svgEl.setAttribute('width', '123');
       _.svgEl$.next(svgEl);
@@ -51,7 +51,7 @@ test('display.Icon', init => {
       assert(_.el.getElement($.root).children.item(0)!.getAttribute('height')).to.equal('auto');
     });
 
-    should(`set the innerHTML correctly and set the width to auto`, () => {
+    should('set the innerHTML correctly and set the width to auto', () => {
       const svgEl = document.createElement('svg');
       svgEl.setAttribute('height', '123');
       _.svgEl$.next(svgEl);
@@ -66,7 +66,7 @@ test('display.Icon', init => {
       assert(_.el.getElement($.root).children.item(0)!.getAttribute('width')).to.equal('auto');
     });
 
-    should(`set the innerHTML correctly if there are no SVG names specified`, () => {
+    should('set the innerHTML correctly if there are no SVG names specified', () => {
       assert(_.el.getElement($.root).children.length).to.equal(0);
     });
   });
