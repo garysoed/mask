@@ -1,12 +1,12 @@
-import { Observable, combineLatest } from 'rxjs';
-import { PersonaContext, attributeIn, element, enumParser, handler, host, slotted, stringParser } from 'persona';
-import { cache } from 'gs-tools/export/data';
-import { instanceofType } from 'gs-types';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import {cache} from 'gs-tools/export/data';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, attributeIn, element, enumParser, handler, host, slotted, stringParser} from 'persona';
+import {Observable, combineLatest} from 'rxjs';
+import {map, tap, withLatestFrom} from 'rxjs/operators';
 
-import { $overlayService, Anchor } from '../core/overlay-service';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {$overlayService, Anchor} from '../core/overlay-service';
+import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
 import template from './overlay-layout.html';
 

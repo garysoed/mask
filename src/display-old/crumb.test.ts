@@ -1,12 +1,12 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { assert, createSpySubject, should, test } from 'gs-testing';
-import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {assert, createSpySubject, should, test} from 'gs-testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {fromEvent} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ACTION_EVENT, ActionEvent} from '../event/action-event';
 
-import { $, Crumb } from './crumb';
+import {$, Crumb} from './crumb';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

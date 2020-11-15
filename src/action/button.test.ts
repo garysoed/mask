@@ -1,11 +1,11 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { anyThat, assert, createSpySubject, should, test } from 'gs-testing';
-import { fromEvent } from 'rxjs';
+import {anyThat, assert, createSpySubject, should, test} from 'gs-testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {fromEvent} from 'rxjs';
 
-import { ActionEvent } from '../event/action-event';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ActionEvent} from '../event/action-event';
 
-import { $, $button, Button } from './button';
+import {$, $button, Button} from './button';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

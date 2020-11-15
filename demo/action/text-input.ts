@@ -1,14 +1,14 @@
-import { cache } from 'gs-tools/export/data';
-import { StateId } from 'gs-tools/export/state';
-import { element, PersonaContext } from 'persona';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {cache} from 'gs-tools/export/data';
+import {StateId} from 'gs-tools/export/state';
+import {element, PersonaContext} from 'persona';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import { $textInput, TextInput } from '../../src/action/input/text-input';
-import { _p } from '../../src/app/app';
-import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
-import { DemoLayout } from '../base/demo-layout';
-import { $demoState } from '../core/demo-state';
+import {$textInput, TextInput} from '../../src/action/input/text-input';
+import {_p} from '../../src/app/app';
+import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {DemoLayout} from '../base/demo-layout';
+import {$demoState} from '../core/demo-state';
 
 import template from './text-input.html';
 

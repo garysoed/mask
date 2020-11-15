@@ -1,15 +1,15 @@
-import { cache } from 'gs-tools/export/data';
-import { attributeIn, element, host, PersonaContext, stringParser, textContent } from 'persona';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import {cache} from 'gs-tools/export/data';
+import {attributeIn, element, host, PersonaContext, stringParser, textContent} from 'persona';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map, tap, withLatestFrom} from 'rxjs/operators';
 
-import { $button, Button } from '../../src/action/button';
-import { _p } from '../../src/app/app';
-import { $icon } from '../../src/display/icon';
-import { $drawerLayout, DrawerLayout } from '../../src/layout/drawer-layout';
-import { $lineLayout } from '../../src/layout/line-layout';
-import { ListItemLayout } from '../../src/layout/list-item-layout';
-import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
+import {$button, Button} from '../../src/action/button';
+import {_p} from '../../src/app/app';
+import {$icon} from '../../src/display/icon';
+import {$drawerLayout, DrawerLayout} from '../../src/layout/drawer-layout';
+import {$lineLayout} from '../../src/layout/line-layout';
+import {ListItemLayout} from '../../src/layout/list-item-layout';
+import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
 
 import template from './demo-layout.html';
 

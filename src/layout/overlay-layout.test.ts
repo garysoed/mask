@@ -1,11 +1,11 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { anyThat, assert, createSpySubject, objectThat, should, test } from 'gs-testing';
-import { switchMap } from 'rxjs/operators';
+import {anyThat, assert, createSpySubject, objectThat, should, test} from 'gs-testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {switchMap} from 'rxjs/operators';
 
-import { $overlayService, Anchor, NodeSpec, ShowEvent } from '../core/overlay-service';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {$overlayService, Anchor, NodeSpec, ShowEvent} from '../core/overlay-service';
 
-import { $, $overlayLayout, OverlayLayout } from './overlay-layout';
+import {$, $overlayLayout, OverlayLayout} from './overlay-layout';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);

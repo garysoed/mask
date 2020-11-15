@@ -1,7 +1,7 @@
-import { source } from 'grapevine';
-import { fromPattern, LocationService } from 'persona';
+import {source} from 'grapevine';
+import {fromPattern, LocationService} from 'persona';
 
-import { $window } from '../../src/app/app';
+import {$window} from '../../src/app/app';
 
 export enum Views {
   // BREADCRUMB = 'b',

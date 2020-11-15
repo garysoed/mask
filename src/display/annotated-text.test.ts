@@ -1,11 +1,13 @@
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
+import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {of as observableOf} from 'rxjs';
+
+import {_p} from '../app/app';
+
+import {$, $annotatedText, AnnotatedText} from './annotated-text';
+import {$annotationConfig} from './annotation-service';
 import * as snapshots from './snapshots.json';
-import { $, $annotatedText, AnnotatedText } from './annotated-text';
-import { $annotationConfig } from './annotation-service';
-import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { _p } from '../app/app';
-import { assert, runEnvironment, setup, should, test } from 'gs-testing';
-import { of as observableOf } from 'rxjs';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);

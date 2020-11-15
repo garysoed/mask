@@ -1,31 +1,31 @@
-import { Vine } from 'grapevine';
-import { Color } from 'gs-tools/export/color';
-import { cache } from 'gs-tools/export/data';
-import { filterNonNull } from 'gs-tools/export/rxjs';
-import { StateId } from 'gs-tools/export/state';
-import { elementWithTagType, enumType, instanceofType } from 'gs-types';
-import { attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser } from 'persona';
-import { combineLatest, merge, Observable, of as observableOf } from 'rxjs';
-import { distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {Vine} from 'grapevine';
+import {Color} from 'gs-tools/export/color';
+import {cache} from 'gs-tools/export/data';
+import {filterNonNull} from 'gs-tools/export/rxjs';
+import {StateId} from 'gs-tools/export/state';
+import {elementWithTagType, enumType, instanceofType} from 'gs-types';
+import {attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser} from 'persona';
+import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
+import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
-import { $button, Button } from '../../src/action/button';
-import { $checkbox, Checkbox } from '../../src/action/input/checkbox';
-import { _p } from '../../src/app/app';
-import { Overlay } from '../../src/core/overlay';
-import { $stateService } from '../../src/core/state-service';
-import { ACTION_EVENT } from '../../src/event/action-event';
-import { $drawerLayout, DrawerLayout } from '../../src/layout/drawer-layout';
-import { $lineLayout, LineLayout } from '../../src/layout/line-layout';
-import { ListItemLayout } from '../../src/layout/list-item-layout';
-import { $rootLayout, RootLayout } from '../../src/layout/root-layout';
-import { LayoutOverlay } from '../../src/layout/util/layout-overlay';
-import { PALETTE, Palette } from '../../src/theme/palette';
-import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
+import {$button, Button} from '../../src/action/button';
+import {$checkbox, Checkbox} from '../../src/action/input/checkbox';
+import {_p} from '../../src/app/app';
+import {Overlay} from '../../src/core/overlay';
+import {$stateService} from '../../src/core/state-service';
+import {ACTION_EVENT} from '../../src/event/action-event';
+import {$drawerLayout, DrawerLayout} from '../../src/layout/drawer-layout';
+import {$lineLayout, LineLayout} from '../../src/layout/line-layout';
+import {ListItemLayout} from '../../src/layout/list-item-layout';
+import {$rootLayout, RootLayout} from '../../src/layout/root-layout';
+import {LayoutOverlay} from '../../src/layout/util/layout-overlay';
+import {PALETTE, Palette} from '../../src/theme/palette';
+import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
 
-import { $demoState } from './demo-state';
+import {$demoState} from './demo-state';
 import template from './demo.html';
-import { $locationService, Views } from './location-service';
-import { ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec } from './page-spec';
+import {$locationService, Views} from './location-service';
+import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec} from './page-spec';
 
 
 const $ = {
@@ -107,15 +107,15 @@ export class Demo extends ThemedCustomElementCtrl {
       $demoState.get(this.vine),
       $stateService.get(this.vine),
     ])
-    .pipe(
-        switchMap(([demoState, stateService]) => {
-          if (!demoState) {
-            return observableOf(null);
-          }
+        .pipe(
+            switchMap(([demoState, stateService]) => {
+              if (!demoState) {
+                return observableOf(null);
+              }
 
-          return stateService.get(demoState.$accentColorName);
-        }),
-    );
+              return stateService.get(demoState.$accentColorName);
+            }),
+        );
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
@@ -136,15 +136,15 @@ export class Demo extends ThemedCustomElementCtrl {
       $demoState.get(this.vine),
       $stateService.get(this.vine),
     ])
-    .pipe(
-        switchMap(([demoState, stateService]) => {
-          if (!demoState) {
-            return observableOf(null);
-          }
+        .pipe(
+            switchMap(([demoState, stateService]) => {
+              if (!demoState) {
+                return observableOf(null);
+              }
 
-          return stateService.get(demoState.$baseColorName);
-        }),
-    );
+              return stateService.get(demoState.$baseColorName);
+            }),
+        );
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
@@ -212,29 +212,29 @@ export class Demo extends ThemedCustomElementCtrl {
   private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<ReadonlyArray<NodeWithId<Node>>> {
     const node$List = pageSpecs
         .map(({path, name}) => {
-            return renderCustomElement(
-                $button,
-                {
-                  attrs: new Map([[COMPONENT_PATH_ATTR, observableOf(`${path}`)]]),
-                  children: renderCustomElement(
-                      $lineLayout,
-                      {
-                        attrs: new Map([
-                          ['mk-body-1', observableOf('')],
-                        ]),
-                        textContent: observableOf(name),
-                      },
-                      name,
-                      this.context,
-                  )
-                  .pipe(map(node => [node] || [])),
-                  inputs: {
-                    isSecondary: observableOf(true),
-                  },
+          return renderCustomElement(
+              $button,
+              {
+                attrs: new Map([[COMPONENT_PATH_ATTR, observableOf(`${path}`)]]),
+                children: renderCustomElement(
+                    $lineLayout,
+                    {
+                      attrs: new Map([
+                        ['mk-body-1', observableOf('')],
+                      ]),
+                      textContent: observableOf(name),
+                    },
+                    name,
+                    this.context,
+                )
+                    .pipe(map(node => [node] || [])),
+                inputs: {
+                  isSecondary: observableOf(true),
                 },
-                name,
-                this.context,
-            );
+              },
+              name,
+              this.context,
+          );
         });
 
     return node$List.length <= 0 ? observableOf([]) : combineLatest(node$List);
@@ -258,9 +258,9 @@ export class Demo extends ThemedCustomElementCtrl {
         this.declareInput($.settingsDrawer._.onMouseLeave).pipe(mapTo(false)),
         this.declareInput($.settingsDrawer._.onMouseEnter).pipe(mapTo(true)),
     )
-    .pipe(
-        distinctUntilChanged(),
-    );
+        .pipe(
+            distinctUntilChanged(),
+        );
   }
 
   @cache()

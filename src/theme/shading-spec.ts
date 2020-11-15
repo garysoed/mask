@@ -1,5 +1,5 @@
-import { Alpha } from './alpha';
-import { Shade } from './shade';
+import {Alpha} from './alpha';
+import {Shade} from './shade';
 
 export interface ShadingSpec {
   accent: boolean;

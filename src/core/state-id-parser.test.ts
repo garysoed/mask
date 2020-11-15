@@ -1,7 +1,7 @@
-import { StateId, createId } from 'gs-tools/export/state';
-import { assert, objectThat, should, test } from 'gs-testing';
+import {assert, objectThat, should, test} from 'gs-testing';
+import {StateId, createId} from 'gs-tools/export/state';
 
-import { stateIdParser } from './state-id-parser';
+import {stateIdParser} from './state-id-parser';
 
 
 test('@mask/core/state-id-parser', init => {

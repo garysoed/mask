@@ -1,4 +1,4 @@
-import { Color, RgbColor } from 'gs-tools/export/color';
+import {Color, RgbColor} from 'gs-tools/export/color';
 
 const GREY = new RgbColor(128, 142, 154);
 const RED = new RgbColor(220, 28, 0);

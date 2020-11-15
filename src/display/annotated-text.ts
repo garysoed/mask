@@ -1,15 +1,15 @@
-import { $asArray, $filterNonNull, $map, $pipe } from 'gs-tools/export/collect';
-import { Logger } from 'santa';
-import { NodeWithId, PersonaContext, attributeIn, host, listParser, multi, root, setId, stringParser, textIn } from 'persona';
-import { Observable, combineLatest, concat, of as observableOf } from 'rxjs';
-import { bufferCount, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { cache } from 'gs-tools/export/data';
-import { debug, filterDefined } from 'gs-tools/export/rxjs';
+import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
+import {cache} from 'gs-tools/export/data';
+import {debug, filterDefined} from 'gs-tools/export/rxjs';
+import {NodeWithId, PersonaContext, attributeIn, host, listParser, multi, root, setId, stringParser, textIn} from 'persona';
+import {Observable, combineLatest, concat, of as observableOf} from 'rxjs';
+import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {Logger} from 'santa';
 
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
-import { $annotationConfig, AnnotationSpec } from './annotation-service';
+import {$annotationConfig, AnnotationSpec} from './annotation-service';
 
 const LOGGER = new Logger('mask.AnnotatedText');
 

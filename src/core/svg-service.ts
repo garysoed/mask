@@ -1,8 +1,8 @@
-import { Observable, defer, from as observableFrom, of as observableOf } from 'rxjs';
-import { Vine, source, stream } from 'grapevine';
-import { map, retry, shareReplay, switchMap } from 'rxjs/operators';
+import {Vine, source, stream} from 'grapevine';
+import {Observable, defer, from as observableFrom, of as observableOf} from 'rxjs';
+import {map, retry, shareReplay, switchMap} from 'rxjs/operators';
 
-import { SvgConfig } from './svg-config';
+import {SvgConfig} from './svg-config';
 
 
 const __run = Symbol('SvgService.run');

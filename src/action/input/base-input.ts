@@ -1,15 +1,15 @@
-import { AttributeInput, DispatcherOutput, Output } from 'persona/export/internal';
-import { EMPTY, Observable, Subject, combineLatest, merge, of as observableOf } from 'rxjs';
-import { Logger } from 'santa';
-import { PersonaContext, handler, hasAttribute, host } from 'persona';
-import { StateId } from 'gs-tools/export/state';
-import { cache } from 'gs-tools/export/data';
-import { filter, map, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {cache} from 'gs-tools/export/data';
+import {StateId} from 'gs-tools/export/state';
+import {PersonaContext, handler, hasAttribute, host} from 'persona';
+import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
+import {EMPTY, Observable, Subject, combineLatest, merge, of as observableOf} from 'rxjs';
+import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {Logger} from 'santa';
 
-import { $$ as $baseAction, BaseAction } from '../base-action';
-import { $stateService } from '../../core/state-service';
-import { ChangeEvent } from '../../event/change-event';
-import { _p } from '../../app/app';
+import {_p} from '../../app/app';
+import {$stateService} from '../../core/state-service';
+import {ChangeEvent} from '../../event/change-event';
+import {$$ as $baseAction, BaseAction} from '../base-action';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

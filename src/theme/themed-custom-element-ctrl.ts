@@ -1,8 +1,8 @@
-import { CustomElementCtrl, PersonaContext } from 'persona';
-import { Observable } from 'rxjs';
-import { map, pairwise, startWith, tap } from 'rxjs/operators';
+import {CustomElementCtrl, PersonaContext} from 'persona';
+import {Observable} from 'rxjs';
+import {map, pairwise, startWith, tap} from 'rxjs/operators';
 
-import { $theme, _p } from '../app/app';
+import {$theme, _p} from '../app/app';
 
 
 @_p.baseCustomElement({})

@@ -1,11 +1,11 @@
-import { PersonaContext, attributeOut, booleanParser, element, host, setAttribute } from 'persona';
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { assert, should, test } from 'gs-testing';
-import { instanceofType } from 'gs-types';
+import {assert, should, test} from 'gs-testing';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, attributeOut, booleanParser, element, host, setAttribute} from 'persona';
+import {PersonaTesterFactory} from 'persona/export/testing';
 
-import { _p } from '../app/app';
+import {_p} from '../app/app';
 
-import { $$ as $$baseAction, $ as $baseAction, BaseAction } from './base-action';
+import {$$ as $$baseAction, $ as $baseAction, BaseAction} from './base-action';
 
 
 const $ = {

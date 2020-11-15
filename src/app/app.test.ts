@@ -1,10 +1,10 @@
-import { CustomElementCtrl } from 'persona';
-import { Vine } from 'grapevine';
-import { arrayThat, assert, createSpyInstance, fake, should, spy, test } from 'gs-testing';
+import {Vine} from 'grapevine';
+import {arrayThat, assert, createSpyInstance, fake, should, spy, test} from 'gs-testing';
+import {CustomElementCtrl} from 'persona';
 
-import { Theme } from '../theme/theme';
+import {Theme} from '../theme/theme';
 
-import { _p, start } from './app';
+import {_p, start} from './app';
 
 
 type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;

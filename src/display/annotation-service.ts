@@ -1,6 +1,6 @@
-import { NodeWithId, PersonaContext } from 'persona';
-import { Observable } from 'rxjs';
-import { source } from 'grapevine';
+import {source} from 'grapevine';
+import {NodeWithId, PersonaContext} from 'persona';
+import {Observable} from 'rxjs';
 
 export type AnnotationSpec = (
     node: NodeWithId<Node>,

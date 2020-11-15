@@ -1,17 +1,17 @@
-import { instanceofType } from 'gs-types';
-import { element, multi, NodeWithId, PersonaContext, renderCustomElement } from 'persona';
-import { combineLatest, Observable, of as observableOf } from 'rxjs';
-import { map, mapTo, switchMap } from 'rxjs/operators';
+import {instanceofType} from 'gs-types';
+import {element, multi, NodeWithId, PersonaContext, renderCustomElement} from 'persona';
+import {combineLatest, Observable, of as observableOf} from 'rxjs';
+import {map, mapTo, switchMap} from 'rxjs/operators';
 
-import { $stateService } from '../../export';
-import { $button, Button } from '../../src/action/button';
-import { $simpleRadioInput, SimpleRadioInput } from '../../src/action/simple/simple-radio-input';
-import { _p } from '../../src/app/app';
-import { Anchor } from '../../src/core/overlay-service';
-import { $overlayLayout, OverlayLayout } from '../../src/layout/overlay-layout';
-import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
-import { DemoLayout } from '../base/demo-layout';
-import { $demoState, OverlayLayoutDemoState } from '../core/demo-state';
+import {$stateService} from '../../export';
+import {$button, Button} from '../../src/action/button';
+import {$simpleRadioInput, SimpleRadioInput} from '../../src/action/simple/simple-radio-input';
+import {_p} from '../../src/app/app';
+import {Anchor} from '../../src/core/overlay-service';
+import {$overlayLayout, OverlayLayout} from '../../src/layout/overlay-layout';
+import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {DemoLayout} from '../base/demo-layout';
+import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
 
 import template from './overlay-layout.html';
 

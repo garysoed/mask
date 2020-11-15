@@ -1,7 +1,7 @@
-import { $asArray, $map, $pipe } from 'gs-tools/export/collect';
+import {$asArray, $map, $pipe} from 'gs-tools/export/collect';
 
-import { ColorSection } from './color-section';
-import { ShadeId } from './shade';
+import {ColorSection} from './color-section';
+import {ShadeId} from './shade';
 
 export interface SectionSpec {
   readonly isDark: boolean;

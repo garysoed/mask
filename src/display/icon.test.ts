@@ -1,12 +1,12 @@
-import { $innerHtmlParseService, InnerHtmlParseService } from 'persona';
-import { FakeFetch, assert, createSpyInstance, fake, should, test } from 'gs-testing';
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { ReplaySubject } from 'rxjs';
+import {FakeFetch, assert, createSpyInstance, fake, should, test} from 'gs-testing';
+import {$innerHtmlParseService, InnerHtmlParseService} from 'persona';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {ReplaySubject} from 'rxjs';
 
-import { _p } from '../app/app';
-import { registerSvg } from '../core/svg-service';
+import {_p} from '../app/app';
+import {registerSvg} from '../core/svg-service';
 
-import { $, $icon, FitTo, Icon } from './icon';
+import {$, $icon, FitTo, Icon} from './icon';
 
 
 const SVG_NAME = 'svgName';

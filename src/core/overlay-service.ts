@@ -1,5 +1,5 @@
-import { Observable, Subject } from 'rxjs';
-import { source } from 'grapevine';
+import {source} from 'grapevine';
+import {Observable, Subject} from 'rxjs';
 
 export enum Anchor {
   START = 's',

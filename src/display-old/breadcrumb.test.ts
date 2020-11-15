@@ -1,11 +1,11 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { assert, createSpySubject, objectThat, should, test } from 'gs-testing';
-import { fromEvent } from 'rxjs';
+import {assert, createSpySubject, objectThat, should, test} from 'gs-testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {fromEvent} from 'rxjs';
 
-import { _p } from '../app/app';
+import {_p} from '../app/app';
 
-import { $, Breadcrumb } from './breadcrumb';
-import { BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent } from './breadcrumb-event';
+import {$, Breadcrumb} from './breadcrumb';
+import {BREADCRUMB_CLICK_EVENT, BreadcrumbClickEvent} from './breadcrumb-event';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

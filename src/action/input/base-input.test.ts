@@ -1,18 +1,21 @@
-import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from './base-input';
-import { $stateService } from '../../core/state-service';
-import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
-import { Observable, Subject, combineLatest, of as observableOf } from 'rxjs';
-import { PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser } from 'persona';
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { StateId, StateService } from 'gs-tools/export/state';
-import { _p } from '../../app/app';
-import { assert, createSpySubject, should, test } from 'gs-testing';
-import { cache } from 'gs-tools/export/data';
-import { filterNonNull } from 'gs-tools/export/rxjs';
-import { instanceofType } from 'gs-types';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { source } from 'grapevine';
-import { stateIdParser } from '../../core/state-id-parser';
+import {source} from 'grapevine';
+import {assert, createSpySubject, should, test} from 'gs-testing';
+import {cache} from 'gs-tools/export/data';
+import {filterNonNull} from 'gs-tools/export/rxjs';
+import {StateId, StateService} from 'gs-tools/export/state';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser} from 'persona';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {Observable, Subject, combineLatest, of as observableOf} from 'rxjs';
+import {map, switchMap, tap} from 'rxjs/operators';
+
+import {_p} from '../../app/app';
+import {stateIdParser} from '../../core/state-id-parser';
+import {$stateService} from '../../core/state-service';
+import {CHANGE_EVENT, ChangeEvent} from '../../event/change-event';
+
+
+import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
 
 
 const $$ = {

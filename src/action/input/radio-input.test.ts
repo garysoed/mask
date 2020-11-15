@@ -1,13 +1,13 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { StateId, StateService } from 'gs-tools/export/state';
-import { assert, createSpySubject, objectThat, run, should, test } from 'gs-testing';
-import { switchMap, take, tap } from 'rxjs/operators';
+import {assert, createSpySubject, objectThat, run, should, test} from 'gs-testing';
+import {StateId, StateService} from 'gs-tools/export/state';
+import {PersonaTesterFactory} from 'persona/export/testing';
+import {switchMap, take, tap} from 'rxjs/operators';
 
-import { $stateService } from '../../core/state-service';
-import { _p } from '../../app/app';
+import {_p} from '../../app/app';
+import {$stateService} from '../../core/state-service';
 
-import { $, $radioInput, RadioInput } from './radio-input';
-import { $onRadioInput$, OnRadioInput } from './on-radio-input';
+import {$onRadioInput$, OnRadioInput} from './on-radio-input';
+import {$, $radioInput, RadioInput} from './radio-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

@@ -9,15 +9,15 @@
  * @attr {<string} icon Icon ligature
  */
 
-import { AriaRole, PersonaContext, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, stringParser } from 'persona';
-import { Observable, merge, of as observableOf } from 'rxjs';
-import { cache } from 'gs-tools/export/data';
-import { filter, map, throttleTime, withLatestFrom } from 'rxjs/operators';
+import {cache} from 'gs-tools/export/data';
+import {AriaRole, PersonaContext, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, stringParser} from 'persona';
+import {Observable, merge, of as observableOf} from 'rxjs';
+import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
-import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ACTION_EVENT, ActionEvent} from '../event/action-event';
 
-import { $$ as $baseAction, BaseAction } from './base-action';
+import {$$ as $baseAction, BaseAction} from './base-action';
 import template from './button.html';
 
 

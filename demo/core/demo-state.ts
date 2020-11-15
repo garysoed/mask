@@ -1,14 +1,14 @@
-import { stream, Stream } from 'grapevine';
-import { debug } from 'gs-tools/export/rxjs';
-import { StateId } from 'gs-tools/export/state';
-import { combineLatest, of as observableOf } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { Logger } from 'santa';
+import {stream, Stream} from 'grapevine';
+import {debug} from 'gs-tools/export/rxjs';
+import {StateId} from 'gs-tools/export/state';
+import {combineLatest, of as observableOf} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import {Logger} from 'santa';
 
-import { CheckedValue } from '../../src/action/input/checkbox';
-import { $rootId } from '../../src/core/save-service';
-import { $stateService } from '../../src/core/state-service';
-import { Palette } from '../../src/theme/palette';
+import {CheckedValue} from '../../src/action/input/checkbox';
+import {$rootId} from '../../src/core/save-service';
+import {$stateService} from '../../src/core/state-service';
+import {Palette} from '../../src/theme/palette';
 
 
 const LOGGER = new Logger('mkd.demo');
@@ -73,14 +73,14 @@ export const $demoState = stream(
         $stateService.get(vine),
         $demoStateId.get(vine),
       ])
-      .pipe(
-          switchMap(([stateService, demoStateId]) => {
-            if (!demoStateId) {
-              return observableOf(null);
-            }
+          .pipe(
+              switchMap(([stateService, demoStateId]) => {
+                if (!demoStateId) {
+                  return observableOf(null);
+                }
 
-            return stateService.get(demoStateId);
-          }),
-      );
+                return stateService.get(demoStateId);
+              }),
+          );
     },
 );

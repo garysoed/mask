@@ -1,9 +1,9 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { assert, should, test } from 'gs-testing';
+import {assert, should, test} from 'gs-testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
 
-import { _p } from '../app/app';
+import {_p} from '../app/app';
 
-import { $, $drawerLayout, DrawerLayout, DrawerMode } from './drawer-layout';
+import {$, $drawerLayout, DrawerLayout, DrawerMode} from './drawer-layout';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

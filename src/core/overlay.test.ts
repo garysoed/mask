@@ -1,13 +1,13 @@
-import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
-import { ON_LOG_$, WebConsoleDestination } from 'santa';
-import { PersonaTesterFactory, dispatchResizeEvent } from 'persona/export/testing';
-import { assert, runEnvironment, should, test } from 'gs-testing';
+import {assert, runEnvironment, should, test} from 'gs-testing';
+import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {PersonaTesterFactory, dispatchResizeEvent} from 'persona/export/testing';
+import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
-import { _p } from '../app/app';
+import {_p} from '../app/app';
 
+import {$, $overlay, Overlay} from './overlay';
+import {$overlayService, Anchor, OverlayService} from './overlay-service';
 import * as snapshots from './snapshots.json';
-import { $, $overlay, Overlay } from './overlay';
-import { $overlayService, Anchor, OverlayService } from './overlay-service';
 
 
 const dest = new WebConsoleDestination({installTrigger: true});

@@ -1,15 +1,15 @@
-import { Logger } from 'santa';
-import { NodeWithId, PersonaContext, classToggle, element, host, onDom, resizeObservable, setId, single, style } from 'persona';
-import { Observable, combineLatest, merge } from 'rxjs';
-import { cache } from 'gs-tools/export/data';
-import { filter, map, mapTo, shareReplay, startWith, switchMap } from 'rxjs/operators';
-import { filterNonNull } from 'gs-tools/export/rxjs';
-import { instanceofType } from 'gs-types';
+import {cache} from 'gs-tools/export/data';
+import {filterNonNull} from 'gs-tools/export/rxjs';
+import {instanceofType} from 'gs-types';
+import {NodeWithId, PersonaContext, classToggle, element, host, onDom, resizeObservable, setId, single, style} from 'persona';
+import {Observable, combineLatest, merge} from 'rxjs';
+import {filter, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
+import {Logger} from 'santa';
 
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
-import { $overlayService, Anchor, NodeSpec, ShowEvent } from './overlay-service';
+import {$overlayService, Anchor, NodeSpec, ShowEvent} from './overlay-service';
 import template from './overlay.html';
 
 

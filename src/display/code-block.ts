@@ -1,10 +1,10 @@
-import { Observable } from 'rxjs';
-import { PersonaContext, element, host, mutationObservable, textContent } from 'persona';
-import { instanceofType } from 'gs-types';
-import { map, startWith, tap } from 'rxjs/operators';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, element, host, mutationObservable, textContent} from 'persona';
+import {Observable} from 'rxjs';
+import {map, startWith, tap} from 'rxjs/operators';
 
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
 import template from './code-block.html';
 

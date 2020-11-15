@@ -1,10 +1,10 @@
-import { PersonaTesterFactory } from 'persona/export/testing';
-import { StateService } from 'gs-tools/export/state';
-import { assert, should, test } from 'gs-testing';
+import {assert, should, test} from 'gs-testing';
+import {StateService} from 'gs-tools/export/state';
+import {PersonaTesterFactory} from 'persona/export/testing';
 
-import { $, $checkbox, Checkbox, CheckedValue } from '../input/checkbox';
-import { $stateService } from '../../core/state-service';
-import { _p } from '../../app/app';
+import {_p} from '../../app/app';
+import {$stateService} from '../../core/state-service';
+import {$, $checkbox, Checkbox, CheckedValue} from '../input/checkbox';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

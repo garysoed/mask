@@ -1,17 +1,17 @@
-import { EMPTY, Observable, concat, merge } from 'rxjs';
-import { Logger } from 'santa';
-import { PersonaContext, attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, setAttribute, stringParser } from 'persona';
-import { cache } from 'gs-tools/export/data';
-import { filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
-import { filterDefined, filterNonNull } from 'gs-tools/export/rxjs';
-import { instanceofType } from 'gs-types';
+import {cache} from 'gs-tools/export/data';
+import {filterDefined, filterNonNull} from 'gs-tools/export/rxjs';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, setAttribute, stringParser} from 'persona';
+import {EMPTY, Observable, concat, merge} from 'rxjs';
+import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
+import {Logger} from 'santa';
 
-import { $baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME } from '../input/base-input';
-import { CHANGE_EVENT, ChangeEvent } from '../../event/change-event';
-import { _p } from '../../app/app';
-import { stateIdParser } from '../../core/state-id-parser';
+import {_p} from '../../app/app';
+import {stateIdParser} from '../../core/state-id-parser';
+import {CHANGE_EVENT, ChangeEvent} from '../../event/change-event';
+import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
 
-import { $onRadioInput$ } from './on-radio-input';
+import {$onRadioInput$} from './on-radio-input';
 import template from './radio-input.html';
 
 

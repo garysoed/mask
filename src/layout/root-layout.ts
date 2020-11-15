@@ -1,17 +1,17 @@
-import { BehaviorSubject, Observable, combineLatest, merge } from 'rxjs';
-import { PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, stringParser, textContent } from 'persona';
-import { distinctUntilChanged, map, mapTo, startWith, tap } from 'rxjs/operators';
-import { instanceofType } from 'gs-types';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, stringParser, textContent} from 'persona';
+import {BehaviorSubject, Observable, combineLatest, merge} from 'rxjs';
+import {distinctUntilChanged, map, mapTo, startWith, tap} from 'rxjs/operators';
 
-import { $button, Button } from '../action/button';
-import { $drawerLayout, DrawerLayout } from '../layout/drawer-layout';
-import { $icon, Icon } from '../display/icon';
-import { ACTION_EVENT, ActionEvent } from '../event/action-event';
-import { MEDIA_QUERY } from '../theme/media-query';
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { _p } from '../app/app';
+import {$button, Button} from '../action/button';
+import {_p} from '../app/app';
+import {$icon, Icon} from '../display/icon';
+import {ACTION_EVENT, ActionEvent} from '../event/action-event';
+import {$drawerLayout, DrawerLayout} from '../layout/drawer-layout';
+import {MEDIA_QUERY} from '../theme/media-query';
+import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
-import { ListItemLayout } from './list-item-layout';
+import {ListItemLayout} from './list-item-layout';
 import template from './root-layout.html';
 
 

@@ -1,18 +1,18 @@
-import { filterNonNull } from 'gs-tools/export/rxjs';
-import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
-import { LocalStorage } from 'gs-tools/export/store';
-import { identity, json } from 'nabu';
-import { combineLatest, EMPTY, merge } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { ON_LOG_$, WebConsoleDestination } from 'santa';
+import {filterNonNull} from 'gs-tools/export/rxjs';
+import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
+import {LocalStorage} from 'gs-tools/export/store';
+import {identity, json} from 'nabu';
+import {EMPTY, combineLatest, merge} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
+import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
-import { CheckedValue } from '../src/action/input/checkbox';
-import { $theme, start } from '../src/app/app';
-import { $saveConfig, $saveService } from '../src/core/save-service';
-import { $stateService } from '../src/core/state-service';
-import { registerSvg } from '../src/core/svg-service';
-import { PALETTE, Palette } from '../src/theme/palette';
-import { Theme } from '../src/theme/theme';
+import {CheckedValue} from '../src/action/input/checkbox';
+import {$theme, start} from '../src/app/app';
+import {$saveConfig, $saveService} from '../src/core/save-service';
+import {$stateService} from '../src/core/state-service';
+import {registerSvg} from '../src/core/svg-service';
+import {PALETTE, Palette} from '../src/theme/palette';
+import {Theme} from '../src/theme/theme';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -20,9 +20,9 @@ import highlightSvg from './asset/highlight.svg';
 import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
-import { Demo } from './core/demo';
-import { $demoState, DemoState } from './core/demo-state';
-import { $locationService } from './core/location-service';
+import {Demo} from './core/demo';
+import {$demoState, DemoState} from './core/demo-state';
+import {$locationService} from './core/location-service';
 
 
 const DEMO_STATE_KEY = 'demoState';
@@ -66,30 +66,30 @@ window.addEventListener('load', () => {
     $demoState.get(vine),
     $stateService.get(vine),
   ])
-  .pipe(
-      switchMap(([demoState, stateService]) => {
-        if (!demoState) {
-          return EMPTY;
-        }
+      .pipe(
+          switchMap(([demoState, stateService]) => {
+            if (!demoState) {
+              return EMPTY;
+            }
 
-        const {$baseColorName, $accentColorName} = demoState;
-        const onBaseColorName$ = stateService.get($baseColorName).pipe(
-            filterNonNull(),
-            tap(colorName => {
-              $theme.set(vine, theme => theme.setBaseColor(PALETTE[colorName]));
-            }),
-        );
+            const {$baseColorName, $accentColorName} = demoState;
+            const onBaseColorName$ = stateService.get($baseColorName).pipe(
+                filterNonNull(),
+                tap(colorName => {
+                  $theme.set(vine, theme => theme.setBaseColor(PALETTE[colorName]));
+                }),
+            );
 
-        const onAccentColorName$ = stateService.get($accentColorName).pipe(
-            filterNonNull(),
-            tap(colorName => {
-              $theme.set(vine, theme => theme.setHighlightColor(PALETTE[colorName]));
-            }),
-        );
-        return merge(onBaseColorName$, onAccentColorName$);
-      }),
-  )
-  .subscribe();
+            const onAccentColorName$ = stateService.get($accentColorName).pipe(
+                filterNonNull(),
+                tap(colorName => {
+                  $theme.set(vine, theme => theme.setHighlightColor(PALETTE[colorName]));
+                }),
+            );
+            return merge(onBaseColorName$, onAccentColorName$);
+          }),
+      )
+      .subscribe();
 
   $saveService.get(vine)
       .pipe(

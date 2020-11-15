@@ -1,12 +1,12 @@
-import { BehaviorSubject, EMPTY, Observable, combineLatest, merge, of as observableOf } from 'rxjs';
-import { EditableStorage } from 'gs-tools/export/store';
-import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
-import { Vine, source } from 'grapevine';
-import { cache } from 'gs-tools/export/data';
-import { filterNonNull } from 'gs-tools/export/rxjs';
-import { map, share, switchMap, take, tap } from 'rxjs/operators';
+import {Vine, source} from 'grapevine';
+import {cache} from 'gs-tools/export/data';
+import {filterNonNull} from 'gs-tools/export/rxjs';
+import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
+import {EditableStorage} from 'gs-tools/export/store';
+import {BehaviorSubject, EMPTY, Observable, combineLatest, merge, of as observableOf} from 'rxjs';
+import {map, share, switchMap, take, tap} from 'rxjs/operators';
 
-import { $stateService } from './state-service';
+import {$stateService} from './state-service';
 
 
 interface SaveConfig {

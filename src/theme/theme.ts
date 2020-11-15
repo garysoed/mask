@@ -1,10 +1,10 @@
-import { $asArray, $flat, $map, $pipe } from 'gs-tools/export/collect';
-import { Color } from 'gs-tools/export/color';
-import { cache } from 'gs-tools/export/data';
+import {$asArray, $flat, $map, $pipe} from 'gs-tools/export/collect';
+import {Color} from 'gs-tools/export/color';
+import {cache} from 'gs-tools/export/data';
 
-import { ColorWithAlpha, createColor } from './shade';
-import { PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, PRIMARY_DARK_SECTION_SPECS, PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, PRIMARY_LIGHT_SECTION_SPECS, SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS, SECONDARY_DARK_SECTION_SPECS, SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS, SECONDARY_LIGHT_SECTION_SPECS, SectionSpec } from './section-spec';
 import generalCss from './general.css';
+import {PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, PRIMARY_DARK_SECTION_SPECS, PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, PRIMARY_LIGHT_SECTION_SPECS, SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS, SECONDARY_DARK_SECTION_SPECS, SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS, SECONDARY_LIGHT_SECTION_SPECS, SectionSpec} from './section-spec';
+import {ColorWithAlpha, createColor} from './shade';
 
 
 export class Theme {

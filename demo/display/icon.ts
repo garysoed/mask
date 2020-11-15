@@ -1,16 +1,16 @@
-import { cache } from 'gs-tools/export/data';
-import { filterNonNull } from 'gs-tools/export/rxjs';
-import { StateId } from 'gs-tools/export/state';
-import { instanceofType } from 'gs-types';
-import { element, PersonaContext, setAttribute } from 'persona';
-import { Observable, of as observableOf } from 'rxjs';
-import { map, switchMap, withLatestFrom } from 'rxjs/operators';
+import {cache} from 'gs-tools/export/data';
+import {filterNonNull} from 'gs-tools/export/rxjs';
+import {StateId} from 'gs-tools/export/state';
+import {instanceofType} from 'gs-types';
+import {element, PersonaContext, setAttribute} from 'persona';
+import {Observable, of as observableOf} from 'rxjs';
+import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 
-import { $checkbox, $icon, $stateService, _p, CheckedValue, Icon as MaskIcon, registerSvg, ThemedCustomElementCtrl } from '../../export';
-import { FitTo } from '../../src/display/icon';
+import {$checkbox, $icon, $stateService, _p, CheckedValue, Icon as MaskIcon, registerSvg, ThemedCustomElementCtrl} from '../../export';
+import {FitTo} from '../../src/display/icon';
 import fitToHeightSvg from '../asset/fit_to_height.svg';
-import { DemoLayout } from '../base/demo-layout';
-import { $demoState, IconDemoState } from '../core/demo-state';
+import {DemoLayout} from '../base/demo-layout';
+import {$demoState, IconDemoState} from '../core/demo-state';
 
 import template from './icon.html';
 

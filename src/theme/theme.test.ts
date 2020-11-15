@@ -1,9 +1,9 @@
-import { BrowserSnapshotsEnv } from 'gs-testing/export/browser';
-import { HslColor } from 'gs-tools/export/color';
-import { assert, runEnvironment, setup, should, test } from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
+import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {HslColor} from 'gs-tools/export/color';
 
 import * as snapshots from './snapshots.json';
-import { Theme } from './theme';
+import {Theme} from './theme';
 
 
 test('@mask/theme/theme', () => {

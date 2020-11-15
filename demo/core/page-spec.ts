@@ -1,20 +1,20 @@
-import { ComponentSpec } from 'persona';
-import { CustomElementCtrlCtor } from 'persona/export/internal';
+import {ComponentSpec} from 'persona';
+import {CustomElementCtrlCtor} from 'persona/export/internal';
 
-import { $buttonDemo, ButtonDemo } from '../action/button';
-import { $checkboxDemo, CheckboxDemo } from '../action/checkbox';
-import { $radioInputDemo, RadioInputDemo } from '../action/radio-input';
-import { $textInputDemo, TextInputDemo } from '../action/text-input';
-import { $codeBlockDemo, CodeBlockDemo } from '../display/code-block';
-import { $iconDemo, IconDemo } from '../display/icon';
-import { $keyboardDemo, KeyboardDemo } from '../display/keyboard';
-import { $colorsDemo, ColorsDemo } from '../general/colors';
-import { $textsDemo, TextsDemo } from '../general/texts';
-import { $drawerLayoutDemo, DrawerLayoutDemo } from '../layout/drawer-layout';
-import { $overlayLayoutDemo, OverlayLayoutDemo } from '../layout/overlay-layout';
-import { $annotatedTextDemo, AnnotatedTextDemo } from '../display/annotated-text';
+import {$buttonDemo, ButtonDemo} from '../action/button';
+import {$checkboxDemo, CheckboxDemo} from '../action/checkbox';
+import {$radioInputDemo, RadioInputDemo} from '../action/radio-input';
+import {$textInputDemo, TextInputDemo} from '../action/text-input';
+import {$annotatedTextDemo, AnnotatedTextDemo} from '../display/annotated-text';
+import {$codeBlockDemo, CodeBlockDemo} from '../display/code-block';
+import {$iconDemo, IconDemo} from '../display/icon';
+import {$keyboardDemo, KeyboardDemo} from '../display/keyboard';
+import {$colorsDemo, ColorsDemo} from '../general/colors';
+import {$textsDemo, TextsDemo} from '../general/texts';
+import {$drawerLayoutDemo, DrawerLayoutDemo} from '../layout/drawer-layout';
+import {$overlayLayoutDemo, OverlayLayoutDemo} from '../layout/overlay-layout';
 
-import { Views } from './location-service';
+import {Views} from './location-service';
 
 
 export interface PageSpec {

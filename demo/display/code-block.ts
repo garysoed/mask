@@ -1,9 +1,9 @@
-import { PersonaContext } from 'persona';
+import {PersonaContext} from 'persona';
 
-import { _p } from '../../src/app/app';
-import { CodeBlock } from '../../src/display/code-block';
-import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
-import { DemoLayout } from '../base/demo-layout';
+import {_p} from '../../src/app/app';
+import {CodeBlock} from '../../src/display/code-block';
+import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {DemoLayout} from '../base/demo-layout';
 
 import template from './code-block.html';
 

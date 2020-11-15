@@ -1,11 +1,11 @@
-import { InMemoryStorage } from 'gs-tools/export/store';
-import { Snapshot, StateId, StateService } from 'gs-tools/export/state';
-import { Vine } from 'grapevine';
-import { arrayThat, assert, objectThat, run, should, test } from 'gs-testing';
-import { map, take, tap } from 'rxjs/operators';
+import {Vine} from 'grapevine';
+import {arrayThat, assert, objectThat, run, should, test} from 'gs-testing';
+import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
+import {InMemoryStorage} from 'gs-tools/export/store';
+import {map, take, tap} from 'rxjs/operators';
 
-import { $rootId, $saveConfig, SaveService } from './save-service';
-import { $stateService } from './state-service';
+import {$rootId, $saveConfig, SaveService} from './save-service';
+import {$stateService} from './state-service';
 
 
 interface TestState {

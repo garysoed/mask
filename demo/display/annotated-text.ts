@@ -1,15 +1,15 @@
-import { NodeWithId, PersonaContext, renderCustomElement, renderElement, setId } from 'persona';
-import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {NodeWithId, PersonaContext, renderCustomElement, setId} from 'persona';
+import {Observable, of as observableOf} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import { _p } from '../../src/app/app';
-import { registerSvg } from '../../src/core/svg-service';
-import { AnnotatedText } from '../../src/display/annotated-text';
-import { $annotationConfig } from '../../src/display/annotation-service';
-import { $icon, Icon } from '../../src/display/icon';
-import { ThemedCustomElementCtrl } from '../../src/theme/themed-custom-element-ctrl';
+import {_p} from '../../src/app/app';
+import {registerSvg} from '../../src/core/svg-service';
+import {AnnotatedText} from '../../src/display/annotated-text';
+import {$annotationConfig} from '../../src/display/annotation-service';
+import {$icon, Icon} from '../../src/display/icon';
+import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
 import smileySvg from '../asset/smiley.svg';
-import { DemoLayout } from '../base/demo-layout';
+import {DemoLayout} from '../base/demo-layout';
 
 import template from './annotated-text.html';
 
@@ -71,5 +71,5 @@ function renderEmoji(
       {},
       context,
   )
-  .pipe(map(imgNode => [initNode, imgNode, remainderNode]));
+      .pipe(map(imgNode => [initNode, imgNode, remainderNode]));
 }

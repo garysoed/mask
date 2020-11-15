@@ -9,15 +9,15 @@
  * @slot The content of the drawer.
  */
 
-import { Observable, combineLatest } from 'rxjs';
-import { PersonaContext, attributeIn, booleanParser, element, host, stringParser, style } from 'persona';
-import { cache } from 'gs-tools/export/data';
-import { instanceofType } from 'gs-types';
-import { map } from 'rxjs/operators';
-import { stringMatchConverter } from 'gs-tools/export/serializer';
+import {cache} from 'gs-tools/export/data';
+import {stringMatchConverter} from 'gs-tools/export/serializer';
+import {instanceofType} from 'gs-types';
+import {PersonaContext, attributeIn, booleanParser, element, host, stringParser, style} from 'persona';
+import {Observable, combineLatest} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import { ThemedCustomElementCtrl } from '../theme/themed-custom-element-ctrl';
-import { _p } from '../app/app';
+import {_p} from '../app/app';
+import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
 import drawerTemplate from './drawer-layout.html';
 
