@@ -1,10 +1,8 @@
 import {cache} from 'gs-tools/export/data';
-import {PersonaContext, attributeOut, hasAttribute, host, setAttribute, stringParser} from 'persona';
+import {attributeOut, BaseCtrl, hasAttribute, host, InputsOf, PersonaContext, setAttribute, stringParser, ValuesOf} from 'persona';
 import {Output} from 'persona/export/internal';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
 
 export const $$ = {
@@ -23,18 +21,32 @@ export const $ = {
   }),
 };
 
-export class BaseAction extends ThemedCustomElementCtrl {
-  protected readonly disabled$ = this.declareInput($.host._.disabled);
+export abstract class BaseAction<S extends typeof $> extends BaseCtrl<S> {
+  protected readonly disabled$ = this.inputs.host.disabled;
 
   constructor(
       private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,
+      spec: S,
   ) {
-    super(context);
+    super(context, spec);
     this.render(this.disabledDomOutput, this.disabled$);
-    this.render($.host._.ariaDisabled, this.ariaDisabled$);
-    this.render($.host._.action1, this.isSecondaryAction$.pipe(map(isSecondary => !isSecondary)));
-    this.render($.host._.action2, this.isSecondaryAction$);
+  }
+
+  @cache()
+  protected get baseValues(): ValuesOf<typeof $> {
+    return {
+      host: {
+        ariaDisabled: this.ariaDisabled$,
+        action1: this.baseInputs.host.isSecondary.pipe(map(isSecondary => !isSecondary)),
+        action2: this.baseInputs.host.isSecondary,
+      },
+    };
+  }
+
+  @cache()
+  private get baseInputs(): InputsOf<typeof $> {
+    return this.inputs;
   }
 
   @cache()
@@ -43,10 +55,5 @@ export class BaseAction extends ThemedCustomElementCtrl {
         .pipe(
             map(v => v ? 'true' : 'false'),
         );
-  }
-
-  @cache()
-  private get isSecondaryAction$(): Observable<boolean> {
-    return this.declareInput($.host._.isSecondary);
   }
 }
