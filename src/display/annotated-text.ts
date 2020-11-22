@@ -1,15 +1,16 @@
 import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {debug, filterDefined} from 'gs-tools/export/rxjs';
-import {NodeWithId, PersonaContext, attributeIn, host, listParser, multi, root, setId, stringParser, textIn} from 'persona';
-import {Observable, combineLatest, concat, of as observableOf} from 'rxjs';
+import {debug} from 'gs-tools/export/rxjs';
+import {attributeIn, host, listParser, multi, NodeWithId, PersonaContext, root, setId, stringParser, textIn, ValuesOf} from 'persona';
+import {combineLatest, concat, Observable, of as observableOf} from 'rxjs';
 import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
 
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import {$annotationConfig, AnnotationSpec} from './annotation-service';
+
 
 const LOGGER = new Logger('mask.AnnotatedText');
 
@@ -32,16 +33,23 @@ export const $ = {
   ...$annotatedText,
   template: '<!-- #contents -->',
 })
-export class AnnotatedText extends ThemedCustomElementCtrl {
+export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.root._.content, this.content$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      root: {
+        content: this.content$,
+      },
+    };
   }
 
   @cache()
   private get annotations$(): Observable<readonly AnnotationSpec[]> {
-    return this.declareInput($.host._.annotations).pipe(
+    return this.inputs.host.annotations.pipe(
         map(annotations => annotations || []),
         withLatestFrom($annotationConfig.get(this.vine)),
         map(([annotationIds, config]) => $pipe(
@@ -84,7 +92,7 @@ export class AnnotatedText extends ThemedCustomElementCtrl {
   @cache()
   private get content$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
     return combineLatest([
-      this.declareInput($.host._.text).pipe(filterDefined()),
+      this.inputs.host.text,
       this.annotations$,
     ])
         .pipe(

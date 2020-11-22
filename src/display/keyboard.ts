@@ -1,11 +1,11 @@
 import {cache} from 'gs-tools/export/data';
-import {Type, enumType} from 'gs-types';
-import {NodeWithId, PersonaContext, host, multi, renderElement, renderTextNode, root, textIn} from 'persona';
-import {Observable, combineLatest, of as observableOf} from 'rxjs';
+import {enumType, Type} from 'gs-types';
+import {host, multi, NodeWithId, PersonaContext, renderElement, renderTextNode, root, textIn, ValuesOf} from 'persona';
+import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import template from './keyboard.html';
 
@@ -42,16 +42,23 @@ const SPECIAL_KEYS_TYPE: Type<SpecialKeys> = enumType(SpecialKeys);
   ...$keyboard,
   template,
 })
-export class Keyboard extends ThemedCustomElementCtrl {
+export class Keyboard extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.root._.content, this.keyboardSegments$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      root: {
+        content: this.keyboardSegments$,
+      },
+    };
   }
 
   @cache()
   private get keyboardSegments$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
-    const children$ = this.declareInput($.host._.text).pipe(
+    const children$ = this.inputs.host.text.pipe(
         map(keyStr => keyStr.split(' ')),
         switchMap(keys => {
           if (keys.length <= 0) {

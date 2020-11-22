@@ -1,10 +1,11 @@
+import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, element, host, mutationObservable, textContent} from 'persona';
+import {element, host, mutationObservable, PersonaContext, textContent, ValuesOf} from 'persona';
 import {Observable} from 'rxjs';
 import {map, startWith, tap} from 'rxjs/operators';
 
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import template from './code-block.html';
 
@@ -31,15 +32,21 @@ const $ = {
   ...$codeBlock,
   template,
 })
-export class CodeBlock extends ThemedCustomElementCtrl {
+export class CodeBlock extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
 
     this.addSetup(this.setupRenderCode());
   }
 
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {};
+  }
+
   private setupRenderCode(): Observable<unknown> {
     const hostEl = $.host.getSelectable(this.context);
+    // TODO: Hook into emission AFTER rendering.
     return mutationObservable(hostEl, {childList: true})
         .pipe(
             startWith({}),
