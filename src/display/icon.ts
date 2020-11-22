@@ -6,19 +6,18 @@
  *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
-
+// TODO: eslint to sort members.
 import {cache} from 'gs-tools/export/data';
-import {filterDefined} from 'gs-tools/export/rxjs';
 import {typeBased} from 'gs-tools/export/serializer';
 import {booleanType, instanceofType} from 'gs-types';
 import {compose, json} from 'nabu';
-import {AriaRole, NodeWithId, PersonaContext, attributeIn, attributeOut, element, enumParser, host, renderHtml, single, stringParser} from 'persona';
-import {Observable, combineLatest, of as observableOf} from 'rxjs';
+import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser, ValuesOf} from 'persona';
+import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 import {$svgService} from '../core/svg-service';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import template from './icon.html';
 
@@ -56,20 +55,26 @@ export const $ = {
   ...$icon,
   template,
 })
-export class Icon extends ThemedCustomElementCtrl {
-  private readonly icon$ = this.declareInput($.host._.icon);
-
+export class Icon extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.host._.ariaHidden, observableOf(true));
-    this.render($.host._.role, observableOf(AriaRole.PRESENTATION));
-    this.render($.root._.content, this.rootSvg$);
+  get values(): ValuesOf<typeof $> {
+    return {
+      host: {
+        ariaHidden: observableOf(true),
+        role: observableOf(AriaRole.PRESENTATION),
+      },
+      root: {
+        content: this.rootSvg$,
+      },
+    };
   }
 
   @cache()
   private get rootSvg$(): Observable<NodeWithId<Node>|null> {
-    const node$ = combineLatest([$svgService.get(this.vine), this.icon$.pipe(filterDefined())])
+    const node$ = combineLatest([$svgService.get(this.vine), this.inputs.host.icon])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
             switchMap(svg => {
@@ -80,7 +85,7 @@ export class Icon extends ThemedCustomElementCtrl {
             }),
         );
 
-    return combineLatest([node$, this.declareInput($.host._.fitTo)]).pipe(
+    return combineLatest([node$, this.inputs.host.fitTo]).pipe(
         tap(([node, fitTo]) => {
           if (!(node instanceof Element)) {
             return;
