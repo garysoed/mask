@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, setAttribute, stringParser} from 'persona';
+import {PersonaContext, attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, setAttribute, stringParser, ValuesOf} from 'persona';
 import {Observable, defer, merge, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Logger} from 'santa';
@@ -69,7 +69,7 @@ export const $ = {
   ...$textInput,
   template,
 })
-export class TextInput extends BaseInput<string> {
+export class TextInput extends BaseInput<string, typeof $> {
   constructor(context: PersonaContext) {
     super(
         '',
@@ -77,16 +77,24 @@ export class TextInput extends BaseInput<string> {
         $.host._.stateId,
         $.host._.onChange,
         context,
+        $,
     );
+  }
 
-    this.render($.input._.type, this.declareInput($.host._.type));
-    this.render($.input._.autocomplete, this.declareInput($.host._.autocomplete));
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      input: {
+        type: this.inputs.host.type,
+        autocomplete: this.inputs.host.autocomplete,
+      },
+    };
   }
 
   @cache()
   protected get domValue$(): Observable<string> {
     const el = $.input.getSelectable(this.context);
-    return merge(this.declareInput($.input._.onInput), this.onDomValueUpdatedByScript$)
+    return merge(this.inputs.input.onInput, this.onDomValueUpdatedByScript$)
         .pipe(
             startWith({}),
             map(() => el.value),

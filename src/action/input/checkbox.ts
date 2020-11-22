@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, onInput, setAttribute, stringParser} from 'persona';
+import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, onInput, setAttribute, stringParser, ValuesOf} from 'persona';
 import {Observable, defer, merge, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
@@ -40,7 +40,7 @@ export const $ = {
   ...$checkbox,
   template,
 })
-export class Checkbox extends BaseInput<CheckedValue> {
+export class Checkbox extends BaseInput<CheckedValue, typeof $> {
   constructor(context: PersonaContext) {
     super(
         false,
@@ -48,9 +48,17 @@ export class Checkbox extends BaseInput<CheckedValue> {
         $.host._.stateId,
         $.host._.onChange,
         context,
+        $,
     );
+  }
 
-    this.render($.display._.name, this.displaySlot$);
+  @cache()
+  get values(): ValuesOf<typeof $> {
+    return {
+      display: {
+        name: this.displaySlot$,
+      },
+    };
   }
 
   @cache()
@@ -70,7 +78,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   @cache()
   protected get domValue$(): Observable<CheckedValue> {
     return merge(
-        this.declareInput($.checkbox._.onInput),
+        this.inputs.checkbox.onInput,
         this.onDomValueUpdatedByScript$,
     )
         .pipe(

@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId, StateService} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser} from 'persona';
+import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser, ValuesOf} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {Observable, Subject, combineLatest, of as observableOf} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
@@ -46,7 +46,7 @@ const DEFAULT_VALUE = 'DEFAULT_VALUE';
   ...$$,
   template: '<div id="div"></div>',
 })
-class TestInput extends BaseInput<string> {
+class TestInput extends BaseInput<string, typeof $> {
   constructor(context: PersonaContext) {
     super(
         DEFAULT_VALUE,
@@ -54,9 +54,15 @@ class TestInput extends BaseInput<string> {
         $.host._.stateId,
         $.host._.onChange,
         context,
+        $,
     );
 
     this.addSetup(this.forwardDomValueUpdatedByScript$);
+  }
+
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {};
   }
 
   @cache()

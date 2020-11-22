@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {filterDefined, filterNonNull} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, setAttribute, stringParser} from 'persona';
+import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, setAttribute, stringParser, ValuesOf} from 'persona';
 import {EMPTY, Observable, concat, merge} from 'rxjs';
 import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
@@ -47,7 +47,7 @@ export const $ = {
   ...$radioInput,
   template,
 })
-export class RadioInput extends BaseInput<number|null> {
+export class RadioInput extends BaseInput<number|null, typeof $> {
   constructor(context: PersonaContext) {
     super(
         null,
@@ -55,18 +55,30 @@ export class RadioInput extends BaseInput<number|null> {
         $.host._.stateId,
         $.host._.onChange,
         context,
+        $,
     );
 
     this.addSetup(this.handleOnGlobalRadioInput$);
     this.addSetup(this.handleOnRadioInput$);
-    this.render($.display._.name, this.displaySlot$);
-    this.render($.input._.name, this.declareInput($.host._.stateId).pipe(filterDefined()));
+  }
+
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      ...this.baseActionValues,
+      display: {
+        name: this.displaySlot$,
+      },
+      input: {
+        name: this.inputs.host.stateId.pipe(filterDefined()),
+      },
+    };
   }
 
   @cache()
   private get displaySlot$(): Observable<string> {
     return this.domValue$.pipe(
-        withLatestFrom(this.declareInput($.host._.index)),
+        withLatestFrom(this.inputs.host.index),
         map(([checkState, index]) => {
           return checkState === index ? 'display_checked' : 'display_unchecked';
         }),
@@ -76,12 +88,12 @@ export class RadioInput extends BaseInput<number|null> {
   @cache()
   protected get domValue$(): Observable<number|null> {
     return merge(
-        this.declareInput($.input._.onInput),
+        this.inputs.input.onInput,
         this.onDomValueUpdatedByScript$,
     )
         .pipe(
             startWith({}),
-            withLatestFrom(this.declareInput($.host._.index)),
+            withLatestFrom(this.inputs.host.index),
             map(([, index]) => {
               const element = $.input.getSelectable(this.context);
               if (index === undefined) {
@@ -98,7 +110,7 @@ export class RadioInput extends BaseInput<number|null> {
   private get handleOnGlobalRadioInput$(): Observable<unknown> {
     return $onRadioInput$.get(this.vine).pipe(
         switchMap(subject => subject),
-        withLatestFrom(this.declareInput($.host._.stateId), this.declareInput($.host._.index)),
+        withLatestFrom(this.inputs.host.stateId, this.inputs.host.index),
         filter(([event, stateId, index]) => {
           return event.index !== index && event.stateId.id === stateId?.id;
         }),
@@ -119,14 +131,14 @@ export class RadioInput extends BaseInput<number|null> {
   @cache()
   private get handleOnRadioInput$(): Observable<unknown> {
     return merge(
-        this.declareInput($.input._.onInput),
+        this.inputs.input.onInput,
         this.onDomValueUpdatedByScript$,
     )
         .pipe(
             withLatestFrom(
                 this.domValue$,
-                this.declareInput($.host._.stateId),
-                this.declareInput($.host._.index),
+                this.inputs.host.stateId,
+                this.inputs.host.index,
                 $onRadioInput$.get(this.vine),
             ),
             tap(([, currentValue, stateId, index, subject]) => {
@@ -157,7 +169,7 @@ export class RadioInput extends BaseInput<number|null> {
   }
 
   protected updateDomValue(newValue: number|null): Observable<unknown> {
-    return this.declareInput($.host._.index).pipe(
+    return this.inputs.host.index.pipe(
         take(1),
         tap(index => {
           const el = $.input.getSelectable(this.context);

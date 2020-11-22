@@ -5,55 +5,62 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 
-export const $$ = {
+export const $baseAction = {
   api: {
     disabled: hasAttribute('mk-disabled'),
     isSecondary: hasAttribute('is-secondary'),
+    ariaDisabled: attributeOut('aria-disabled', stringParser(), 'false'),
+    action1: setAttribute('mk-action-1'),
+    action2: setAttribute('mk-action-2'),
   },
 };
 
 export const $ = {
-  host: host({
-    ...$$.api,
-    ariaDisabled: attributeOut('aria-disabled', stringParser(), 'false'),
-    action1: setAttribute('mk-action-1'),
-    action2: setAttribute('mk-action-2'),
-  }),
+  host: host($baseAction.api),
 };
 
 export abstract class BaseAction<S extends typeof $> extends BaseCtrl<S> {
-  protected readonly disabled$ = this.inputs.host.disabled;
-
   constructor(
       private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,
       spec: S,
   ) {
     super(context, spec);
-    this.render(this.disabledDomOutput, this.disabled$);
+    // TODO: Avoid addSetup
+    this.addSetup(this.renderDisabledDomOutput$);
   }
 
   @cache()
-  protected get baseValues(): ValuesOf<typeof $> {
+  protected get baseActionValues(): ValuesOf<typeof $> {
     return {
       host: {
         ariaDisabled: this.ariaDisabled$,
-        action1: this.baseInputs.host.isSecondary.pipe(map(isSecondary => !isSecondary)),
-        action2: this.baseInputs.host.isSecondary,
+        action1: this.baseActionInputs.host.isSecondary.pipe(map(isSecondary => !isSecondary)),
+        action2: this.baseActionInputs.host.isSecondary,
       },
     };
   }
 
   @cache()
-  private get baseInputs(): InputsOf<typeof $> {
+  private get baseActionInputs(): InputsOf<typeof $> {
     return this.inputs;
   }
 
   @cache()
   private get ariaDisabled$(): Observable<string> {
-    return this.disabled$
+    return this.baseActionInputs.host.disabled
         .pipe(
             map(v => v ? 'true' : 'false'),
         );
+  }
+
+  @cache()
+  protected get disabled$(): Observable<boolean> {
+    return this.baseActionInputs.host.disabled;
+  }
+
+  @cache()
+  private get renderDisabledDomOutput$(): Observable<unknown> {
+    return this.baseActionInputs.host.disabled.pipe(this.disabledDomOutput.output(this.context));
   }
 }

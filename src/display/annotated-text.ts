@@ -41,6 +41,7 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get values(): ValuesOf<typeof $> {
     return {
+      host: {},
       root: {
         content: this.content$,
       },

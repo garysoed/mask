@@ -41,7 +41,7 @@ export class CodeBlock extends BaseThemedCtrl<typeof $> {
 
   @cache()
   protected get values(): ValuesOf<typeof $> {
-    return {};
+    return {host: {}, root: {}};
   }
 
   private setupRenderCode(): Observable<unknown> {

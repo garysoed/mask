@@ -50,6 +50,7 @@ export class Keyboard extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get values(): ValuesOf<typeof $> {
     return {
+      host: {},
       root: {
         content: this.keyboardSegments$,
       },

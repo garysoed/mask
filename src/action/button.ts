@@ -10,14 +10,14 @@
  */
 
 import {cache} from 'gs-tools/export/data';
-import {AriaRole, PersonaContext, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, stringParser} from 'persona';
+import {AriaRole, PersonaContext, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, stringParser, ValuesOf} from 'persona';
 import {Observable, merge, of as observableOf} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 import {ACTION_EVENT, ActionEvent} from '../event/action-event';
 
-import {$$ as $baseAction, BaseAction} from './base-action';
+import {$baseAction as $baseAction, BaseAction} from './base-action';
 import template from './button.html';
 
 
@@ -47,21 +47,29 @@ export const $ = {
   ...$button,
   template,
 })
-export class Button extends BaseAction {
+export class Button extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super(noop(), context);
+    super(noop(), context, $);
+  }
 
-    this.render($.host._.role, observableOf(AriaRole.BUTTON));
-    this.render($.host._.actionEvent, this.onAction$);
-    this.render($.host._.tabindex, this.tabIndex$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      host: {
+        ...this.baseActionValues,
+        role: observableOf(AriaRole.BUTTON),
+        actionEvent: this.onAction$,
+        tabindex: this.tabIndex$,
+      },
+    };
   }
 
   @cache()
   private get onAction$(): Observable<ActionEvent<void>> {
     return merge(
-        this.declareInput($.host._.onClick),
-        this.declareInput($.host._.onEnterDown),
-        this.declareInput($.host._.onSpaceDown),
+        this.inputs.host.onClick,
+        this.inputs.host.onEnterDown,
+        this.inputs.host.onSpaceDown,
     )
         .pipe(
             throttleTime(THROTTLE_MS),

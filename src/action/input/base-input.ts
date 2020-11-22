@@ -1,15 +1,15 @@
 import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
-import {PersonaContext, handler, hasAttribute, host} from 'persona';
+import {handler, hasAttribute, host, InputsOf, PersonaContext} from 'persona';
 import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
-import {EMPTY, Observable, Subject, combineLatest, merge, of as observableOf} from 'rxjs';
+import {combineLatest, EMPTY, merge, Observable, of as observableOf, Subject} from 'rxjs';
 import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
 import {ChangeEvent} from '../../event/change-event';
-import {$$ as $baseAction, BaseAction} from '../base-action';
+import {$baseAction as $baseAction, BaseAction} from '../base-action';
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,27 +31,37 @@ export const $ = {
 };
 
 @_p.baseCustomElement({})
-export abstract class BaseInput<T> extends BaseAction {
-  protected readonly onDomValueUpdatedByScript$ = new Subject<unknown>();
-  private readonly stateId$ = this.declareInput(this.$stateId);
+export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
+  private readonly stateId$ = this.$stateId.getValue(this.context);
 
   constructor(
       private readonly defaultValue: T,
       disabledDomOutput: Output<boolean>,
       private readonly $stateId: AttributeInput<StateId<T>|undefined>,
-      $onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
+      private readonly $onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
       context: PersonaContext,
+      spec: S,
   ) {
-    super(disabledDomOutput, context);
+    super(disabledDomOutput, context, spec);
 
     this.addSetup(this.handleOnApply$);
     this.addSetup(this.handleOnClear$);
-    this.render($onChangeOutput, this.onChange$);
+    this.addSetup(this.renderOnChangeOutput$);
   }
 
   protected abstract get domValue$(): Observable<T>;
 
+  @cache()
+  protected get onDomValueUpdatedByScript$(): Subject<unknown> {
+    return new Subject();
+  }
+
   protected abstract updateDomValue(newValue: T): Observable<unknown>;
+
+  @cache()
+  private get baseInputInputs(): InputsOf<typeof $> {
+    return this.inputs;
+  }
 
   @cache()
   private get currentStateValue$(): Observable<T> {
@@ -73,7 +83,7 @@ export abstract class BaseInput<T> extends BaseAction {
 
   @cache()
   private get handleOnApply$(): Observable<unknown> {
-    const onAutoApply$ = this.declareInput($.host._.applyOnChange).pipe(
+    const onAutoApply$ = this.baseInputInputs.host.applyOnChange.pipe(
         switchMap(applyOnChange => {
           if (!applyOnChange) {
             return EMPTY;
@@ -84,7 +94,7 @@ export abstract class BaseInput<T> extends BaseAction {
     );
 
     return merge(
-        this.declareInput($.host._.applyFn),
+        this.baseInputInputs.host.applyFn,
         onAutoApply$,
     )
         .pipe(
@@ -101,7 +111,7 @@ export abstract class BaseInput<T> extends BaseAction {
 
   @cache()
   private get handleOnClear$(): Observable<unknown> {
-    return this.declareInput($.host._.clearFn).pipe(
+    return this.baseInputInputs.host.clearFn.pipe(
         startWith({}),
         withLatestFrom(this.currentStateValue$),
         switchMap(([, value]) => this.updateDomValue(value)),
@@ -118,5 +128,10 @@ export abstract class BaseInput<T> extends BaseAction {
         filter(([oldValue, newValue]) => oldValue !== newValue),
         map(([oldValue]) => new ChangeEvent(oldValue)),
     );
+  }
+
+  @cache()
+  private get renderOnChangeOutput$(): Observable<unknown> {
+    return this.onChange$.pipe(this.$onChangeOutput.output(this.context));
   }
 }

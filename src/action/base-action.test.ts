@@ -1,11 +1,11 @@
 import {assert, should, test} from 'gs-testing';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeOut, booleanParser, element, host, setAttribute} from 'persona';
+import {PersonaContext, attributeOut, booleanParser, element, host, setAttribute, ValuesOf} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../app/app';
 
-import {$$ as $$baseAction, $ as $baseAction, BaseAction} from './base-action';
+import {$baseAction as $$baseAction, $ as $baseAction, BaseAction} from './base-action';
 
 
 const $ = {
@@ -24,9 +24,13 @@ const $ = {
   tag: 'mk-test-base-action',
   template: '<div id="div"></div>',
 })
-class TestAction extends BaseAction {
+class TestAction extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super($.div._.disabled, context);
+    super($.div._.disabled, context, $);
+  }
+
+  get values(): ValuesOf<typeof $> {
+    return {...this.baseActionValues};
   }
 }
 
