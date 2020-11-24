@@ -77,8 +77,12 @@ export class TextInput extends BaseInput<string, typeof $> {
         $.host._.stateId,
         $.host._.onChange,
         context,
-        $,
     );
+  }
+
+  @cache()
+  protected get specs(): typeof $ {
+    return $;
   }
 
   @cache()

@@ -1,4 +1,5 @@
 import {assert, should, test} from 'gs-testing';
+import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
 import {PersonaContext, attributeOut, booleanParser, element, host, setAttribute, ValuesOf} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
@@ -26,7 +27,12 @@ const $ = {
 })
 class TestAction extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super($.div._.disabled, context, $);
+    super($.div._.disabled, context);
+  }
+
+  @cache()
+  protected get specs(): typeof $ {
+    return $;
   }
 
   get values(): ValuesOf<typeof $> {

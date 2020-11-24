@@ -1,4 +1,4 @@
-import {BaseCtrl, InternalElementSpec, PersonaContext} from 'persona';
+import {BaseCtrl, PersonaContext} from 'persona';
 import {Observable} from 'rxjs';
 import {map, pairwise, startWith, tap} from 'rxjs/operators';
 
@@ -6,11 +6,11 @@ import {$theme, _p} from '../app/app';
 
 
 @_p.baseCustomElement({})
-export abstract class BaseThemedCtrl<S extends InternalElementSpec> extends BaseCtrl<S> {
+export abstract class BaseThemedCtrl<S extends {}> extends BaseCtrl<S> {
   protected readonly theme$ = $theme.get(this.vine);
 
-  constructor(context: PersonaContext, internalElementSpec: S) {
-    super(context, internalElementSpec);
+  constructor(context: PersonaContext) {
+    super(context);
 
     this.addSetup(this.setupThemeUpdate());
   }

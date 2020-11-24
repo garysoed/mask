@@ -19,13 +19,13 @@ export const $ = {
   host: host($baseAction.api),
 };
 
+
 export abstract class BaseAction<S extends typeof $> extends BaseCtrl<S> {
   constructor(
       private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,
-      spec: S,
   ) {
-    super(context, spec);
+    super(context);
     // TODO: Avoid addSetup
     this.addSetup(this.renderDisabledDomOutput$);
   }

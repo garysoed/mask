@@ -55,11 +55,15 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
         $.host._.stateId,
         $.host._.onChange,
         context,
-        $,
     );
 
     this.addSetup(this.handleOnGlobalRadioInput$);
     this.addSetup(this.handleOnRadioInput$);
+  }
+
+  @cache()
+  protected get specs(): typeof $ {
+    return $;
   }
 
   @cache()

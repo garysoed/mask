@@ -44,7 +44,12 @@ const SPECIAL_KEYS_TYPE: Type<SpecialKeys> = enumType(SpecialKeys);
 })
 export class Keyboard extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context, $);
+    super(context);
+  }
+
+  @cache()
+  protected get specs(): typeof $ {
+    return $;
   }
 
   @cache()

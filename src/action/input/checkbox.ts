@@ -48,8 +48,12 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
         $.host._.stateId,
         $.host._.onChange,
         context,
-        $,
     );
+  }
+
+  @cache()
+  protected get specs(): typeof $ {
+    return $;
   }
 
   @cache()
