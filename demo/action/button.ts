@@ -1,10 +1,11 @@
+import {cache} from 'gs-tools/export/data';
 import {PersonaContext} from 'persona';
 
 import {Button} from '../../src/action/button';
 import {_p} from '../../src/app/app';
 import {Icon} from '../../src/display/icon';
 import {ListItemLayout} from '../../src/layout/list-item-layout';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
 
 import template from './button.html';
@@ -25,9 +26,14 @@ export const $buttonDemo = {
   ],
   template,
 })
-export class ButtonDemo extends ThemedCustomElementCtrl {
+export class ButtonDemo extends BaseThemedCtrl<{}> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, {});
+  }
+
+  @cache()
+  protected get values(): {} {
+    return {};
   }
 }
 

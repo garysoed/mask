@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
-import {element, PersonaContext} from 'persona';
+import {element, PersonaContext, ValuesOf} from 'persona';
 import {Observable} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import {$button} from '../../src/action/button';
 import {$checkbox, Checkbox, CheckedValue} from '../../src/action/input/checkbox';
 import {SimpleCheckbox} from '../../src/action/simple/simple-checkbox';
 import {_p} from '../../src/app/app';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
 import {$demoState} from '../core/demo-state';
 
@@ -36,15 +36,25 @@ const $ = {
   ],
   template,
 })
-export class CheckboxDemo extends ThemedCustomElementCtrl {
+export class CheckboxDemo extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.unknownCheckbox._.clearFn, this.onClearUnknownCheckbox$);
-
-    this.render($.disabledCheckbox._.stateId, this.disabledCheckboxStateId$);
-    this.render($.labelCheckbox._.stateId, this.labelCheckboxStateId$);
-    this.render($.unknownCheckbox._.stateId, this.unknownCheckboxStateId$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      disabledCheckbox: {
+        stateId: this.disabledCheckboxStateId$,
+      },
+      labelCheckbox: {
+        stateId: this.labelCheckboxStateId$,
+      },
+      unknownCheckbox: {
+        clearFn: this.onClearUnknownCheckbox$,
+        stateId: this.unknownCheckboxStateId$,
+      },
+    };
   }
 
   @cache()
@@ -63,7 +73,7 @@ export class CheckboxDemo extends ThemedCustomElementCtrl {
 
   @cache()
   private get onClearUnknownCheckbox$(): Observable<[]> {
-    return this.declareInput($.resetButton._.actionEvent).pipe(mapTo([]));
+    return this.inputs.resetButton.actionEvent.pipe(mapTo([]));
   }
 
   @cache()

@@ -1,4 +1,5 @@
-import {NodeWithId, PersonaContext, renderCustomElement, setId} from 'persona';
+import {cache} from 'gs-tools/export/data';
+import {NodeWithId, PersonaContext, renderCustomElement, setId, ValuesOf} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -7,7 +8,7 @@ import {registerSvg} from '../../src/core/svg-service';
 import {AnnotatedText} from '../../src/display/annotated-text';
 import {$annotationConfig} from '../../src/display/annotation-service';
 import {$icon, Icon} from '../../src/display/icon';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import smileySvg from '../asset/smiley.svg';
 import {DemoLayout} from '../base/demo-layout';
 
@@ -36,9 +37,14 @@ export const $annotatedTextDemo = {
     registerSvg(vine, 'smiley', {type: 'embed', content: smileySvg});
   },
 })
-export class AnnotatedTextDemo extends ThemedCustomElementCtrl {
+export class AnnotatedTextDemo extends BaseThemedCtrl<{}> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, {});
+  }
+
+  @cache()
+  protected get values(): ValuesOf<{}> {
+    return {};
   }
 }
 

@@ -1,8 +1,9 @@
-import {PersonaContext} from 'persona';
+import {cache} from 'gs-tools/export/data';
+import {PersonaContext, ValuesOf} from 'persona';
 
 import {_p} from '../../src/app/app';
 import {Keyboard} from '../../src/display/keyboard';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
 
 import template from './keyboard.html';
@@ -21,8 +22,13 @@ export const $keyboardDemo = {
   ],
   template,
 })
-export class KeyboardDemo extends ThemedCustomElementCtrl {
+export class KeyboardDemo extends BaseThemedCtrl<{}> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, {});
+  }
+
+  @cache()
+  protected get values(): ValuesOf<{}> {
+    return {};
   }
 }

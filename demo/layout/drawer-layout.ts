@@ -2,7 +2,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterDefined} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType} from 'gs-types';
-import {attributeOut, element, PersonaContext, stringParser} from 'persona';
+import {attributeOut, element, PersonaContext, stringParser, ValuesOf} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import {$simpleCheckbox} from '../../src/action/simple/simple-checkbox';
 import {_p} from '../../src/app/app';
 import {$stateService} from '../../src/core/state-service';
 import {$drawerLayout, DrawerLayout, DrawerMode} from '../../src/layout/drawer-layout';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
 import {$demoState} from '../core/demo-state';
 
@@ -41,14 +41,28 @@ export const $drawerLayoutDemo = {
   ],
   template,
 })
-export class DrawerLayoutDemo extends ThemedCustomElementCtrl {
+export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
-    this.render($.rootPlay._.layout, this.rootPlayLayout$);
-    this.render($.drawer._.expanded, this.expanded$);
-    this.render($.drawer._.mode, this.drawerMode$);
-    this.render($.expandCheckbox._.stateId, this.$isExpanded$);
-    this.render($.horizontalModeCheckbox._.stateId, this.$isHorizontalMode$);
+    super(context, $);
+  }
+
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      drawer: {
+        expanded: this.expanded$,
+        mode: this.drawerMode$,
+      },
+      expandCheckbox: {
+        stateId: this.$isExpanded$,
+      },
+      horizontalModeCheckbox: {
+        stateId: this.$isHorizontalMode$,
+      },
+      rootPlay: {
+        layout: this.rootPlayLayout$,
+      },
+    };
   }
 
   @cache()

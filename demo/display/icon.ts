@@ -2,12 +2,13 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
-import {element, PersonaContext, setAttribute} from 'persona';
+import {element, PersonaContext, setAttribute, ValuesOf} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 
-import {$checkbox, $icon, $stateService, _p, CheckedValue, Icon as MaskIcon, registerSvg, ThemedCustomElementCtrl} from '../../export';
+import {$checkbox, $icon, $stateService, CheckedValue, Icon as MaskIcon, registerSvg, _p} from '../../export';
 import {FitTo} from '../../src/display/icon';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import fitToHeightSvg from '../asset/fit_to_height.svg';
 import {DemoLayout} from '../base/demo-layout';
 import {$demoState, IconDemoState} from '../core/demo-state';
@@ -40,14 +41,27 @@ const $ = {
     registerSvg(vine, 'fit_to_height', {type: 'embed', content: fitToHeightSvg});
   },
 })
-export class IconDemo extends ThemedCustomElementCtrl {
+export class IconDemo extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.iconContainer._.action, this.isAction$);
-    this.render($.icon._.fitTo, this.fitTo$);
-    this.render($.fitToWidthCheckbox._.stateId, this.$fitToWidth$);
-    this.render($.isActionCheckbox._.stateId, this.$isAction$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      iconContainer: {
+        action: this.isAction$,
+      },
+      icon: {
+        fitTo: this.fitTo$,
+      },
+      fitToWidthCheckbox: {
+        stateId: this.$fitToWidth$,
+      },
+      isActionCheckbox: {
+        stateId: this.$isAction$,
+      },
+    };
   }
 
   @cache()

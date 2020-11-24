@@ -1,5 +1,5 @@
 import {ComponentSpec} from 'persona';
-import {CustomElementCtrlCtor} from 'persona/export/internal';
+import {BaseCtrlCtor} from 'persona/src/core/base-ctrl';
 
 import {$buttonDemo, ButtonDemo} from '../action/button';
 import {$checkboxDemo, CheckboxDemo} from '../action/checkbox';
@@ -18,7 +18,7 @@ import {Views} from './location-service';
 
 
 export interface PageSpec {
-  readonly ctor: CustomElementCtrlCtor;
+  readonly ctor: BaseCtrlCtor;
   readonly componentSpec: ComponentSpec<any>;
   readonly name: string;
   readonly path: Views;

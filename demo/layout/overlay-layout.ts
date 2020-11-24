@@ -1,5 +1,6 @@
+import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {element, multi, NodeWithId, PersonaContext, renderCustomElement} from 'persona';
+import {element, multi, NodeWithId, PersonaContext, renderCustomElement, ValuesOf} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
@@ -9,7 +10,7 @@ import {$simpleRadioInput, SimpleRadioInput} from '../../src/action/simple/simpl
 import {_p} from '../../src/app/app';
 import {Anchor} from '../../src/core/overlay-service';
 import {$overlayLayout, OverlayLayout} from '../../src/layout/overlay-layout';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
 import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
 
@@ -51,31 +52,34 @@ const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
   ],
   template,
 })
-export class OverlayLayoutDemo extends ThemedCustomElementCtrl {
+export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render(
-        $.overlayHorizontal._.overlayHorizontalAnchors,
-        this.getAnchorNodes('$overlayHorizontalIndex'),
-    );
-    this.render(
-        $.overlayVertical._.overlayVerticalAnchors,
-        this.getAnchorNodes('$overlayVerticalIndex'),
-    );
-    this.render(
-        $.targetHorizontal._.targetHorizontalAnchors,
-        this.getAnchorNodes('$targetHorizontalIndex'),
-    );
-    this.render(
-        $.targetVertical._.targetVerticalAnchors,
-        this.getAnchorNodes('$targetVerticalIndex'),
-    );
-    this.render($.overlay._.showFn, this.declareInput($.target._.actionEvent).pipe(mapTo([])));
-    this.render($.overlay._.contentHorizontal, this.getAnchor('$overlayHorizontalIndex'));
-    this.render($.overlay._.contentVertical, this.getAnchor('$overlayVerticalIndex'));
-    this.render($.overlay._.targetHorizontal, this.getAnchor('$targetHorizontalIndex'));
-    this.render($.overlay._.targetVertical, this.getAnchor('$targetVerticalIndex'));
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      overlay: {
+        contentHorizontal: this.getAnchor('$overlayHorizontalIndex'),
+        contentVertical: this.getAnchor('$overlayVerticalIndex'),
+        targetHorizontal: this.getAnchor('$targetHorizontalIndex'),
+        targetVertical: this.getAnchor('$targetVerticalIndex'),
+        showFn: this.inputs.target.actionEvent.pipe(mapTo([])),
+      },
+      overlayHorizontal: {
+        overlayHorizontalAnchors: this.getAnchorNodes('$overlayHorizontalIndex'),
+      },
+      overlayVertical: {
+        overlayVerticalAnchors: this.getAnchorNodes('$overlayVerticalIndex'),
+      },
+      targetHorizontal: {
+        targetHorizontalAnchors: this.getAnchorNodes('$targetHorizontalIndex'),
+      },
+      targetVertical: {
+        targetVerticalAnchors: this.getAnchorNodes('$targetHorizontalIndex'),
+      },
+    };
   }
 
   private getAnchor(anchorIdKey: keyof OverlayLayoutDemoState): Observable<Anchor> {

@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
-import {element, PersonaContext} from 'persona';
+import {element, PersonaContext, ValuesOf} from 'persona';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import {_p} from '../../src/app/app';
 import radioUnchecked from '../../src/asset/checkbox_empty.svg';
 import radioChecked from '../../src/asset/radio_checked.svg';
 import {registerSvg} from '../../src/core/svg-service';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {$demoState} from '../core/demo-state';
 
 import template from './radio-input.html';
@@ -49,14 +49,27 @@ const $ = {
     );
   },
 })
-export class RadioInputDemo extends ThemedCustomElementCtrl {
+export class RadioInputDemo extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.optionA._.stateId, this.stateId$);
-    this.render($.optionB._.stateId, this.stateId$);
-    this.render($.optionC._.stateId, this.stateId$);
-    this.render($.optionD._.stateId, this.stateId$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      optionA: {
+        stateId: this.stateId$,
+      },
+      optionB: {
+        stateId: this.stateId$,
+      },
+      optionC: {
+        stateId: this.stateId$,
+      },
+      optionD: {
+        stateId: this.stateId$,
+      },
+    };
   }
 
   @cache()

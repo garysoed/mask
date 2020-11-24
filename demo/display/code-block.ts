@@ -1,8 +1,9 @@
-import {PersonaContext} from 'persona';
+import {cache} from 'gs-tools/export/data';
+import {PersonaContext, ValuesOf} from 'persona';
 
 import {_p} from '../../src/app/app';
 import {CodeBlock} from '../../src/display/code-block';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
 
 import template from './code-block.html';
@@ -21,8 +22,13 @@ export const $codeBlockDemo = {
   ],
   template,
 })
-export class CodeBlockDemo extends ThemedCustomElementCtrl {
+export class CodeBlockDemo extends BaseThemedCtrl<{}> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, {});
+  }
+
+  @cache()
+  protected get values(): ValuesOf<{}> {
+    return {};
   }
 }
