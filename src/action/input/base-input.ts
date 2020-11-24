@@ -32,13 +32,13 @@ export const $ = {
 
 @_p.baseCustomElement({})
 export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
-  private readonly stateId$ = this.$stateId.getValue(this.context);
+  private readonly stateId$ = this.stateIdInput.getValue(this.context);
 
   constructor(
       private readonly defaultValue: T,
       disabledDomOutput: Output<boolean>,
-      private readonly $stateId: AttributeInput<StateId<T>|undefined>,
-      private readonly $onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
+      private readonly stateIdInput: AttributeInput<StateId<T>|undefined>,
+      private readonly onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
       context: PersonaContext,
       specs: S,
   ) {
@@ -132,6 +132,6 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
 
   @cache()
   private get renderOnChangeOutput$(): Observable<unknown> {
-    return this.onChange$.pipe(this.$onChangeOutput.output(this.context));
+    return this.onChange$.pipe(this.onChangeOutput.output(this.context));
   }
 }
