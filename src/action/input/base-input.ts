@@ -40,8 +40,9 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
       private readonly $stateId: AttributeInput<StateId<T>|undefined>,
       private readonly $onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
       context: PersonaContext,
+      specs: S,
   ) {
-    super(disabledDomOutput, context);
+    super(disabledDomOutput, context, specs);
 
     this.addSetup(this.handleOnApply$);
     this.addSetup(this.handleOnClear$);

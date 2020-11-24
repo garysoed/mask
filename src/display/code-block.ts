@@ -34,14 +34,9 @@ const $ = {
 })
 export class CodeBlock extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
 
     this.addSetup(this.setupRenderCode());
-  }
-
-  @cache()
-  protected get specs(): typeof $ {
-    return $;
   }
 
   @cache()

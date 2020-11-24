@@ -1,12 +1,11 @@
 import {assert, should, test} from 'gs-testing';
-import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeOut, booleanParser, element, host, setAttribute, ValuesOf} from 'persona';
+import {attributeOut, booleanParser, element, host, PersonaContext, setAttribute, ValuesOf} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../app/app';
 
-import {$baseAction as $$baseAction, $ as $baseAction, BaseAction} from './base-action';
+import {$ as $baseAction, $baseAction as $$baseAction, BaseAction} from './base-action';
 
 
 const $ = {
@@ -27,12 +26,7 @@ const $ = {
 })
 class TestAction extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super($.div._.disabled, context);
-  }
-
-  @cache()
-  protected get specs(): typeof $ {
-    return $;
+    super($.div._.disabled, context, $);
   }
 
   get values(): ValuesOf<typeof $> {

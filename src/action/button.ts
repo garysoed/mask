@@ -49,12 +49,7 @@ export const $ = {
 })
 export class Button extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super(noop(), context);
-  }
-
-  @cache()
-  protected get specs(): typeof $ {
-    return $;
+    super(noop(), context, $);
   }
 
   @cache()

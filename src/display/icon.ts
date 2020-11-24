@@ -57,12 +57,7 @@ export const $ = {
 })
 export class Icon extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
-  }
-
-  @cache()
-  protected get specs(): typeof $ {
-    return $;
+    super(context, $);
   }
 
   get values(): ValuesOf<typeof $> {

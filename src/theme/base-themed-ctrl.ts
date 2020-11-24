@@ -9,8 +9,8 @@ import {$theme, _p} from '../app/app';
 export abstract class BaseThemedCtrl<S extends {}> extends BaseCtrl<S> {
   protected readonly theme$ = $theme.get(this.vine);
 
-  constructor(context: PersonaContext) {
-    super(context);
+  constructor(context: PersonaContext, specs: S) {
+    super(context, specs);
 
     this.addSetup(this.setupThemeUpdate());
   }

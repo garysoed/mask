@@ -24,8 +24,9 @@ export abstract class BaseAction<S extends typeof $> extends BaseCtrl<S> {
   constructor(
       private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,
+      specs: S,
   ) {
-    super(context);
+    super(context, specs);
     // TODO: Avoid addSetup
     this.addSetup(this.renderDisabledDomOutput$);
   }

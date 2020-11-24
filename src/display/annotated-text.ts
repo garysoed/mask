@@ -35,12 +35,7 @@ export const $ = {
 })
 export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
-  }
-
-  @cache()
-  protected get specs(): typeof $ {
-    return $;
+    super(context, $);
   }
 
   @cache()

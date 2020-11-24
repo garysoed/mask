@@ -54,14 +54,10 @@ class TestInput extends BaseInput<string, typeof $> {
         $.host._.stateId,
         $.host._.onChange,
         context,
+        $,
     );
 
     this.addSetup(this.forwardDomValueUpdatedByScript$);
-  }
-
-  @cache()
-  protected get specs(): typeof $ {
-    return $;
   }
 
   @cache()
