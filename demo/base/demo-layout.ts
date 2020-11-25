@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {attributeIn, element, host, PersonaContext, stringParser, textContent} from 'persona';
+import {attributeIn, element, host, PersonaContext, stringParser, textContent, ValuesOf} from 'persona';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -9,7 +9,7 @@ import {$icon} from '../../src/display/icon';
 import {$drawerLayout, DrawerLayout} from '../../src/layout/drawer-layout';
 import {$lineLayout} from '../../src/layout/line-layout';
 import {ListItemLayout} from '../../src/layout/list-item-layout';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 
 import template from './demo-layout.html';
 
@@ -40,16 +40,22 @@ const $ = {
   ],
   template,
 })
-export class DemoLayout extends ThemedCustomElementCtrl {
+export class DemoLayout extends BaseThemedCtrl<typeof $> {
   private readonly isDrawerExpanded$ = new BehaviorSubject(false);
 
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
 
-    this.render($.bulletIcon._.icon, this.bulletIcon$);
-    this.render($.detailsLabel._.textContent, this.detailsButtonLabel$);
-    this.render($.detailsDrawer._.expanded, this.detailsDrawerExpanded$);
     this.addSetup(this.onDetailsButtonClick$);
+  }
+
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      bulletIcon: {icon: this.bulletIcon$},
+      detailsLabel: {textContent: this.detailsButtonLabel$},
+      detailsDrawer: {expanded: this.detailsDrawerExpanded$},
+    };
   }
 
   @cache()
@@ -61,7 +67,7 @@ export class DemoLayout extends ThemedCustomElementCtrl {
 
   @cache()
   private get detailsButtonLabel$(): Observable<string> {
-    return this.declareInput($.host._.label).pipe(map(label => `Details: ${label}`));
+    return this.inputs.host.label.pipe(map(label => `Details: ${label}`));
   }
 
   @cache()
@@ -71,7 +77,7 @@ export class DemoLayout extends ThemedCustomElementCtrl {
 
   @cache()
   private get onDetailsButtonClick$(): Observable<unknown> {
-    return this.declareInput($.detailsButton._.actionEvent)
+    return this.inputs.detailsButton.actionEvent
         .pipe(
             withLatestFrom(this.isDrawerExpanded$),
             tap(([, isExpanded]) => {

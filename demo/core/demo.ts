@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType, enumType, instanceofType} from 'gs-types';
-import {attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser} from 'persona';
+import {attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser, ValuesOf} from 'persona';
 import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -19,8 +19,8 @@ import {$lineLayout, LineLayout} from '../../src/layout/line-layout';
 import {ListItemLayout} from '../../src/layout/list-item-layout';
 import {$rootLayout, RootLayout} from '../../src/layout/root-layout';
 import {LayoutOverlay} from '../../src/layout/util/layout-overlay';
+import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {PALETTE, Palette} from '../../src/theme/palette';
-import {ThemedCustomElementCtrl} from '../../src/theme/themed-custom-element-ctrl';
 
 import {$demoState} from './demo-state';
 import template from './demo.html';
@@ -79,26 +79,32 @@ const COMPONENT_PATH_ATTR = 'path';
   template,
   api: {},
 })
-export class Demo extends ThemedCustomElementCtrl {
-  // private readonly onDrawerRootClick$ = this.declareInput($.components._.onClick);
-  private readonly onRootLayoutAction$ = this.declareInput($.rootLayout._.onAction);
-
+export class Demo extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
-    this.render($.accentPalette._.content, this.accentPaletteContents$);
-    this.render($.basePalette._.content, this.basePaletteContents$);
-    this.render($.darkMode._.stateId, this.darkModeStateId$);
-    this.render($.content._.content, this.mainContent$);
-    this.render($.drawerRoot._.actionContents, this.renderPageButtons(ACTION_SPECS));
-    this.render($.drawerRoot._.displayContents, this.renderPageButtons(DISPLAY_SPECS));
-    this.render($.drawerRoot._.generalContents, this.renderPageButtons(GENERAL_SPECS));
-    this.render($.drawerRoot._.layoutContents, this.renderPageButtons(LAYOUT_SPECS));
-    this.render($.settingsDrawer._.expanded, this.renderSettingsDrawerExpanded());
-    this.render($.root._.theme, this.renderRootTheme());
+    super(context, $);
+
     this.addSetup(this.onAccentPaletteClick$);
     this.addSetup(this.onBasePaletteClick$);
     this.addSetup(this.onDrawerRootClick$);
     this.addSetup(this.setupOnRootLayoutAction(context.vine));
+  }
+
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      accentPalette: {content: this.accentPaletteContents$},
+      basePalette: {content: this.basePaletteContents$},
+      darkMode: {stateId: this.darkModeStateId$},
+      content: {content: this.mainContent$},
+      drawerRoot: {
+        actionContents: this.renderPageButtons(ACTION_SPECS),
+        displayContents: this.renderPageButtons(DISPLAY_SPECS),
+        generalContents: this.renderPageButtons(GENERAL_SPECS),
+        layoutContents: this.renderPageButtons(LAYOUT_SPECS),
+      },
+      settingsDrawer: {expanded: this.renderSettingsDrawerExpanded()},
+      root: {theme: this.renderRootTheme()},
+    };
   }
 
   @cache()
@@ -175,7 +181,7 @@ export class Demo extends ThemedCustomElementCtrl {
 
   @cache()
   private get onDrawerRootClick$(): Observable<unknown> {
-    return this.declareInput($.drawerRoot._.onAction).pipe(
+    return this.inputs.drawerRoot.onAction.pipe(
         withLatestFrom($locationService.get(this.vine)),
         tap(([event, locationService]) => {
           const target = event.target;
@@ -255,8 +261,8 @@ export class Demo extends ThemedCustomElementCtrl {
 
   private renderSettingsDrawerExpanded(): Observable<boolean> {
     return merge(
-        this.declareInput($.settingsDrawer._.onMouseLeave).pipe(mapTo(false)),
-        this.declareInput($.settingsDrawer._.onMouseEnter).pipe(mapTo(true)),
+        this.inputs.settingsDrawer.onMouseLeave.pipe(mapTo(false)),
+        this.inputs.settingsDrawer.onMouseEnter.pipe(mapTo(true)),
     )
         .pipe(
             distinctUntilChanged(),
@@ -265,7 +271,7 @@ export class Demo extends ThemedCustomElementCtrl {
 
   @cache()
   private get onAccentPaletteClick$(): Observable<unknown> {
-    return this.declareInput($.accentPalette._.onClick)
+    return this.inputs.accentPalette.onClick
         .pipe(
             map(event => getColor(event)),
             filterNonNull(),
@@ -282,7 +288,7 @@ export class Demo extends ThemedCustomElementCtrl {
 
   @cache()
   private get onBasePaletteClick$(): Observable<unknown> {
-    return this.declareInput($.basePalette._.onClick)
+    return this.inputs.basePalette.onClick
         .pipe(
             map(event => getColor(event)),
             filterNonNull(),
@@ -298,7 +304,7 @@ export class Demo extends ThemedCustomElementCtrl {
   }
 
   private setupOnRootLayoutAction(vine: Vine): Observable<unknown> {
-    return this.onRootLayoutAction$
+    return this.inputs.rootLayout.onAction
         .pipe(
             withLatestFrom($locationService.get(vine)),
             tap(([, locationService]) => {

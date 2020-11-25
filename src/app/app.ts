@@ -1,6 +1,6 @@
 import {Vine, VineBuilder, source} from 'grapevine';
 import {PersonaBuilder} from 'persona';
-import {CustomElementCtrlCtor} from 'persona/export/internal';
+import {BaseCtrlCtor, CustomElementCtrlCtor} from 'persona/export/internal';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
 import {PALETTE} from '../theme/palette';
@@ -15,7 +15,7 @@ export const $window = source('window', () => window);
 
 export function start(
     appName: string,
-    rootCtrls: CustomElementCtrlCtor[],
+    rootCtrls: ReadonlyArray<CustomElementCtrlCtor|BaseCtrlCtor>,
     rootDoc: Document,
     theme: Theme,
     body: HTMLElement,

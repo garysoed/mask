@@ -18,7 +18,7 @@
         ],
         template,
       })
-      export class CodeBlock extends ThemedCustomElementCtrl {
+      export class CodeBlock extends BaseThemedCtrl&lt;typeof $&gt; {
         private readonly regexp: RegExp;
 
         constructor(context: PersonaContext) {
