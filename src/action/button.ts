@@ -55,7 +55,7 @@ export class Button extends BaseAction<typeof $> {
   protected get values(): ValuesOf<typeof $> {
     return {
       host: {
-        ...this.baseActionValues,
+        ...this.baseActionValues.host,
         role: observableOf(AriaRole.BUTTON),
         actionEvent: this.onAction$,
         tabindex: this.tabIndex$,

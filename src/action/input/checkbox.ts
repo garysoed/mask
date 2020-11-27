@@ -55,6 +55,7 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
   @cache()
   get values(): ValuesOf<typeof $> {
     return {
+      ...this.baseActionValues,
       display: {
         name: this.displaySlot$,
       },

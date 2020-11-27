@@ -3,10 +3,16 @@
     ☐ Update all the docs.
 
   bugs:
-    ☐ TextInput is missing the style element.
+    ✔ A lot of actions are missing the style element.
 
   cleanup:
     ☐ ESLint to sort members.
+
+  demo:
+    ☐ Add selected states to sidebar
+
+  general:
+    ☐ Make merging `ValuesOf` easier.
 
   optimize:
     ☐ Cache theme CSS in worker.
@@ -29,7 +35,7 @@
     ✔ Differentiate color between hover vs focus.
     ✔ Make dark mode's BG color lighter
     ✔ Deprecate `ThemedCustomElementCtrl`
-    Release as 1.0
+    ✔ Release as 1.0
     ✘ Make onDom and other listeners injectable
 
   demo:

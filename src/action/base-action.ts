@@ -1,8 +1,10 @@
 import {cache} from 'gs-tools/export/data';
-import {attributeOut, BaseCtrl, hasAttribute, host, InputsOf, PersonaContext, setAttribute, stringParser, ValuesOf} from 'persona';
+import {attributeOut, hasAttribute, host, InputsOf, PersonaContext, setAttribute, stringParser, ValuesOf} from 'persona';
 import {Output} from 'persona/export/internal';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 
 export const $baseAction = {
@@ -20,7 +22,7 @@ export const $ = {
 };
 
 
-export abstract class BaseAction<S extends typeof $> extends BaseCtrl<S> {
+export abstract class BaseAction<S extends typeof $> extends BaseThemedCtrl<S> {
   constructor(
       private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,

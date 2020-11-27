@@ -83,6 +83,7 @@ export class TextInput extends BaseInput<string, typeof $> {
   @cache()
   protected get values(): ValuesOf<typeof $> {
     return {
+      ...this.baseActionValues,
       input: {
         type: this.inputs.host.type,
         autocomplete: this.inputs.host.autocomplete,
