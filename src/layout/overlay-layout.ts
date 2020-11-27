@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {attributeIn, element, enumParser, handler, host, PersonaContext, slotted, stringParser, ValuesOf} from 'persona';
+import {attributeIn, element, enumParser, handler, host, PersonaContext, slotted, stringParser} from 'persona';
 import {combineLatest, Observable} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -42,8 +42,8 @@ export class OverlayLayout extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {};
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [];
   }
 
   private getTargetEl(hostEl: Element, targetId: string): Element|null {

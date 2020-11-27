@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType, enumType, instanceofType} from 'gs-types';
-import {attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser, ValuesOf} from 'persona';
+import {attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser} from 'persona';
 import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -90,21 +90,19 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      accentPalette: {content: this.accentPaletteContents$},
-      basePalette: {content: this.basePaletteContents$},
-      darkMode: {stateId: this.darkModeStateId$},
-      content: {content: this.mainContent$},
-      drawerRoot: {
-        actionContents: this.renderPageButtons(ACTION_SPECS),
-        displayContents: this.renderPageButtons(DISPLAY_SPECS),
-        generalContents: this.renderPageButtons(GENERAL_SPECS),
-        layoutContents: this.renderPageButtons(LAYOUT_SPECS),
-      },
-      settingsDrawer: {expanded: this.renderSettingsDrawerExpanded()},
-      root: {theme: this.renderRootTheme()},
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.accentPalette.content(this.accentPaletteContents$),
+      this.renderers.basePalette.content(this.basePaletteContents$),
+      this.renderers.darkMode.stateId(this.darkModeStateId$),
+      this.renderers.content.content(this.mainContent$),
+      this.renderers.drawerRoot.actionContents(this.renderPageButtons(ACTION_SPECS)),
+      this.renderers.drawerRoot.displayContents(this.renderPageButtons(DISPLAY_SPECS)),
+      this.renderers.drawerRoot.generalContents(this.renderPageButtons(GENERAL_SPECS)),
+      this.renderers.drawerRoot.layoutContents(this.renderPageButtons(LAYOUT_SPECS)),
+      this.renderers.settingsDrawer.expanded(this.renderSettingsDrawerExpanded()),
+      this.renderers.root.theme(this.renderRootTheme()),
+    ];
   }
 
   @cache()

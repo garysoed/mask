@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {element, host, mutationObservable, PersonaContext, textContent, ValuesOf} from 'persona';
+import {element, host, mutationObservable, PersonaContext, textContent} from 'persona';
 import {Observable} from 'rxjs';
 import {map, startWith, tap} from 'rxjs/operators';
 
@@ -40,8 +40,8 @@ export class CodeBlock extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {host: {}, root: {}};
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [];
   }
 
   private setupRenderCode(): Observable<unknown> {

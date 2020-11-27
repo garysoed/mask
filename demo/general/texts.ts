@@ -1,5 +1,6 @@
 import {cache} from 'gs-tools/export/data';
-import {PersonaContext, ValuesOf} from 'persona';
+import {PersonaContext} from 'persona';
+import {Observable} from 'rxjs';
 
 import {_p} from '../../src/app/app';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
@@ -26,8 +27,8 @@ export class TextsDemo extends BaseThemedCtrl<{}> {
   }
 
   @cache()
-  protected get values(): ValuesOf<{}> {
-    return {};
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [];
   }
 }
 

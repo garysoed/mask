@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
-import {element, PersonaContext, ValuesOf} from 'persona';
+import {element, PersonaContext} from 'persona';
 import {Observable} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
@@ -42,19 +42,13 @@ export class CheckboxDemo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      disabledCheckbox: {
-        stateId: this.disabledCheckboxStateId$,
-      },
-      labelCheckbox: {
-        stateId: this.labelCheckboxStateId$,
-      },
-      unknownCheckbox: {
-        clearFn: this.onClearUnknownCheckbox$,
-        stateId: this.unknownCheckboxStateId$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.disabledCheckbox.stateId(this.disabledCheckboxStateId$),
+      this.renderers.labelCheckbox.stateId(this.labelCheckboxStateId$),
+      this.renderers.unknownCheckbox.clearFn(this.onClearUnknownCheckbox$),
+      this.renderers.unknownCheckbox.stateId(this.unknownCheckboxStateId$),
+    ];
   }
 
   @cache()

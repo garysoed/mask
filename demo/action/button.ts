@@ -1,5 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {PersonaContext} from 'persona';
+import {Observable} from 'rxjs';
 
 import {Button} from '../../src/action/button';
 import {_p} from '../../src/app/app';
@@ -32,8 +33,8 @@ export class ButtonDemo extends BaseThemedCtrl<{}> {
   }
 
   @cache()
-  protected get values(): {} {
-    return {};
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [];
   }
 }
 

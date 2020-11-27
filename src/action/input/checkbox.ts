@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, onInput, setAttribute, stringParser, ValuesOf} from 'persona';
+import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, onInput, setAttribute, stringParser} from 'persona';
 import {Observable, defer, merge, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
@@ -53,13 +53,11 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
   }
 
   @cache()
-  get values(): ValuesOf<typeof $> {
-    return {
-      ...this.baseActionValues,
-      display: {
-        name: this.displaySlot$,
-      },
-    };
+  get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      ...super.renders,
+      this.renderers.display.name(this.displaySlot$),
+    ];
   }
 
   @cache()

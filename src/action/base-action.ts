@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {attributeOut, hasAttribute, host, InputsOf, PersonaContext, setAttribute, stringParser, ValuesOf} from 'persona';
+import {attributeOut, hasAttribute, host, InputsOf, PersonaContext, setAttribute, stringParser} from 'persona';
 import {Output} from 'persona/export/internal';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -32,15 +32,14 @@ export abstract class BaseAction<S extends typeof $> extends BaseThemedCtrl<S> {
     this.addSetup(this.renderDisabledDomOutput$);
   }
 
-  @cache()
-  protected get baseActionValues(): ValuesOf<typeof $> {
-    return {
-      host: {
-        ariaDisabled: this.ariaDisabled$,
-        action1: this.baseActionInputs.host.isSecondary.pipe(map(isSecondary => !isSecondary)),
-        action2: this.baseActionInputs.host.isSecondary,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.host.ariaDisabled(this.ariaDisabled$),
+      this.renderers.host.action1(
+          this.baseActionInputs.host.isSecondary.pipe(map(isSecondary => !isSecondary)),
+      ),
+      this.renderers.host.action2(this.baseActionInputs.host.isSecondary),
+    ];
   }
 
   @cache()

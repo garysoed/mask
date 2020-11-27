@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent, ValuesOf} from 'persona';
+import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent} from 'persona';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, startWith} from 'rxjs/operators';
 
@@ -57,22 +57,14 @@ export class RootLayout extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      host: {
-        drawerExpanded: this.isDrawerOpen$,
-        onTitleClick: this.onTitleClick$(),
-      },
-      drawer: {
-        expanded: this.isDrawerOpen$,
-      },
-      title: {
-        textContent: this.inputs.host.label,
-      },
-      mainIcon: {
-        icon: this.inputs.host.icon,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.host.drawerExpanded(this.isDrawerOpen$),
+      this.renderers.host.onTitleClick(this.onTitleClick$()),
+      this.renderers.drawer.expanded(this.isDrawerOpen$),
+      this.renderers.title.textContent(this.inputs.host.label),
+      this.renderers.mainIcon.icon(this.inputs.host.icon),
+    ];
   }
 
   @cache()

@@ -1,7 +1,7 @@
 import {source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {classlist, element, PersonaContext, style, ValuesOf} from 'persona';
+import {classlist, element, PersonaContext, style} from 'persona';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -41,12 +41,12 @@ export class LayoutOverlay extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      root: {classlist: this.rootClasslist$},
-      gridLeft: {backgroundImage: this.backgroundImage$},
-      gridRight: {backgroundImage: this.backgroundImage$},
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.root.classlist(this.rootClasslist$),
+      this.renderers.gridLeft.backgroundImage(this.backgroundImage$),
+      this.renderers.gridRight.backgroundImage(this.backgroundImage$),
+    ];
   }
 
   @cache()

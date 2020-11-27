@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
-import {classToggle, element, host, NodeWithId, onDom, PersonaContext, resizeObservable, setId, single, style, ValuesOf} from 'persona';
+import {classToggle, element, host, NodeWithId, onDom, PersonaContext, resizeObservable, setId, single, style} from 'persona';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import {Logger} from 'santa';
@@ -50,15 +50,13 @@ export class Overlay extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      root: {hidden: this.isRootHidden$},
-      content: {
-        content: this.overlayContent$,
-        styleLeft: this.contentLeft$,
-        styleTop: this.contentTop$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.root.hidden(this.isRootHidden$),
+      this.renderers.content.content(this.overlayContent$),
+      this.renderers.content.styleLeft(this.contentLeft$),
+      this.renderers.content.styleTop(this.contentTop$),
+    ];
   }
 
   @cache()

@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, Type} from 'gs-types';
-import {host, multi, NodeWithId, PersonaContext, renderElement, renderTextNode, root, textIn, ValuesOf} from 'persona';
+import {host, multi, NodeWithId, PersonaContext, renderElement, renderTextNode, root, textIn} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -48,13 +48,10 @@ export class Keyboard extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      host: {},
-      root: {
-        content: this.keyboardSegments$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.root.content(this.keyboardSegments$),
+    ];
   }
 
   @cache()

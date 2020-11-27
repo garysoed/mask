@@ -1,7 +1,7 @@
 import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
 import {debug} from 'gs-tools/export/rxjs';
-import {attributeIn, host, listParser, multi, NodeWithId, PersonaContext, root, setId, stringParser, textIn, ValuesOf} from 'persona';
+import {attributeIn, host, listParser, multi, NodeWithId, PersonaContext, root, setId, stringParser, textIn} from 'persona';
 import {combineLatest, concat, Observable, of as observableOf} from 'rxjs';
 import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
@@ -39,13 +39,10 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      host: {},
-      root: {
-        content: this.content$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.root.content(this.content$),
+    ];
   }
 
   @cache()

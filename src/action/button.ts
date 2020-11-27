@@ -10,12 +10,12 @@
  */
 
 import {cache} from 'gs-tools/export/data';
-import {AriaRole, PersonaContext, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, stringParser, ValuesOf} from 'persona';
-import {Observable, merge, of as observableOf} from 'rxjs';
+import {AriaRole, attributeOut, dispatcher, host, integerParser, noop, onDom, onKeydown, PersonaContext, stringParser} from 'persona';
+import {merge, Observable, of as observableOf} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
 import {_p} from '../app/app';
-import {ACTION_EVENT, ActionEvent} from '../event/action-event';
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 
 import {$baseAction as $baseAction, BaseAction} from './base-action';
 import template from './button.html';
@@ -52,15 +52,13 @@ export class Button extends BaseAction<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      host: {
-        ...this.baseActionValues.host,
-        role: observableOf(AriaRole.BUTTON),
-        actionEvent: this.onAction$,
-        tabindex: this.tabIndex$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      ...super.renders,
+      this.renderers.host.role(observableOf(AriaRole.BUTTON)),
+      this.renderers.host.actionEvent(this.onAction$),
+      this.renderers.host.tabindex(this.tabIndex$),
+    ];
   }
 
   @cache()

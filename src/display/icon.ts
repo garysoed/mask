@@ -10,7 +10,7 @@ import {cache} from 'gs-tools/export/data';
 import {typeBased} from 'gs-tools/export/serializer';
 import {booleanType, instanceofType} from 'gs-types';
 import {compose, json} from 'nabu';
-import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser, ValuesOf} from 'persona';
+import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
@@ -59,16 +59,12 @@ export class Icon extends BaseThemedCtrl<typeof $> {
     super(context, $);
   }
 
-  get values(): ValuesOf<typeof $> {
-    return {
-      host: {
-        ariaHidden: observableOf(true),
-        role: observableOf(AriaRole.PRESENTATION),
-      },
-      root: {
-        content: this.rootSvg$,
-      },
-    };
+  get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.host.ariaHidden(observableOf(true)),
+      this.renderers.host.role(observableOf(AriaRole.PRESENTATION)),
+      this.renderers.root.content(this.rootSvg$),
+    ];
   }
 
   @cache()

@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, setAttribute, stringParser, ValuesOf} from 'persona';
-import {Observable, defer, merge, of as observableOf} from 'rxjs';
+import {attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
+import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Logger} from 'santa';
 
@@ -81,14 +81,12 @@ export class TextInput extends BaseInput<string, typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      ...this.baseActionValues,
-      input: {
-        type: this.inputs.host.type,
-        autocomplete: this.inputs.host.autocomplete,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      ...super.renders,
+      this.renderers.input.type(this.inputs.host.type),
+      this.renderers.input.autocomplete(this.inputs.host.autocomplete),
+    ];
   }
 
   @cache()

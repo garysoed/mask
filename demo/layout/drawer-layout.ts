@@ -2,7 +2,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterDefined} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType} from 'gs-types';
-import {attributeOut, element, PersonaContext, stringParser, ValuesOf} from 'persona';
+import {attributeOut, element, PersonaContext, stringParser} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -47,22 +47,14 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      drawer: {
-        expanded: this.expanded$,
-        mode: this.drawerMode$,
-      },
-      expandCheckbox: {
-        stateId: this.$isExpanded$,
-      },
-      horizontalModeCheckbox: {
-        stateId: this.$isHorizontalMode$,
-      },
-      rootPlay: {
-        layout: this.rootPlayLayout$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.expandCheckbox.stateId(this.$isExpanded$),
+      this.renderers.horizontalModeCheckbox.stateId(this.$isHorizontalMode$),
+      this.renderers.rootPlay.layout(this.rootPlayLayout$),
+      this.renderers.drawer.expanded(this.expanded$),
+      this.renderers.drawer.mode(this.drawerMode$),
+    ];
   }
 
   @cache()

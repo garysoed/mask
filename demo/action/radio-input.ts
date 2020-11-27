@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
-import {element, PersonaContext, ValuesOf} from 'persona';
+import {element, PersonaContext} from 'persona';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -55,21 +55,13 @@ export class RadioInputDemo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      optionA: {
-        stateId: this.stateId$,
-      },
-      optionB: {
-        stateId: this.stateId$,
-      },
-      optionC: {
-        stateId: this.stateId$,
-      },
-      optionD: {
-        stateId: this.stateId$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.optionA.stateId(this.stateId$),
+      this.renderers.optionB.stateId(this.stateId$),
+      this.renderers.optionC.stateId(this.stateId$),
+      this.renderers.optionD.stateId(this.stateId$),
+    ];
   }
 
   @cache()

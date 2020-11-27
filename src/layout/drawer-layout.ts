@@ -12,7 +12,7 @@
 import {cache} from 'gs-tools/export/data';
 import {stringMatchConverter} from 'gs-tools/export/serializer';
 import {instanceofType} from 'gs-types';
-import {attributeIn, booleanParser, element, host, PersonaContext, stringParser, style, ValuesOf} from 'persona';
+import {attributeIn, booleanParser, element, host, PersonaContext, stringParser, style} from 'persona';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -62,13 +62,11 @@ export class DrawerLayout extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      root: {
-        styleHeight: this.styleHeight$,
-        styleWidth: this.styleWidth$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.root.styleHeight(this.styleHeight$),
+      this.renderers.root.styleWidth(this.styleWidth$),
+    ];
   }
 
   @cache()

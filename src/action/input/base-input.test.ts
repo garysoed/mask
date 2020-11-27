@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId, StateService} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser, ValuesOf} from 'persona';
+import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {Observable, Subject, combineLatest, of as observableOf} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
@@ -58,11 +58,6 @@ class TestInput extends BaseInput<string, typeof $> {
     );
 
     this.addSetup(this.forwardDomValueUpdatedByScript$);
-  }
-
-  @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {};
   }
 
   @cache()

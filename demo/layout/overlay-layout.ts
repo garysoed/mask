@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {element, multi, NodeWithId, PersonaContext, renderCustomElement, ValuesOf} from 'persona';
+import {element, multi, NodeWithId, PersonaContext, renderCustomElement} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
@@ -58,28 +58,18 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      overlay: {
-        contentHorizontal: this.getAnchor('$overlayHorizontalIndex'),
-        contentVertical: this.getAnchor('$overlayVerticalIndex'),
-        targetHorizontal: this.getAnchor('$targetHorizontalIndex'),
-        targetVertical: this.getAnchor('$targetVerticalIndex'),
-        showFn: this.inputs.target.actionEvent.pipe(mapTo([])),
-      },
-      overlayHorizontal: {
-        overlayHorizontalAnchors: this.getAnchorNodes('$overlayHorizontalIndex'),
-      },
-      overlayVertical: {
-        overlayVerticalAnchors: this.getAnchorNodes('$overlayVerticalIndex'),
-      },
-      targetHorizontal: {
-        targetHorizontalAnchors: this.getAnchorNodes('$targetHorizontalIndex'),
-      },
-      targetVertical: {
-        targetVerticalAnchors: this.getAnchorNodes('$targetHorizontalIndex'),
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.overlay.contentHorizontal(this.getAnchor('$overlayHorizontalIndex')),
+      this.renderers.overlay.contentVertical(this.getAnchor('$overlayVerticalIndex')),
+      this.renderers.overlay.targetHorizontal(this.getAnchor('$targetHorizontalIndex')),
+      this.renderers.overlay.targetVertical(this.getAnchor('$targetVerticalIndex')),
+      this.renderers.overlay.showFn(this.inputs.target.actionEvent.pipe(mapTo([]))),
+      this.renderers.overlayHorizontal.overlayHorizontalAnchors(this.getAnchorNodes('$overlayHorizontalIndex')),
+      this.renderers.overlayVertical.overlayVerticalAnchors(this.getAnchorNodes('$overlayVerticalIndex')),
+      this.renderers.targetHorizontal.targetHorizontalAnchors(this.getAnchorNodes('$targetHorizontalIndex')),
+      this.renderers.targetVertical.targetVerticalAnchors(this.getAnchorNodes('$targetHorizontalIndex')),
+    ];
   }
 
   private getAnchor(anchorIdKey: keyof OverlayLayoutDemoState): Observable<Anchor> {

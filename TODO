@@ -13,7 +13,7 @@
     ☐ Add selected states to sidebar
 
   general:
-    ☐ Make merging `ValuesOf` easier.
+    ✔ Changed the interface of `BaseCtrl` and `BaseThemedCtrl`.
 
   optimize:
     ☐ Cache theme CSS in worker.

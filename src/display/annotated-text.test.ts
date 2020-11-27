@@ -50,7 +50,7 @@ test('@mask/display/annotated-text', init => {
       _.el.setAttribute($.host._.annotations, ['atob', 'btoc']);
       _.el.setText($.host, 'banana');
 
-      assert(_.el.element.shadowRoot?.innerHTML).to.matchSnapshot('annotatedText');
+      assert(_.el.getElement($.root)?.innerHTML).to.matchSnapshot('annotatedText');
     });
   });
 });

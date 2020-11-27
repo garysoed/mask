@@ -2,7 +2,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
-import {element, PersonaContext, setAttribute, ValuesOf} from 'persona';
+import {element, PersonaContext, setAttribute} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap, withLatestFrom} from 'rxjs/operators';
 
@@ -47,21 +47,13 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      iconContainer: {
-        action: this.isAction$,
-      },
-      icon: {
-        fitTo: this.fitTo$,
-      },
-      fitToWidthCheckbox: {
-        stateId: this.$fitToWidth$,
-      },
-      isActionCheckbox: {
-        stateId: this.$isAction$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.iconContainer.action(this.isAction$),
+      this.renderers.icon.fitTo(this.fitTo$),
+      this.renderers.fitToWidthCheckbox.stateId(this.$fitToWidth$),
+      this.renderers.isActionCheckbox.stateId(this.$isAction$),
+    ];
   }
 
   @cache()

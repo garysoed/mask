@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
-import {element, PersonaContext, ValuesOf} from 'persona';
+import {element, PersonaContext} from 'persona';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -40,24 +40,14 @@ export class TextInputDemo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      disabledInput: {
-        stateId: this.disabledInputStateId$,
-      },
-      emailInput: {
-        stateId: this.emailInputStateId$,
-      },
-      enabledInput: {
-        stateId: this.enabledInputStateId$,
-      },
-      telInput: {
-        stateId: this.telInputStateId$,
-      },
-      urlInput: {
-        stateId: this.urlInputStateId$,
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.disabledInput.stateId(this.disabledInputStateId$),
+      this.renderers.emailInput.stateId(this.emailInputStateId$),
+      this.renderers.enabledInput.stateId(this.enabledInputStateId$),
+      this.renderers.telInput.stateId(this.telInputStateId$),
+      this.renderers.urlInput.stateId(this.urlInputStateId$),
+    ];
   }
 
   @cache()

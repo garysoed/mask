@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {attributeIn, element, host, PersonaContext, stringParser, textContent, ValuesOf} from 'persona';
+import {attributeIn, element, host, PersonaContext, stringParser, textContent} from 'persona';
 import {Observable} from 'rxjs';
 import {map, scan, startWith} from 'rxjs/operators';
 
@@ -46,12 +46,12 @@ export class DemoLayout extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      bulletIcon: {icon: this.bulletIcon$},
-      detailsLabel: {textContent: this.detailsButtonLabel$},
-      detailsDrawer: {expanded: this.detailsDrawerExpanded$},
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      this.renderers.bulletIcon.icon(this.bulletIcon$),
+      this.renderers.detailsLabel.textContent(this.detailsButtonLabel$),
+      this.renderers.detailsDrawer.expanded(this.detailsDrawerExpanded$),
+    ];
   }
 
   @cache()

@@ -1,14 +1,14 @@
 import {cache} from 'gs-tools/export/data';
 import {filterDefined, filterNonNull} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, setAttribute, stringParser, ValuesOf} from 'persona';
-import {EMPTY, Observable, concat, merge} from 'rxjs';
+import {attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
+import {concat, EMPTY, merge, Observable} from 'rxjs';
 import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
 import {stateIdParser} from '../../core/state-id-parser';
-import {CHANGE_EVENT, ChangeEvent} from '../../event/change-event';
+import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
 
 import {$onRadioInput$} from './on-radio-input';
@@ -63,16 +63,12 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
   }
 
   @cache()
-  protected get values(): ValuesOf<typeof $> {
-    return {
-      ...this.baseActionValues,
-      display: {
-        name: this.displaySlot$,
-      },
-      input: {
-        name: this.inputs.host.stateId.pipe(filterDefined()),
-      },
-    };
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [
+      ...super.renders,
+      this.renderers.display.name(this.displaySlot$),
+      this.renderers.input.name(this.inputs.host.stateId.pipe(filterDefined())),
+    ];
   }
 
   @cache()

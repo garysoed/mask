@@ -1,7 +1,8 @@
 import {assert, should, test} from 'gs-testing';
 import {instanceofType} from 'gs-types';
-import {attributeOut, booleanParser, element, host, PersonaContext, setAttribute, ValuesOf} from 'persona';
+import {attributeOut, booleanParser, element, host, PersonaContext, setAttribute} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
+import {Observable} from 'rxjs';
 
 import {_p} from '../app/app';
 
@@ -29,8 +30,8 @@ class TestAction extends BaseAction<typeof $> {
     super($.div._.disabled, context, $);
   }
 
-  get values(): ValuesOf<typeof $> {
-    return {...this.baseActionValues};
+  get renders(): ReadonlyArray<Observable<unknown>> {
+    return [...super.renders];
   }
 }
 

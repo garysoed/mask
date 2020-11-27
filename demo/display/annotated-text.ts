@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {NodeWithId, PersonaContext, renderCustomElement, setId, ValuesOf} from 'persona';
+import {NodeWithId, PersonaContext, renderCustomElement, setId} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -43,8 +43,8 @@ export class AnnotatedTextDemo extends BaseThemedCtrl<{}> {
   }
 
   @cache()
-  protected get values(): ValuesOf<{}> {
-    return {};
+  protected get renders(): ReadonlyArray<Observable<unknown>> {
+    return [];
   }
 }
 
