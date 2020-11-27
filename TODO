@@ -1,3 +1,27 @@
+1.1:
+  general:
+    ☐ Update all the docs.
+
+  bugs:
+    ☐ TextInput is missing the style element.
+
+  cleanup:
+    ☐ ESLint to sort members.
+
+  optimize:
+    ☐ Cache theme CSS in worker.
+    ☐ Preload SVGs in worker.
+    ☐ Retry SVG remote loading with exponential backoff.
+    ☐ General `onRender$` event, dispatched after rendering.
+
+  investigate:
+    ☐ `onInput` should not compile if given to non `HTMLInputElement` selector.
+
+
+# Future
+
+# History
+
 1.0:
   general:
     ✔ Icons use SVGs now. @done(18-12-22 18:32)
@@ -18,23 +42,3 @@
 
   features:
     ✔ Add autocomplete option to `mk-text-input`.
-
-# Future
-2.0:
-  general:
-    ☐ Update all the docs.
-
-  bugs:
-    ☐ TextInput is missing the style element.
-
-  cleanup:
-    ☐ ESLint to sort members.
-
-  optimize:
-    ☐ Cache theme CSS in worker.
-    ☐ Preload SVGs in worker.
-    ☐ Retry SVG remote loading with exponential backoff.
-    ☐ General `onRender$` event, dispatched after rendering.
-
-  investigate:
-    ☐ `onInput` should not compile if given to non `HTMLInputElement` selector.
