@@ -4,7 +4,7 @@
     ✔ Use new Persona API.
     ✔ Differentiate color between hover vs focus.
     ✔ Make dark mode's BG color lighter
-    ☐ Deprecate `ThemedCustomElementCtrl`
+    ✔ Deprecate `ThemedCustomElementCtrl`
     ☐ Release as 1.0
     ✘ Make onDom and other listeners injectable
 

@@ -5,6 +5,9 @@ import {map, pairwise, startWith, tap} from 'rxjs/operators';
 import {$theme, _p} from '../app/app';
 
 
+/**
+ * @deprecated Use BaseThemedCtrl.
+ */
 @_p.baseCustomElement({})
 export abstract class ThemedCustomElementCtrl extends CustomElementCtrl {
   protected readonly theme$ = $theme.get(this.vine);
