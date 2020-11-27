@@ -35,7 +35,6 @@ const $ = {
   template,
 })
 export class TextInputDemo extends BaseThemedCtrl<typeof $> {
-  // TODO: Something's not working with displaying the inputs.
   constructor(context: PersonaContext) {
     super(context, $);
   }

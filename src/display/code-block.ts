@@ -46,7 +46,6 @@ export class CodeBlock extends BaseThemedCtrl<typeof $> {
 
   private setupRenderCode(): Observable<unknown> {
     const hostEl = $.host.getSelectable(this.context);
-    // TODO: Hook into emission AFTER rendering.
     return mutationObservable(hostEl, {childList: true})
         .pipe(
             startWith({}),

@@ -59,7 +59,6 @@ export const $ = {
   input: element('input', instanceofType(HTMLInputElement), {
     autocomplete: attributeOut('autocomplete', stringParser()),
     disabled: setAttribute('disabled'),
-    // TODO: This should cause compile error if the Element type is not InputElement.
     onInput: onInput(),
     type: attributeOut('type', enumParser(InputType)),
   }),

@@ -27,7 +27,7 @@ export class SvgService {
    * @internal
    */
   [__run](): void {
-    // TODO: Preload in background.
+    // Noop
   }
 
   /**
@@ -64,7 +64,6 @@ function loadSvg(config: SvgConfig): Observable<string> {
     case 'observable':
       return config.content$;
     case 'remote':
-      // TODO: Retry with exponential backoff.
       return defer(() => fetch(config.url))
           .pipe(
               switchMap(response => observableFrom(response.text())),

@@ -27,7 +27,6 @@ export const $button = {
   tag: 'mk-button',
   api: {
     ...$baseAction.api,
-    // TODO: Add autocomplete option.
     actionEvent: dispatcher(ACTION_EVENT),
     tabindex: attributeOut('tabindex', integerParser()),
   },

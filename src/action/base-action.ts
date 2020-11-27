@@ -27,7 +27,6 @@ export abstract class BaseAction<S extends typeof $> extends BaseCtrl<S> {
       specs: S,
   ) {
     super(context, specs);
-    // TODO: Avoid addSetup
     this.addSetup(this.renderDisabledDomOutput$);
   }
 

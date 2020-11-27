@@ -6,7 +6,6 @@
  *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
-// TODO: eslint to sort members.
 import {cache} from 'gs-tools/export/data';
 import {typeBased} from 'gs-tools/export/serializer';
 import {booleanType, instanceofType} from 'gs-types';

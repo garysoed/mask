@@ -1,11 +1,11 @@
 1.0:
-  General:
+  general:
     ✔ Icons use SVGs now. @done(18-12-22 18:32)
     ✔ Use new Persona API.
     ✔ Differentiate color between hover vs focus.
     ✔ Make dark mode's BG color lighter
     ✔ Deprecate `ThemedCustomElementCtrl`
-    ☐ Release as 1.0
+    Release as 1.0
     ✘ Make onDom and other listeners injectable
 
   demo:
@@ -21,4 +21,20 @@
 
 # Future
 2.0:
-  ☐ Update all the docs.
+  general:
+    ☐ Update all the docs.
+
+  bugs:
+    ☐ TextInput is missing the style element.
+
+  cleanup:
+    ☐ ESLint to sort members.
+
+  optimize:
+    ☐ Cache theme CSS in worker.
+    ☐ Preload SVGs in worker.
+    ☐ Retry SVG remote loading with exponential backoff.
+    ☐ General `onRender$` event, dispatched after rendering.
+
+  investigate:
+    ☐ `onInput` should not compile if given to non `HTMLInputElement` selector.
