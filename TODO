@@ -6,7 +6,7 @@ mask
     ✔ Use new Persona API.
     ☐ Release as 1.0
     ☐ Differentiate color between hover vs focus.
-    ☐ Make dark mode's BG color lighter
+    ✔ Make dark mode's BG color lighter
     ☐ Deprecate `ThemedCustomElementCtrl`
 
   demo:

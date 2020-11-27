@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {attributeIn, element, host, PersonaContext, stringParser, textContent, ValuesOf} from 'persona';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {map, tap, withLatestFrom} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map, scan, startWith} from 'rxjs/operators';
 
 import {$button, Button} from '../../src/action/button';
 import {_p} from '../../src/app/app';
@@ -41,12 +41,8 @@ const $ = {
   template,
 })
 export class DemoLayout extends BaseThemedCtrl<typeof $> {
-  private readonly isDrawerExpanded$ = new BehaviorSubject(false);
-
   constructor(context: PersonaContext) {
     super(context, $);
-
-    this.addSetup(this.onDetailsButtonClick$);
   }
 
   @cache()
@@ -76,13 +72,11 @@ export class DemoLayout extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get onDetailsButtonClick$(): Observable<unknown> {
+  private get isDrawerExpanded$(): Observable<boolean> {
     return this.inputs.detailsButton.actionEvent
         .pipe(
-            withLatestFrom(this.isDrawerExpanded$),
-            tap(([, isExpanded]) => {
-              this.isDrawerExpanded$.next(!isExpanded);
-            }),
+            scan(acc => !acc, false),
+            startWith(false),
         );
   }
 }

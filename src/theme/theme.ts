@@ -3,7 +3,8 @@ import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 
 import generalCss from './general.css';
-import {PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, PRIMARY_DARK_SECTION_SPECS, PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, PRIMARY_LIGHT_SECTION_SPECS, SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS, SECONDARY_DARK_SECTION_SPECS, SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS, SECONDARY_LIGHT_SECTION_SPECS, SectionSpec} from './section-spec';
+import {PALETTE} from './palette';
+import {PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, PRIMARY_DARK_SECTION_SPECS, PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, PRIMARY_LIGHT_SECTION_SPECS, SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS, SECONDARY_DARK_SECTION_SPECS, SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS, SECONDARY_LIGHT_SECTION_SPECS, SectionSpec, ShadeType} from './section-spec';
 import {ColorWithAlpha, createColor} from './shade';
 
 
@@ -75,11 +76,10 @@ export class Theme {
     const cssVariables = $pipe(
         [...normalSectionSpecs, ...highlightSectionSpecs],
         $map(spec => {
-          const base = spec.isBase ? this.baseColor : this.accentColor;
           const cssFgVar = getSectionVariableName(spec, true);
           const cssBgVar = getSectionVariableName(spec, false);
-          const cssFgColor = generateCssColor(createColor(spec.fg, base));
-          const cssBgColor = generateCssColor(createColor(spec.bg, base));
+          const cssFgColor = generateCssColor(createColor(spec.fg, this.getMixBaseColor(spec.fgType)));
+          const cssBgColor = generateCssColor(createColor(spec.bg, this.getMixBaseColor(spec.bgType)));
           return [
             `${cssFgVar}: ${cssFgColor};`,
             `${cssBgVar}: ${cssBgColor};`,
@@ -92,6 +92,17 @@ export class Theme {
 
     const theme = isDark ? 'dark' : 'light';
     return `[mk-theme="${theme}"] { ${cssVariables} }`;
+  }
+
+  private getMixBaseColor(shadeType: ShadeType): Color {
+    switch (shadeType) {
+      case ShadeType.ACCENT:
+        return this.accentColor;
+      case ShadeType.BASE:
+        return this.baseColor;
+      case ShadeType.GREYSCALE:
+        return PALETTE.GREY;
+    }
   }
 }
 
