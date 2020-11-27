@@ -1,23 +1,23 @@
-mask
+1.0:
   General:
     ✔ Icons use SVGs now. @done(18-12-22 18:32)
     ☐ Update all the docs.
-    ☐ Make onDom and other listeners injectable
+    ✘ Make onDom and other listeners injectable
     ✔ Use new Persona API.
-    ☐ Release as 1.0
-    ☐ Differentiate color between hover vs focus.
+    ✔ Differentiate color between hover vs focus.
     ✔ Make dark mode's BG color lighter
     ☐ Deprecate `ThemedCustomElementCtrl`
+    ☐ Release as 1.0
 
   demo:
-    ☐ Change the header (might need to come up with new header type - label, caption, section header?)
-    ☐ Change sidebar to be highlight
-    ☐ Dark mode toggle
+    ✘ Change the header (might need to come up with new header type - label, caption, section header?)
+    ✔ Change sidebar to be highlight
+    ✔ Dark mode toggle
 
   bugs:
     ☐ Dialog, clicking on the button the second time doesn't work. Event dispatch doesn't seem to work.
 
   features:
-    ☐ Add autocomplete option to `mk-text-input`.
+    ✔ Add autocomplete option to `mk-text-input`.
 
   ☐ Gather TODOs
