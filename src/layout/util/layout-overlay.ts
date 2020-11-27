@@ -1,13 +1,14 @@
-import {Vine, source} from 'grapevine';
+import {source, Vine} from 'grapevine';
+import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, classlist, element, style} from 'persona';
+import {classlist, element, PersonaContext, style, ValuesOf} from 'persona';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 import {_p, _v} from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import {$svgService, registerSvg} from '../../core/svg-service';
-import {ThemedCustomElementCtrl} from '../../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../../theme/base-themed-ctrl';
 
 import layoutOverlayTemplate from './layout-overlay.html';
 
@@ -34,21 +35,28 @@ const $ = {
   template: layoutOverlayTemplate,
   api: {},
 })
-export class LayoutOverlay extends ThemedCustomElementCtrl {
+export class LayoutOverlay extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
-
-    this.render($.root._.classlist, this.handleIsActiveChange());
-    this.render($.gridLeft._.backgroundImage, this.renderBackgroundImage());
-    this.render($.gridRight._.backgroundImage, this.renderBackgroundImage());
+    super(context, $);
   }
 
-  private handleIsActiveChange(): Observable<ReadonlySet<string>> {
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      root: {classlist: this.rootClasslist$},
+      gridLeft: {backgroundImage: this.backgroundImage$},
+      gridRight: {backgroundImage: this.backgroundImage$},
+    };
+  }
+
+  @cache()
+  private get rootClasslist$(): Observable<ReadonlySet<string>> {
     return $isActive.get(this.vine)
         .pipe(map(isActive => isActive ? new Set(['active']) : new Set([])));
   }
 
-  private renderBackgroundImage(): Observable<string> {
+  @cache()
+  private get backgroundImage$(): Observable<string> {
     return $svgService.get(this.vine)
         .pipe(
             switchMap(service => service.getSvg('layout_overlay')),

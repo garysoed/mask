@@ -1,7 +1,11 @@
+import {cache} from 'gs-tools/export/data';
+import {PersonaContext, ValuesOf} from 'persona';
+
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import template from './list-item-layout.html';
+
 
 export const $listItemLayout = {
   tag: 'mk-list-item-layout',
@@ -12,6 +16,13 @@ export const $listItemLayout = {
   ...$listItemLayout,
   template,
 })
-export class ListItemLayout extends ThemedCustomElementCtrl {
+export class ListItemLayout extends BaseThemedCtrl<{}> {
+  constructor(context: PersonaContext) {
+    super(context, {});
+  }
 
+  @cache()
+  protected get values(): ValuesOf<{}> {
+    return {};
+  }
 }

@@ -1,15 +1,16 @@
+import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, stringParser, textContent} from 'persona';
-import {BehaviorSubject, Observable, combineLatest, merge} from 'rxjs';
-import {distinctUntilChanged, map, mapTo, startWith, tap} from 'rxjs/operators';
+import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent, ValuesOf} from 'persona';
+import {combineLatest, merge, Observable} from 'rxjs';
+import {distinctUntilChanged, map, mapTo, startWith} from 'rxjs/operators';
 
 import {$button, Button} from '../action/button';
 import {_p} from '../app/app';
 import {$icon, Icon} from '../display/icon';
-import {ACTION_EVENT, ActionEvent} from '../event/action-event';
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {$drawerLayout, DrawerLayout} from '../layout/drawer-layout';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 import {MEDIA_QUERY} from '../theme/media-query';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
 
 import {ListItemLayout} from './list-item-layout';
 import template from './root-layout.html';
@@ -49,41 +50,53 @@ export const $qIsDesktop = mediaQuery(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKT
   ],
   template,
 })
-export class RootLayout extends ThemedCustomElementCtrl {
-  private readonly isDrawerOpen$ = new BehaviorSubject(false);
+export class RootLayout extends BaseThemedCtrl<typeof $> {
 
   constructor(context: PersonaContext) {
-    super(context);
-
-    this.addSetup(this.setupHandleDrawerExpandCollapse());
-    this.render($.host._.drawerExpanded, this.isDrawerOpen$);
-    this.render($.drawer._.expanded, this.isDrawerOpen$);
-    this.render($.title._.textContent, this.declareInput($.host._.label));
-    this.render($.mainIcon._.icon, this.declareInput($.host._.icon));
-    this.render($.host._.onTitleClick, this.renderOnTitleClick());
+    super(context, $);
   }
 
-  private renderOnTitleClick(): Observable<ActionEvent<void>> {
-    return this.declareInput($.titleButton._.actionEvent).pipe(
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      host: {
+        drawerExpanded: this.isDrawerOpen$,
+        onTitleClick: this.onTitleClick$(),
+      },
+      drawer: {
+        expanded: this.isDrawerOpen$,
+      },
+      title: {
+        textContent: this.inputs.host.label,
+      },
+      mainIcon: {
+        icon: this.inputs.host.icon,
+      },
+    };
+  }
+
+  @cache()
+  private onTitleClick$(): Observable<ActionEvent<void>> {
+    return this.inputs.titleButton.actionEvent.pipe(
         map(() => new ActionEvent(undefined)),
     );
   }
 
-  private setupHandleDrawerExpandCollapse(): Observable<unknown> {
+  @cache()
+  private get isDrawerOpen$(): Observable<boolean> {
     return combineLatest([
       merge(
-          this.declareInput($.drawer._.onMouseLeave).pipe(mapTo(false)),
-          this.declareInput($.drawer._.onMouseEnter).pipe(mapTo(true)),
+          this.inputs.drawer.onMouseLeave.pipe(mapTo(false)),
+          this.inputs.drawer.onMouseEnter.pipe(mapTo(true)),
       )
           .pipe(
               startWith(false),
               distinctUntilChanged(),
           ),
-      this.declareInput($qIsDesktop),
+      $qIsDesktop.getValue(),
     ])
         .pipe(
             map(([mouseHover, isDesktop]) => mouseHover || isDesktop),
-            tap(showDrawer => this.isDrawerOpen$.next(showDrawer)),
         );
   }
 }

@@ -1,12 +1,12 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, element, enumParser, handler, host, slotted, stringParser} from 'persona';
-import {Observable, combineLatest} from 'rxjs';
+import {attributeIn, element, enumParser, handler, host, PersonaContext, slotted, stringParser, ValuesOf} from 'persona';
+import {combineLatest, Observable} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 import {$overlayService, Anchor} from '../core/overlay-service';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import template from './overlay-layout.html';
 
@@ -34,11 +34,16 @@ export const $ = {
   ...$overlayLayout,
   template,
 })
-export class OverlayLayout extends ThemedCustomElementCtrl {
+export class OverlayLayout extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
 
     this.addSetup(this.handleOnShow$);
+  }
+
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {};
   }
 
   private getTargetEl(hostEl: Element, targetId: string): Element|null {
@@ -52,17 +57,17 @@ export class OverlayLayout extends ThemedCustomElementCtrl {
 
   @cache()
   private get handleOnShow$(): Observable<unknown> {
-    const targetEl$ = this.declareInput($.host._.targetId).pipe(
+    const targetEl$ = this.inputs.host.targetId.pipe(
         map(targetId => this.getTargetEl($.host.getSelectable(this.context), targetId ?? '')),
     );
 
-    const contentNode$ = this.declareInput($.slot._.slotted)
+    const contentNode$ = this.inputs.slot.slotted
         .pipe(map(slottedNodes => this.wrapContentNode(slottedNodes)));
     const anchors$ = combineLatest([
-      this.declareInput($.host._.contentHorizontal),
-      this.declareInput($.host._.contentVertical),
-      this.declareInput($.host._.targetHorizontal),
-      this.declareInput($.host._.targetVertical),
+      this.inputs.host.contentHorizontal,
+      this.inputs.host.contentVertical,
+      this.inputs.host.targetHorizontal,
+      this.inputs.host.targetVertical,
     ])
         .pipe(
             map(([contentHorizontal, contentVertical, targetHorizontal, targetVertical]) => {
@@ -70,7 +75,7 @@ export class OverlayLayout extends ThemedCustomElementCtrl {
             }),
         );
 
-    return this.declareInput($.host._.showFn).pipe(
+    return this.inputs.host.showFn.pipe(
         withLatestFrom(
             $overlayService.get(this.vine),
             targetEl$,

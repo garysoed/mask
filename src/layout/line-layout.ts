@@ -1,7 +1,11 @@
+import {cache} from 'gs-tools/export/data';
+import {PersonaContext, ValuesOf} from 'persona';
+
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import template from './line-layout.html';
+
 
 export const $lineLayout = {
   tag: 'mk-line-layout',
@@ -12,6 +16,13 @@ export const $lineLayout = {
   ...$lineLayout,
   template,
 })
-export class LineLayout extends ThemedCustomElementCtrl {
+export class LineLayout extends BaseThemedCtrl<{}> {
+  constructor(context: PersonaContext) {
+    super(context, {});
+  }
 
+  @cache()
+  protected get values(): ValuesOf<{}> {
+    return {};
+  }
 }

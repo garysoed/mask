@@ -1,13 +1,13 @@
 import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
-import {NodeWithId, PersonaContext, classToggle, element, host, onDom, resizeObservable, setId, single, style} from 'persona';
-import {Observable, combineLatest, merge} from 'rxjs';
+import {classToggle, element, host, NodeWithId, onDom, PersonaContext, resizeObservable, setId, single, style, ValuesOf} from 'persona';
+import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
 import {Logger} from 'santa';
 
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import {$overlayService, Anchor, NodeSpec, ShowEvent} from './overlay-service';
 import template from './overlay.html';
@@ -44,14 +44,21 @@ export const $ = {
   ...$overlay,
   template,
 })
-export class Overlay extends ThemedCustomElementCtrl {
+export class Overlay extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.root._.hidden, this.isRootHidden$);
-    this.render($.content._.content, this.overlayContent$);
-    this.render($.content._.styleLeft, this.contentLeft$);
-    this.render($.content._.styleTop, this.contentTop$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      root: {hidden: this.isRootHidden$},
+      content: {
+        content: this.overlayContent$,
+        styleLeft: this.contentLeft$,
+        styleTop: this.contentTop$,
+      },
+    };
   }
 
   @cache()
@@ -145,7 +152,7 @@ export class Overlay extends ThemedCustomElementCtrl {
         switchMap(service => service.onShow$),
     );
 
-    const onClick$ = this.declareInput($.root._.onClick).pipe(
+    const onClick$ = this.inputs.root.onClick.pipe(
         filter(event => event.target === rootEl),
         mapTo(null),
     );

@@ -12,12 +12,12 @@
 import {cache} from 'gs-tools/export/data';
 import {stringMatchConverter} from 'gs-tools/export/serializer';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, booleanParser, element, host, stringParser, style} from 'persona';
-import {Observable, combineLatest} from 'rxjs';
+import {attributeIn, booleanParser, element, host, PersonaContext, stringParser, style, ValuesOf} from 'persona';
+import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {_p} from '../app/app';
-import {ThemedCustomElementCtrl} from '../theme/themed-custom-element-ctrl';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
 import drawerTemplate from './drawer-layout.html';
 
@@ -56,26 +56,28 @@ export const $ = {
   ...$drawerLayout,
   template: drawerTemplate,
 })
-export class DrawerLayout extends ThemedCustomElementCtrl {
-  private readonly expandedObs = this.declareInput($.host._.expanded);
-  private readonly maxSizeObs = this.declareInput($.host._.maxSize);
-  private readonly minSizeObs = this.declareInput($.host._.minSize);
-  private readonly modeObs = this.declareInput($.host._.mode);
-
+export class DrawerLayout extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
-    super(context);
+    super(context, $);
+  }
 
-    this.render($.root._.styleHeight, this.styleHeight$);
-    this.render($.root._.styleWidth, this.styleWidth$);
+  @cache()
+  protected get values(): ValuesOf<typeof $> {
+    return {
+      root: {
+        styleHeight: this.styleHeight$,
+        styleWidth: this.styleWidth$,
+      },
+    };
   }
 
   @cache()
   private get styleHeight$(): Observable<string> {
     return combineLatest([
-      this.expandedObs,
-      this.maxSizeObs,
-      this.minSizeObs,
-      this.modeObs,
+      this.inputs.host.expanded,
+      this.inputs.host.maxSize,
+      this.inputs.host.minSize,
+      this.inputs.host.mode,
     ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
@@ -91,10 +93,10 @@ export class DrawerLayout extends ThemedCustomElementCtrl {
   @cache()
   private get styleWidth$(): Observable<string> {
     return combineLatest([
-      this.expandedObs,
-      this.maxSizeObs,
-      this.minSizeObs,
-      this.modeObs,
+      this.inputs.host.expanded,
+      this.inputs.host.maxSize,
+      this.inputs.host.minSize,
+      this.inputs.host.mode,
     ])
         .pipe(
             map(([expanded, maxSize, minSize, mode]) => {
