@@ -36,6 +36,5 @@ export {Palette, PALETTE} from '../src/theme/palette';
 export {RootLayout, $rootLayout} from '../src/layout/root-layout';
 export {$theme, start} from '../src/app/app';
 export {Theme} from '../src/theme/theme';
-export {ThemedCustomElementCtrl} from '../src/theme/themed-custom-element-ctrl';
 export {BaseThemedCtrl} from '../src/theme/base-themed-ctrl';
 

@@ -8,8 +8,8 @@
 
   cleanup:
     ✔ Clean up old components.
+    ✔ Delete `ThemedCustomElementCtrl`.
     ☐ ESLint to sort members.
-    ☐ Delete `ThemedCustomElementCtrl`.
 
   demo:
     ☐ Add selected states to sidebar
