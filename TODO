@@ -1,11 +1,13 @@
 1.1:
   general:
     ☐ Update all the docs.
+    ☐ `onInput` should not compile if given to non `HTMLInputElement` selector.
 
   bugs:
     ✔ A lot of actions are missing the style element.
 
   cleanup:
+    ☐ Clean up old components.
     ☐ ESLint to sort members.
     ☐ Delete `ThemedCustomElementCtrl`.
 
@@ -16,13 +18,11 @@
     ✔ Changed the interface of `BaseCtrl` and `BaseThemedCtrl`.
 
   optimize:
+    ☐ Add worker.
     ☐ Cache theme CSS in worker.
     ☐ Preload SVGs in worker.
     ☐ Retry SVG remote loading with exponential backoff.
     ☐ General `onRender$` event, dispatched after rendering.
-
-  investigate:
-    ☐ `onInput` should not compile if given to non `HTMLInputElement` selector.
 
 
 # Future
