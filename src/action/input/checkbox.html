@@ -39,9 +39,42 @@
   #container input:checked ~ #checkmark:after {
     display: block;
   }
+
+  #display_checked,
+  #display_unchecked,
+  #display_unknown {
+    display: none;
+  }
+
+  #container.display_checked #display_checked,
+  #container.display_unchecked #display_unchecked,
+  #container.display_unknown #display_unknown {
+    display: block;
+  }
+
+  .iconContainer {
+    height: 2rem;
+  }
 </style>
 
 <label id="container" mk-body-2>
   <input id="checkbox" type="checkbox" checked="checked">
-  <slot id="display"></slot>
+  <slot id="display_checked" name="display_checked">
+    <mk-list-item-layout>
+      <div class="iconContainer" slot="bullet"><mk-icon icon="mk.checkbox_checked"></mk-icon></div>
+      <p id="checkedLabel" slot="label"></p>
+    </mk-list-item-layout>
+  </slot>
+  <slot id="display_unchecked" name="display_unchecked">
+    <mk-list-item-layout>
+      <div class="iconContainer" slot="bullet"><mk-icon icon="mk.checkbox_unchecked"></mk-icon></div>
+      <p id="uncheckedLabel" slot="label"></p>
+    </mk-list-item-layout>
+  </slot>
+  <slot id="display_unknown" name="display_unknown">
+    <mk-list-item-layout>
+      <div class="iconContainer" slot="bullet"><mk-icon icon="mk.checkbox_unknown"></mk-icon></div>
+      <p id="unknownLabel" slot="label"></p>
+    </mk-list-item-layout>
+  </slot>
 </label>

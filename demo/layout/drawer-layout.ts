@@ -6,8 +6,7 @@ import {attributeOut, element, PersonaContext, stringParser} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
-import {Checkbox, CheckedValue} from '../../src/action/input/checkbox';
-import {$simpleCheckbox} from '../../src/action/simple/simple-checkbox';
+import {$checkbox, Checkbox, CheckedValue} from '../../src/action/input/checkbox';
 import {_p} from '../../src/app/app';
 import {$stateService} from '../../src/core/state-service';
 import {$drawerLayout, DrawerLayout, DrawerMode} from '../../src/layout/drawer-layout';
@@ -20,11 +19,11 @@ import template from './drawer-layout.html';
 
 const $ = {
   drawer: element('drawer', $drawerLayout, {}),
-  expandCheckbox: element('expandCheckbox', $simpleCheckbox, {}),
+  expandCheckbox: element('expandCheckbox', $checkbox, {}),
   rootPlay: element('rootPlay', elementWithTagType('section'), {
     layout: attributeOut('layout', stringParser()),
   }),
-  horizontalModeCheckbox: element('horizontalModeCheckbox', $simpleCheckbox, {}),
+  horizontalModeCheckbox: element('horizontalModeCheckbox', $checkbox, {}),
 };
 
 export const $drawerLayoutDemo = {

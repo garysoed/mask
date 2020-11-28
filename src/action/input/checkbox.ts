@@ -1,12 +1,17 @@
+import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, dispatcher, element, host, onInput, setAttribute, stringParser} from 'persona';
-import {Observable, defer, merge, of as observableOf} from 'rxjs';
+import {attributeIn, classlist, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
+import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
+import checkboxChecked from '../../asset/checkbox_checked.svg';
+import checkboxEmpty from '../../asset/checkbox_empty.svg';
+import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import {stateIdParser} from '../../core/state-id-parser';
-import {CHANGE_EVENT, ChangeEvent} from '../../event/change-event';
+import {registerSvg} from '../../core/svg-service';
+import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
 
 import template from './checkbox.html';
@@ -17,6 +22,7 @@ export type CheckedValue = boolean | 'unknown';
 export const $checkbox = {
   api: {
     ...$baseInput.api,
+    label: attributeIn('label', stringParser()),
     onChange: dispatcher<ChangeEvent<CheckedValue>>(CHANGE_EVENT),
     stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<CheckedValue>()),
   },
@@ -28,16 +34,43 @@ export const $ = {
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),
-  display: element('display', instanceofType(HTMLSlotElement), {
-    name: attributeOut('name', stringParser()),
+  checkedLabel: element('checkedLabel', instanceofType(HTMLParagraphElement), {
+    text: textOut(),
   }),
+  container: element('container', instanceofType(HTMLLabelElement), {
+    checkMode: classlist(),
+  }),
+  // TODO: Support selectors for multiple elements.
   host: host({
     ...$checkbox.api,
+  }),
+  uncheckedLabel: element('uncheckedLabel', instanceofType(HTMLParagraphElement), {
+    text: textOut(),
+  }),
+  unknownLabel: element('unknownLabel', instanceofType(HTMLParagraphElement), {
+    text: textOut(),
   }),
 };
 
 @_p.customElement({
   ...$checkbox,
+  configure(vine: Vine): void {
+    registerSvg(
+        vine,
+        'mk.checkbox_checked',
+        {type: 'embed', content: checkboxChecked},
+    );
+    registerSvg(
+        vine,
+        'mk.checkbox_unchecked',
+        {type: 'embed', content: checkboxEmpty},
+    );
+    registerSvg(
+        vine,
+        'mk.checkbox_unknown',
+        {type: 'embed', content: checkboxUnknown},
+    );
+  },
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue, typeof $> {
@@ -56,12 +89,16 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
   get renders(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.renders,
-      this.renderers.display.name(this.displaySlot$),
+      this.renderers.container.checkMode(this.checkMode$),
+      // TODO: Add default value.
+      this.renderers.checkedLabel.text(this.label$),
+      this.renderers.uncheckedLabel.text(this.label$),
+      this.renderers.unknownLabel.text(this.label$),
     ];
   }
 
   @cache()
-  private get displaySlot$(): Observable<string> {
+  private get checkMode$(): Observable<ReadonlySet<string>> {
     return this.domValue$.pipe(
         map(checkState => {
           if (checkState === 'unknown') {
@@ -70,7 +107,7 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
 
           return checkState ? 'checked' : 'unchecked';
         }),
-        map(checkState => `display_${checkState}`),
+        map(checkState => new Set([`display_${checkState}`])),
     );
   }
 
@@ -91,6 +128,13 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
               return element.checked;
             }),
         );
+  }
+
+  @cache()
+  protected get label$(): Observable<string> {
+    return this.inputs.host.label.pipe(
+        map(label => label ?? ''),
+    );
   }
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {
