@@ -7,7 +7,7 @@
     ✔ A lot of actions are missing the style element.
 
   cleanup:
-    ☐ Clean up old components.
+    ✔ Clean up old components.
     ☐ ESLint to sort members.
     ☐ Delete `ThemedCustomElementCtrl`.
 
