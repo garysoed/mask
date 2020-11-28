@@ -4,11 +4,11 @@ import {element, multi, NodeWithId, PersonaContext, renderCustomElement} from 'p
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
-import {$stateService} from '../../export';
 import {$button, Button} from '../../src/action/button';
-import {$simpleRadioInput, SimpleRadioInput} from '../../src/action/simple/simple-radio-input';
+import {$radioInput, RadioInput} from '../../src/action/input/radio-input';
 import {_p} from '../../src/app/app';
 import {Anchor} from '../../src/core/overlay-service';
+import {$stateService} from '../../src/core/state-service';
 import {$overlayLayout, OverlayLayout} from '../../src/layout/overlay-layout';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
@@ -48,7 +48,7 @@ const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
     Button,
     DemoLayout,
     OverlayLayout,
-    SimpleRadioInput,
+    RadioInput,
   ],
   template,
 })
@@ -100,7 +100,7 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
           const $anchor = state.overlayLayoutDemo[anchorIdKey];
           const node$list = ANCHORS.map((anchor, index) => {
             return renderCustomElement(
-                $simpleRadioInput,
+                $radioInput,
                 {
                   inputs: {
                     index: observableOf(index),

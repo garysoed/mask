@@ -6,7 +6,6 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {$radioInput, RadioInput} from '../../src/action/input/radio-input';
-import {$simpleRadioInput, SimpleRadioInput} from '../../src/action/simple/simple-radio-input';
 import {_p} from '../../src/app/app';
 import radioUnchecked from '../../src/asset/checkbox_empty.svg';
 import radioChecked from '../../src/asset/radio_checked.svg';
@@ -26,7 +25,7 @@ const $ = {
   optionA: element('optionA', $radioInput, {}),
   optionB: element('optionB', $radioInput, {}),
   optionC: element('optionC', $radioInput, {}),
-  optionD: element('optionD', $simpleRadioInput, {}),
+  optionD: element('optionD', $radioInput, {}),
 };
 
 @_p.customElement({
@@ -34,7 +33,6 @@ const $ = {
   template,
   dependencies: [
     RadioInput,
-    SimpleRadioInput,
   ],
   configure: vine => {
     registerSvg(

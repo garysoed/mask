@@ -1,13 +1,17 @@
+import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterDefined, filterNonNull} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
+import {attributeIn, attributeOut, classlist, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
 import {concat, EMPTY, merge, Observable} from 'rxjs';
 import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
+import radioUnchecked from '../../asset/checkbox_empty.svg';
+import radioChecked from '../../asset/radio_checked.svg';
 import {stateIdParser} from '../../core/state-id-parser';
+import {registerSvg} from '../../core/svg-service';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
 
@@ -22,6 +26,7 @@ const LOGGER = new Logger('mask.RadioInput');
 export const $radioInput = {
   api: {
     ...$baseInput.api,
+    label: attributeIn('label', stringParser()),
     onChange: dispatcher<ChangeEvent<number|null>>(CHANGE_EVENT),
     stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<number|null>()),
     index: attributeIn('index', integerParser()),
@@ -30,8 +35,11 @@ export const $radioInput = {
 };
 
 export const $ = {
-  display: element('display', instanceofType(HTMLSlotElement), {
-    name: attributeOut('name', stringParser()),
+  checkedLabel: element('checkedLabel', instanceofType(HTMLParagraphElement), {
+    text: textOut(),
+  }),
+  container: element('container', instanceofType(HTMLLabelElement), {
+    checkMode: classlist(),
   }),
   host: host({
     ...$radioInput.api,
@@ -41,11 +49,26 @@ export const $ = {
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),
+  uncheckedLabel: element('uncheckedLabel', instanceofType(HTMLParagraphElement), {
+    text: textOut(),
+  }),
 };
 
 @_p.customElement({
   ...$radioInput,
   template,
+  configure(vine: Vine): void {
+    registerSvg(
+        vine,
+        'mk.radio_checked',
+        {type: 'embed', content: radioChecked},
+    );
+    registerSvg(
+        vine,
+        'mk.radio_unchecked',
+        {type: 'embed', content: radioUnchecked},
+    );
+  },
 })
 export class RadioInput extends BaseInput<number|null, typeof $> {
   constructor(context: PersonaContext) {
@@ -63,11 +86,25 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
   }
 
   @cache()
+  private get checkMode$(): Observable<ReadonlySet<string>> {
+    return this.domValue$.pipe(
+        withLatestFrom(this.inputs.host.index),
+        map(([checkState, index]) => {
+          return checkState === index ? 'display_checked' : 'display_unchecked';
+        }),
+        map(classname => new Set([classname])),
+    );
+  }
+
+  @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.renders,
-      this.renderers.display.name(this.displaySlot$),
+      this.renderers.container.checkMode(this.checkMode$),
       this.renderers.input.name(this.inputs.host.stateId.pipe(filterDefined())),
+      // TODO: Add default value.
+      this.renderers.checkedLabel.text(this.label$),
+      this.renderers.uncheckedLabel.text(this.label$),
     ];
   }
 
@@ -148,6 +185,13 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
               subject.next({index, stateId});
             }),
         );
+  }
+
+  @cache()
+  protected get label$(): Observable<string> {
+    return this.inputs.host.label.pipe(
+        map(label => label ?? ''),
+    );
   }
 
   @cache()

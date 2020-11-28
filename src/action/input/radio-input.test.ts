@@ -1,4 +1,5 @@
-import {assert, createSpySubject, objectThat, run, should, test} from 'gs-testing';
+import {assert, createSpySubject, objectThat, run, runEnvironment, should, test} from 'gs-testing';
+import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {StateId, StateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {switchMap, take, tap} from 'rxjs/operators';
@@ -8,6 +9,7 @@ import {$stateService} from '../../core/state-service';
 
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import {$, $radioInput, RadioInput} from './radio-input';
+import * as snapshots from './snapshots.json';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -16,9 +18,10 @@ test('@mask/action/input/radio-input', init => {
   const INDEX = 3;
 
   const _ = init(() => {
+    runEnvironment(new BrowserSnapshotsEnv(snapshots as {[id: string]: string}));
+
     const tester = testerFactory.build([RadioInput], document);
     const el = tester.createElement($radioInput.tag);
-    const displaySlotName$ = el.getAttribute($.display._.name);
 
     const stateService = new StateService();
     const $state = stateService.add<number|null>(null);
@@ -27,16 +30,27 @@ test('@mask/action/input/radio-input', init => {
     el.setAttribute($.host._.stateId, $state);
     el.setAttribute($.host._.index, INDEX);
 
-    return {displaySlotName$, el, $state, stateService, tester};
+    return {el, $state, stateService, tester};
   });
 
-  test('displaySlot$', () => {
+  test('render', () => {
+    should('render default config correctly', () => {
+      _.el.setAttribute($.host._.label, 'label');
+
+      assert(_.el.element.shadowRoot!.querySelector('#display_checked')!.innerHTML)
+          .to.matchSnapshot('radio_checked');
+      assert(_.el.element.shadowRoot!.querySelector('#display_unchecked')!.innerHTML)
+          .to.matchSnapshot('radio_unchecked');
+    });
+  });
+
+  test('checkMode$', () => {
     should('set the slot to display_checked if checked', () => {
       const el = _.el.getElement($.input);
       el.checked = true;
       _.el.dispatchEvent($.input._.onInput);
 
-      assert(_.displaySlotName$).to.emitWith('display_checked');
+      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
     });
 
     should('set the slot to display_unchecked if unchecked', () => {
@@ -44,7 +58,7 @@ test('@mask/action/input/radio-input', init => {
       el.checked = false;
       _.el.dispatchEvent($.input._.onInput);
 
-      assert(_.displaySlotName$).to.emitWith('display_unchecked');
+      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
     });
   });
 
@@ -127,7 +141,7 @@ test('@mask/action/input/radio-input', init => {
           }),
       ));
 
-      assert(_.displaySlotName$).to.emitWith('display_unchecked');
+      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
     });
 
     should('do nothing if the global radio input emits for the current index', () => {
@@ -138,7 +152,7 @@ test('@mask/action/input/radio-input', init => {
           }),
       ));
 
-      assert(_.displaySlotName$).to.emitWith('display_checked');
+      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
     });
 
     should('do nothing if the global radio input emits and the ID doesn\'t match', () => {
@@ -150,7 +164,7 @@ test('@mask/action/input/radio-input', init => {
           }),
       ));
 
-      assert(_.displaySlotName$).to.emitWith('display_checked');
+      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
     });
   });
 
