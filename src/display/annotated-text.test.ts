@@ -1,7 +1,9 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {RenderTextNodeSpec} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
-import {of as observableOf} from 'rxjs';
+import {Observable, of as observableOf} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 
@@ -11,6 +13,10 @@ import * as snapshots from './snapshots.json';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
+
+function normalize<T>(value: T|Observable<T>): Observable<T> {
+  return value instanceof Observable ? value : observableOf(value);
+}
 
 test('@mask/display/annotated-text', init => {
   setup(() => {
@@ -32,17 +38,21 @@ test('@mask/display/annotated-text', init => {
             ...configs,
             [
               'atob',
-              node => {
-                node.textContent = node.textContent!.replace(/a/g, 'b');
-                return observableOf([node]);
-              },
+              spec => normalize((spec as RenderTextNodeSpec).text).pipe(
+                  map(text => [{
+                    ...spec,
+                    text: text.replace(/a/g, 'b'),
+                  }]),
+              ),
             ],
             [
               'btoc',
-              node => {
-                node.textContent = node.textContent!.replace(/b/g, 'c');
-                return observableOf([node]);
-              },
+              spec => normalize((spec as RenderTextNodeSpec).text).pipe(
+                  map(text => [{
+                    ...spec,
+                    text: text.replace(/b/g, 'c'),
+                  }]),
+              ),
             ],
           ]),
       );

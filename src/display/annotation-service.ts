@@ -1,11 +1,8 @@
 import {source} from 'grapevine';
-import {NodeWithId, PersonaContext} from 'persona';
+import {RenderSpec} from 'persona';
 import {Observable} from 'rxjs';
 
-export type AnnotationSpec = (
-    node: NodeWithId<Node>,
-    context: PersonaContext,
-) => Observable<ReadonlyArray<NodeWithId<Node>>>;
+export type AnnotationSpec = (node: RenderSpec) => Observable<readonly RenderSpec[]>;
 
 export type AnnotationConfig = ReadonlyMap<string, AnnotationSpec>;
 

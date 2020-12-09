@@ -1,7 +1,7 @@
 import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
 import {debug} from 'gs-tools/export/rxjs';
-import {attributeIn, host, listParser, multi, NodeWithId, PersonaContext, root, setId, stringParser, textIn} from 'persona';
+import {attributeIn, host, listParser, multi, PersonaContext, RenderSpec, RenderSpecType, root, stringParser, textIn} from 'persona';
 import {combineLatest, concat, Observable, of as observableOf} from 'rxjs';
 import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
@@ -60,11 +60,11 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   }
 
   private applyAnnotation(
-      nodes: ReadonlyArray<NodeWithId<Node>>,
+      renderSpecs: readonly RenderSpec[],
       spec: AnnotationSpec,
-  ): Observable<ReadonlyArray<NodeWithId<Node>>> {
-    return concat(...nodes.map(node => spec(node, this.context))).pipe(
-        bufferCount(nodes.length),
+  ): Observable<readonly RenderSpec[]> {
+    return concat(...renderSpecs.map(renderSpec => spec(renderSpec))).pipe(
+        bufferCount(renderSpecs.length),
         map(outputs => {
           return outputs.reduce((acc, curr) => [...acc, ...curr]);
         }),
@@ -72,14 +72,14 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   }
 
   private applyAnnotations(
-      node: Node,
+      spec: RenderSpec,
       specs: readonly AnnotationSpec[],
-  ): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  ): Observable<readonly RenderSpec[]> {
     if (specs.length <= 0) {
-      return observableOf([setId(node, node)]);
+      return observableOf([spec]);
     }
 
-    let obs: Observable<ReadonlyArray<NodeWithId<Node>>> = observableOf([setId(node, node)]);
+    let obs: Observable<readonly RenderSpec[]> = observableOf([spec]);
     for (const spec of specs) {
       obs = obs.pipe(switchMap(nodes => this.applyAnnotation(nodes, spec)));
     }
@@ -88,14 +88,17 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get content$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  private get content$(): Observable<readonly RenderSpec[]> {
     return combineLatest([
       this.inputs.host.text,
       this.annotations$,
     ])
         .pipe(
             switchMap(([text, annotations]) => {
-              return this.applyAnnotations(document.createTextNode(text), annotations);
+              return this.applyAnnotations(
+                  {type: RenderSpecType.TEXT_NODE, text, id: text},
+                  annotations,
+              );
             }),
             debug(LOGGER, 'content'),
         );

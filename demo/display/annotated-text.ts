@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {NodeWithId, PersonaContext, renderCustomElement, setId} from 'persona';
+import {PersonaContext, RenderSpec, RenderSpecType} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -50,32 +50,45 @@ export class AnnotatedTextDemo extends BaseThemedCtrl<{}> {
 
 const emojiRegex = /:([a-zA-Z]*)/;
 
-function renderEmoji(
-    initNode: NodeWithId<Node>,
-    context: PersonaContext,
-): Observable<ReadonlyArray<NodeWithId<Node>>> {
-  if (!(initNode instanceof Text)) {
-    return observableOf([initNode]);
+function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
+  if (initSpec.type !== RenderSpecType.TEXT_NODE) {
+    return observableOf([initSpec]);
   }
 
-  const initText = initNode.textContent ?? '';
-  const match = initText.match(emojiRegex);
-  if (!match) {
-    return observableOf([initNode]);
-  }
+  const initText$ = initSpec.text instanceof Observable ?
+    initSpec.text : observableOf(initSpec.text);
+  return initText$.pipe(
+      map(text => {
+        const match = text.match(emojiRegex);
+        if (!match) {
+          return [initSpec];
+        }
 
-  const splitNode = initNode.splitText(match.index ?? 0);
-  const remainderNode = setId(splitNode.splitText(match[0].length), {});
-  return renderCustomElement(
-      $icon,
-      {
-        inputs: {icon: observableOf(match[1])},
-        attrs: new Map([
-          ['style', observableOf('display: inline-block;height: 2rem;')],
-        ]),
-      },
-      {},
-      context,
-  )
-      .pipe(map(imgNode => [initNode, imgNode, remainderNode]));
+        const firstNode = {
+          type: RenderSpecType.TEXT_NODE as const,
+          text: text.substr(0, match.index ?? 0),
+          id: {},
+        };
+
+        const imgNode = {
+          type: RenderSpecType.CUSTOM_ELEMENT as const,
+          spec: $icon,
+          attrs: new Map([
+            ['style', 'display: inline-block;height: 2rem;'],
+          ]),
+          inputs: {
+            icon: match[1],
+          },
+          id: {},
+        };
+
+        const lastNode = {
+          type: RenderSpecType.TEXT_NODE as const,
+          text: text.substr(match.index ?? 0 + match[0].length),
+          id: {},
+        };
+
+        return [firstNode, imgNode, lastNode];
+      }),
+  );
 }

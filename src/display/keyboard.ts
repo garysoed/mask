@@ -1,8 +1,8 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, Type} from 'gs-types';
-import {host, multi, NodeWithId, PersonaContext, renderElement, renderTextNode, root, textIn} from 'persona';
-import {combineLatest, Observable, of as observableOf} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {host, multi, PersonaContext, RenderSpec, RenderSpecType, root, textIn} from 'persona';
+import {Observable, of as observableOf} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
@@ -55,43 +55,46 @@ export class Keyboard extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get keyboardSegments$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  private get keyboardSegments$(): Observable<readonly RenderSpec[]> {
     const children$ = this.inputs.host.text.pipe(
         map(keyStr => keyStr.split(' ')),
-        switchMap(keys => {
+        map(keys => {
           if (keys.length <= 0) {
-            return observableOf([]);
+            return [];
           }
 
           const [firstKey, ...rest] = keys;
-          const keyNode$list: Array<Observable<NodeWithId<Node>>> = [
+          const keyNode$list: RenderSpec[] = [
             this.renderKey(firstKey),
           ];
 
           for (const key of rest) {
-            keyNode$list.push(renderTextNode(observableOf('+'), {}, this.context));
+            keyNode$list.push({type: RenderSpecType.TEXT_NODE, text: '+', id: {}});
             keyNode$list.push(this.renderKey(key));
           }
 
-          return combineLatest(keyNode$list);
+          return keyNode$list;
         }),
     );
 
-    return renderElement('kbd', {children: children$}, {}, this.context).pipe(map(node => [node]));
+    return observableOf([{
+      type: RenderSpecType.ELEMENT,
+      tag: 'kbd',
+      children: children$,
+      id: {},
+    }]);
   }
 
-  private renderKey(key: string): Observable<NodeWithId<Node>> {
-    return renderElement(
-        'kbd',
-        {
-          attrs: new Map([
-            ['mk-theme-highlight', observableOf('')],
-          ]),
-          textContent: observableOf(keyToString(key)),
-        },
-        {},
-        this.context,
-    );
+  private renderKey(key: string): RenderSpec {
+    return {
+      type: RenderSpecType.ELEMENT,
+      tag: 'kbd',
+      attrs: new Map([
+        ['mk-theme-highlight', ''],
+      ]),
+      textContent: keyToString(key),
+      id: {},
+    };
   }
 }
 

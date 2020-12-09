@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {element, multi, NodeWithId, PersonaContext, renderCustomElement} from 'persona';
+import {element, multi, PersonaContext, RenderSpec, RenderSpecType} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
@@ -90,29 +90,24 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
 
   private getAnchorNodes(
       anchorIdKey: keyof OverlayLayoutDemoState,
-  ): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  ): Observable<readonly RenderSpec[]> {
     return $demoState.get(this.vine).pipe(
-        switchMap(state => {
+        map(state => {
           if (!state) {
-            return observableOf([]);
+            return [];
           }
 
           const $anchor = state.overlayLayoutDemo[anchorIdKey];
-          const node$list = ANCHORS.map((anchor, index) => {
-            return renderCustomElement(
-                $radioInput,
-                {
-                  inputs: {
-                    index: observableOf(index),
-                    label: observableOf(getAnchorLabel(anchor)),
-                    stateId: observableOf($anchor),
-                  },
-                },
-                index,
-                this.context,
-            );
+          return ANCHORS.map((anchor, index) => {
+            return {
+              type: RenderSpecType.CUSTOM_ELEMENT as const,
+              spec: $radioInput,
+              index,
+              label: getAnchorLabel(anchor),
+              stateId: $anchor,
+              id: index,
+            };
           });
-          return combineLatest(node$list);
         }),
     );
   }

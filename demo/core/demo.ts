@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType, enumType, instanceofType} from 'gs-types';
-import {attributeOut, element, multi, NodeWithId, onDom, PersonaContext, renderCustomElement, renderElement, single, stringParser} from 'persona';
+import {attributeOut, element, multi, onDom, PersonaContext, RenderSpec, RenderSpecType, single, stringParser} from 'persona';
 import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -106,7 +106,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get accentPaletteContents$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
     const selectedColor$ = combineLatest([
       $demoState.get(this.vine),
       $stateService.get(this.vine),
@@ -127,7 +127,6 @@ export class Demo extends BaseThemedCtrl<typeof $> {
               colorName,
               color,
               isSelected$,
-              this.context,
           );
         });
 
@@ -135,7 +134,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get basePaletteContents$(): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
     const selectedColor$ = combineLatest([
       $demoState.get(this.vine),
       $stateService.get(this.vine),
@@ -156,7 +155,6 @@ export class Demo extends BaseThemedCtrl<typeof $> {
               colorName,
               color,
               isSelected$,
-              this.context,
           );
         });
 
@@ -199,49 +197,46 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get mainContent$(): Observable<NodeWithId<Node>|null> {
+  private get mainContent$(): Observable<RenderSpec|null> {
     return $locationService.get(this.vine).pipe(
         switchMap(locationService => locationService.getLocation()),
         map(location => getPageSpec(location.type)),
-        switchMap(spec => {
+        map(spec => {
           if (!spec) {
-            return observableOf(null);
+            return null;
           }
 
-          return renderCustomElement(spec.componentSpec, {}, {}, this.context);
+          return {
+            type: RenderSpecType.CUSTOM_ELEMENT,
+            spec: spec.componentSpec,
+            id: {},
+          };
         }),
     );
   }
 
-  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<ReadonlyArray<NodeWithId<Node>>> {
+  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<readonly RenderSpec[]> {
     const node$List = pageSpecs
         .map(({path, name}) => {
-          return renderCustomElement(
-              $button,
-              {
-                attrs: new Map([[COMPONENT_PATH_ATTR, observableOf(`${path}`)]]),
-                children: renderCustomElement(
-                    $lineLayout,
-                    {
-                      attrs: new Map([
-                        ['mk-body-1', observableOf('')],
-                      ]),
-                      textContent: observableOf(name),
-                    },
-                    name,
-                    this.context,
-                )
-                    .pipe(map(node => [node] || [])),
-                inputs: {
-                  isSecondary: observableOf(true),
-                },
-              },
-              name,
-              this.context,
-          );
+          return {
+            type: RenderSpecType.CUSTOM_ELEMENT as const,
+            spec: $button,
+            attrs: new Map([[COMPONENT_PATH_ATTR, `${path}`]]),
+            children: [{
+              type: RenderSpecType.CUSTOM_ELEMENT as const,
+              spec: $lineLayout,
+              attrs: new Map([['mk-body-1', '']]),
+              textContent: name,
+              id: name,
+            }],
+            inputs: {
+              isSecondary: observableOf(true),
+            },
+            id: name,
+          };
         });
 
-    return node$List.length <= 0 ? observableOf([]) : combineLatest(node$List);
+    return observableOf(node$List);
   }
 
   private renderRootTheme(): Observable<'light'|'dark'> {
@@ -335,8 +330,7 @@ function renderPaletteData(
     colorName: string,
     color: Color,
     selected$: Observable<boolean>,
-    context: PersonaContext,
-): Observable<NodeWithId<Node>> {
+): Observable<RenderSpec> {
   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
   const classes$ = selected$.pipe(
@@ -346,18 +340,16 @@ function renderPaletteData(
       map(classes => classes.join(' ')),
   );
 
-  return renderElement(
-      'div',
-      {
-        attrs: new Map([
-          ['class', classes$],
-          ['color', observableOf(colorName)],
-          ['style', observableOf(`background-color: ${colorCss};`)],
-        ]),
-      },
-      colorName,
-      context,
-  );
+  return observableOf({
+    type: RenderSpecType.ELEMENT as const,
+    tag: 'div',
+    attrs: new Map<string, string|Observable<string>>([
+      ['class', classes$],
+      ['color', colorName],
+      ['style', `background-color: ${colorCss};`],
+    ]),
+    id: colorName,
+  });
 }
 
 function getColor(event: MouseEvent): keyof Palette|null {

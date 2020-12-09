@@ -10,7 +10,7 @@ import {cache} from 'gs-tools/export/data';
 import {typeBased} from 'gs-tools/export/serializer';
 import {booleanType, instanceofType} from 'gs-types';
 import {compose, json} from 'nabu';
-import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, single, stringParser} from 'persona';
+import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, RenderSpec, RenderSpecType, single, stringParser} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
@@ -68,34 +68,36 @@ export class Icon extends BaseThemedCtrl<typeof $> {
   }
 
   @cache()
-  private get rootSvg$(): Observable<NodeWithId<Node>|null> {
-    const node$ = combineLatest([$svgService.get(this.vine), this.inputs.host.icon])
+  private get rootSvg$(): Observable<RenderSpec|null> {
+    return combineLatest([$svgService.get(this.vine), this.inputs.host.icon])
         .pipe(
             switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
-            switchMap(svg => {
+            map(svg => {
               if (!svg) {
-                return observableOf(null);
+                return null;
               }
-              return renderHtml(svg, 'image/svg+xml', svg, this.context);
+
+              return {
+                type: RenderSpecType.HTML as const,
+                decorator: (element$: Observable<NodeWithId<Element>>) => combineLatest([element$, this.inputs.host.fitTo])
+                    .pipe(
+                        tap(([element, fitTo]) => {
+                          if (fitTo === FitTo.HEIGHT) {
+                            element.removeAttribute('width');
+                            element.setAttribute('height', 'auto');
+                          } else {
+                            element.setAttribute('width', 'auto');
+                            element.removeAttribute('height');
+                          }
+                        }),
+                        map(([element]) => element),
+                    ),
+                raw: svg,
+                parseType: 'image/svg+xml' as const,
+                id: svg,
+              };
             }),
+            share(),
         );
-
-    return combineLatest([node$, this.inputs.host.fitTo]).pipe(
-        tap(([node, fitTo]) => {
-          if (!(node instanceof Element)) {
-            return;
-          }
-
-          if (fitTo === FitTo.HEIGHT) {
-            node.removeAttribute('width');
-            node.setAttribute('height', 'auto');
-          } else {
-            node.removeAttribute('height');
-            node.setAttribute('width', 'auto');
-          }
-        }),
-        map(([node]) => node),
-        share(),
-    );
   }
 }
