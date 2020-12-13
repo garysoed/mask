@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, Type} from 'gs-types';
-import {host, multi, PersonaContext, RenderSpec, RenderSpecType, root, textIn} from 'persona';
+import {host, multi, PersonaContext, renderElement, RenderSpec, renderTextNode, root, textIn} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -69,7 +69,7 @@ export class Keyboard extends BaseThemedCtrl<typeof $> {
           ];
 
           for (const key of rest) {
-            keyNode$list.push({type: RenderSpecType.TEXT_NODE, text: '+', id: {}});
+            keyNode$list.push(renderTextNode({text: '+', id: {}}));
             keyNode$list.push(this.renderKey(key));
           }
 
@@ -77,24 +77,22 @@ export class Keyboard extends BaseThemedCtrl<typeof $> {
         }),
     );
 
-    return observableOf([{
-      type: RenderSpecType.ELEMENT,
+    return observableOf([renderElement({
       tag: 'kbd',
       children: children$,
       id: {},
-    }]);
+    })]);
   }
 
   private renderKey(key: string): RenderSpec {
-    return {
-      type: RenderSpecType.ELEMENT,
+    return renderElement({
       tag: 'kbd',
       attrs: new Map([
         ['mk-theme-highlight', ''],
       ]),
       textContent: keyToString(key),
       id: {},
-    };
+    });
   }
 }
 

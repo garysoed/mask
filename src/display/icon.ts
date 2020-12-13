@@ -10,7 +10,7 @@ import {cache} from 'gs-tools/export/data';
 import {typeBased} from 'gs-tools/export/serializer';
 import {booleanType, instanceofType} from 'gs-types';
 import {compose, json} from 'nabu';
-import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, RenderSpec, RenderSpecType, single, stringParser} from 'persona';
+import {AriaRole, attributeIn, attributeOut, element, enumParser, host, NodeWithId, PersonaContext, renderHtml, RenderSpec, single, stringParser} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
@@ -77,8 +77,7 @@ export class Icon extends BaseThemedCtrl<typeof $> {
                 return null;
               }
 
-              return {
-                type: RenderSpecType.HTML as const,
+              return renderHtml({
                 decorator: (element$: Observable<NodeWithId<Element>>) => combineLatest([element$, this.inputs.host.fitTo])
                     .pipe(
                         tap(([element, fitTo]) => {
@@ -95,7 +94,7 @@ export class Icon extends BaseThemedCtrl<typeof $> {
                 raw: svg,
                 parseType: 'image/svg+xml' as const,
                 id: svg,
-              };
+              });
             }),
             share(),
         );

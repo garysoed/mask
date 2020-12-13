@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNull} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType, enumType, instanceofType} from 'gs-types';
-import {attributeOut, element, multi, onDom, PersonaContext, RenderSpec, RenderSpecType, single, stringParser} from 'persona';
+import {attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, RenderSpec, single, stringParser} from 'persona';
 import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -206,11 +206,10 @@ export class Demo extends BaseThemedCtrl<typeof $> {
             return null;
           }
 
-          return {
-            type: RenderSpecType.CUSTOM_ELEMENT,
+          return renderCustomElement({
             spec: spec.componentSpec,
             id: {},
-          };
+          });
         }),
     );
   }
@@ -218,22 +217,20 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<readonly RenderSpec[]> {
     const node$List = pageSpecs
         .map(({path, name}) => {
-          return {
-            type: RenderSpecType.CUSTOM_ELEMENT as const,
+          return renderCustomElement({
             spec: $button,
             attrs: new Map([[COMPONENT_PATH_ATTR, `${path}`]]),
-            children: [{
-              type: RenderSpecType.CUSTOM_ELEMENT as const,
+            children: [renderCustomElement({
               spec: $lineLayout,
               attrs: new Map([['mk-body-1', '']]),
               textContent: name,
               id: name,
-            }],
+            })],
             inputs: {
               isSecondary: observableOf(true),
             },
             id: name,
-          };
+          });
         });
 
     return observableOf(node$List);
@@ -340,8 +337,7 @@ function renderPaletteData(
       map(classes => classes.join(' ')),
   );
 
-  return observableOf({
-    type: RenderSpecType.ELEMENT as const,
+  return observableOf(renderElement({
     tag: 'div',
     attrs: new Map<string, string|Observable<string>>([
       ['class', classes$],
@@ -349,7 +345,7 @@ function renderPaletteData(
       ['style', `background-color: ${colorCss};`],
     ]),
     id: colorName,
-  });
+  }));
 }
 
 function getColor(event: MouseEvent): keyof Palette|null {

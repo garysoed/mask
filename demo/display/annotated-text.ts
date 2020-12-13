@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {PersonaContext, RenderSpec, RenderSpecType} from 'persona';
+import {PersonaContext, renderCustomElement, RenderSpec, RenderSpecType, renderTextNode} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -64,14 +64,12 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
           return [initSpec];
         }
 
-        const firstNode = {
-          type: RenderSpecType.TEXT_NODE as const,
+        const firstNode = renderTextNode({
           text: text.substr(0, match.index ?? 0),
           id: {},
-        };
+        });
 
-        const imgNode = {
-          type: RenderSpecType.CUSTOM_ELEMENT as const,
+        const imgNode = renderCustomElement({
           spec: $icon,
           attrs: new Map([
             ['style', 'display: inline-block;height: 2rem;'],
@@ -80,13 +78,12 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
             icon: match[1],
           },
           id: {},
-        };
+        });
 
-        const lastNode = {
-          type: RenderSpecType.TEXT_NODE as const,
+        const lastNode = renderTextNode({
           text: text.substr(match.index ?? 0 + match[0].length),
           id: {},
-        };
+        });
 
         return [firstNode, imgNode, lastNode];
       }),

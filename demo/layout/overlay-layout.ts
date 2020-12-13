@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {element, multi, PersonaContext, RenderSpec, RenderSpecType} from 'persona';
+import {element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
 import {combineLatest, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
@@ -99,14 +99,15 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
 
           const $anchor = state.overlayLayoutDemo[anchorIdKey];
           return ANCHORS.map((anchor, index) => {
-            return {
-              type: RenderSpecType.CUSTOM_ELEMENT as const,
+            return renderCustomElement({
               spec: $radioInput,
-              index,
-              label: getAnchorLabel(anchor),
-              stateId: $anchor,
+              inputs: {
+                index,
+                label: getAnchorLabel(anchor),
+                stateId: $anchor,
+              },
               id: index,
-            };
+            });
           });
         }),
     );
