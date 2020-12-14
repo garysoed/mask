@@ -94,13 +94,13 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
       this.annotations$,
     ])
         .pipe(
-            switchMap(([text, annotations]) => {
+            switchMap(([textContent, annotations]) => {
               return this.applyAnnotations(
-                  renderTextNode({text, id: text}),
+                  renderTextNode({textContent, id: textContent}),
                   annotations,
               );
             }),
-            debug(LOGGER, 'content'),
+            debug(null, 'content'),
         );
   }
 }

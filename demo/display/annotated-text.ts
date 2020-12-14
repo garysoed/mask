@@ -55,8 +55,8 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
     return observableOf([initSpec]);
   }
 
-  const initText$ = initSpec.text instanceof Observable ?
-    initSpec.text : observableOf(initSpec.text);
+  const initText$ = initSpec.textContent instanceof Observable ?
+    initSpec.textContent : observableOf(initSpec.textContent);
   return initText$.pipe(
       map(text => {
         const match = text.match(emojiRegex);
@@ -65,7 +65,7 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
         }
 
         const firstNode = renderTextNode({
-          text: text.substr(0, match.index ?? 0),
+          textContent: text.substr(0, match.index ?? 0),
           id: {},
         });
 
@@ -81,7 +81,7 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
         });
 
         const lastNode = renderTextNode({
-          text: text.substr(match.index ?? 0 + match[0].length),
+          textContent: text.substr(match.index ?? 0 + match[0].length),
           id: {},
         });
 

@@ -69,7 +69,7 @@ export class Keyboard extends BaseThemedCtrl<typeof $> {
           ];
 
           for (const key of rest) {
-            keyNode$list.push(renderTextNode({text: '+', id: {}}));
+            keyNode$list.push(renderTextNode({textContent: '+', id: {}}));
             keyNode$list.push(this.renderKey(key));
           }
 

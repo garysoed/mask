@@ -38,19 +38,19 @@ test('@mask/display/annotated-text', init => {
             ...configs,
             [
               'atob',
-              spec => normalize((spec as RenderTextNodeSpec).text).pipe(
+              spec => normalize((spec as RenderTextNodeSpec).textContent).pipe(
                   map(text => [{
                     ...spec,
-                    text: text.replace(/a/g, 'b'),
+                    textContent: text.replace(/a/g, 'b'),
                   }]),
               ),
             ],
             [
               'btoc',
-              spec => normalize((spec as RenderTextNodeSpec).text).pipe(
+              spec => normalize((spec as RenderTextNodeSpec).textContent).pipe(
                   map(text => [{
                     ...spec,
-                    text: text.replace(/b/g, 'c'),
+                    textContent: text.replace(/b/g, 'c'),
                   }]),
               ),
             ],
