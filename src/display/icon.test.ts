@@ -48,7 +48,7 @@ test('display.Icon', init => {
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
 
       assert(_.el.getElement($.root).children.item(0)!.hasAttribute('width')).to.equal(false);
-      assert(_.el.getElement($.root).children.item(0)!.getAttribute('height')).to.equal('auto');
+      assert(_.el.getElement($.root).children.item(0)!.getAttribute('height')).to.equal('100%');
     });
 
     should('set the innerHTML correctly and set the width to auto', () => {
@@ -63,7 +63,7 @@ test('display.Icon', init => {
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
 
       assert(_.el.getElement($.root).children.item(0)!.hasAttribute('height')).to.equal(false);
-      assert(_.el.getElement($.root).children.item(0)!.getAttribute('width')).to.equal('auto');
+      assert(_.el.getElement($.root).children.item(0)!.getAttribute('width')).to.equal('100%');
     });
 
     should('set the innerHTML correctly if there are no SVG names specified', () => {

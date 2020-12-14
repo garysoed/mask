@@ -83,9 +83,9 @@ export class Icon extends BaseThemedCtrl<typeof $> {
                         tap(fitTo => {
                           if (fitTo === FitTo.HEIGHT) {
                             element.removeAttribute('width');
-                            element.setAttribute('height', 'auto');
+                            element.setAttribute('height', '100%');
                           } else {
-                            element.setAttribute('width', 'auto');
+                            element.setAttribute('width', '100%');
                             element.removeAttribute('height');
                           }
                         }),

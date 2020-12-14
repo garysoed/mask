@@ -1,6 +1,5 @@
 import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {debug} from 'gs-tools/export/rxjs';
 import {attributeIn, host, listParser, multi, PersonaContext, RenderSpec, renderTextNode, root, stringParser, textIn} from 'persona';
 import {combineLatest, concat, Observable, of as observableOf} from 'rxjs';
 import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
@@ -100,7 +99,6 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
                   annotations,
               );
             }),
-            debug(null, 'content'),
         );
   }
 }
