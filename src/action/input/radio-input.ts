@@ -109,16 +109,6 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
   }
 
   @cache()
-  private get displaySlot$(): Observable<string> {
-    return this.domValue$.pipe(
-        withLatestFrom(this.inputs.host.index),
-        map(([checkState, index]) => {
-          return checkState === index ? 'display_checked' : 'display_unchecked';
-        }),
-    );
-  }
-
-  @cache()
   protected get domValue$(): Observable<number|null> {
     return merge(
         this.inputs.input.onInput,

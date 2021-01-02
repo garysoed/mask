@@ -18,6 +18,7 @@ export {Button, $button} from '../src/action/button';
 // inputs
 export {Checkbox, $checkbox, CheckedValue} from '../src/action/input/checkbox';
 export {RadioInput, $radioInput} from '../src/action/input/radio-input';
+export {TextInput, $textInput} from '../src/action/input/text-input';
 
 // display
 export {$annotatedText, AnnotatedText} from '../src/display/annotated-text';
