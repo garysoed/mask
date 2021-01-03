@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {_p} from '../../src/app/app';
 import {registerSvg} from '../../src/core/svg-service';
 import {AnnotatedText} from '../../src/display/annotated-text';
-import {$annotationConfig} from '../../src/display/annotation-service';
+import {$annotationConfig, NormalizedRenderSpec} from '../../src/display/annotation-service';
 import {$icon, Icon} from '../../src/display/icon';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import smileySvg from '../asset/smiley.svg';
@@ -50,14 +50,12 @@ export class AnnotatedTextDemo extends BaseThemedCtrl<{}> {
 
 const emojiRegex = /:([a-zA-Z]*)/;
 
-function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
+function renderEmoji(initSpec: NormalizedRenderSpec): Observable<readonly RenderSpec[]> {
   if (initSpec.type !== RenderSpecType.TEXT_NODE) {
     return observableOf([initSpec]);
   }
 
-  const initText$ = initSpec.textContent instanceof Observable ?
-    initSpec.textContent : observableOf(initSpec.textContent);
-  return initText$.pipe(
+  return initSpec.textContent.pipe(
       map(text => {
         const match = text.match(emojiRegex);
         if (!match) {
