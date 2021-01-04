@@ -1,6 +1,6 @@
-import {$asArray, $asMap, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
+import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {attributeIn, host, listParser, multi, PersonaContext, RenderSpec, RenderSpecType, renderTextNode, root, stringParser, textIn} from 'persona';
+import {attributeIn, host, listParser, multi, PersonaContext, RenderSpec, renderTextNode, root, stringParser, textIn} from 'persona';
 import {combineLatest, concat, Observable, of as observableOf} from 'rxjs';
 import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
 import {Logger} from 'santa';
@@ -8,7 +8,7 @@ import {Logger} from 'santa';
 import {_p} from '../app/app';
 import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 
-import {$annotationConfig, AnnotationSpec, NormalizedRenderSpec} from './annotation-service';
+import {$annotationConfig, AnnotationSpec} from './annotation-service';
 
 
 const LOGGER = new Logger('mask.AnnotatedText');
@@ -62,7 +62,7 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
       renderSpecs: readonly RenderSpec[],
       spec: AnnotationSpec,
   ): Observable<readonly RenderSpec[]> {
-    return concat(...renderSpecs.map(renderSpec => spec(normalizeSpec(renderSpec)))).pipe(
+    return concat(...renderSpecs.map(renderSpec => spec(renderSpec))).pipe(
         bufferCount(renderSpecs.length),
         map(outputs => {
           return outputs.reduce((acc, curr) => [...acc, ...curr]);
@@ -101,40 +101,4 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
             }),
         );
   }
-}
-
-function normalizeSpec(spec: RenderSpec): NormalizedRenderSpec {
-  switch(spec.type) {
-    case RenderSpecType.CUSTOM_ELEMENT:
-      return {
-        ...spec,
-        attrs: spec.attrs ? normalizeMap(spec.attrs) : undefined,
-        children: spec.children ? normalize(spec.children) : undefined,
-        textContent: spec.textContent !== undefined ? normalize(spec.textContent) : undefined,
-      };
-    case RenderSpecType.ELEMENT:
-      return {
-        ...spec,
-        attrs: spec.attrs ? normalizeMap(spec.attrs) : undefined,
-        children: spec.children ? normalize(spec.children) : undefined,
-        textContent: spec.textContent !== undefined ? normalize(spec.textContent) : undefined,
-      };
-    case RenderSpecType.FRAGMENT:
-    case RenderSpecType.HTML:
-    case RenderSpecType.NODE:
-      return spec;
-    case RenderSpecType.TEXT_NODE:
-      return {
-        ...spec,
-        textContent: normalize(spec.textContent),
-      };
-  }
-}
-
-function normalizeMap<K, V>(map: ReadonlyMap<K, Observable<V>|V>): ReadonlyMap<K, Observable<V>> {
-  return $pipe(map, $map(([key, value]) => [key, normalize(value)] as const), $asMap());
-}
-
-function normalize<T>(obsOrValue: Observable<T>|T): Observable<T> {
-  return obsOrValue instanceof Observable ? obsOrValue : observableOf(obsOrValue);
 }

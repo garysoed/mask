@@ -2,7 +2,7 @@ import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {RenderSpecType} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
-import {EMPTY} from 'rxjs';
+import {EMPTY, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {_p} from '../app/app';
@@ -37,7 +37,7 @@ test('@mask/display/annotated-text', init => {
               spec => spec.type !== RenderSpecType.TEXT_NODE ? EMPTY : spec.textContent.pipe(
                   map(text => [{
                     ...spec,
-                    textContent: text.replace(/a/g, 'b'),
+                    textContent: observableOf(text.replace(/a/g, 'b')),
                   }]),
               ),
             ],
@@ -46,7 +46,7 @@ test('@mask/display/annotated-text', init => {
               spec => spec.type !== RenderSpecType.TEXT_NODE ? EMPTY : spec.textContent.pipe(
                   map(text => [{
                     ...spec,
-                    textContent: text.replace(/b/g, 'c'),
+                    textContent: observableOf(text.replace(/b/g, 'c')),
                   }]),
               ),
             ],

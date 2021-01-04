@@ -22,7 +22,7 @@ export {TextInput, $textInput} from '../src/action/input/text-input';
 
 // display
 export {$annotatedText, AnnotatedText} from '../src/display/annotated-text';
-export {$annotationConfig, NormalizedRenderSpec} from '../src/display/annotation-service';
+export {$annotationConfig} from '../src/display/annotation-service';
 export {$codeBlock, CodeBlock} from '../src/display/code-block';
 export {$icon, Icon} from '../src/display/icon';
 export {$keyboard, Keyboard, SpecialKeys} from '../src/display/keyboard';
