@@ -1,0 +1,41 @@
+<style>
+  #input {
+    border: none;
+    color: var(--mkThemeFG);
+    line-height: 2rem;
+    padding: 0;
+  }
+
+  #input:-webkit-autofill {
+    background-color: transparent !important;
+    color: var(--mkThemeFG) !important;
+  }
+
+  #label {
+    text-align: end;
+  }
+
+  #root {
+    height: 4rem;
+    background-color: var(--mkThemeBG);
+  }
+
+  :host([disabled]) {
+    cursor: default;
+  }
+
+  :host(:hover),
+  :host(:focus),
+  #input:hover,
+  #input:focus {
+    outline: none;
+  }
+</style>
+<div id="root" layout="row">
+  <mk-line-layout id="label" mk-theme-highlight mk-body-2>
+    <slot></slot>
+  </mk-line-layout>
+  <mk-line-layout flex>
+    <input id="input" mk-body-1 type="number">
+  </mk-line-layout>
+</div>

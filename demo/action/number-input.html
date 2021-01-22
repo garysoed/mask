@@ -1,0 +1,36 @@
+<style>
+  mk-number-input > div {
+    width: 12rem;
+  }
+</style>
+<mkd-demo-layout label="Number Input">
+  <div slot="play">
+    <mk-number-input id="enabledInput" apply-on-change>
+      <div>
+        Simple input
+      </div>
+    </mk-number-input>
+    <mk-number-input id="disabledInput" mk-disabled apply-on-change>
+      <div>
+        Disabled input
+      </div>
+    </mk-number-input>
+    <mk-number-input id="rangedInput" min="10" max="100" apply-on-change>
+      <div>
+        Ranged (10 - 100)
+      </div>
+    </mk-number-input>
+    <mk-number-input id="steppedInput" step="5" apply-on-change>
+      <div>
+        Stepped input
+      </div>
+    </mk-number-input>
+  </div>
+  <div slot="docs">
+    <p mk-body-1>
+      Mask's number input allows you to specify a label, a default value, min max values, and
+      stepper.
+    </p>
+  </div>
+</mkd-demo-layout>
+

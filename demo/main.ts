@@ -131,6 +131,12 @@ function init(stateService: StateService): StateId<DemoState> {
       $isAction: stateService.add<CheckedValue>(false),
       $fitToWidth: stateService.add<CheckedValue>(false),
     },
+    numberInputDemo: {
+      $disabledNumberInputState: stateService.add(123),
+      $enabledNumberInputState: stateService.add(-10),
+      $rangedNumberInputState: stateService.add(0),
+      $steppedNumberInputState: stateService.add(2),
+    },
     overlayLayoutDemo: {
       $targetHorizontalIndex: stateService.add(0),
       $targetVerticalIndex: stateService.add(0),

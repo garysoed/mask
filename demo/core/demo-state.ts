@@ -49,6 +49,13 @@ export interface TextInputDemoState {
   readonly $urlTextInputState: StateId<string>;
 }
 
+export interface NumberInputDemoState {
+  readonly $enabledNumberInputState: StateId<number>;
+  readonly $disabledNumberInputState: StateId<number>;
+  readonly $rangedNumberInputState: StateId<number>;
+  readonly $steppedNumberInputState: StateId<number>;
+}
+
 export interface DemoState {
   readonly $accentColorName: StateId<keyof Palette>;
   readonly $baseColorName: StateId<keyof Palette>;
@@ -56,6 +63,7 @@ export interface DemoState {
   readonly checkboxDemo: CheckboxDemoState;
   readonly drawerLayoutDemo: DrawerLayoutDemoState;
   readonly iconDemo: IconDemoState;
+  readonly numberInputDemo: NumberInputDemoState;
   readonly overlayLayoutDemo: OverlayLayoutDemoState;
   readonly radioInputDemo: RadioInputDemoState;
   readonly textInputDemo: TextInputDemoState;
