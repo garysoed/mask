@@ -1,12 +1,16 @@
+import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute} from 'persona';
+import {attributeIn, attributeOut, classToggle, dispatcher, element, host, integerParser, onDom, onInput, PersonaContext, setAttribute} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, mapTo, startWith} from 'rxjs/operators';
 import {Logger} from 'santa';
 
+import {$icon, Icon} from '../../../export';
 import {_p} from '../../app/app';
+import stepper from '../../asset/stepper.svg';
 import {stateIdParser} from '../../core/state-id-parser';
+import {registerSvg} from '../../core/svg-service';
 import {CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
@@ -31,6 +35,9 @@ export const $numberInput = {
 
 export const $ = {
   host: host($numberInput.api),
+  icon: element('icon', $icon, {
+    hiddenClass: classToggle('hidden'),
+  }),
   input: element('input', instanceofType(HTMLInputElement), {
     disabled: setAttribute('disabled'),
     max: attributeOut('max', integerParser()),
@@ -38,11 +45,25 @@ export const $ = {
     onInput: onInput(),
     step: attributeOut('step', integerParser()),
   }),
+  root: element('root', instanceofType(HTMLDivElement), {
+    onMouseEnter: onDom('mouseenter'),
+    onMouseLeave: onDom('mouseleave'),
+  }),
 };
 
 @_p.customElement({
   ...$numberInput,
+  dependencies: [
+    Icon,
+  ],
   template,
+  configure(vine: Vine): void {
+    registerSvg(
+        vine,
+        'mk.numberinput_stepper',
+        {type: 'embed', content: stepper},
+    );
+  },
 })
 export class NumberInput extends BaseInput<number, typeof $> {
   constructor(context: PersonaContext) {
@@ -60,6 +81,7 @@ export class NumberInput extends BaseInput<number, typeof $> {
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.renders,
+      this.renderers.icon.hiddenClass(this.hideStepperIcon),
       this.renderers.input.max(this.inputs.host.max),
       this.renderers.input.min(this.inputs.host.min),
       this.renderers.input.step(this.inputs.host.step),
@@ -74,6 +96,15 @@ export class NumberInput extends BaseInput<number, typeof $> {
             startWith({}),
             map(() => Number.parseInt(el.value, 10)),
         );
+  }
+
+  @cache()
+  protected get hideStepperIcon(): Observable<boolean> {
+    return merge(
+        this.inputs.root.onMouseEnter.pipe(mapTo(false)),
+        this.inputs.root.onMouseLeave.pipe(mapTo(true)),
+    )
+        .pipe(startWith(true));
   }
 
   protected updateDomValue(newValue: number): Observable<unknown> {

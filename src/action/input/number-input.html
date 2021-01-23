@@ -1,4 +1,16 @@
 <style>
+  :host {
+    --icon-visibility: visibility;
+  }
+
+  #icon {
+    visibility: var(--icon-visibility);
+  }
+
+  #icon.hidden {
+    visibility: hidden;
+  }
+
   #input {
     border: none;
     color: var(--mkThemeFG);
@@ -20,8 +32,13 @@
     background-color: var(--mkThemeBG);
   }
 
-  :host([disabled]) {
+  #inputContainer {
+    height: 2rem;
+  }
+
+  :host([mk-disabled]) {
     cursor: default;
+    --icon-visibility: hidden;
   }
 
   :host(:hover),
@@ -30,12 +47,21 @@
   #input:focus {
     outline: none;
   }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>
 <div id="root" layout="row">
   <mk-line-layout id="label" mk-theme-highlight mk-body-2>
     <slot></slot>
   </mk-line-layout>
   <mk-line-layout flex>
-    <input id="input" mk-body-1 type="number">
+    <div id="inputContainer" layout="row">
+      <input flex id="input" mk-body-1 type="number">
+      <mk-icon id="icon" icon="mk.numberinput_stepper"></mk-icon>
+    </div>
   </mk-line-layout>
 </div>
