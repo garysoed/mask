@@ -72,7 +72,7 @@ test('@mask/action/input/radio-input', init => {
       el2.setAttribute($.host._.stateId, _.$state);
       el2.setAttribute($.host._.index, 2);
 
-      const state$ = createSpySubject(_.stateService.get(_.$state));
+      const state$ = createSpySubject(_.stateService.resolve(_.$state).self$);
 
       // Click on the third one.
       const el = _.el.getElement($.input);
@@ -106,7 +106,7 @@ test('@mask/action/input/radio-input', init => {
       el2.setAttribute($.host._.index, 2);
       el2.setHasAttribute($.host._.applyOnChange, true);
 
-      const state$ = createSpySubject(_.stateService.get(_.$state));
+      const state$ = createSpySubject(_.stateService.resolve(_.$state).self$);
 
       // Click on the third one.
       _.el.getElement($.input).checked = true;
@@ -206,7 +206,7 @@ test('@mask/action/input/radio-input', init => {
       _.el.dispatchEvent($.input._.onInput);
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.get(_.$state)).to.emitWith(INDEX);
+      assert(_.stateService.resolve(_.$state).self$).to.emitWith(INDEX);
     });
 
     should('emit null if element is unchecked', () => {
@@ -218,7 +218,7 @@ test('@mask/action/input/radio-input', init => {
       _.el.dispatchEvent($.input._.onInput);
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.get(_.$state)).to.emitWith(null);
+      assert(_.stateService.resolve(_.$state).self$).to.emitWith(null);
     });
   });
 

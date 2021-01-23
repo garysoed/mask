@@ -46,10 +46,10 @@ export class ColorsDemo extends BaseThemedCtrl<typeof $> {
           .pipe(
               switchMap(([demoState, stateService]) => {
                 if (!demoState) {
-                  return observableOf(null);
+                  return observableOf(undefined);
                 }
 
-                return stateService.get(demoState.$isDarkMode);
+                return stateService.resolve(demoState.$isDarkMode).self$;
               }),
               map(isDark => !!isDark),
           )),

@@ -69,7 +69,7 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const $demoStateId: Stream<StateId<DemoState>|null> = stream(
+export const $demoStateId: Stream<StateId<DemoState>|undefined> = stream(
     'demoStateId',
     vine => $rootId.get(vine).pipe(debug(LOGGER, 'demoStateId')),
 );
@@ -84,10 +84,10 @@ export const $demoState = stream(
           .pipe(
               switchMap(([stateService, demoStateId]) => {
                 if (!demoStateId) {
-                  return observableOf(null);
+                  return observableOf(undefined);
                 }
 
-                return stateService.get(demoStateId);
+                return stateService.resolve(demoStateId).self$;
               }),
           );
     },

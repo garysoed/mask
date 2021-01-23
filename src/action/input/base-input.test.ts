@@ -1,19 +1,18 @@
 import {source} from 'grapevine';
 import {assert, createSpySubject, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterDefined} from 'gs-tools/export/rxjs';
 import {StateId, StateService} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
-import {PersonaContext, attributeIn, attributeOut, booleanParser, dispatcher, element, host, stringParser} from 'persona';
+import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
-import {Observable, Subject, combineLatest, of as observableOf} from 'rxjs';
+import {combineLatest, Observable, of as observableOf, Subject} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
 import {stateIdParser} from '../../core/state-id-parser';
 import {$stateService} from '../../core/state-service';
-import {CHANGE_EVENT, ChangeEvent} from '../../event/change-event';
-
+import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
 
@@ -69,12 +68,12 @@ class TestInput extends BaseInput<string, typeof $> {
         .pipe(
             switchMap(([stateService, domValueId]) => {
               if (!domValueId) {
-                return observableOf(null);
+                return observableOf(undefined);
               }
 
-              return stateService.get(domValueId);
+              return stateService.resolve(domValueId).self$;
             }),
-            filterNonNull(),
+            filterDefined(),
         );
   }
 
@@ -148,7 +147,7 @@ test('@mask/input/base-input', init => {
 
       _.el.callFunction($.host._.clearFn, []);
 
-      assert(_.stateService.get(_.$domValue)).to.emitWith(value);
+      assert(_.stateService.resolve(_.$domValue).self$).to.emitWith(value);
     });
 
     should('emit the default value if state ID is not set', () => {
@@ -156,7 +155,7 @@ test('@mask/input/base-input', init => {
 
       _.el.callFunction($.host._.clearFn, []);
 
-      assert(_.stateService.get(_.$domValue)).to.emitWith(DEFAULT_VALUE);
+      assert(_.stateService.resolve(_.$domValue).self$).to.emitWith(DEFAULT_VALUE);
     });
   });
 
@@ -167,7 +166,7 @@ test('@mask/input/base-input', init => {
 
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.get(_.$value)).to.emitWith(newDomValue);
+      assert(_.stateService.resolve(_.$value).self$).to.emitWith(newDomValue);
     });
 
     should('set the new value of the state on change if apply-on-change is true', () => {
@@ -176,14 +175,14 @@ test('@mask/input/base-input', init => {
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);
 
-      assert(_.stateService.get(_.$value)).to.emitWith(newDomValue);
+      assert(_.stateService.resolve(_.$value).self$).to.emitWith(newDomValue);
     });
 
     should('not set the new value on change if apply-on-change is false', () => {
       const newDomValue = 'newDomValue';
       _.stateService.set(_.$domValue, newDomValue);
 
-      assert(_.stateService.get(_.$value)).to.emitWith(INIT_STATE_VALUE);
+      assert(_.stateService.resolve(_.$value).self$).to.emitWith(INIT_STATE_VALUE);
     });
 
     should('do nothing if state ID is not specified', () => {
@@ -193,7 +192,7 @@ test('@mask/input/base-input', init => {
 
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.get(_.$value)).to.emitWith(INIT_STATE_VALUE);
+      assert(_.stateService.resolve(_.$value).self$).to.emitWith(INIT_STATE_VALUE);
     });
   });
 
@@ -206,14 +205,14 @@ test('@mask/input/base-input', init => {
 
       _.el.callFunction($.host._.clearFn, []);
 
-      assert(_.stateService.get(_.$domValue)).to.emitWith(newStateValue);
+      assert(_.stateService.resolve(_.$domValue).self$).to.emitWith(newStateValue);
       assert(onDomValueUpdatedByScript$).to.emit();
     });
 
     should('set the default value at the start', () => {
       const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
 
-      assert(_.stateService.get(_.$domValue)).to.emitWith(INIT_STATE_VALUE);
+      assert(_.stateService.resolve(_.$domValue).self$).to.emitWith(INIT_STATE_VALUE);
       assert(onDomValueUpdatedByScript$).toNot.emit();
     });
   });

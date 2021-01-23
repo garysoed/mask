@@ -1,9 +1,9 @@
-import {Vine, source} from 'grapevine';
+import {source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterDefined} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {EditableStorage} from 'gs-tools/export/store';
-import {BehaviorSubject, EMPTY, Observable, combineLatest, merge, of as observableOf} from 'rxjs';
+import {BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, take, tap} from 'rxjs/operators';
 
 import {$stateService} from './state-service';
@@ -24,7 +24,7 @@ export class SaveService {
   @cache()
   private get handleInit$(): Observable<unknown> {
     return $saveConfig.get(this.vine).pipe(
-        filterNonNull(),
+        filterDefined(),
         take(1),
         switchMap(config => {
           const onLoaded$ = config.loadOnInit ? this.load() : observableOf(false);
@@ -114,6 +114,6 @@ export class SaveService {
   }
 }
 
-export const $rootId = source<StateId<any>|null>('rootId', () => null);
-export const $saveConfig = source<SaveConfig|null>('saveConfig', () => null);
+export const $rootId = source<StateId<any>|undefined>('rootId', () => undefined);
+export const $saveConfig = source<SaveConfig|undefined>('saveConfig', () => undefined);
 export const $saveService = source('SaveService', vine => new SaveService(vine));

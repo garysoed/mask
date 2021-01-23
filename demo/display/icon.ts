@@ -86,7 +86,7 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
             return observableOf(null);
           }
 
-          return stateService.get(demoState.$isAction);
+          return stateService.resolve(demoState.$isAction).self$;
         }),
         map(isAction => !!isAction && isAction !== 'unknown'),
     );
@@ -101,7 +101,7 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
             return observableOf(null);
           }
 
-          return stateService.get(demoState.$fitToWidth);
+          return stateService.resolve(demoState.$fitToWidth).self$;
         }),
         map(fitToWidth => {
           if (!fitToWidth) {

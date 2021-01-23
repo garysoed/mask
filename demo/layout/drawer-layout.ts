@@ -65,10 +65,10 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
         .pipe(
             switchMap(([stateService, $isExpanded]) => {
               if (!$isExpanded) {
-                return observableOf(null);
+                return observableOf(undefined);
               }
 
-              return stateService.get($isExpanded);
+              return stateService.resolve($isExpanded).self$;
             }),
             map(checkedValue => !!checkedValue),
         );
@@ -99,10 +99,10 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
         .pipe(
             switchMap(([stateService, $isHorizontalMode]) => {
               if (!$isHorizontalMode) {
-                return observableOf(null);
+                return observableOf(undefined);
               }
 
-              return stateService.get($isHorizontalMode);
+              return stateService.resolve($isHorizontalMode).self$;
             }),
             map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL),
         );
@@ -117,10 +117,10 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
         .pipe(
             switchMap(([stateService, $isHorizontalMode]) => {
               if (!$isHorizontalMode) {
-                return observableOf(null);
+                return observableOf(undefined);
               }
 
-              return stateService.get($isHorizontalMode);
+              return stateService.resolve($isHorizontalMode).self$;
             }),
             map(checkedValue => checkedValue ? 'column' : 'row'),
         );

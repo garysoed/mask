@@ -1,8 +1,8 @@
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterDefined} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {LocalStorage} from 'gs-tools/export/store';
 import {identity, json} from 'nabu';
-import {EMPTY, combineLatest, merge} from 'rxjs';
+import {combineLatest, EMPTY, merge} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
@@ -73,15 +73,15 @@ window.addEventListener('load', () => {
             }
 
             const {$baseColorName, $accentColorName} = demoState;
-            const onBaseColorName$ = stateService.get($baseColorName).pipe(
-                filterNonNull(),
+            const onBaseColorName$ = stateService.resolve($baseColorName).self$.pipe(
+                filterDefined(),
                 tap(colorName => {
                   $theme.set(vine, theme => theme.setBaseColor(PALETTE[colorName]));
                 }),
             );
 
-            const onAccentColorName$ = stateService.get($accentColorName).pipe(
-                filterNonNull(),
+            const onAccentColorName$ = stateService.resolve($accentColorName).self$.pipe(
+                filterDefined(),
                 tap(colorName => {
                   $theme.set(vine, theme => theme.setHighlightColor(PALETTE[colorName]));
                 }),

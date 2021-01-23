@@ -46,7 +46,7 @@ test('@mask/core/save-service', init => {
           }),
       );
 
-      assert(_.stateService.get(rootId)).to.emitWith(
+      assert(_.stateService.resolve(rootId).self$).to.emitWith(
           objectThat<TestState>().haveProperties({a: 123, s: 'abc'}),
       );
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId.id);
@@ -76,7 +76,7 @@ test('@mask/core/save-service', init => {
           }),
       );
 
-      assert(_.stateService.get(rootId!)).to.emitWith(
+      assert(_.stateService.resolve(rootId!).self$).to.emitWith(
           objectThat<TestState>().haveProperties({a: 345, s: 'cde'}),
       );
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
@@ -103,7 +103,7 @@ test('@mask/core/save-service', init => {
           }),
       );
 
-      assert(_.stateService.get(rootId!)).to.emitWith(
+      assert(_.stateService.resolve(rootId!).self$).to.emitWith(
           objectThat<TestState>().haveProperties({a: 123, s: 'abc'}),
       );
       assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
@@ -120,8 +120,8 @@ test('@mask/core/save-service', init => {
       // Clear the state service, then set the storage.
       _.stateService.clear();
 
-      assert(_.stateService.get(rootId)).to.emitWith(null);
-      assert($rootId.get(_.vine)).to.emitWith(null);
+      assert(_.stateService.resolve(rootId).self$).to.emitWith(undefined);
+      assert($rootId.get(_.vine)).to.emitWith(undefined);
     });
 
     should('only initialize once', () => {
@@ -146,12 +146,12 @@ test('@mask/core/save-service', init => {
 
       // By this point, stateService should've been initialized.
       _.stateService.clear();
-      $rootId.set(_.vine, () => null);
+      $rootId.set(_.vine, () => undefined);
 
       storage.update(saveId, snapshot);
 
-      assert(_.stateService.get(rootId)).to.emitWith(null);
-      assert($rootId.get(_.vine)).to.emitWith(null);
+      assert(_.stateService.resolve(rootId).self$).to.emitWith(undefined);
+      assert($rootId.get(_.vine)).to.emitWith(undefined);
     });
   });
 

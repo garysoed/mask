@@ -114,10 +114,10 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         .pipe(
             switchMap(([demoState, stateService]) => {
               if (!demoState) {
-                return observableOf(null);
+                return observableOf(undefined);
               }
 
-              return stateService.get(demoState.$accentColorName);
+              return stateService.resolve(demoState.$accentColorName).self$;
             }),
         );
     const paletteNode$List = ORDERED_PALETTES
@@ -142,10 +142,10 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         .pipe(
             switchMap(([demoState, stateService]) => {
               if (!demoState) {
-                return observableOf(null);
+                return observableOf(undefined);
               }
 
-              return stateService.get(demoState.$baseColorName);
+              return stateService.resolve(demoState.$baseColorName).self$;
             }),
         );
     const paletteNode$List = ORDERED_PALETTES
@@ -240,10 +240,10 @@ export class Demo extends BaseThemedCtrl<typeof $> {
     return combineLatest([$demoState.get(this.vine), $stateService.get(this.vine)]).pipe(
         switchMap(([demoState, stateService]) => {
           if (!demoState) {
-            return observableOf(null);
+            return observableOf(undefined);
           }
 
-          return stateService.get(demoState.$isDarkMode);
+          return stateService.resolve(demoState.$isDarkMode).self$;
         }),
         map(isDarkMode => isDarkMode ? 'dark' : 'light'),
     );
