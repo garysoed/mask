@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
 import {element, PersonaContext, setAttribute} from 'persona';
@@ -60,7 +60,7 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
   private get $fitToWidth$(): Observable<StateId<CheckedValue>> {
     return this.iconDemoState$.pipe(
         map(demoState => demoState?.$fitToWidth ?? null),
-        filterNonNull(),
+        filterNonNullable(),
     );
   }
 
@@ -68,7 +68,7 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
   private get $isAction$(): Observable<StateId<CheckedValue>> {
     return this.iconDemoState$.pipe(
         map(demoState => demoState?.$isAction ?? null),
-        filterNonNull(),
+        filterNonNullable(),
     );
   }
 

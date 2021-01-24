@@ -1,4 +1,4 @@
-import {filterDefined} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {LocalStorage} from 'gs-tools/export/store';
 import {identity, json} from 'nabu';
@@ -74,14 +74,14 @@ window.addEventListener('load', () => {
 
             const {$baseColorName, $accentColorName} = demoState;
             const onBaseColorName$ = stateService.resolve($baseColorName).self$.pipe(
-                filterDefined(),
+                filterNonNullable(),
                 tap(colorName => {
                   $theme.set(vine, theme => theme.setBaseColor(PALETTE[colorName]));
                 }),
             );
 
             const onAccentColorName$ = stateService.resolve($accentColorName).self$.pipe(
-                filterDefined(),
+                filterNonNullable(),
                 tap(colorName => {
                   $theme.set(vine, theme => theme.setHighlightColor(PALETTE[colorName]));
                 }),

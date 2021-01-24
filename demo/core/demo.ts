@@ -1,7 +1,7 @@
 import {Vine} from 'grapevine';
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType, enumType, instanceofType} from 'gs-types';
 import {attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, RenderSpec, single, stringParser} from 'persona';
@@ -171,7 +171,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
           return demoState.$isDarkMode;
         }),
-        filterNonNull(),
+        filterNonNullable(),
     );
   }
 
@@ -264,7 +264,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
     return this.inputs.accentPalette.onClick
         .pipe(
             map(event => getColor(event)),
-            filterNonNull(),
+            filterNonNullable(),
             withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
             tap(([color, demoState, stateService]) => {
               if (!demoState) {
@@ -281,7 +281,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
     return this.inputs.basePalette.onClick
         .pipe(
             map(event => getColor(event)),
-            filterNonNull(),
+            filterNonNullable(),
             withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
             tap(([color, demoState, stateService]) => {
               if (!demoState) {

@@ -1,7 +1,7 @@
 import {source} from 'grapevine';
 import {assert, createSpySubject, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
-import {filterDefined} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId, StateService} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
 import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
@@ -73,7 +73,7 @@ class TestInput extends BaseInput<string, typeof $> {
 
               return stateService.resolve(domValueId).self$;
             }),
-            filterDefined(),
+            filterNonNullable(),
         );
   }
 

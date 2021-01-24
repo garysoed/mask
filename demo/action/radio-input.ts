@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {element, PersonaContext} from 'persona';
 import {Observable} from 'rxjs';
@@ -72,7 +72,7 @@ export class RadioInputDemo extends BaseThemedCtrl<typeof $> {
 
           return demoState.radioInputDemo.$selectedIndex;
         }),
-        filterNonNull(),
+        filterNonNullable(),
     );
   }
 }
