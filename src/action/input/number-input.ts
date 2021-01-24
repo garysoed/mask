@@ -6,11 +6,11 @@ import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, startWith} from 'rxjs/operators';
 import {Logger} from 'santa';
 
-import {$icon, Icon} from '../../../export';
 import {_p} from '../../app/app';
 import stepper from '../../asset/stepper.svg';
 import {stateIdParser} from '../../core/state-id-parser';
 import {registerSvg} from '../../core/svg-service';
+import {$icon, Icon} from '../../display/icon';
 import {CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
