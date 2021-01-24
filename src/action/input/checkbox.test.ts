@@ -80,7 +80,7 @@ test('@mask/input/checkbox', init => {
       _.el.dispatchEvent($.checkbox._.onInput);
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.resolve(_.$state).self$).to.emitWith(true);
+      assert(_.stateService.resolve(_.$state)).to.emitWith(true);
     });
 
     should('emit false if the unchecked', () => {
@@ -90,7 +90,7 @@ test('@mask/input/checkbox', init => {
       _.el.dispatchEvent($.checkbox._.onInput);
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.resolve(_.$state).self$).to.emitWith(false);
+      assert(_.stateService.resolve(_.$state)).to.emitWith(false);
     });
 
     should('emit unknown if the value is indeterminate', () => {
@@ -100,7 +100,7 @@ test('@mask/input/checkbox', init => {
       _.el.dispatchEvent($.checkbox._.onInput);
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.resolve(_.$state).self$).to.emitWith('unknown');
+      assert(_.stateService.resolve(_.$state)).to.emitWith('unknown');
     });
   });
 

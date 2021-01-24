@@ -117,7 +117,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve(demoState.$accentColorName).self$;
+              return stateService.resolve(demoState.$accentColorName);
             }),
         );
     const paletteNode$List = ORDERED_PALETTES
@@ -145,7 +145,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve(demoState.$baseColorName).self$;
+              return stateService.resolve(demoState.$baseColorName);
             }),
         );
     const paletteNode$List = ORDERED_PALETTES
@@ -243,7 +243,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
             return observableOf(undefined);
           }
 
-          return stateService.resolve(demoState.$isDarkMode).self$;
+          return stateService.resolve(demoState.$isDarkMode);
         }),
         map(isDarkMode => isDarkMode ? 'dark' : 'light'),
     );

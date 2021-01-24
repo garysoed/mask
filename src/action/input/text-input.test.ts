@@ -33,7 +33,7 @@ test('@mask/input/text-input', init => {
       _.el.dispatchEvent($.input._.onInput);
       _.el.callFunction($.host._.applyFn, []);
 
-      assert(_.stateService.resolve(_.$state).self$).to.emitWith(value);
+      assert(_.stateService.resolve(_.$state)).to.emitWith(value);
     });
   });
 

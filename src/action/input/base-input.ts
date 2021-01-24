@@ -75,7 +75,7 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
                 return observableOf(null);
               }
 
-              return stateService.resolve($stateId).self$;
+              return stateService.resolve($stateId);
             }),
             map(value => value ?? this.defaultValue),
         );

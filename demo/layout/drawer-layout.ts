@@ -68,7 +68,7 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve($isExpanded).self$;
+              return stateService.resolve($isExpanded);
             }),
             map(checkedValue => !!checkedValue),
         );
@@ -102,7 +102,7 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve($isHorizontalMode).self$;
+              return stateService.resolve($isHorizontalMode);
             }),
             map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL),
         );
@@ -120,7 +120,7 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve($isHorizontalMode).self$;
+              return stateService.resolve($isHorizontalMode);
             }),
             map(checkedValue => checkedValue ? 'column' : 'row'),
         );

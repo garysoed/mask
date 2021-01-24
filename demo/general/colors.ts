@@ -49,7 +49,7 @@ export class ColorsDemo extends BaseThemedCtrl<typeof $> {
                   return observableOf(undefined);
                 }
 
-                return stateService.resolve(demoState.$isDarkMode).self$;
+                return stateService.resolve(demoState.$isDarkMode);
               }),
               map(isDark => !!isDark),
           )),

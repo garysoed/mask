@@ -73,14 +73,14 @@ window.addEventListener('load', () => {
             }
 
             const {$baseColorName, $accentColorName} = demoState;
-            const onBaseColorName$ = stateService.resolve($baseColorName).self$.pipe(
+            const onBaseColorName$ = stateService.resolve($baseColorName).pipe(
                 filterNonNullable(),
                 tap(colorName => {
                   $theme.set(vine, theme => theme.setBaseColor(PALETTE[colorName]));
                 }),
             );
 
-            const onAccentColorName$ = stateService.resolve($accentColorName).self$.pipe(
+            const onAccentColorName$ = stateService.resolve($accentColorName).pipe(
                 filterNonNullable(),
                 tap(colorName => {
                   $theme.set(vine, theme => theme.setHighlightColor(PALETTE[colorName]));

@@ -87,7 +87,7 @@ export const $demoState = stream(
                   return observableOf(undefined);
                 }
 
-                return stateService.resolve(demoStateId).self$;
+                return stateService.resolve(demoStateId);
               }),
           );
     },

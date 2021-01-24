@@ -82,7 +82,7 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
             return observableOf(null);
           }
 
-          return stateService.resolve(state[anchorIdKey]).self$;
+          return stateService.resolve(state[anchorIdKey]);
         }),
         map(anchor => ANCHORS[anchor ?? 0]),
     );
