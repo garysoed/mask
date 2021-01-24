@@ -1,6 +1,6 @@
 import {source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {filterDefined} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {EditableStorage} from 'gs-tools/export/store';
 import {BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf} from 'rxjs';
@@ -24,7 +24,7 @@ export class SaveService {
   @cache()
   private get handleInit$(): Observable<unknown> {
     return $saveConfig.get(this.vine).pipe(
-        filterDefined(),
+        filterNonNullable(),
         take(1),
         switchMap(config => {
           const onLoaded$ = config.loadOnInit ? this.load() : observableOf(false);

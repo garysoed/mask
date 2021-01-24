@@ -1,10 +1,9 @@
 import {cache} from 'gs-tools/export/data';
-import {filterNonNull} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
 import {classToggle, element, host, onDom, PersonaContext, renderNode, RenderSpec, resizeObservable, single, style} from 'persona';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
-import {Logger} from 'santa';
 
 import {_p} from '../app/app';
 import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
@@ -12,9 +11,6 @@ import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
 import {$overlayService, Anchor, NodeSpec, ShowEvent} from './overlay-service';
 import template from './overlay.html';
 
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LOGGER = new Logger('mask.Overlay');
 
 interface Position {
   readonly left: number;
@@ -109,7 +105,7 @@ export class Overlay extends BaseThemedCtrl<typeof $> {
         map(entries => {
           return entries[entries.length - 1]?.contentRect ?? null;
         }),
-        filterNonNull(),
+        filterNonNullable(),
         startWith(contentEl.getBoundingClientRect()),
         shareReplay({bufferSize: 1, refCount: false}),
     );

@@ -1,11 +1,10 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {filterDefined, filterNonNull} from 'gs-tools/export/rxjs';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
 import {attributeIn, attributeOut, classlist, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
 import {concat, EMPTY, merge, Observable} from 'rxjs';
 import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
-import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
 import radioUnchecked from '../../asset/checkbox_empty.svg';
@@ -17,10 +16,6 @@ import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/
 
 import {$onRadioInput$} from './on-radio-input';
 import template from './radio-input.html';
-
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LOGGER = new Logger('mask.RadioInput');
 
 
 export const $radioInput = {
@@ -101,7 +96,7 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
     return [
       ...super.renders,
       this.renderers.container.checkMode(this.checkMode$),
-      this.renderers.input.name(this.inputs.host.stateId.pipe(filterDefined())),
+      this.renderers.input.name(this.inputs.host.stateId.pipe(filterNonNullable())),
       // TODO: Add default value.
       this.renderers.checkedLabel.text(this.label$),
       this.renderers.uncheckedLabel.text(this.label$),
@@ -194,7 +189,7 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
 
     return concat(
         onChange$.pipe(take(1)),
-        onChange$.pipe(skip(1), filterNonNull()),
+        onChange$.pipe(skip(1), filterNonNullable()),
     );
   }
 
