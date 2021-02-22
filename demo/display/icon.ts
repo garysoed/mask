@@ -4,7 +4,7 @@ import {StateId} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
 import {element, PersonaContext, setAttribute} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
-import {map, switchMap, withLatestFrom} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 
 import {$checkbox, $icon, $stateService, CheckedValue, Icon as MaskIcon, registerSvg, _p} from '../../export';
 import {FitTo} from '../../src/display/icon';
@@ -80,13 +80,12 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   private get isAction$(): Observable<boolean> {
     return this.iconDemoState$.pipe(
-        withLatestFrom($stateService.get(this.vine)),
-        switchMap(([demoState, stateService]) => {
+        switchMap(demoState => {
           if (!demoState) {
             return observableOf(null);
           }
 
-          return stateService.resolve(demoState.$isAction);
+          return $stateService.get(this.vine).resolve(demoState.$isAction);
         }),
         map(isAction => !!isAction && isAction !== 'unknown'),
     );
@@ -95,13 +94,12 @@ export class IconDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   private get fitTo$(): Observable<FitTo> {
     return this.iconDemoState$.pipe(
-        withLatestFrom($stateService.get(this.vine)),
-        switchMap(([demoState, stateService]) => {
+        switchMap(demoState => {
           if (!demoState) {
             return observableOf(null);
           }
 
-          return stateService.resolve(demoState.$fitToWidth);
+          return $stateService.get(this.vine).resolve(demoState.$fitToWidth);
         }),
         map(fitToWidth => {
           if (!fitToWidth) {

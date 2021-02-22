@@ -11,7 +11,7 @@ import {typeBased} from 'gs-tools/export/serializer';
 import {booleanType, instanceofType} from 'gs-types';
 import {compose, json} from 'nabu';
 import {AriaRole, attributeIn, attributeOut, element, enumParser, host, PersonaContext, renderHtml, RenderSpec, single, stringParser} from 'persona';
-import {combineLatest, Observable, of as observableOf} from 'rxjs';
+import {Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
 import {_p} from '../app/app';
@@ -69,9 +69,9 @@ export class Icon extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get rootSvg$(): Observable<RenderSpec|null> {
-    return combineLatest([$svgService.get(this.vine), this.inputs.host.icon])
+    return this.inputs.host.icon
         .pipe(
-            switchMap(([svgService, svgName]) => svgService.getSvg(svgName)),
+            switchMap(svgName => $svgService.get(this.vine).getSvg(svgName)),
             map(svg => {
               if (!svg) {
                 return null;

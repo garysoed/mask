@@ -1,10 +1,9 @@
-import {Vine} from 'grapevine';
-import {arrayThat, assert, createSpyInstance, fake, should, spy, test} from 'gs-testing';
-import {CustomElementCtrl} from 'persona';
+import {arrayThat, assert, createSpyInstance, fake, objectThat, should, spy, test} from 'gs-testing';
+import {Config, CustomElementCtrl} from 'persona';
 
 import {Theme} from '../theme/theme';
 
-import {_p, start} from './app';
+import {start, _p} from './app';
 
 
 type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;
@@ -17,17 +16,14 @@ test('app.App', () => {
 
       const mockTheme = createSpyInstance(Theme);
       fake(mockTheme.getStyleEl).always().return(styleEl);
-      const mockVineImpl = createSpyInstance(Vine);
-      fake(personaBuilderBuildSpy).always().return({vine: mockVineImpl});
 
       start('test', [], document, mockTheme, document.createElement('div'), window.customElements);
 
-      assert(personaBuilderBuildSpy).to.haveBeenCalledWith(
-          'test',
-          arrayThat<CustomElementCtrlCtor>().beEmpty(),
-          document,
-          window.customElements,
-      );
+      assert(personaBuilderBuildSpy).to.haveBeenCalledWith(objectThat<Config>().haveProperties({
+        rootCtrls: arrayThat<CustomElementCtrlCtor>().beEmpty(),
+        rootDoc: document,
+        customElementRegistry: window.customElements,
+      }));
       assert(mockTheme.getStyleEl).to.haveBeenCalledWith();
     });
   });

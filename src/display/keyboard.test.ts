@@ -12,7 +12,7 @@ const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/display/keyboard', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv(snapshots));
-    const tester = TESTER_FACTORY.build([Keyboard], document);
+    const tester = TESTER_FACTORY.build({rootCtrls: [Keyboard], rootDoc: document});
     const el = tester.createElement($keyboard.tag);
 
     return {tester, el};

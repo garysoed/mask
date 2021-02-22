@@ -18,11 +18,16 @@ test('@mask/core/overlay', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv(snapshots));
 
-    const tester = TESTER_FACTORY.build([Overlay], document);
+    const overlayService = new OverlayService();
+    const tester = TESTER_FACTORY.build({
+      overrides: [
+        {override: $overlayService, withValue: overlayService},
+      ],
+      rootCtrls: [Overlay],
+      rootDoc: document,
+    });
     const el = tester.createElement($overlay.tag);
     document.body.appendChild(el.element);
-    const overlayService = new OverlayService();
-    $overlayService.set(tester.vine, () => overlayService);
 
     return {el, overlayService, tester};
   });

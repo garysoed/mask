@@ -10,7 +10,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/layout/drawer-layout', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([DrawerLayout], document);
+    const tester = testerFactory.build({rootCtrls: [DrawerLayout], rootDoc: document});
     const el = tester.createElement($drawerLayout.tag);
 
     return {el};

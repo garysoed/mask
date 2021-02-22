@@ -1,12 +1,12 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {StateService} from 'gs-tools/export/state';
+import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
 
-import {$numberInput, NumberInput, $} from './number-input';
+import {$, $numberInput, NumberInput} from './number-input';
 import * as snapshots from './snapshots.json';
 
 
@@ -16,11 +16,15 @@ test('@mask/input/number-input', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv(snapshots));
 
-    const tester = testerFactory.build([NumberInput], document);
+    const stateService = fakeStateService();
+    const tester = testerFactory.build({
+      overrides: [
+        {override: $stateService, withValue: stateService},
+      ],
+      rootCtrls: [NumberInput],
+      rootDoc: document,
+    });
     const el = tester.createElement($numberInput.tag);
-
-    const stateService = new StateService();
-    $stateService.set(tester.vine, () => stateService);
 
     const $state = stateService.add<number>(-2);
     el.setAttribute($.host._.stateId, $state);

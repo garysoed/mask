@@ -20,7 +20,7 @@ test('@mask/display/annotated-text', init => {
   });
 
   const _ = init(() => {
-    const tester = TESTER_FACTORY.build([AnnotatedText], document);
+    const tester = TESTER_FACTORY.build({rootCtrls: [AnnotatedText], rootDoc: document});
     const el = tester.createElement($annotatedText.tag);
     return {el, tester};
   });

@@ -29,10 +29,13 @@ export const $annotatedTextDemo = {
   ],
   template,
   configure: vine => {
-    $annotationConfig.set(vine, configs => new Map([
-      ...configs,
-      ['emoji', renderEmoji],
-    ]));
+    $annotationConfig.set(
+        vine,
+        configs => new Map([
+          ...configs,
+          ['emoji', renderEmoji],
+        ]),
+    );
 
     registerSvg(vine, 'smiley', {type: 'embed', content: smileySvg});
   },

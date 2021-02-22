@@ -1,8 +1,7 @@
-import {assert, createSpySubject, objectThat, run, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, objectThat, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {StateId, StateService} from 'gs-tools/export/state';
+import {fakeStateService, StateId} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
-import {switchMap, take, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
@@ -20,13 +19,17 @@ test('@mask/action/input/radio-input', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv(snapshots as {[id: string]: string}));
 
-    const tester = testerFactory.build([RadioInput], document);
+    const stateService = fakeStateService();
+    const tester = testerFactory.build({
+      overrides: [
+        {override: $stateService, withValue: stateService},
+      ],
+      rootCtrls: [RadioInput],
+      rootDoc: document,
+    });
     const el = tester.createElement($radioInput.tag);
 
-    const stateService = new StateService();
     const $state = stateService.add<number|null>(null);
-
-    $stateService.set(tester.vine, () => stateService);
     el.setAttribute($.host._.stateId, $state);
     el.setAttribute($.host._.index, INDEX);
 
@@ -134,35 +137,20 @@ test('@mask/action/input/radio-input', init => {
     });
 
     should('reset the dom value if global radio input emits for other index and the ID match', () => {
-      run($onRadioInput$.get(_.tester.vine).pipe(
-          take(1),
-          tap(subject => {
-            subject.next({index: 1, stateId: _.$state});
-          }),
-      ));
+      $onRadioInput$.get(_.tester.vine).next({index: 1, stateId: _.$state});
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
     });
 
     should('do nothing if the global radio input emits for the current index', () => {
-      run($onRadioInput$.get(_.tester.vine).pipe(
-          take(1),
-          tap(subject => {
-            subject.next({index: INDEX, stateId: _.$state});
-          }),
-      ));
+      $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: _.$state});
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
     });
 
     should('do nothing if the global radio input emits and the ID doesn\'t match', () => {
       const $otherStateId = _.stateService.add<number|null>(null);
-      run($onRadioInput$.get(_.tester.vine).pipe(
-          take(1),
-          tap(subject => {
-            subject.next({index: INDEX, stateId: $otherStateId});
-          }),
-      ));
+      $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: $otherStateId});
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
     });
@@ -170,9 +158,7 @@ test('@mask/action/input/radio-input', init => {
 
   test('handleOnRadioInput$', () => {
     should('emit the global radio input', () => {
-      const onRadioInput$ = createSpySubject(
-          $onRadioInput$.get(_.tester.vine).pipe(switchMap(subject => subject)),
-      );
+      const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
       // Check the element.
       _.el.getElement($.input).checked = true;
@@ -185,9 +171,7 @@ test('@mask/action/input/radio-input', init => {
     });
 
     should('do nothing if the value is null', () => {
-      const onRadioInput$ = createSpySubject(
-          $onRadioInput$.get(_.tester.vine).pipe(switchMap(subject => subject)),
-      );
+      const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
       // Check the element.
       _.el.getElement($.input).checked = false;

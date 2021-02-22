@@ -1,5 +1,5 @@
 import {assert, should, test} from 'gs-testing';
-import {StateService} from 'gs-tools/export/state';
+import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
@@ -12,11 +12,15 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/text-input', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([TextInput], document);
+    const stateService = fakeStateService();
+    const tester = testerFactory.build({
+      overrides: [
+        {override: $stateService, withValue: stateService},
+      ],
+      rootCtrls: [TextInput],
+      rootDoc: document,
+    });
     const el = tester.createElement($textInput.tag);
-
-    const stateService = new StateService();
-    $stateService.set(tester.vine, () => stateService);
 
     const $state = stateService.add<string>('init state');
     el.setAttribute($.host._.stateId, $state);

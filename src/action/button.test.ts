@@ -13,7 +13,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/action/button', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([Button], document);
+    const tester = testerFactory.build({rootCtrls: [Button], rootDoc: document});
     const el = tester.createElement($button.tag);
 
     return {el, tester};

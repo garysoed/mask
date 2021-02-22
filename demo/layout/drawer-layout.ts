@@ -3,7 +3,7 @@ import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType} from 'gs-types';
 import {attributeOut, element, PersonaContext, stringParser} from 'persona';
-import {combineLatest, Observable, of as observableOf} from 'rxjs';
+import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 import {$checkbox, Checkbox, CheckedValue} from '../../src/action/input/checkbox';
@@ -58,17 +58,14 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get expanded$(): Observable<boolean> {
-    return combineLatest([
-      $stateService.get(this.vine),
-      this.$isExpanded$,
-    ])
+    return this.$isExpanded$
         .pipe(
-            switchMap(([stateService, $isExpanded]) => {
+            switchMap($isExpanded => {
               if (!$isExpanded) {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve($isExpanded);
+              return $stateService.get(this.vine).resolve($isExpanded);
             }),
             map(checkedValue => !!checkedValue),
         );
@@ -92,17 +89,14 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get drawerMode$(): Observable<DrawerMode> {
-    return combineLatest([
-      $stateService.get(this.vine),
-      this.$isHorizontalMode$,
-    ])
+    return this.$isHorizontalMode$
         .pipe(
-            switchMap(([stateService, $isHorizontalMode]) => {
+            switchMap($isHorizontalMode => {
               if (!$isHorizontalMode) {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve($isHorizontalMode);
+              return $stateService.get(this.vine).resolve($isHorizontalMode);
             }),
             map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL),
         );
@@ -110,17 +104,14 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get rootPlayLayout$(): Observable<string> {
-    return combineLatest([
-      $stateService.get(this.vine),
-      this.$isHorizontalMode$,
-    ])
+    return this.$isHorizontalMode$
         .pipe(
-            switchMap(([stateService, $isHorizontalMode]) => {
+            switchMap($isHorizontalMode => {
               if (!$isHorizontalMode) {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve($isHorizontalMode);
+              return $stateService.get(this.vine).resolve($isHorizontalMode);
             }),
             map(checkedValue => checkedValue ? 'column' : 'row'),
         );

@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {StateService} from 'gs-tools/export/state';
+import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
@@ -16,13 +16,17 @@ test('@mask/input/checkbox', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv(snapshots as {[id: string]: string}));
 
-    const tester = testerFactory.build([Checkbox], document);
+    const stateService = fakeStateService();
+    const tester = testerFactory.build({
+      overrides: [
+        {override: $stateService, withValue: stateService},
+      ],
+      rootCtrls: [Checkbox],
+      rootDoc: document,
+    });
+
     const el = tester.createElement($checkbox.tag);
-
-    const stateService = new StateService();
     const $state = stateService.add<CheckedValue>(true);
-
-    $stateService.set(tester.vine, () => stateService);
     el.setAttribute($.host._.stateId, $state);
 
     return {el, $state, stateService};

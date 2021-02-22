@@ -3,7 +3,6 @@ import {instanceofType} from 'gs-types';
 import {attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
 import {stateIdParser} from '../../core/state-id-parser';
@@ -11,10 +10,6 @@ import {CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
 import template from './text-input.html';
-
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LOGGER = new Logger('mask.TextInput');
 
 
 enum InputType {

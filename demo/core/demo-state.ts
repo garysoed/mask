@@ -1,17 +1,12 @@
-import {stream, Stream} from 'grapevine';
-import {debug} from 'gs-tools/export/rxjs';
+import {Source, source} from 'grapevine';
 import {StateId} from 'gs-tools/export/state';
-import {combineLatest, of as observableOf} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {Logger} from 'santa';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
 import {$rootId} from '../../src/core/save-service';
 import {$stateService} from '../../src/core/state-service';
 import {Palette} from '../../src/theme/palette';
-
-
-const LOGGER = new Logger('mkd.demo');
 
 
 export interface CheckboxDemoState {
@@ -69,25 +64,22 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const $demoStateId: Stream<StateId<DemoState>|undefined> = stream(
+export const $demoStateId: Source<Observable<StateId<DemoState>|undefined>> = source(
     'demoStateId',
-    vine => $rootId.get(vine).pipe(debug(LOGGER, 'demoStateId')),
+    vine => $rootId.get(vine),
 );
 
-export const $demoState = stream(
+export const $demoState = source(
     'demoState',
     vine => {
-      return combineLatest([
-        $stateService.get(vine),
-        $demoStateId.get(vine),
-      ])
+      return $demoStateId.get(vine)
           .pipe(
-              switchMap(([stateService, demoStateId]) => {
+              switchMap(demoStateId => {
                 if (!demoStateId) {
-                  return observableOf(undefined);
+                  return of(undefined);
                 }
 
-                return stateService.resolve(demoStateId);
+                return $stateService.get(vine).resolve(demoStateId);
               }),
           );
     },

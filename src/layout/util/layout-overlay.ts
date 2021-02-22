@@ -2,10 +2,10 @@ import {source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
 import {classlist, element, PersonaContext, style} from 'persona';
-import {Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import {_p, _v} from '../../app/app';
+import {_p} from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
 import {$svgService, registerSvg} from '../../core/svg-service';
 import {BaseThemedCtrl} from '../../theme/base-themed-ctrl';
@@ -13,7 +13,7 @@ import {BaseThemedCtrl} from '../../theme/base-themed-ctrl';
 import layoutOverlayTemplate from './layout-overlay.html';
 
 
-const $isActive = source('layout.isActive', () => false);
+const $isActive = source('layout.isActive', () => new BehaviorSubject(false));
 
 const $ = {
   gridLeft: element('gridLeft', instanceofType(HTMLDivElement), {
@@ -38,6 +38,18 @@ const $ = {
 export class LayoutOverlay extends BaseThemedCtrl<typeof $> {
   constructor(context: PersonaContext) {
     super(context, $);
+    Object.assign(
+        window,
+        {
+          mk: {
+            dbg: {
+              setLayoutOverlayActive: (active: boolean) => {
+                $isActive.get(this.vine).next(active);
+              },
+            },
+          },
+        },
+    );
   }
 
   @cache()
@@ -57,25 +69,9 @@ export class LayoutOverlay extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get backgroundImage$(): Observable<string> {
-    return $svgService.get(this.vine)
+    return $svgService.get(this.vine).getSvg('layout_overlay')
         .pipe(
-            switchMap(service => service.getSvg('layout_overlay')),
             map(svg => `url('data:image/svg+xml;base64,${btoa(svg || '')}')`),
         );
   }
 }
-
-_v.onRun(vine => {
-  Object.assign(
-      window,
-      {
-        mk: {
-          dbg: {
-            setLayoutOverlayActive: (active: boolean) => {
-              $isActive.set(vine, () => active);
-            },
-          },
-        },
-      },
-  );
-});

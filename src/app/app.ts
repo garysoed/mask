@@ -1,16 +1,19 @@
-import {Vine, VineBuilder, source} from 'grapevine';
+import {Vine, source} from 'grapevine';
 import {PersonaBuilder} from 'persona';
 import {BaseCtrlCtor, CustomElementCtrlCtor} from 'persona/export/internal';
+import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
 import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
 
 
-export const _v = new VineBuilder();
-export const _p = new PersonaBuilder(_v);
+export const _p = new PersonaBuilder();
 
-export const $theme = source('Theme', () => new Theme(document, PALETTE.ORANGE, PALETTE.GREEN));
+export const $theme = source(
+    'Theme',
+    () => new BehaviorSubject(new Theme(document, PALETTE.ORANGE, PALETTE.GREEN)),
+);
 export const $window = source('window', () => window);
 
 export function start(
@@ -21,10 +24,11 @@ export function start(
     body: HTMLElement,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
-  const {vine} = _p.build(appName, rootCtrls, rootDoc, customElementRegistry);
-  $theme.set(vine, () => theme);
-  $theme
-      .get(vine)
+  const vine = new Vine({appName});
+  _p.build({rootCtrls, rootDoc, customElementRegistry, vine});
+  const theme$ = $theme.get(vine);
+  theme$.next(theme);
+  theme$
       .pipe(
           map(theme => theme.getStyleEl().cloneNode(true) as HTMLStyleElement),
           startWith(null),

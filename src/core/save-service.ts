@@ -1,4 +1,4 @@
-import {source, Vine} from 'grapevine';
+import {source, subjectSource, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
@@ -29,17 +29,13 @@ export class SaveService {
         switchMap(config => {
           const onLoaded$ = config.loadOnInit ? this.load() : observableOf(false);
           return onLoaded$.pipe(
-              switchMap(isLoaded => {
+              tap(isLoaded => {
                 if (isLoaded) {
-                  return EMPTY;
+                  return;
                 }
 
-                return $stateService.get(this.vine).pipe(
-                    take(1),
-                    tap(stateService => {
-                      $rootId.set(this.vine, () => config.initFn(stateService));
-                    }),
-                );
+                const stateService = $stateService.get(this.vine);
+                $rootId.set(this.vine, () => config.initFn(stateService));
               }),
           );
         }),
@@ -48,14 +44,14 @@ export class SaveService {
 
   @cache()
   private get handleOnSave$(): Observable<unknown> {
+    const stateService = $stateService.get(this.vine);
     return combineLatest([
       this.shouldSave$,
-      $stateService.get(this.vine),
       $saveConfig.get(this.vine),
       $rootId.get(this.vine),
     ])
         .pipe(
-            switchMap(([isSaving, stateService, saveConfig, rootId]) => {
+            switchMap(([isSaving, saveConfig, rootId]) => {
               if (!isSaving || !saveConfig || !rootId) {
                 return EMPTY;
               }
@@ -80,11 +76,11 @@ export class SaveService {
   }
 
   load(): Observable<boolean> {
-    return combineLatest([this.savedState$, $stateService.get(this.vine)]).pipe(
+    return this.savedState$.pipe(
         take(1),
-        map(([state, stateService]) => {
+        map(state => {
           if (state) {
-            stateService.init(state);
+            $stateService.get(this.vine).init(state);
             $rootId.set(this.vine, () => state.rootId);
             return true;
           }
@@ -114,6 +110,12 @@ export class SaveService {
   }
 }
 
-export const $rootId = source<StateId<any>|undefined>('rootId', () => undefined);
-export const $saveConfig = source<SaveConfig|undefined>('saveConfig', () => undefined);
+export const $rootId = subjectSource<StateId<any>|undefined>(
+    'rootId',
+    () => undefined,
+);
+export const $saveConfig = subjectSource<SaveConfig|undefined>(
+    'saveConfig',
+    () => undefined,
+);
 export const $saveService = source('SaveService', vine => new SaveService(vine));

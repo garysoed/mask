@@ -1,5 +1,5 @@
 // app
-export {_p, _v, $window} from '../src/app/app';
+export {_p, $window} from '../src/app/app';
 
 // core
 export {registerSvg, $svgService, SvgService} from '../src/core/svg-service';

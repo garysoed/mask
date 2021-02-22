@@ -2,7 +2,7 @@ import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {LocalStorage} from 'gs-tools/export/store';
 import {identity, json} from 'nabu';
-import {combineLatest, EMPTY, merge} from 'rxjs';
+import {EMPTY, merge} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
@@ -57,17 +57,15 @@ window.addEventListener('load', () => {
     registerSvg(vine, key, {type: 'embed', content});
   }
 
-  $locationService.get(vine)
-      .pipe(switchMap(locationService => locationService.run()))
-      .subscribe();
+  $locationService.get(vine).run().subscribe();
+
+  const stateService = $stateService.get(vine);
+  const theme$ = $theme.get(vine);
 
   // Update the theme based on the demo state.
-  combineLatest([
-    $demoState.get(vine),
-    $stateService.get(vine),
-  ])
+  $demoState.get(vine)
       .pipe(
-          switchMap(([demoState, stateService]) => {
+          switchMap(demoState => {
             if (!demoState) {
               return EMPTY;
             }
@@ -76,14 +74,14 @@ window.addEventListener('load', () => {
             const onBaseColorName$ = stateService.resolve($baseColorName).pipe(
                 filterNonNullable(),
                 tap(colorName => {
-                  $theme.set(vine, theme => theme.setBaseColor(PALETTE[colorName]));
+                  theme$.next(theme$.getValue().setBaseColor(PALETTE[colorName]));
                 }),
             );
 
             const onAccentColorName$ = stateService.resolve($accentColorName).pipe(
                 filterNonNullable(),
                 tap(colorName => {
-                  $theme.set(vine, theme => theme.setHighlightColor(PALETTE[colorName]));
+                  theme$.next(theme$.getValue().setHighlightColor(PALETTE[colorName]));
                 }),
             );
             return merge(onBaseColorName$, onAccentColorName$);
@@ -91,26 +89,24 @@ window.addEventListener('load', () => {
       )
       .subscribe();
 
-  $saveService.get(vine)
-      .pipe(
-          tap(saveService => {
-            saveService.setSaving(true);
-          }),
-          switchMap(saveService => saveService.run()),
-      )
-      .subscribe();
+  const saveService = $saveService.get(vine);
+  saveService.setSaving(true);
+  saveService.run().subscribe();
 
-  $saveConfig.set(vine, () => ({
-    loadOnInit: true,
-    saveId: DEMO_STATE_KEY,
-    initFn: init,
-    storage: new LocalStorage<Snapshot<DemoState>, any>(
-        window,
-        'mkd',
-        identity(),
-        json(),
-    ),
-  }));
+  $saveConfig.set(
+      vine,
+      () => ({
+        loadOnInit: true,
+        saveId: DEMO_STATE_KEY,
+        initFn: init,
+        storage: new LocalStorage<Snapshot<DemoState>, any>(
+            window,
+            'mkd',
+            identity(),
+            json(),
+        ),
+      }),
+  );
 });
 
 function init(stateService: StateService): StateId<DemoState> {

@@ -77,17 +77,16 @@ export class OverlayLayout extends BaseThemedCtrl<typeof $> {
 
     return this.inputs.host.showFn.pipe(
         withLatestFrom(
-            $overlayService.get(this.vine),
             targetEl$,
             contentNode$,
             anchors$,
         ),
-        tap(([, overlayService, targetEl, contentNode, anchors]) => {
+        tap(([, targetEl, contentNode, anchors]) => {
           if (!targetEl || !contentNode) {
             return;
           }
 
-          overlayService.show({
+          $overlayService.get(this.vine).show({
             content: {
               node: contentNode,
               horizontal: anchors.contentHorizontal,

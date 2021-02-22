@@ -18,13 +18,17 @@ test('display.Icon', init => {
   const SVG_CONTENT = 'svgContent';
 
   const _ = init(() => {
-    const tester = testerFactory.build([Icon], document);
-    registerSvg(tester.vine, SVG_NAME, {type: 'remote' as const, url: SVG_URL});
-
     const svgEl$ = new ReplaySubject<Element>(1);
     const mockInnerHtmlParseService = createSpyInstance(InnerHtmlParseService);
     fake(mockInnerHtmlParseService.parse).always().return(svgEl$);
-    $innerHtmlParseService.set(tester.vine, () => mockInnerHtmlParseService);
+    const tester = testerFactory.build({
+      rootCtrls: [Icon],
+      rootDoc: document,
+      overrides: [
+        {override: $innerHtmlParseService, withValue: mockInnerHtmlParseService},
+      ],
+    });
+    registerSvg(tester.vine, SVG_NAME, {type: 'remote' as const, url: SVG_URL});
 
     const fakeFetch = new FakeFetch();
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);

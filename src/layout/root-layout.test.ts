@@ -10,7 +10,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('layout.RootLayout', init => {
   const _ = init(() => {
-    const tester = testerFactory.build([RootLayout], document);
+    const tester = testerFactory.build({rootCtrls: [RootLayout], rootDoc: document});
     const el = tester.createElement('mk-root-layout');
     return {el, tester};
   });

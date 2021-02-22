@@ -2,12 +2,12 @@ import {source} from 'grapevine';
 import {assert, createSpySubject, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {StateId, StateService} from 'gs-tools/export/state';
+import {fakeStateService, StateId} from 'gs-tools/export/state';
 import {instanceofType} from 'gs-types';
 import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
-import {combineLatest, Observable, of as observableOf, Subject} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {EMPTY, Observable, of, Subject} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
 import {stateIdParser} from '../../core/state-id-parser';
@@ -61,49 +61,33 @@ class TestInput extends BaseInput<string, typeof $> {
 
   @cache()
   protected get domValue$(): Observable<string> {
-    return combineLatest([
-      $stateService.get(this.vine),
-      $domValueId.get(this.vine),
-    ])
-        .pipe(
-            switchMap(([stateService, domValueId]) => {
-              if (!domValueId) {
-                return observableOf(undefined);
-              }
+    const stateService = $stateService.get(this.vine);
+    const domValueId = $domValueId.get(this.vine);
+    if (!domValueId) {
+      return EMPTY;
+    }
 
-              return stateService.resolve(domValueId);
-            }),
-            filterNonNullable(),
-        );
+    return stateService.resolve(domValueId).pipe(filterNonNullable());
   }
 
   @cache()
   protected get forwardDomValueUpdatedByScript$(): Observable<unknown> {
-    return $domValueUpdatedByScript$.get(this.vine).pipe(
-        switchMap(subject => {
-          return this.onDomValueUpdatedByScript$.pipe(
-              tap(event => {
-                subject.next(event);
-              }),
-          );
+    return this.onDomValueUpdatedByScript$.pipe(
+        tap(event => {
+          $domValueUpdatedByScript$.get(this.vine).next(event);
         }),
     );
   }
 
   protected updateDomValue(newValue: string): Observable<unknown> {
-    return combineLatest([
-      $stateService.get(this.vine),
-      $domValueId.get(this.vine),
-    ])
-        .pipe(
-            tap(([stateService, domValueId]) => {
-              if (!domValueId) {
-                return;
-              }
+    const stateService = $stateService.get(this.vine);
+    const domValueId = $domValueId.get(this.vine);
+    if (!domValueId) {
+      return EMPTY;
+    }
 
-              stateService.set(domValueId, newValue);
-            }),
-        );
+    stateService.set(domValueId, newValue);
+    return of({});
   }
 }
 
@@ -113,23 +97,25 @@ test('@mask/input/base-input', init => {
   const INIT_STATE_VALUE = 'INIT_STATE_VALUE';
 
   const _ = init(() => {
-    const tester = testerFactory.build([TestInput], document);
+    const stateService = fakeStateService();
+    const $domValue = stateService.add('init dom value');
+    const onDomValueUpdatedByScript$ = new Subject<unknown>();
+    const tester = testerFactory.build({
+      overrides: [
+        {override: $stateService, withValue: stateService},
+        {override: $domValueId, withValue: $domValue},
+        {override: $domValueUpdatedByScript$, withValue: onDomValueUpdatedByScript$},
+      ],
+      rootCtrls: [TestInput],
+      rootDoc: document,
+    });
     const el = tester.createElement('mk-test-base-input');
-
-    const stateService = new StateService();
-    $stateService.set(tester.vine, () => stateService);
 
     const $value = stateService.add(INIT_STATE_VALUE);
     el.setAttribute($.host._.stateId, $value);
 
-    const $domValue = stateService.add('init dom value');
-    $domValueId.set(tester.vine, () => $domValue);
-
     // Clear the component to make test more predictable.
     el.callFunction($.host._.clearFn, []);
-
-    const onDomValueUpdatedByScript$ = new Subject<unknown>();
-    $domValueUpdatedByScript$.set(tester.vine, () => onDomValueUpdatedByScript$);
 
     return {
       el,

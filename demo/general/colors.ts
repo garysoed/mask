@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
 import {classToggle, element, PersonaContext} from 'persona';
-import {combineLatest, Observable, of as observableOf} from 'rxjs';
+import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 import {_p} from '../../src/app/app';
@@ -39,20 +39,18 @@ export class ColorsDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.table.darkClass(combineLatest([
-        $demoState.get(this.vine),
-        $stateService.get(this.vine),
-      ])
-          .pipe(
-              switchMap(([demoState, stateService]) => {
-                if (!demoState) {
-                  return observableOf(undefined);
-                }
+      this.renderers.table.darkClass(
+          $demoState.get(this.vine)
+              .pipe(
+                  switchMap(demoState => {
+                    if (!demoState) {
+                      return observableOf(undefined);
+                    }
 
-                return stateService.resolve(demoState.$isDarkMode);
-              }),
-              map(isDark => !!isDark),
-          )),
+                    return $stateService.get(this.vine).resolve(demoState.$isDarkMode);
+                  }),
+                  map(isDark => !!isDark),
+              )),
     ];
   }
 }

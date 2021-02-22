@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
 import {element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
-import {combineLatest, Observable, of as observableOf} from 'rxjs';
+import {Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
 import {$button, Button} from '../../src/action/button';
@@ -76,13 +76,13 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
     const overlayLayoutDemoState$ = $demoState.get(this.vine).pipe(
         map(demoState => demoState?.overlayLayoutDemo ?? null),
     );
-    return combineLatest([overlayLayoutDemoState$, $stateService.get(this.vine)]).pipe(
-        switchMap(([state, stateService]) => {
+    return overlayLayoutDemoState$.pipe(
+        switchMap(state => {
           if (!state) {
             return observableOf(null);
           }
 
-          return stateService.resolve(state[anchorIdKey]);
+          return $stateService.get(this.vine).resolve(state[anchorIdKey]);
         }),
         map(anchor => ANCHORS[anchor ?? 0]),
     );

@@ -1,6 +1,6 @@
 import {Vine} from 'grapevine';
 import {arrayThat, assert, objectThat, run, should, test} from 'gs-testing';
-import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
+import {fakeStateService, Snapshot, StateId} from 'gs-tools/export/state';
 import {InMemoryStorage} from 'gs-tools/export/store';
 import {map, take, tap} from 'rxjs/operators';
 
@@ -15,9 +15,13 @@ interface TestState {
 
 test('@mask/core/save-service', init => {
   const _ = init(() => {
-    const vine = new Vine('test');
-    const stateService = new StateService();
-    $stateService.set(vine, () => stateService);
+    const stateService = fakeStateService();
+    const vine = new Vine({
+      appName: 'test',
+      overrides: [
+        {override: $stateService, withValue: stateService},
+      ],
+    });
 
     const service = new SaveService(vine);
     run(service.run());
@@ -63,8 +67,7 @@ test('@mask/core/save-service', init => {
       // Clear the state service, then set the storage.
       _.stateService.clear();
       let rootId: StateId<TestState>|null = null;
-      $saveConfig.set(
-          _.vine,
+      $saveConfig.set(_.vine,
           () => ({
             loadOnInit: false,
             saveId,

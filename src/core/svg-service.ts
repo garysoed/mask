@@ -1,5 +1,6 @@
-import {Vine, source, stream} from 'grapevine';
-import {Observable, defer, from as observableFrom, of as observableOf} from 'rxjs';
+import {source, subjectSource, Vine} from 'grapevine';
+import {$asArray, $map, $pipe} from 'gs-tools/export/collect';
+import {combineLatest, defer, from as observableFrom, Observable, of} from 'rxjs';
 import {map, retry, shareReplay, switchMap} from 'rxjs/operators';
 
 import {SvgConfig} from './svg-config';
@@ -14,13 +15,12 @@ const __run = Symbol('SvgService.run');
  * @thModule display
  */
 export class SvgService {
-  private readonly svgObsMap: Map<string, Observable<string>>;
+  private readonly svgMap$ = createSvgObs(this.svgConfig$);
 
   /**
    * @internal
    */
-  constructor(svgConfig: ReadonlyMap<string, SvgConfig>) {
-    this.svgObsMap = createSvgObs(svgConfig);
+  constructor(private readonly svgConfig$: Observable<ReadonlyMap<string, SvgConfig>>) {
   }
 
   /**
@@ -42,25 +42,37 @@ export class SvgService {
    * @returns Observable that emits the SVG string if exists, null otherwise.
    */
   getSvg(name: string): Observable<string|null> {
-    return this.svgObsMap.get(name) || observableOf(null);
+    return this.svgMap$.pipe(
+        map(map => {
+          return map.get(name) ?? null;
+        }),
+    );
   }
 }
 
 function createSvgObs(
-    configs: ReadonlyMap<string, SvgConfig>,
-): Map<string, Observable<string>> {
-  const obsMap = new Map<string, Observable<string>>();
-  for (const [key, config] of configs) {
-    obsMap.set(key, loadSvg(config));
-  }
-
-  return obsMap;
+    configs$: Observable<ReadonlyMap<string, SvgConfig>>,
+): Observable<ReadonlyMap<string, string>> {
+  return configs$.pipe(
+      switchMap(configs => {
+        if (configs.size <= 0) {
+          return of([]);
+        }
+        const pairs$ = $pipe(
+            configs,
+            $map(([key, config]) => loadSvg(config).pipe(map(result => [key, result] as const))),
+            $asArray(),
+        );
+        return combineLatest(pairs$);
+      }),
+      map(pairs => new Map(pairs)),
+  );
 }
 
 function loadSvg(config: SvgConfig): Observable<string> {
   switch (config.type) {
     case 'embed':
-      return observableOf(config.content);
+      return of(config.content);
     case 'observable':
       return config.content$;
     case 'remote':
@@ -74,10 +86,16 @@ function loadSvg(config: SvgConfig): Observable<string> {
   }
 }
 
-const $svgConfig = source<ReadonlyMap<string, SvgConfig>>('svgConfig', () => new Map());
+const $svgConfig = subjectSource<ReadonlyMap<string, SvgConfig>>(
+    'svgConfig',
+    () => new Map(),
+);
 
 export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
-  $svgConfig.set(vine, map => new Map([...map, [key, config]]));
+  $svgConfig.set(
+      vine,
+      configs => new Map([...configs, [key, config]]),
+  );
 }
 
 /**
@@ -85,15 +103,12 @@ export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
  *
  * @thModule display
  */
-export const $svgService = stream(
+export const $svgService = source(
     'SvgService',
-    vine => $svgConfig.get(vine)
-        .pipe(
-            map(config => {
-              const service = new SvgService(config);
-              service[__run]();
+    vine => {
+      const service = new SvgService($svgConfig.get(vine));
+      service[__run]();
 
-              return service;
-            }),
-        ),
+      return service;
+    },
 );

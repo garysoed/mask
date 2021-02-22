@@ -3,7 +3,7 @@ import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {instanceofType} from 'gs-types';
 import {classToggle, element, host, onDom, PersonaContext, renderNode, RenderSpec, resizeObservable, single, style} from 'persona';
 import {combineLatest, merge, Observable} from 'rxjs';
-import {filter, map, mapTo, shareReplay, startWith, switchMap} from 'rxjs/operators';
+import {filter, map, mapTo, shareReplay, startWith} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
@@ -145,9 +145,7 @@ export class Overlay extends BaseThemedCtrl<typeof $> {
   @cache()
   private get showStatus$(): Observable<ShowEvent|null> {
     const rootEl = $.root.getSelectable(this.context);
-    const onShow$ = $overlayService.get(this.vine).pipe(
-        switchMap(service => service.onShow$),
-    );
+    const onShow$ = $overlayService.get(this.vine).onShow$;
 
     const onClick$ = this.inputs.root.onClick.pipe(
         filter(event => event.target === rootEl),

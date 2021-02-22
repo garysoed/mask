@@ -2,18 +2,14 @@ import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
 import {handler, hasAttribute, host, InputsOf, PersonaContext} from 'persona';
 import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
-import {combineLatest, EMPTY, merge, Observable, of as observableOf, Subject} from 'rxjs';
+import {EMPTY, merge, Observable, of as observableOf, Subject} from 'rxjs';
 import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
-import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
 import {ChangeEvent} from '../../event/change-event';
 import {$baseAction as $baseAction, BaseAction} from '../base-action';
 
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LOGGER = new Logger('mask.BaseInput');
 
 export const STATE_ID_ATTR_NAME = 'state-id';
 
@@ -65,17 +61,14 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
 
   @cache()
   private get currentStateValue$(): Observable<T> {
-    return combineLatest([
-      $stateService.get(this.vine),
-      this.stateId$,
-    ])
+    return this.stateId$
         .pipe(
-            switchMap(([stateService, $stateId]) => {
+            switchMap($stateId => {
               if (!$stateId) {
                 return observableOf(null);
               }
 
-              return stateService.resolve($stateId);
+              return $stateService.get(this.vine).resolve($stateId);
             }),
             map(value => value ?? this.defaultValue),
         );
@@ -98,13 +91,13 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
         onAutoApply$,
     )
         .pipe(
-            withLatestFrom(this.domValue$, this.stateId$, $stateService.get(this.vine)),
-            tap(([, domValue, stateId, stateService]) => {
+            withLatestFrom(this.domValue$, this.stateId$),
+            tap(([, domValue, stateId]) => {
               if (!stateId) {
                 return;
               }
 
-              stateService.set(stateId, domValue);
+              $stateService.get(this.vine).set(stateId, domValue);
             }),
         );
   }

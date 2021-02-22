@@ -38,7 +38,7 @@ class TestAction extends BaseAction<typeof $> {
 const factory = new PersonaTesterFactory(_p);
 test('@mask/action/base-action', init => {
   const _ = init(() => {
-    const tester = factory.build([TestAction], document);
+    const tester = factory.build({rootCtrls: [TestAction], rootDoc: document});
     const el = tester.createElement('mk-test-base-action');
     return {el, tester};
   });

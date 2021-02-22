@@ -1,4 +1,3 @@
-import {Vine} from 'grapevine';
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
@@ -86,7 +85,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
     this.addSetup(this.onAccentPaletteClick$);
     this.addSetup(this.onBasePaletteClick$);
     this.addSetup(this.onDrawerRootClick$);
-    this.addSetup(this.setupOnRootLayoutAction(context.vine));
+    this.addSetup(this.setupOnRootLayoutAction());
   }
 
   @cache()
@@ -107,17 +106,14 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = combineLatest([
-      $demoState.get(this.vine),
-      $stateService.get(this.vine),
-    ])
+    const selectedColor$ = $demoState.get(this.vine)
         .pipe(
-            switchMap(([demoState, stateService]) => {
+            switchMap(demoState => {
               if (!demoState) {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve(demoState.$accentColorName);
+              return $stateService.get(this.vine).resolve(demoState.$accentColorName);
             }),
         );
     const paletteNode$List = ORDERED_PALETTES
@@ -135,17 +131,14 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = combineLatest([
-      $demoState.get(this.vine),
-      $stateService.get(this.vine),
-    ])
+    const selectedColor$ = $demoState.get(this.vine)
         .pipe(
-            switchMap(([demoState, stateService]) => {
+            switchMap(demoState => {
               if (!demoState) {
                 return observableOf(undefined);
               }
 
-              return stateService.resolve(demoState.$baseColorName);
+              return $stateService.get(this.vine).resolve(demoState.$baseColorName);
             }),
         );
     const paletteNode$List = ORDERED_PALETTES
@@ -178,8 +171,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   @cache()
   private get onDrawerRootClick$(): Observable<unknown> {
     return this.inputs.drawerRoot.onAction.pipe(
-        withLatestFrom($locationService.get(this.vine)),
-        tap(([event, locationService]) => {
+        tap(event => {
           const target = event.target;
           if (!(target instanceof HTMLElement)) {
             return;
@@ -191,15 +183,14 @@ export class Demo extends BaseThemedCtrl<typeof $> {
           }
 
           event.stopPropagation();
-          locationService.goToPath(path, {});
+          $locationService.get(this.vine).goToPath(path, {});
         }),
     );
   }
 
   @cache()
   private get mainContent$(): Observable<RenderSpec|null> {
-    return $locationService.get(this.vine).pipe(
-        switchMap(locationService => locationService.getLocation()),
+    return $locationService.get(this.vine).getLocation().pipe(
         map(location => getPageSpec(location.type)),
         map(spec => {
           if (!spec) {
@@ -237,13 +228,13 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   private renderRootTheme(): Observable<'light'|'dark'> {
-    return combineLatest([$demoState.get(this.vine), $stateService.get(this.vine)]).pipe(
-        switchMap(([demoState, stateService]) => {
+    return $demoState.get(this.vine).pipe(
+        switchMap(demoState => {
           if (!demoState) {
             return observableOf(undefined);
           }
 
-          return stateService.resolve(demoState.$isDarkMode);
+          return $stateService.get(this.vine).resolve(demoState.$isDarkMode);
         }),
         map(isDarkMode => isDarkMode ? 'dark' : 'light'),
     );
@@ -265,13 +256,13 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
-            tap(([color, demoState, stateService]) => {
+            withLatestFrom($demoState.get(this.vine)),
+            tap(([color, demoState]) => {
               if (!demoState) {
                 return;
               }
 
-              stateService.set(demoState.$accentColorName, color);
+              $stateService.get(this.vine).set(demoState.$accentColorName, color);
             }),
         );
   }
@@ -282,23 +273,22 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            withLatestFrom($demoState.get(this.vine), $stateService.get(this.vine)),
-            tap(([color, demoState, stateService]) => {
+            withLatestFrom($demoState.get(this.vine)),
+            tap(([color, demoState]) => {
               if (!demoState) {
                 return;
               }
 
-              stateService.set(demoState.$baseColorName, color);
+              $stateService.get(this.vine).set(demoState.$baseColorName, color);
             }),
         );
   }
 
-  private setupOnRootLayoutAction(vine: Vine): Observable<unknown> {
+  private setupOnRootLayoutAction(): Observable<unknown> {
     return this.inputs.rootLayout.onAction
         .pipe(
-            withLatestFrom($locationService.get(vine)),
-            tap(([, locationService]) => {
-              locationService.goToPath(Views.MAIN, {});
+            tap(() => {
+              $locationService.get(this.vine).goToPath(Views.MAIN, {});
             }),
         );
   }

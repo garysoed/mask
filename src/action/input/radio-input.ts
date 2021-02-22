@@ -127,7 +127,6 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
   @cache()
   private get handleOnGlobalRadioInput$(): Observable<unknown> {
     return $onRadioInput$.get(this.vine).pipe(
-        switchMap(subject => subject),
         withLatestFrom(this.inputs.host.stateId, this.inputs.host.index),
         filter(([event, stateId, index]) => {
           return event.index !== index && event.stateId.id === stateId?.id;
@@ -157,9 +156,8 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
                 this.domValue$,
                 this.inputs.host.stateId,
                 this.inputs.host.index,
-                $onRadioInput$.get(this.vine),
             ),
-            tap(([, currentValue, stateId, index, subject]) => {
+            tap(([, currentValue, stateId, index]) => {
               if (!stateId || index === undefined) {
                 return;
               }
@@ -167,7 +165,8 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
               if (currentValue === null) {
                 return;
               }
-              subject.next({index, stateId});
+
+              $onRadioInput$.get(this.vine).next({index, stateId});
             }),
         );
   }
