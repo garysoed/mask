@@ -4,6 +4,10 @@ import {Converter, Result} from 'nabu';
 export function stateIdParser<T>(): Converter<StateId<T>, string> {
   return {
     convertBackward(id: string): Result<StateId<T>> {
+      if (!id) {
+        return {success: false};
+      }
+
       return {success: true, result: createId(id)};
     },
 

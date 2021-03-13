@@ -4,7 +4,6 @@ import {instanceofType} from 'gs-types';
 import {attributeIn, attributeOut, classToggle, dispatcher, element, host, integerParser, onDom, onInput, PersonaContext, setAttribute} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, startWith} from 'rxjs/operators';
-import {Logger} from 'santa';
 
 import {_p} from '../../app/app';
 import stepper from '../../asset/stepper.svg';
@@ -15,10 +14,6 @@ import {CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
 import template from './number-input.html';
-
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const LOGGER = new Logger('mask.NumberInput');
 
 
 export const $numberInput = {

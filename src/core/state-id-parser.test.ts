@@ -18,6 +18,12 @@ test('@mask/core/state-id-parser', init => {
         result: objectThat<StateId<number>>().haveProperties({id}),
       });
     });
+
+    should('fail if the id is empty string', () => {
+      assert(_.parser.convertBackward('')).to.haveProperties({
+        success: false,
+      });
+    });
   });
 
   test('convertForward', () => {
