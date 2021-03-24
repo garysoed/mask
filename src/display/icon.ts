@@ -78,19 +78,21 @@ export class Icon extends BaseThemedCtrl<typeof $> {
               }
 
               return renderHtml({
-                decorator: element => this.inputs.host.fitTo
-                    .pipe(
-                        tap(fitTo => {
-                          if (fitTo === FitTo.HEIGHT) {
-                            element.removeAttribute('width');
-                            element.setAttribute('height', '100%');
-                          } else {
-                            element.setAttribute('width', '100%');
-                            element.removeAttribute('height');
-                          }
-                        }),
-                        map(([element]) => element),
-                    ),
+                decorators: [
+                  element => this.inputs.host.fitTo
+                      .pipe(
+                          tap(fitTo => {
+                            if (fitTo === FitTo.HEIGHT) {
+                              element.removeAttribute('width');
+                              element.setAttribute('height', '100%');
+                            } else {
+                              element.setAttribute('width', '100%');
+                              element.removeAttribute('height');
+                            }
+                          }),
+                          map(([element]) => element),
+                      ),
+                ],
                 raw: svg,
                 parseType: 'image/svg+xml' as const,
                 id: svg,
