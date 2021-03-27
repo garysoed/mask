@@ -5,7 +5,7 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
 
-import {$, $textInput, TextInput} from './text-input';
+import {$, TextInput} from './text-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -20,7 +20,7 @@ test('@mask/input/text-input', init => {
       rootCtrls: [TextInput],
       rootDoc: document,
     });
-    const el = tester.createElement($textInput.tag);
+    const el = tester.createElement(TextInput);
 
     const $state = stateService.add<string>('init state');
     el.setAttribute($.host._.stateId, $state);

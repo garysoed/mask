@@ -4,14 +4,14 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../app/app';
 import {$overlayService, Anchor, NodeSpec, ShowEvent} from '../core/overlay-service';
 
-import {$, $overlayLayout, OverlayLayout} from './overlay-layout';
+import {$, OverlayLayout} from './overlay-layout';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/layout/overlay-layout', init => {
   const _ = init(() => {
     const tester = TESTER_FACTORY.build({rootCtrls: [OverlayLayout], rootDoc: document});
-    const el = tester.createElement($overlayLayout.tag);
+    const el = tester.createElement(OverlayLayout);
     document.body.appendChild(el.element);
     return {el, tester};
   });

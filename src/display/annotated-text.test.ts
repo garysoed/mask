@@ -7,21 +7,21 @@ import {map} from 'rxjs/operators';
 
 import {_p} from '../app/app';
 
-import {$, $annotatedText, AnnotatedText} from './annotated-text';
+import {$, AnnotatedText} from './annotated-text';
 import {$annotationConfig} from './annotation-service';
-import * as snapshots from './snapshots.json';
+import render from './goldens/annotated-text.html';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 
 test('@mask/display/annotated-text', init => {
   setup(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots));
+    runEnvironment(new BrowserSnapshotsEnv({render}));
   });
 
   const _ = init(() => {
     const tester = TESTER_FACTORY.build({rootCtrls: [AnnotatedText], rootDoc: document});
-    const el = tester.createElement($annotatedText.tag);
+    const el = tester.createElement(AnnotatedText);
     return {el, tester};
   });
 
@@ -56,7 +56,7 @@ test('@mask/display/annotated-text', init => {
       _.el.setAttribute($.host._.annotations, ['atob', 'btoc']);
       _.el.setText($.host, 'banana');
 
-      assert(_.el.getElement($.root)?.innerHTML).to.matchSnapshot('annotatedText');
+      assert(_.el.flattenContent()).to.matchSnapshot('render');
     });
   });
 });

@@ -1,13 +1,13 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {PersonaTesterFactory, dispatchResizeEvent} from 'persona/export/testing';
+import {dispatchResizeEvent, PersonaTesterFactory} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {_p} from '../app/app';
 
-import {$, $overlay, Overlay} from './overlay';
+import render from './goldens/overlay.html';
+import {$, Overlay} from './overlay';
 import {$overlayService, Anchor, OverlayService} from './overlay-service';
-import * as snapshots from './snapshots.json';
 
 
 const dest = new WebConsoleDestination({installTrigger: true});
@@ -16,7 +16,7 @@ ON_LOG_$.subscribe(event => dest.log(event));
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/core/overlay', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots));
+    runEnvironment(new BrowserSnapshotsEnv({render}));
 
     const overlayService = new OverlayService();
     const tester = TESTER_FACTORY.build({
@@ -26,7 +26,7 @@ test('@mask/core/overlay', init => {
       rootCtrls: [Overlay],
       rootDoc: document,
     });
-    const el = tester.createElement($overlay.tag);
+    const el = tester.createElement(Overlay);
     document.body.appendChild(el.element);
 
     return {el, overlayService, tester};
@@ -106,8 +106,7 @@ test('@mask/core/overlay', init => {
       };
       _.overlayService.show(event);
 
-      assert(_.el.element.shadowRoot!.getElementById('content')!.innerHTML).to
-          .matchSnapshot('overlay.content');
+      assert(_.el.flattenContent()).to.matchSnapshot('render');
     });
   });
 

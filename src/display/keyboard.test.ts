@@ -4,16 +4,16 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../app/app';
 
-import {$, $keyboard, Keyboard} from './keyboard';
-import * as snapshots from './snapshots.json';
+import render from './goldens/keyboard.html';
+import {$, Keyboard} from './keyboard';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/display/keyboard', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots));
+    runEnvironment(new BrowserSnapshotsEnv({render}));
     const tester = TESTER_FACTORY.build({rootCtrls: [Keyboard], rootDoc: document});
-    const el = tester.createElement($keyboard.tag);
+    const el = tester.createElement(Keyboard);
 
     return {tester, el};
   });
@@ -22,7 +22,7 @@ test('@mask/display/keyboard', init => {
     should('render the nodes correctly', () => {
       _.el.setText($.host, 'meta alt enter 3');
 
-      assert(_.el.element.shadowRoot!.innerHTML).to.matchSnapshot('keyboard.render');
+      assert(_.el.flattenContent()).to.matchSnapshot('render');
     });
   });
 });

@@ -11,7 +11,9 @@ import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
 import {stateIdParser} from '../../core/state-id-parser';
 import {registerSvg} from '../../core/svg-service';
+import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
+import {ListItemLayout} from '../../layout/list-item-layout';
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
 
 import template from './checkbox.html';
@@ -70,6 +72,10 @@ export const $ = {
         {type: 'embed', content: checkboxUnknown},
     );
   },
+  dependencies: [
+    Icon,
+    ListItemLayout,
+  ],
   template,
 })
 export class Checkbox extends BaseInput<CheckedValue, typeof $> {

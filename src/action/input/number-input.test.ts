@@ -6,15 +6,16 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
 
-import {$, $numberInput, NumberInput} from './number-input';
-import * as snapshots from './snapshots.json';
+import hideStepper from './goldens/number-input__hide_stepper.html';
+import stepper from './goldens/number-input__stepper.html';
+import {$, NumberInput} from './number-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/number-input', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots));
+    runEnvironment(new BrowserSnapshotsEnv({hideStepper, stepper}));
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
@@ -24,10 +25,14 @@ test('@mask/input/number-input', init => {
       rootCtrls: [NumberInput],
       rootDoc: document,
     });
-    const el = tester.createElement($numberInput.tag);
+    const el = tester.createElement(NumberInput);
 
     const $state = stateService.add<number>(-2);
     el.setAttribute($.host._.stateId, $state);
+
+    const labelEl = document.createElement('div');
+    labelEl.textContent = 'Label';
+    el.element.appendChild(labelEl);
 
     return {$state, el, stateService, tester};
   });
@@ -49,14 +54,14 @@ test('@mask/input/number-input', init => {
     should('show stepper icon when hovered', () => {
       _.el.dispatchEvent($.root._.onMouseEnter);
 
-      assert(_.el.element.shadowRoot!.innerHTML).to.matchSnapshot('numberInput_stepper');
+      assert(_.el.flattenContent()).to.matchSnapshot('stepper');
     });
 
     should('hide stepper icon on mouseleave', () => {
       _.el.dispatchEvent($.root._.onMouseEnter);
       _.el.dispatchEvent($.root._.onMouseLeave);
 
-      assert(_.el.element.shadowRoot!.innerHTML).to.matchSnapshot('numberInput_hidestepper');
+      assert(_.el.flattenContent()).to.matchSnapshot('hideStepper');
     });
   });
 

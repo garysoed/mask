@@ -11,6 +11,7 @@ import {stateIdParser} from '../../core/state-id-parser';
 import {registerSvg} from '../../core/svg-service';
 import {$icon, Icon} from '../../display/icon';
 import {CHANGE_EVENT} from '../../event/change-event';
+import {LineLayout} from '../../layout/line-layout';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
 import template from './number-input.html';
@@ -50,6 +51,7 @@ export const $ = {
   ...$numberInput,
   dependencies: [
     Icon,
+    LineLayout,
   ],
   template,
   configure(vine: Vine): void {

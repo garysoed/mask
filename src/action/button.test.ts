@@ -5,7 +5,7 @@ import {fromEvent} from 'rxjs';
 import {_p} from '../app/app';
 import {ActionEvent} from '../event/action-event';
 
-import {$, $button, Button} from './button';
+import {$, Button} from './button';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -14,7 +14,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/action/button', init => {
   const _ = init(() => {
     const tester = testerFactory.build({rootCtrls: [Button], rootDoc: document});
-    const el = tester.createElement($button.tag);
+    const el = tester.createElement(Button);
 
     return {el, tester};
   });

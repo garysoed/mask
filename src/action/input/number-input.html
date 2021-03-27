@@ -11,6 +11,10 @@
     visibility: hidden;
   }
 
+  #iconContainer {
+    width: 2rem;
+  }
+
   #input {
     border: none;
     color: var(--mkThemeFG);
@@ -61,7 +65,9 @@ input::-webkit-inner-spin-button {
   <mk-line-layout flex>
     <div id="inputContainer" layout="row">
       <input flex id="input" mk-body-1 type="number">
-      <mk-icon id="icon" icon="mk.numberinput_stepper"></mk-icon>
+      <div id="iconContainer">
+        <mk-icon id="icon" icon="mk.numberinput_stepper"></mk-icon>
+      </div>
     </div>
   </mk-line-layout>
 </div>

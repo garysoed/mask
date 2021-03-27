@@ -5,16 +5,16 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
-import {$, $checkbox, Checkbox, CheckedValue} from '../input/checkbox';
+import {$, Checkbox, CheckedValue} from '../input/checkbox';
 
-import * as snapshots from './snapshots.json';
+import render from './goldens/checkbox.html';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/checkbox', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots as {[id: string]: string}));
+    runEnvironment(new BrowserSnapshotsEnv({render}));
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
@@ -25,7 +25,7 @@ test('@mask/input/checkbox', init => {
       rootDoc: document,
     });
 
-    const el = tester.createElement($checkbox.tag);
+    const el = tester.createElement(Checkbox);
     const $state = stateService.add<CheckedValue>(true);
     el.setAttribute($.host._.stateId, $state);
 
@@ -36,7 +36,7 @@ test('@mask/input/checkbox', init => {
     should('render default config correctly', () => {
       _.el.setAttribute($.host._.label, 'label');
 
-      assert(_.el.element.shadowRoot!.innerHTML).to.matchSnapshot('checkbox');
+      assert(_.el.flattenContent()).to.matchSnapshot('render');
     });
   });
 

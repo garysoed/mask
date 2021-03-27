@@ -11,7 +11,9 @@ import radioUnchecked from '../../asset/checkbox_empty.svg';
 import radioChecked from '../../asset/radio_checked.svg';
 import {stateIdParser} from '../../core/state-id-parser';
 import {registerSvg} from '../../core/svg-service';
+import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
+import {ListItemLayout} from '../../layout/list-item-layout';
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
 
 import {$onRadioInput$} from './on-radio-input';
@@ -52,6 +54,10 @@ export const $ = {
 @_p.customElement({
   ...$radioInput,
   template,
+  dependencies: [
+    Icon,
+    ListItemLayout,
+  ],
   configure(vine: Vine): void {
     registerSvg(
         vine,

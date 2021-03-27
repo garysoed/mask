@@ -6,9 +6,9 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../../app/app';
 import {$stateService} from '../../core/state-service';
 
+import render from './goldens/radio-input.html';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
-import {$, $radioInput, RadioInput} from './radio-input';
-import * as snapshots from './snapshots.json';
+import {$, RadioInput} from './radio-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -17,7 +17,7 @@ test('@mask/action/input/radio-input', init => {
   const INDEX = 3;
 
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots as {[id: string]: string}));
+    runEnvironment(new BrowserSnapshotsEnv({render}));
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
@@ -27,7 +27,7 @@ test('@mask/action/input/radio-input', init => {
       rootCtrls: [RadioInput],
       rootDoc: document,
     });
-    const el = tester.createElement($radioInput.tag);
+    const el = tester.createElement(RadioInput);
 
     const $state = stateService.add<number|null>(null);
     el.setAttribute($.host._.stateId, $state);
@@ -40,10 +40,7 @@ test('@mask/action/input/radio-input', init => {
     should('render default config correctly', () => {
       _.el.setAttribute($.host._.label, 'label');
 
-      assert(_.el.element.shadowRoot!.querySelector('#display_checked')!.innerHTML)
-          .to.matchSnapshot('radio_checked');
-      assert(_.el.element.shadowRoot!.querySelector('#display_unchecked')!.innerHTML)
-          .to.matchSnapshot('radio_unchecked');
+      assert(_.el.flattenContent()).to.matchSnapshot('render');
     });
   });
 
@@ -67,11 +64,11 @@ test('@mask/action/input/radio-input', init => {
 
   test('domValue$', () => {
     should('set the state correctly', () => {
-      const el1 = _.tester.createElement($radioInput.tag);
+      const el1 = _.tester.createElement(RadioInput);
       el1.setAttribute($.host._.stateId, _.$state);
       el1.setAttribute($.host._.index, 1);
 
-      const el2 = _.tester.createElement($radioInput.tag);
+      const el2 = _.tester.createElement(RadioInput);
       el2.setAttribute($.host._.stateId, _.$state);
       el2.setAttribute($.host._.index, 2);
 
@@ -99,12 +96,12 @@ test('@mask/action/input/radio-input', init => {
     should('set the state correctly with apply on change', () => {
       _.el.setHasAttribute($.host._.applyOnChange, true);
 
-      const el1 = _.tester.createElement($radioInput.tag);
+      const el1 = _.tester.createElement(RadioInput);
       el1.setAttribute($.host._.stateId, _.$state);
       el1.setAttribute($.host._.index, 1);
       el1.setHasAttribute($.host._.applyOnChange, true);
 
-      const el2 = _.tester.createElement($radioInput.tag);
+      const el2 = _.tester.createElement(RadioInput);
       el2.setAttribute($.host._.stateId, _.$state);
       el2.setAttribute($.host._.index, 2);
       el2.setHasAttribute($.host._.applyOnChange, true);

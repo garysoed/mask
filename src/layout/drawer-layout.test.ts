@@ -3,7 +3,7 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../app/app';
 
-import {$, $drawerLayout, DrawerLayout, DrawerMode} from './drawer-layout';
+import {$, DrawerLayout, DrawerMode} from './drawer-layout';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -11,7 +11,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/layout/drawer-layout', init => {
   const _ = init(() => {
     const tester = testerFactory.build({rootCtrls: [DrawerLayout], rootDoc: document});
-    const el = tester.createElement($drawerLayout.tag);
+    const el = tester.createElement(DrawerLayout);
 
     return {el};
   });

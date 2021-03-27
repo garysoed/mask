@@ -2,13 +2,13 @@ import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {HslColor} from 'gs-tools/export/color';
 
-import * as snapshots from './snapshots.json';
+import render from './goldens/theme.html';
 import {Theme} from './theme';
 
 
 test('@mask/theme/theme', () => {
   setup(() => {
-    runEnvironment(new BrowserSnapshotsEnv(snapshots as {[id: string]: string}));
+    runEnvironment(new BrowserSnapshotsEnv({render}));
   });
 
   test('inject', () => {
@@ -18,7 +18,7 @@ test('@mask/theme/theme', () => {
           new HslColor(45, 0.75, 0.5),
           new HslColor(60, 0.75, 0.5),
       ).getStyleEl();
-      assert(styleEl.innerHTML).to.matchSnapshot('themeStyle');
+      assert(styleEl).to.matchSnapshot('render');
     });
   });
 });
