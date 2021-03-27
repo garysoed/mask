@@ -1,7 +1,7 @@
 import { $asArray, $filterNonNull, $map, $pipe } from 'gs-tools/export/collect';
 import { cache } from 'gs-tools/export/data';
 import { attributeIn, host, listParser, multi, PersonaContext, RenderSpec, renderTextNode, root, stringParser, textIn } from 'persona';
-import { combineLatest, concat, Observable, of as observableOf } from 'rxjs';
+import { combineLatest, concat, Observable, of, OperatorFunction, pipe } from 'rxjs';
 import { bufferCount, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { _p } from '../app/app';
 import { BaseThemedCtrl } from '../theme/base-themed-ctrl';
@@ -53,30 +53,13 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
     );
   }
 
-  // TODO: Should be an Operator.
-  private applyAnnotation(
-      renderSpecs: readonly RenderSpec[],
-      spec: AnnotationSpec,
-  ): Observable<readonly RenderSpec[]> {
-    return concat(...renderSpecs.map(renderSpec => spec(renderSpec))).pipe(
-        bufferCount(renderSpecs.length),
-        map(outputs => {
-          return outputs.reduce((acc, curr) => [...acc, ...curr]);
-        }),
-    );
-  }
-
   private applyAnnotations(
       spec: RenderSpec,
       specs: readonly AnnotationSpec[],
   ): Observable<readonly RenderSpec[]> {
-    if (specs.length <= 0) {
-      return observableOf([spec]);
-    }
-
-    let obs: Observable<readonly RenderSpec[]> = observableOf([spec]);
+    let obs: Observable<readonly RenderSpec[]> = of([spec]);
     for (const spec of specs) {
-      obs = obs.pipe(switchMap(nodes => this.applyAnnotation(nodes, spec)));
+      obs = obs.pipe(this.getOperator(spec));
     }
 
     return obs;
@@ -96,5 +79,16 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
               );
             }),
         );
+  }
+
+  private getOperator(spec: AnnotationSpec): OperatorFunction<readonly RenderSpec[], readonly RenderSpec[]> {
+    return pipe(
+        switchMap(renderSpecs => {
+          return concat(...renderSpecs.map(renderSpec => spec(renderSpec))).pipe(
+              bufferCount(renderSpecs.length),
+          );
+        }),
+        map(outputs => outputs.reduce((acc, curr) => [...acc, ...curr])),
+    )
   }
 }
