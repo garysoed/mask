@@ -22,7 +22,7 @@ export type CheckedValue = boolean | 'unknown';
 export const $checkbox = {
   api: {
     ...$baseInput.api,
-    label: attributeIn('label', stringParser()),
+    label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<CheckedValue>>(CHANGE_EVENT),
     stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<CheckedValue>()),
   },
@@ -40,7 +40,6 @@ export const $ = {
   container: element('container', instanceofType(HTMLLabelElement), {
     checkMode: classlist(),
   }),
-  // TODO: Support selectors for multiple elements.
   host: host({
     ...$checkbox.api,
   }),
@@ -90,10 +89,9 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
     return [
       ...super.renders,
       this.renderers.container.checkMode(this.checkMode$),
-      // TODO: Add default value.
-      this.renderers.checkedLabel.text(this.label$),
-      this.renderers.uncheckedLabel.text(this.label$),
-      this.renderers.unknownLabel.text(this.label$),
+      this.renderers.checkedLabel.text(this.inputs.host.label),
+      this.renderers.uncheckedLabel.text(this.inputs.host.label),
+      this.renderers.unknownLabel.text(this.inputs.host.label),
     ];
   }
 
@@ -128,13 +126,6 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
               return element.checked;
             }),
         );
-  }
-
-  @cache()
-  protected get label$(): Observable<string> {
-    return this.inputs.host.label.pipe(
-        map(label => label ?? ''),
-    );
   }
 
   protected updateDomValue(newValue: CheckedValue): Observable<unknown> {

@@ -21,7 +21,7 @@ import template from './radio-input.html';
 export const $radioInput = {
   api: {
     ...$baseInput.api,
-    label: attributeIn('label', stringParser()),
+    label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<number|null>>(CHANGE_EVENT),
     stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<number|null>()),
     index: attributeIn('index', integerParser()),
@@ -97,9 +97,8 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
       ...super.renders,
       this.renderers.container.checkMode(this.checkMode$),
       this.renderers.input.name(this.inputs.host.stateId.pipe(filterNonNullable())),
-      // TODO: Add default value.
-      this.renderers.checkedLabel.text(this.label$),
-      this.renderers.uncheckedLabel.text(this.label$),
+      this.renderers.checkedLabel.text(this.inputs.host.label),
+      this.renderers.uncheckedLabel.text(this.inputs.host.label),
     ];
   }
 
@@ -169,13 +168,6 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
               $onRadioInput$.get(this.vine).next({index, stateId});
             }),
         );
-  }
-
-  @cache()
-  protected get label$(): Observable<string> {
-    return this.inputs.host.label.pipe(
-        map(label => label ?? ''),
-    );
   }
 
   @cache()
