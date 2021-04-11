@@ -27,7 +27,7 @@ test('@mask/input/number-input', init => {
     });
     const el = tester.createElement(NumberInput);
 
-    const $state = stateService.add<number>(-2);
+    const $state = stateService.modify(x => x.add(-2));
     el.setAttribute($.host._.stateId, $state);
 
     const labelEl = document.createElement('div');
@@ -69,7 +69,7 @@ test('@mask/input/number-input', init => {
     should('set the value correctly', () => {
       const value = 123;
 
-      _.stateService.set(_.$state, value);
+      _.stateService.modify(x => x.set(_.$state, value));
       _.el.callFunction($.host._.clearFn, []);
 
       assert(_.el.getElement($.input).value).to.equal(`${value}`);

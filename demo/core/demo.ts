@@ -257,12 +257,12 @@ export class Demo extends BaseThemedCtrl<typeof $> {
             map(event => getColor(event)),
             filterNonNullable(),
             withLatestFrom($demoState.get(this.vine)),
-            tap(([color, demoState]) => {
+            $stateService.get(this.vine).modifyOperator((x, [color, demoState]) => {
               if (!demoState) {
                 return;
               }
 
-              $stateService.get(this.vine).set(demoState.$accentColorName, color);
+              x.set(demoState.$accentColorName, color);
             }),
         );
   }
@@ -274,12 +274,12 @@ export class Demo extends BaseThemedCtrl<typeof $> {
             map(event => getColor(event)),
             filterNonNullable(),
             withLatestFrom($demoState.get(this.vine)),
-            tap(([color, demoState]) => {
+            $stateService.get(this.vine).modifyOperator((x, [color, demoState]) => {
               if (!demoState) {
                 return;
               }
 
-              $stateService.get(this.vine).set(demoState.$baseColorName, color);
+              x.set(demoState.$baseColorName, color);
             }),
         );
   }

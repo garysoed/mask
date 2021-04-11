@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {_p} from '../../src/app/app';
 import {registerSvg} from '../../src/core/svg-service';
 import {AnnotatedText} from '../../src/display/annotated-text';
-import {$annotationConfig} from '../../src/display/annotation-service';
+import {$annotationSpecs$} from '../../src/display/annotation-service';
 import {$icon, Icon} from '../../src/display/icon';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import smileySvg from '../asset/smiley.svg';
@@ -29,13 +29,7 @@ export const $annotatedTextDemo = {
   ],
   template,
   configure: vine => {
-    $annotationConfig.set(
-        vine,
-        configs => new Map([
-          ...configs,
-          ['emoji', renderEmoji],
-        ]),
-    );
+    $annotationSpecs$.get(vine).next(['emoji', renderEmoji]);
 
     registerSvg(vine, 'smiley', {type: 'embed', content: smileySvg});
   },

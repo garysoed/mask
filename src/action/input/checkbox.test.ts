@@ -26,7 +26,7 @@ test('@mask/input/checkbox', init => {
     });
 
     const el = tester.createElement(Checkbox);
-    const $state = stateService.add<CheckedValue>(true);
+    const $state = stateService.modify(x => x.add<CheckedValue>(true));
     el.setAttribute($.host._.stateId, $state);
 
     return {el, $state, stateService};
@@ -69,7 +69,7 @@ test('@mask/input/checkbox', init => {
     });
 
     should('update the slot name if the value is set by calling clear', () => {
-      _.stateService.set(_.$state, true);
+      _.stateService.modify(x => x.set(_.$state, true));
       _.el.callFunction($.host._.clearFn, []);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
@@ -110,7 +110,7 @@ test('@mask/input/checkbox', init => {
 
   test('updateDomValue', () => {
     should('set true value correctly', () => {
-      _.stateService.set(_.$state, true);
+      _.stateService.modify(x => x.set(_.$state, true));
 
       _.el.callFunction($.host._.clearFn, []);
 
@@ -119,7 +119,7 @@ test('@mask/input/checkbox', init => {
     });
 
     should('set false value correctly', () => {
-      _.stateService.set(_.$state, false);
+      _.stateService.modify(x => x.set(_.$state, false));
 
       _.el.callFunction($.host._.clearFn, []);
 
@@ -128,7 +128,7 @@ test('@mask/input/checkbox', init => {
     });
 
     should('set unknown value correctly', () => {
-      _.stateService.set(_.$state, 'unknown');
+      _.stateService.modify(x => x.set(_.$state, 'unknown'));
 
       _.el.callFunction($.host._.clearFn, []);
 

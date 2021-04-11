@@ -92,12 +92,12 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
     )
         .pipe(
             withLatestFrom(this.domValue$, this.stateId$),
-            tap(([, domValue, stateId]) => {
+            $stateService.get(this.vine).modifyOperator((x, [, domValue, stateId]) => {
               if (!stateId) {
                 return;
               }
 
-              $stateService.get(this.vine).set(stateId, domValue);
+              x.set(stateId, domValue);
             }),
         );
   }

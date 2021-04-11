@@ -93,61 +93,60 @@ window.addEventListener('load', () => {
   saveService.setSaving(true);
   saveService.run().subscribe();
 
-  $saveConfig.set(
-      vine,
-      () => ({
-        loadOnInit: true,
-        saveId: DEMO_STATE_KEY,
-        initFn: init,
-        storage: new LocalStorage<Snapshot<DemoState>, any>(
-            window,
-            'mkd',
-            identity(),
-            json(),
-        ),
-      }),
-  );
+  $saveConfig.get(vine).next({
+    loadOnInit: true,
+    saveId: DEMO_STATE_KEY,
+    initFn: init,
+    storage: new LocalStorage<Snapshot<DemoState>, any>(
+        window,
+        'mkd',
+        identity(),
+        json(),
+    ),
+  });
 });
 
 function init(stateService: StateService): StateId<DemoState> {
-  return stateService.add<DemoState>({
-    $accentColorName: stateService.add<keyof Palette>(ACCENT_COLOR_NAME),
-    $baseColorName: stateService.add<keyof Palette>(BASE_COLOR_NAME),
-    $isDarkMode: stateService.add<boolean>(true),
-    checkboxDemo: {
-      $unknownCheckboxState: stateService.add<CheckedValue>('unknown'),
-      $disabledCheckboxState: stateService.add<CheckedValue>(true),
-      $labelCheckboxState: stateService.add<CheckedValue>(false),
-    },
-    drawerLayoutDemo: {
-      $isExpanded: stateService.add<CheckedValue>(false),
-      $isHorizontalMode: stateService.add<CheckedValue>(true),
-    },
-    iconDemo: {
-      $isAction: stateService.add<CheckedValue>(false),
-      $fitToWidth: stateService.add<CheckedValue>(false),
-    },
-    numberInputDemo: {
-      $disabledNumberInputState: stateService.add(123),
-      $enabledNumberInputState: stateService.add(-10),
-      $rangedNumberInputState: stateService.add(0),
-      $steppedNumberInputState: stateService.add(2),
-    },
-    overlayLayoutDemo: {
-      $targetHorizontalIndex: stateService.add(0),
-      $targetVerticalIndex: stateService.add(0),
-      $overlayHorizontalIndex: stateService.add(0),
-      $overlayVerticalIndex: stateService.add(0),
-    },
-    radioInputDemo: {
-      $selectedIndex: stateService.add<number|null>(null),
-    },
-    textInputDemo: {
-      $disabledTextInputState: stateService.add<string>('Disabled text input value'),
-      $enabledTextInputState: stateService.add<string>('Init value'),
-      $emailTextInputState: stateService.add<string>('email@host.com'),
-      $telTextInputState: stateService.add<string>('1 (845) 949 1234'),
-      $urlTextInputState: stateService.add<string>('www.url.com'),
-    },
+  return stateService.modify(x => {
+    return x.add<DemoState>({
+      $accentColorName: x.add<keyof Palette>(ACCENT_COLOR_NAME),
+      $baseColorName: x.add<keyof Palette>(BASE_COLOR_NAME),
+      $isDarkMode: x.add<boolean>(true),
+      checkboxDemo: {
+        $unknownCheckboxState: x.add<CheckedValue>('unknown'),
+        $disabledCheckboxState: x.add<CheckedValue>(true),
+        $labelCheckboxState: x.add<CheckedValue>(false),
+      },
+      drawerLayoutDemo: {
+        $isExpanded: x.add<CheckedValue>(false),
+        $isHorizontalMode: x.add<CheckedValue>(true),
+      },
+      iconDemo: {
+        $isAction: x.add<CheckedValue>(false),
+        $fitToWidth: x.add<CheckedValue>(false),
+      },
+      numberInputDemo: {
+        $disabledNumberInputState: x.add(123),
+        $enabledNumberInputState: x.add(-10),
+        $rangedNumberInputState: x.add(0),
+        $steppedNumberInputState: x.add(2),
+      },
+      overlayLayoutDemo: {
+        $targetHorizontalIndex: x.add(0),
+        $targetVerticalIndex: x.add(0),
+        $overlayHorizontalIndex: x.add(0),
+        $overlayVerticalIndex: x.add(0),
+      },
+      radioInputDemo: {
+        $selectedIndex: x.add<number|null>(null),
+      },
+      textInputDemo: {
+        $disabledTextInputState: x.add<string>('Disabled text input value'),
+        $enabledTextInputState: x.add<string>('Init value'),
+        $emailTextInputState: x.add<string>('email@host.com'),
+        $telTextInputState: x.add<string>('1 (845) 949 1234'),
+        $urlTextInputState: x.add<string>('www.url.com'),
+      },
+    });
   });
 }

@@ -22,7 +22,7 @@ test('@mask/input/text-input', init => {
     });
     const el = tester.createElement(TextInput);
 
-    const $state = stateService.add<string>('init state');
+    const $state = stateService.modify(x => x.add('init state'));
     el.setAttribute($.host._.stateId, $state);
 
     return {$state, el, stateService, tester};
@@ -45,7 +45,7 @@ test('@mask/input/text-input', init => {
     should('set the value correctly', () => {
       const value = 'value';
 
-      _.stateService.set(_.$state, value);
+      _.stateService.modify(x => x.set(_.$state, value));
       _.el.callFunction($.host._.clearFn, []);
 
       assert(_.el.getElement($.input).value).to.equal(value);

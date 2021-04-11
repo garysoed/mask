@@ -1,7 +1,7 @@
-import {source, subjectSource, Vine} from 'grapevine';
+import {source, Vine} from 'grapevine';
 import {$asArray, $map, $pipe} from 'gs-tools/export/collect';
-import {combineLatest, defer, from as observableFrom, Observable, of} from 'rxjs';
-import {map, retry, shareReplay, switchMap} from 'rxjs/operators';
+import {combineLatest, defer, from as observableFrom, Observable, of, ReplaySubject, Subject} from 'rxjs';
+import {map, retry, shareReplay, switchMap, scan} from 'rxjs/operators';
 
 import {SvgConfig} from './svg-config';
 
@@ -86,16 +86,21 @@ function loadSvg(config: SvgConfig): Observable<string> {
   }
 }
 
-const $svgConfig = subjectSource<ReadonlyMap<string, SvgConfig>>(
+const $svgConfigParts$ = source<Subject<[string, SvgConfig]>>(
+    'svgConfigParts$',
+    () => new ReplaySubject(),
+);
+const $svgConfig$ = source<Observable<ReadonlyMap<string, SvgConfig>>>(
     'svgConfig',
-    () => new Map(),
+    vine => $svgConfigParts$.get(vine).pipe(
+        scan((configMap, part) => {
+          return new Map([...configMap, part]);
+        }, new Map()),
+    ),
 );
 
 export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
-  $svgConfig.set(
-      vine,
-      configs => new Map([...configs, [key, config]]),
-  );
+  $svgConfigParts$.get(vine).next([key, config]);
 }
 
 /**
@@ -106,7 +111,7 @@ export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
 export const $svgService = source(
     'SvgService',
     vine => {
-      const service = new SvgService($svgConfig.get(vine));
+      const service = new SvgService($svgConfig$.get(vine));
       service[__run]();
 
       return service;

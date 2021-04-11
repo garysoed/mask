@@ -1,11 +1,13 @@
-import { $asArray, $filterNonNull, $map, $pipe } from 'gs-tools/export/collect';
-import { cache } from 'gs-tools/export/data';
-import { attributeIn, host, listParser, multi, PersonaContext, RenderSpec, renderTextNode, root, stringParser, textIn } from 'persona';
-import { combineLatest, concat, Observable, of, OperatorFunction, pipe } from 'rxjs';
-import { bufferCount, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { _p } from '../app/app';
-import { BaseThemedCtrl } from '../theme/base-themed-ctrl';
-import { $annotationConfig, AnnotationSpec } from './annotation-service';
+import {$asArray, $filterNonNull, $map, $pipe} from 'gs-tools/export/collect';
+import {cache} from 'gs-tools/export/data';
+import {attributeIn, host, listParser, multi, PersonaContext, RenderSpec, renderTextNode, root, stringParser, textIn} from 'persona';
+import {combineLatest, concat, Observable, of, OperatorFunction, pipe} from 'rxjs';
+import {bufferCount, map, switchMap, withLatestFrom} from 'rxjs/operators';
+
+import {_p} from '../app/app';
+import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
+
+import {$annotationConfig, AnnotationSpec} from './annotation-service';
 
 
 export const $annotatedText = {
@@ -89,6 +91,6 @@ export class AnnotatedText extends BaseThemedCtrl<typeof $> {
           );
         }),
         map(outputs => outputs.reduce((acc, curr) => [...acc, ...curr])),
-    )
+    );
   }
 }

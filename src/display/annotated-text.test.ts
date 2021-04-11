@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators';
 import {_p} from '../app/app';
 
 import {$, AnnotatedText} from './annotated-text';
-import {$annotationConfig} from './annotation-service';
+import {$annotationSpecs$} from './annotation-service';
 import render from './goldens/annotated-text.html';
 
 
@@ -28,30 +28,24 @@ test('@mask/display/annotated-text', init => {
   test('setupRenderText', () => {
     should('apply the annotations in order', () => {
       // Register the annotation specs.
-      $annotationConfig.set(
-          _.tester.vine,
-          configs => new Map([
-            ...configs,
-            [
-              'atob',
-              spec => spec.type !== RenderSpecType.TEXT_NODE ? EMPTY : spec.textContent.pipe(
-                  map(text => [{
-                    ...spec,
-                    textContent: observableOf(text.replace(/a/g, 'b')),
-                  }]),
-              ),
-            ],
-            [
-              'btoc',
-              spec => spec.type !== RenderSpecType.TEXT_NODE ? EMPTY : spec.textContent.pipe(
-                  map(text => [{
-                    ...spec,
-                    textContent: observableOf(text.replace(/b/g, 'c')),
-                  }]),
-              ),
-            ],
-          ]),
-      );
+      $annotationSpecs$.get(_.tester.vine).next([
+        'atob',
+        spec => spec.type !== RenderSpecType.TEXT_NODE ? EMPTY : spec.textContent.pipe(
+            map(text => [{
+              ...spec,
+              textContent: observableOf(text.replace(/a/g, 'b')),
+            }]),
+        ),
+      ]);
+      $annotationSpecs$.get(_.tester.vine).next([
+        'btoc',
+        spec => spec.type !== RenderSpecType.TEXT_NODE ? EMPTY : spec.textContent.pipe(
+            map(text => [{
+              ...spec,
+              textContent: observableOf(text.replace(/b/g, 'c')),
+            }]),
+        ),
+      ]);
 
       _.el.setAttribute($.host._.annotations, ['atob', 'btoc']);
       _.el.setText($.host, 'banana');

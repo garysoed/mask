@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
-import {$rootId} from '../../src/core/save-service';
+import {$rootId$} from '../../src/core/save-service';
 import {$stateService} from '../../src/core/state-service';
 import {Palette} from '../../src/theme/palette';
 
@@ -66,7 +66,7 @@ export interface DemoState {
 
 export const $demoStateId: Source<Observable<StateId<DemoState>|undefined>> = source(
     'demoStateId',
-    vine => $rootId.get(vine),
+    vine => $rootId$.get(vine),
 );
 
 export const $demoState = source(

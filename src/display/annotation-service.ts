@@ -1,12 +1,21 @@
-import {subjectSource} from 'grapevine';
+import {source} from 'grapevine';
 import {RenderSpec} from 'persona';
-import {Observable} from 'rxjs';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
+import {scan} from 'rxjs/operators';
 
 export type AnnotationSpec = (node: RenderSpec) => Observable<readonly RenderSpec[]>;
 
 export type AnnotationConfig = ReadonlyMap<string, AnnotationSpec>;
 
-export const $annotationConfig = subjectSource<AnnotationConfig>(
+export const $annotationSpecs$ = source<Subject<[string, AnnotationSpec]>>(
+    'annotationSpec$',
+    () => new ReplaySubject<[string, AnnotationSpec]>(),
+);
+export const $annotationConfig = source<Observable<AnnotationConfig>>(
     'annotationConfig',
-    () => new Map<string, AnnotationSpec>(),
+    vine => $annotationSpecs$.get(vine).pipe(
+        scan((configMap, spec) => {
+          return new Map([...configMap, spec]);
+        }, new Map()),
+    ),
 );

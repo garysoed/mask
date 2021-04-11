@@ -86,7 +86,7 @@ class TestInput extends BaseInput<string, typeof $> {
       return EMPTY;
     }
 
-    stateService.set(domValueId, newValue);
+    stateService.modify(x => x.set(domValueId, newValue));
     return of({});
   }
 }
@@ -98,7 +98,7 @@ test('@mask/input/base-input', init => {
 
   const _ = init(() => {
     const stateService = fakeStateService();
-    const $domValue = stateService.add('init dom value');
+    const $domValue = stateService.modify(x => x.add('init dom value'));
     const onDomValueUpdatedByScript$ = new Subject<unknown>();
     const tester = testerFactory.build({
       overrides: [
@@ -111,7 +111,7 @@ test('@mask/input/base-input', init => {
     });
     const el = tester.createElement('mk-test-base-input');
 
-    const $value = stateService.add(INIT_STATE_VALUE);
+    const $value = stateService.modify(x => x.add(INIT_STATE_VALUE));
     el.setAttribute($.host._.stateId, $value);
 
     // Clear the component to make test more predictable.
@@ -129,7 +129,7 @@ test('@mask/input/base-input', init => {
   test('currentStateValue$', () => {
     should('emit the value corresponding to the state ID', () => {
       const value = 'value';
-      _.stateService.set(_.$value, value);
+      _.stateService.modify(x => x.set(_.$value, value));
 
       _.el.callFunction($.host._.clearFn, []);
 
@@ -148,7 +148,7 @@ test('@mask/input/base-input', init => {
   test('handleOnApply$', () => {
     should('set the new value of the state when the function is called', () => {
       const newDomValue = 'newDomValue';
-      _.stateService.set(_.$domValue, newDomValue);
+      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
 
       _.el.callFunction($.host._.applyFn, []);
 
@@ -159,14 +159,14 @@ test('@mask/input/base-input', init => {
       _.el.setHasAttribute($.host._.applyOnChange, true);
 
       const newDomValue = 'newDomValue';
-      _.stateService.set(_.$domValue, newDomValue);
+      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
 
       assert(_.stateService.resolve(_.$value)).to.emitWith(newDomValue);
     });
 
     should('not set the new value on change if apply-on-change is false', () => {
       const newDomValue = 'newDomValue';
-      _.stateService.set(_.$domValue, newDomValue);
+      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
 
       assert(_.stateService.resolve(_.$value)).to.emitWith(INIT_STATE_VALUE);
     });
@@ -174,7 +174,7 @@ test('@mask/input/base-input', init => {
     should('do nothing if state ID is not specified', () => {
       _.el.element.setAttribute($.host._.stateId.attrName, '');
       const newDomValue = 'newDomValue';
-      _.stateService.set(_.$domValue, newDomValue);
+      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
 
       _.el.callFunction($.host._.applyFn, []);
 
@@ -185,7 +185,7 @@ test('@mask/input/base-input', init => {
   test('handleOnClear$', () => {
     should('set the state\'s value', () => {
       const newStateValue = 'newStateValue';
-      _.stateService.set(_.$value, newStateValue);
+      _.stateService.modify(x => x.set(_.$value, newStateValue));
 
       const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
 
@@ -208,18 +208,18 @@ test('@mask/input/base-input', init => {
       const eventValue$ = createSpySubject(_.el.getEvents($.host._.onChange))
           .pipe(map(({oldValue}) => oldValue));
 
-      _.stateService.set(_.$domValue, 'newValue');
+      _.stateService.modify(x => x.set(_.$domValue, 'newValue'));
 
       assert(eventValue$).to.emitSequence([INIT_STATE_VALUE]);
     });
 
     should('not emit if the dom value does not change', () => {
       const newValue = 'newValue';
-      _.stateService.set(_.$domValue, newValue);
+      _.stateService.modify(x => x.set(_.$domValue, newValue));
 
       const eventValue$ = createSpySubject(_.el.getEvents($.host._.onChange))
           .pipe(map(({oldValue}) => oldValue));
-      _.stateService.set(_.$domValue, newValue);
+      _.stateService.modify(x => x.set(_.$domValue, newValue));
 
       assert(eventValue$).to.emitSequence([]);
     });

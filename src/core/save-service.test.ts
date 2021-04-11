@@ -2,9 +2,9 @@ import {Vine} from 'grapevine';
 import {arrayThat, assert, objectThat, run, should, test} from 'gs-testing';
 import {fakeStateService, Snapshot, StateId} from 'gs-tools/export/state';
 import {InMemoryStorage} from 'gs-tools/export/store';
-import {map, take, tap} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 
-import {$rootId, $saveConfig, SaveService} from './save-service';
+import {$rootId$, $saveConfig, SaveService} from './save-service';
 import {$stateService} from './state-service';
 
 
@@ -32,7 +32,7 @@ test('@mask/core/save-service', init => {
   test('handleInit$', () => {
     should('initialize the state service with an existing save', () => {
       const saveId = 'saveId';
-      const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const rootId = _.stateService.modify(x => x.add({a: 123, s: 'abc'}));
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
@@ -40,25 +40,22 @@ test('@mask/core/save-service', init => {
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
-      $saveConfig.set(
-          _.vine,
-          () => ({
-            loadOnInit: true,
-            saveId,
-            storage,
-            initFn: stateService => stateService.add<TestState>({a: 0, s: ''}),
-          }),
-      );
+      $saveConfig.get(_.vine).next({
+        loadOnInit: true,
+        saveId,
+        storage,
+        initFn: stateService => stateService.modify(x => x.add({a: 0, s: ''})),
+      });
 
       assert(_.stateService.resolve(rootId)).to.emitWith(
           objectThat<TestState>().haveProperties({a: 123, s: 'abc'}),
       );
-      assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId.id);
+      assert($rootId$.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId.id);
     });
 
     should('not initialize the state service with an existing save if loadOnInit is false', () => {
       const saveId = 'saveId';
-      const savedRootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const savedRootId = _.stateService.modify(x => x.add({a: 123, s: 'abc'}));
       const snapshot = _.stateService.snapshot(savedRootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
@@ -67,22 +64,20 @@ test('@mask/core/save-service', init => {
       // Clear the state service, then set the storage.
       _.stateService.clear();
       let rootId: StateId<TestState>|null = null;
-      $saveConfig.set(_.vine,
-          () => ({
-            loadOnInit: false,
-            saveId,
-            storage,
-            initFn: stateService => {
-              rootId = stateService.add<TestState>({a: 345, s: 'cde'});
-              return rootId;
-            },
-          }),
-      );
+      $saveConfig.get(_.vine).next({
+        loadOnInit: false,
+        saveId,
+        storage,
+        initFn: stateService => {
+          rootId = stateService.modify(x => x.add({a: 345, s: 'cde'}));
+          return rootId;
+        },
+      });
 
       assert(_.stateService.resolve(rootId!)).to.emitWith(
           objectThat<TestState>().haveProperties({a: 345, s: 'cde'}),
       );
-      assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
+      assert($rootId$.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
     });
 
     should('initialize the state service with the init function if there are no existing states', () => {
@@ -93,28 +88,25 @@ test('@mask/core/save-service', init => {
       _.stateService.clear();
 
       let rootId: StateId<TestState>|null = null;
-      $saveConfig.set(
-          _.vine,
-          () => ({
-            loadOnInit: true,
-            saveId,
-            storage,
-            initFn: stateService => {
-              rootId = stateService.add<TestState>({a: 123, s: 'abc'});
-              return rootId;
-            },
-          }),
-      );
+      $saveConfig.get(_.vine).next({
+        loadOnInit: true,
+        saveId,
+        storage,
+        initFn: stateService => {
+          rootId = stateService.modify(x => x.add({a: 123, s: 'abc'}));
+          return rootId;
+        },
+      });
 
       assert(_.stateService.resolve(rootId!)).to.emitWith(
           objectThat<TestState>().haveProperties({a: 123, s: 'abc'}),
       );
-      assert($rootId.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
+      assert($rootId$.get(_.vine).pipe(map(stateId => stateId?.id))).to.emitWith(rootId!.id);
     });
 
     should('not initialize if the config is not set', () => {
       const saveId = 'saveId';
-      const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const rootId = _.stateService.modify(x => x.add({a: 123, s: 'abc'}));
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
@@ -124,12 +116,12 @@ test('@mask/core/save-service', init => {
       _.stateService.clear();
 
       assert(_.stateService.resolve(rootId)).to.emitWith(undefined);
-      assert($rootId.get(_.vine)).to.emitWith(undefined);
+      assert($rootId$.get(_.vine)).to.emitWith(undefined);
     });
 
     should('only initialize once', () => {
       const saveId = 'saveId';
-      const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const rootId = _.stateService.modify(x => x.add({a: 123, s: 'abc'}));
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
@@ -137,24 +129,21 @@ test('@mask/core/save-service', init => {
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
-      $saveConfig.set(
-          _.vine,
-          () => ({
-            loadOnInit: true,
-            saveId,
-            storage,
-            initFn: stateService => stateService.add<TestState>({a: 0, s: ''}),
-          }),
-      );
+      $saveConfig.get(_.vine).next({
+        loadOnInit: true,
+        saveId,
+        storage,
+        initFn: stateService => stateService.modify(x => x.add({a: 0, s: ''})),
+      });
 
       // By this point, stateService should've been initialized.
       _.stateService.clear();
-      $rootId.set(_.vine, () => undefined);
+      $rootId$.get(_.vine).next(undefined);
 
       storage.update(saveId, snapshot);
 
       assert(_.stateService.resolve(rootId)).to.emitWith(undefined);
-      assert($rootId.get(_.vine)).to.emitWith(undefined);
+      assert($rootId$.get(_.vine)).to.emitWith(undefined);
     });
   });
 
@@ -165,15 +154,12 @@ test('@mask/core/save-service', init => {
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
-      $saveConfig.set(
-          _.vine,
-          () => ({
-            loadOnInit: false,
-            saveId: SAVE_ID,
-            storage,
-            initFn: stateService => stateService.add<TestState>({a: 123, s: 'abc'}),
-          }),
-      );
+      $saveConfig.get(_.vine).next({
+        loadOnInit: false,
+        saveId: SAVE_ID,
+        storage,
+        initFn: stateService => stateService.modify(x => x.add({a: 123, s: 'abc'})),
+      });
 
       return {..._, storage};
     });
@@ -182,11 +168,9 @@ test('@mask/core/save-service', init => {
       _.service.setSaving(true);
 
       // Change the state
-      run($rootId.get(_.vine).pipe(
+      run($rootId$.get(_.vine).pipe(
           take(1),
-          tap(rootId => {
-            _.stateService.set(rootId!, {a: 345, s: 'cde'});
-          }),
+          _.stateService.modifyOperator((x, rootId) => x.set(rootId!, {a: 345, s: 'cde'})),
       ));
 
       const state$ = _.storage.read(SAVE_ID).pipe(
@@ -205,11 +189,9 @@ test('@mask/core/save-service', init => {
       _.service.setSaving(false);
 
       // Change the state
-      run($rootId.get(_.vine).pipe(
+      run($rootId$.get(_.vine).pipe(
           take(1),
-          tap(rootId => {
-            _.stateService.set(rootId!, {a: 345, s: 'cde'});
-          }),
+          _.stateService.modifyOperator((x, rootId) => x.set(rootId!, {a: 345, s: 'cde'})),
       ));
 
       assert(_.storage.read(SAVE_ID)).to.emitWith(undefined);
@@ -219,14 +201,12 @@ test('@mask/core/save-service', init => {
       _.service.setSaving(true);
 
       // Add another payload.
-      _.stateService.add<number>(123);
+      _.stateService.modify(x => x.add(123));
 
       // Delete the root ID.
-      run($rootId.get(_.vine).pipe(
+      run($rootId$.get(_.vine).pipe(
           take(1),
-          tap(rootId => {
-            _.stateService.delete(rootId!);
-          }),
+          _.stateService.modifyOperator((x, rootId) => x.delete(rootId!)),
       ));
 
       const save$ = _.storage.read(SAVE_ID);
@@ -237,7 +217,7 @@ test('@mask/core/save-service', init => {
   test('savedState$', () => {
     should('emit with the saved state', () => {
       const saveId = 'saveId';
-      const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const rootId = _.stateService.modify(x => x.add({a: 123, s: 'abc'}));
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();
@@ -245,15 +225,12 @@ test('@mask/core/save-service', init => {
 
       // Clear the state service, then set the storage.
       _.stateService.clear();
-      $saveConfig.set(
-          _.vine,
-          () => ({
-            loadOnInit: true,
-            saveId,
-            storage,
-            initFn: stateService => stateService.add<TestState>({a: 0, s: ''}),
-          }),
-      );
+      $saveConfig.get(_.vine).next({
+        loadOnInit: true,
+        saveId,
+        storage,
+        initFn: stateService => stateService.modify(x => x.add({a: 0, s: ''})),
+      });
 
       assert(_.service.savedState$).to.emitWith(
           objectThat<Snapshot<TestState>>().haveProperties({
@@ -270,7 +247,7 @@ test('@mask/core/save-service', init => {
 
     should('not emit if config is missing', () => {
       const saveId = 'saveId';
-      const rootId = _.stateService.add<TestState>({a: 123, s: 'abc'});
+      const rootId = _.stateService.modify(x => x.add({a: 123, s: 'abc'}));
       const snapshot = _.stateService.snapshot(rootId)!;
 
       const storage = new InMemoryStorage<Snapshot<TestState>>();

@@ -29,7 +29,7 @@ test('@mask/action/input/radio-input', init => {
     });
     const el = tester.createElement(RadioInput);
 
-    const $state = stateService.add<number|null>(null);
+    const $state = stateService.modify(x => x.add<number|null>(null));
     el.setAttribute($.host._.stateId, $state);
     el.setAttribute($.host._.index, INDEX);
 
@@ -146,7 +146,7 @@ test('@mask/action/input/radio-input', init => {
     });
 
     should('do nothing if the global radio input emits and the ID doesn\'t match', () => {
-      const $otherStateId = _.stateService.add<number|null>(null);
+      const $otherStateId = _.stateService.modify(x => x.add<number|null>(null));
       $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: $otherStateId});
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
@@ -181,7 +181,7 @@ test('@mask/action/input/radio-input', init => {
   test('nullableDomValue$', () => {
     should('emit the index if element is checked', () => {
       // Set the state to some number.
-      _.stateService.set(_.$state, 123);
+      _.stateService.modify(x => x.set(_.$state, 123));
 
       _.el.getElement($.input).checked = true;
       _.el.dispatchEvent($.input._.onInput);
@@ -193,7 +193,7 @@ test('@mask/action/input/radio-input', init => {
     should('emit null if element is unchecked', () => {
       const value = 123;
       // Set the state to some number.
-      _.stateService.set(_.$state, value);
+      _.stateService.modify(x => x.set(_.$state, value));
 
       _.el.getElement($.input).checked = false;
       _.el.dispatchEvent($.input._.onInput);
@@ -205,7 +205,7 @@ test('@mask/action/input/radio-input', init => {
 
   test('updateDomValue', () => {
     should('check the element if new value is the same as the index', () => {
-      _.stateService.set(_.$state, INDEX);
+      _.stateService.modify(x => x.set(_.$state, INDEX));
 
       _.el.callFunction($.host._.clearFn, []);
 
@@ -213,7 +213,7 @@ test('@mask/action/input/radio-input', init => {
     });
 
     should('uncheck the element if the new value is different from the index', () => {
-      _.stateService.set(_.$state, 1);
+      _.stateService.modify(x => x.set(_.$state, 1));
 
       _.el.callFunction($.host._.clearFn, []);
 

@@ -1,4 +1,4 @@
-import {source, subjectSource, Vine} from 'grapevine';
+import {source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
@@ -35,7 +35,7 @@ export class SaveService {
                 }
 
                 const stateService = $stateService.get(this.vine);
-                $rootId.set(this.vine, () => config.initFn(stateService));
+                $rootId$.get(this.vine).next(config.initFn(stateService));
               }),
           );
         }),
@@ -48,7 +48,7 @@ export class SaveService {
     return combineLatest([
       this.shouldSave$,
       $saveConfig.get(this.vine),
-      $rootId.get(this.vine),
+      $rootId$.get(this.vine),
     ])
         .pipe(
             switchMap(([isSaving, saveConfig, rootId]) => {
@@ -81,7 +81,7 @@ export class SaveService {
         map(state => {
           if (state) {
             $stateService.get(this.vine).init(state);
-            $rootId.set(this.vine, () => state.rootId);
+            $rootId$.get(this.vine).next(state.rootId);
             return true;
           }
 
@@ -110,12 +110,12 @@ export class SaveService {
   }
 }
 
-export const $rootId = subjectSource<StateId<any>|undefined>(
+export const $rootId$ = source<BehaviorSubject<StateId<any>|undefined>>(
     'rootId',
-    () => undefined,
+    () => new BehaviorSubject<StateId<any>|undefined>(undefined),
 );
-export const $saveConfig = subjectSource<SaveConfig|undefined>(
+export const $saveConfig = source<BehaviorSubject<SaveConfig|undefined>>(
     'saveConfig',
-    () => undefined,
+    () => new BehaviorSubject<SaveConfig|undefined>(undefined),
 );
 export const $saveService = source('SaveService', vine => new SaveService(vine));
