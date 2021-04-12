@@ -1,9 +1,9 @@
+import {$stateService} from 'grapevine';
 import {assert, should, test} from 'gs-testing';
 import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
-import {$stateService} from '../../core/state-service';
 
 import {$, TextInput} from './text-input';
 

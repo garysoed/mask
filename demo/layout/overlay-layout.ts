@@ -1,3 +1,4 @@
+import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {instanceofType} from 'gs-types';
 import {element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
@@ -8,7 +9,6 @@ import {$button, Button} from '../../src/action/button';
 import {$radioInput, RadioInput} from '../../src/action/input/radio-input';
 import {_p} from '../../src/app/app';
 import {Anchor} from '../../src/core/overlay-service';
-import {$stateService} from '../../src/core/state-service';
 import {$overlayLayout, OverlayLayout} from '../../src/layout/overlay-layout';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';

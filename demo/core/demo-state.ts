@@ -1,11 +1,10 @@
-import {Source, source} from 'grapevine';
+import {$stateService, Source, source} from 'grapevine';
 import {StateId} from 'gs-tools/export/state';
 import {Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
 import {$rootId$} from '../../src/core/save-service';
-import {$stateService} from '../../src/core/state-service';
 import {Palette} from '../../src/theme/palette';
 
 

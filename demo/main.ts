@@ -1,3 +1,4 @@
+import {$stateService} from 'grapevine';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {LocalStorage} from 'gs-tools/export/store';
@@ -9,7 +10,6 @@ import {ON_LOG_$, WebConsoleDestination} from 'santa';
 import {CheckedValue} from '../src/action/input/checkbox';
 import {$theme, start} from '../src/app/app';
 import {$saveConfig, $saveService} from '../src/core/save-service';
-import {$stateService} from '../src/core/state-service';
 import {registerSvg} from '../src/core/svg-service';
 import {PALETTE, Palette} from '../src/theme/palette';
 import {Theme} from '../src/theme/theme';

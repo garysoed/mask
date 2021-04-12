@@ -5,7 +5,6 @@ export {_p, $window} from '../src/app/app';
 export {registerSvg, $svgService, SvgService} from '../src/core/svg-service';
 export {stateIdParser} from '../src/core/state-id-parser';
 export {SvgConfig} from '../src/core/svg-config';
-export {$stateService} from '../src/core/state-service';
 export {$rootId$ as $rootId, $saveConfig, $saveService, SaveService} from '../src/core/save-service';
 
 // events

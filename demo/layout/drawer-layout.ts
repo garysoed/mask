@@ -1,3 +1,4 @@
+import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
@@ -8,7 +9,6 @@ import {map, switchMap} from 'rxjs/operators';
 
 import {$checkbox, Checkbox, CheckedValue} from '../../src/action/input/checkbox';
 import {_p} from '../../src/app/app';
-import {$stateService} from '../../src/core/state-service';
 import {$drawerLayout, DrawerLayout, DrawerMode} from '../../src/layout/drawer-layout';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';

@@ -1,10 +1,10 @@
+import {$stateService} from 'grapevine';
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
-import {$stateService} from '../../core/state-service';
 import {$, Checkbox, CheckedValue} from '../input/checkbox';
 
 import render from './goldens/checkbox.html';

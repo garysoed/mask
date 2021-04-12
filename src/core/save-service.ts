@@ -1,12 +1,10 @@
-import {source, Vine} from 'grapevine';
+import {$stateService, source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {EditableStorage} from 'gs-tools/export/store';
 import {BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, take, tap} from 'rxjs/operators';
-
-import {$stateService} from './state-service';
 
 
 interface SaveConfig {

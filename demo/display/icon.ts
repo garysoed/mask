@@ -1,3 +1,4 @@
+import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
@@ -6,7 +7,7 @@ import {element, PersonaContext, setAttribute} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
-import {$checkbox, $icon, $stateService, CheckedValue, Icon as MaskIcon, registerSvg, _p} from '../../export';
+import {$checkbox, $icon, CheckedValue, Icon as MaskIcon, registerSvg, _p} from '../../export';
 import {FitTo} from '../../src/display/icon';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import fitToHeightSvg from '../asset/fit_to_height.svg';

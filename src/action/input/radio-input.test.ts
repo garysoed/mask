@@ -1,10 +1,10 @@
+import {$stateService} from 'grapevine';
 import {assert, createSpySubject, objectThat, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService, StateId} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
-import {$stateService} from '../../core/state-service';
 
 import render from './goldens/radio-input.html';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';

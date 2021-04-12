@@ -1,3 +1,4 @@
+import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
 import {handler, hasAttribute, host, InputsOf, PersonaContext} from 'persona';
@@ -6,7 +7,6 @@ import {EMPTY, merge, Observable, of as observableOf, Subject} from 'rxjs';
 import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
-import {$stateService} from '../../core/state-service';
 import {ChangeEvent} from '../../event/change-event';
 import {$baseAction as $baseAction, BaseAction} from '../base-action';
 

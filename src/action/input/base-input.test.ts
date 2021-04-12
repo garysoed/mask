@@ -1,4 +1,4 @@
-import {source} from 'grapevine';
+import {$stateService, source} from 'grapevine';
 import {assert, createSpySubject, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
@@ -11,7 +11,6 @@ import {map, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
 import {stateIdParser} from '../../core/state-id-parser';
-import {$stateService} from '../../core/state-service';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';

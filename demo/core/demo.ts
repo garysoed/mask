@@ -1,3 +1,4 @@
+import {$stateService} from 'grapevine';
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
@@ -11,7 +12,6 @@ import {$button, Button} from '../../src/action/button';
 import {$checkbox, Checkbox} from '../../src/action/input/checkbox';
 import {_p} from '../../src/app/app';
 import {Overlay} from '../../src/core/overlay';
-import {$stateService} from '../../src/core/state-service';
 import {ACTION_EVENT} from '../../src/event/action-event';
 import {$drawerLayout, DrawerLayout} from '../../src/layout/drawer-layout';
 import {$lineLayout, LineLayout} from '../../src/layout/line-layout';
