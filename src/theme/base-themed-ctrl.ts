@@ -16,8 +16,13 @@ export abstract class BaseThemedCtrl<S extends {}> extends BaseCtrl<S> {
   }
 
   private setupThemeUpdate(): Observable<unknown> {
+    // TODO: Replace with Persona's single.
     return this.theme$.pipe(
-        map(theme => theme.getStyleEl().cloneNode(true) as HTMLStyleElement),
+        map(theme => {
+          const el = this.context.shadowRoot.ownerDocument.createElement('style');
+          el.innerHTML = theme.generateCss();
+          return el;
+        }),
         startWith(null),
         pairwise(),
         tap(([oldEl, newEl]) => {

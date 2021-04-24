@@ -1,6 +1,5 @@
 import {$asArray, $flat, $map, $pipe} from 'gs-tools/export/collect';
 import {Color} from 'gs-tools/export/color';
-import {cache} from 'gs-tools/export/data';
 
 import generalCss from './general.css';
 import {PALETTE} from './palette';
@@ -15,10 +14,6 @@ export class Theme {
       readonly accentColor: Color,
   ) { }
 
-  getStyleEl(): HTMLStyleElement {
-    return this.createStyleEl();
-  }
-
   setBaseColor(color: Color): Theme {
     return new Theme(this.document, color, this.accentColor);
   }
@@ -27,17 +22,14 @@ export class Theme {
     return new Theme(this.document, this.baseColor, color);
   }
 
-  @cache()
-  private createStyleEl(): HTMLStyleElement {
+  generateCss(): string {
     const cssDeclarations = [
       this.generateSectionThemeCss(false),
       this.generateSectionThemeCss(true),
       this.generateHighlightThemeCss(),
     ];
 
-    const styleEl = this.document.createElement('style');
-    styleEl.innerHTML = `${cssDeclarations.join('\n\n')}\n${generalCss}`;
-    return styleEl;
+    return `${cssDeclarations.join('\n\n')}\n${generalCss}`;
   }
 
   private generateHighlightThemeCss(): string {

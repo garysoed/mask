@@ -30,7 +30,11 @@ export function start(
   theme$.next(theme);
   theme$
       .pipe(
-          map(theme => theme.getStyleEl().cloneNode(true) as HTMLStyleElement),
+          map(theme => {
+            const el = rootDoc.createElement('style');
+            el.innerHTML = theme.generateCss();
+            return el;
+          }),
           startWith(null),
           pairwise(),
       )

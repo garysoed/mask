@@ -1,4 +1,4 @@
-<style>[mk-theme="light"] { --mkThemePassiveFG1B: rgba(22,18,3,1);
+[mk-theme="light"] { --mkThemePassiveFG1B: rgba(22,18,3,1);
 --mkThemePassiveBG1B: rgba(255,255,255,1);
 --mkThemeActionFG1B: rgba(22,18,3,1);
 --mkThemeActionBG1B: rgba(223,175,32,1);
@@ -596,4 +596,3 @@ dt {
       inset 1.5px 3px 3px -2px rgba(0,0,0,.12);
   pointer-events: none;
 }
-</style>

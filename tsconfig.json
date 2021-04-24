@@ -29,6 +29,6 @@
   "include": [
     "demo/**/*.ts",
     "src/**/*.test.ts",
-    "typings/*.d.ts",
+    "node_modules/devbase/ts/typings/*.d.ts",
   ]
 }

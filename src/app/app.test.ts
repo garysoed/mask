@@ -1,6 +1,7 @@
-import {arrayThat, assert, createSpyInstance, fake, objectThat, should, spy, test} from 'gs-testing';
+import {arrayThat, assert, objectThat, should, spy, test} from 'gs-testing';
 import {Config, CustomElementCtrl} from 'persona';
 
+import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
 
 import {start, _p} from './app';
@@ -11,11 +12,9 @@ type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;
 test('app.App', () => {
   test('start', () => {
     should('build all the constructors and configure all the configs', () => {
-      const styleEl = document.createElement('style');
       const personaBuilderBuildSpy = spy(_p, 'build');
 
-      const mockTheme = createSpyInstance(Theme);
-      fake(mockTheme.getStyleEl).always().return(styleEl);
+      const mockTheme = new Theme(document, PALETTE.GREEN, PALETTE.PURPLE);
 
       start('test', [], document, mockTheme, document.createElement('div'), window.customElements);
 
@@ -24,7 +23,6 @@ test('app.App', () => {
         rootDoc: document,
         customElementRegistry: window.customElements,
       }));
-      assert(mockTheme.getStyleEl).to.haveBeenCalledWith();
     });
   });
 });
