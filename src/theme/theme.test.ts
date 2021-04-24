@@ -14,7 +14,6 @@ test('@mask/theme/theme', () => {
   test('generateCss', () => {
     should('not throw', () => {
       const cssString = new Theme(
-          document,
           new HslColor(45, 0.75, 0.5),
           new HslColor(60, 0.75, 0.5),
       ).generateCss();

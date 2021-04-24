@@ -12,7 +12,7 @@ export const _p = new PersonaBuilder();
 
 export const $theme = source(
     'Theme',
-    () => new BehaviorSubject(new Theme(document, PALETTE.ORANGE, PALETTE.GREEN)),
+    () => new BehaviorSubject(new Theme(PALETTE.ORANGE, PALETTE.GREEN)),
 );
 export const $window = source('window', () => window);
 

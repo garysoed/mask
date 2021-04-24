@@ -28,7 +28,7 @@ import {$locationService} from './core/location-service';
 const DEMO_STATE_KEY = 'demoState';
 const BASE_COLOR_NAME = 'TEAL';
 const ACCENT_COLOR_NAME = 'PURPLE';
-const theme = new Theme(document, PALETTE[BASE_COLOR_NAME], PALETTE[ACCENT_COLOR_NAME]);
+const theme = new Theme(PALETTE[BASE_COLOR_NAME], PALETTE[ACCENT_COLOR_NAME]);
 
 const consoleDestination = new WebConsoleDestination({installTrigger: true});
 ON_LOG_$.subscribe(entry => {

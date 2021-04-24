@@ -9,17 +9,16 @@ import {ColorWithAlpha, createColor} from './shade';
 
 export class Theme {
   constructor(
-      private readonly document: Document,
       readonly baseColor: Color,
       readonly accentColor: Color,
   ) { }
 
   setBaseColor(color: Color): Theme {
-    return new Theme(this.document, color, this.accentColor);
+    return new Theme(color, this.accentColor);
   }
 
   setHighlightColor(color: Color): Theme {
-    return new Theme(this.document, this.baseColor, color);
+    return new Theme(this.baseColor, color);
   }
 
   generateCss(): string {

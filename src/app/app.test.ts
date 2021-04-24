@@ -14,7 +14,7 @@ test('app.App', () => {
     should('build all the constructors and configure all the configs', () => {
       const personaBuilderBuildSpy = spy(_p, 'build');
 
-      const mockTheme = new Theme(document, PALETTE.GREEN, PALETTE.PURPLE);
+      const mockTheme = new Theme(PALETTE.GREEN, PALETTE.PURPLE);
 
       start('test', [], document, mockTheme, document.createElement('div'), window.customElements);
 
