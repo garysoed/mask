@@ -1,7 +1,7 @@
 import {arrayThat, assert, objectThat, should, spy, test} from 'gs-testing';
 import {Config, CustomElementCtrl} from 'persona';
 
-import {ThemeClassLoader} from '../theme/loader/theme-class-loader';
+import {ClassThemeLoader} from '../theme/loader/class-theme-loader';
 import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
 
@@ -21,7 +21,7 @@ test('app.App', () => {
           'test',
           [],
           document,
-          new ThemeClassLoader(theme),
+          new ClassThemeLoader(theme),
           window.customElements,
       );
 

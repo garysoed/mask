@@ -11,7 +11,7 @@ import {CheckedValue} from '../src/action/input/checkbox';
 import {$themeLoader, start} from '../src/app/app';
 import {$saveConfig, $saveService} from '../src/core/save-service';
 import {registerSvg} from '../src/core/svg-service';
-import {ThemeClassLoader} from '../src/theme/loader/theme-class-loader';
+import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {PALETTE, Palette} from '../src/theme/palette';
 import {Theme} from '../src/theme/theme';
 
@@ -50,7 +50,7 @@ window.addEventListener('load', () => {
       'demo',
       [Demo],
       document,
-      new ThemeClassLoader(theme),
+      new ClassThemeLoader(theme),
   );
 
   for (const [key, content] of ICONS) {
@@ -83,7 +83,7 @@ window.addEventListener('load', () => {
             ])
                 .pipe(
                     tap(([base, accent]) => {
-                      themeLoader$.next( new ThemeClassLoader( new Theme(
+                      themeLoader$.next( new ClassThemeLoader( new Theme(
                           PALETTE[base],
                           PALETTE[accent],
                       )));

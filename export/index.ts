@@ -38,6 +38,7 @@ export {Palette, PALETTE} from '../src/theme/palette';
 export {RootLayout, $rootLayout} from '../src/layout/root-layout';
 export {$themeLoader as $theme, $themeLoader, start} from '../src/app/app';
 export {UrlThemeLoader} from '../src/theme/loader/url-theme-loader';
+export {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 export {Theme} from '../src/theme/theme';
 export {BaseThemedCtrl} from '../src/theme/base-themed-ctrl';
 

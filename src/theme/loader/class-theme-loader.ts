@@ -2,7 +2,7 @@ import {Theme} from '../theme';
 
 import {ThemeLoader} from './theme-loader';
 
-export class ThemeClassLoader implements ThemeLoader {
+export class ClassThemeLoader implements ThemeLoader {
   constructor(private readonly theme: Theme) {}
 
   createElement(document: Document): Element {

@@ -4,7 +4,7 @@ import {BaseCtrlCtor, CustomElementCtrlCtor} from 'persona/export/internal';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
-import {ThemeClassLoader} from '../theme/loader/theme-class-loader';
+import {ClassThemeLoader} from '../theme/loader/class-theme-loader';
 import {ThemeLoader} from '../theme/loader/theme-loader';
 import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
@@ -15,7 +15,7 @@ export const _p = new PersonaBuilder();
 export const $themeLoader = source(
     'Theme',
     () => new BehaviorSubject<ThemeLoader>(
-        new ThemeClassLoader(new Theme(PALETTE.ORANGE, PALETTE.GREEN))),
+        new ClassThemeLoader(new Theme(PALETTE.ORANGE, PALETTE.GREEN))),
 );
 export const $window = source('window', () => window);
 
