@@ -4,8 +4,9 @@ import {dispatchResizeEvent, PersonaTesterFactory} from 'persona/export/testing'
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {_p} from '../app/app';
+import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
-import render from './goldens/overlay.html';
+import render from './goldens/overlay.txt';
 import {$, Overlay} from './overlay';
 import {$overlayService, Anchor, OverlayService} from './overlay-service';
 
@@ -21,6 +22,7 @@ test('@mask/core/overlay', init => {
     const overlayService = new OverlayService();
     const tester = TESTER_FACTORY.build({
       overrides: [
+        THEME_LOADER_TEST_OVERRIDE,
         {override: $overlayService, withValue: overlayService},
       ],
       rootCtrls: [Overlay],
@@ -91,7 +93,8 @@ test('@mask/core/overlay', init => {
   test('overlayContent$', () => {
     should('display the content el when shown', () => {
       const contentEl = document.createElement('div');
-      contentEl.id = 'content';
+      contentEl.id = 'testContent';
+      contentEl.innerText = 'test content';
       const event = {
         target: {
           node: document.createElement('div'),

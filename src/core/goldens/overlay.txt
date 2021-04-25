@@ -1,0 +1,23 @@
+<mk-overlay><style>
+  #root {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #root.hidden {
+    display: none;
+  }
+
+  #content {
+    position: fixed;
+  }
+</style>
+<div id="root" class="">
+  <div id="content" shadow="up" style="left: 0px; top: 0px;">
+    <!-- #content --><div id="testContent">test content</div>
+  </div>
+</div>
+<link rel="stylesheet" href="base/test.css"></mk-overlay>

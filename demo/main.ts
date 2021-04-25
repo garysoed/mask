@@ -3,7 +3,7 @@ import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {LocalStorage} from 'gs-tools/export/store';
 import {identity, json} from 'nabu';
-import {combineLatest, EMPTY, merge} from 'rxjs';
+import {combineLatest, EMPTY} from 'rxjs';
 import {startWith, switchMap, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
@@ -51,7 +51,6 @@ window.addEventListener('load', () => {
       [Demo],
       document,
       new ThemeClassLoader(theme),
-      document.body,
   );
 
   for (const [key, content] of ICONS) {

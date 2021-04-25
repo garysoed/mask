@@ -5,8 +5,11 @@ import {fakeStateService, StateId} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
+import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
-import render from './goldens/radio-input.html';
+import goldenChecked from './goldens/radio-input__checked.txt';
+import goldenDefault from './goldens/radio-input__default.txt';
+import goldenUnchecked from './goldens/radio-input__unchecked.txt';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import {$, RadioInput} from './radio-input';
 
@@ -17,11 +20,18 @@ test('@mask/action/input/radio-input', init => {
   const INDEX = 3;
 
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv({render}));
+    runEnvironment(
+        new BrowserSnapshotsEnv({
+          render: goldenDefault,
+          checked: goldenChecked,
+          unchecked: goldenUnchecked,
+        }),
+    );
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
       overrides: [
+        THEME_LOADER_TEST_OVERRIDE,
         {override: $stateService, withValue: stateService},
       ],
       rootCtrls: [RadioInput],
@@ -48,17 +58,21 @@ test('@mask/action/input/radio-input', init => {
     should('set the slot to display_checked if checked', () => {
       const el = _.el.getElement($.input);
       el.checked = true;
+      _.el.setAttribute($.host._.label, 'label');
       _.el.dispatchEvent($.input._.onInput);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
+      assert(_.el.flattenContent()).to.matchSnapshot('checked');
     });
 
     should('set the slot to display_unchecked if unchecked', () => {
       const el = _.el.getElement($.input);
       el.checked = false;
+      _.el.setAttribute($.host._.label, 'label');
       _.el.dispatchEvent($.input._.onInput);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
+      assert(_.el.flattenContent()).to.matchSnapshot('unchecked');
     });
   });
 

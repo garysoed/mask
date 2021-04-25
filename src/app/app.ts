@@ -24,7 +24,6 @@ export function start(
     rootCtrls: ReadonlyArray<CustomElementCtrlCtor|BaseCtrlCtor>,
     rootDoc: Document,
     themeLoader: ThemeLoader,
-    body: HTMLElement,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
   const vine = new Vine({appName});
@@ -43,7 +42,7 @@ export function start(
         }
 
         if (newEl) {
-          body.appendChild(newEl);
+          rootDoc.head.appendChild(newEl);
         }
       });
 

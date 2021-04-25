@@ -22,7 +22,6 @@ test('app.App', () => {
           [],
           document,
           new ThemeClassLoader(theme),
-          document.createElement('div'),
           window.customElements,
       );
 

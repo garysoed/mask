@@ -1,24 +1,36 @@
 import {$stateService} from 'grapevine';
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
+import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 import {$, Checkbox, CheckedValue} from '../input/checkbox';
 
-import render from './goldens/checkbox.html';
+import goldenChecked from './goldens/checkbox__checked.txt';
+import goldenDefault from './goldens/checkbox__default.txt';
+import goldenUnchecked from './goldens/checkbox__unchecked.txt';
+import goldenUnknown from './goldens/checkbox__unknown.txt';
+import goldenUpdate from './goldens/checkbox__update.txt';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/checkbox', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv({render}));
+    runEnvironment(new BrowserSnapshotsEnv({
+      render: goldenDefault,
+      checked: goldenChecked,
+      unchecked: goldenUnchecked,
+      unknown: goldenUnknown,
+      update: goldenUpdate,
+    }));
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
       overrides: [
+        THEME_LOADER_TEST_OVERRIDE,
         {override: $stateService, withValue: stateService},
       ],
       rootCtrls: [Checkbox],
@@ -41,6 +53,10 @@ test('@mask/input/checkbox', init => {
   });
 
   test('checkMode$', () => {
+    setup(() => {
+      _.el.setAttribute($.host._.label, 'label');
+    });
+
     should('set the classlist to display_checked if checked', () => {
       const el = _.el.getElement($.checkbox);
       el.indeterminate = false;
@@ -48,6 +64,7 @@ test('@mask/input/checkbox', init => {
       _.el.dispatchEvent($.checkbox._.onInput);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
+      assert(_.el.flattenContent()).to.matchSnapshot('checked');
     });
 
     should('set the classlist to display_unchecked if unchecked', () => {
@@ -57,6 +74,7 @@ test('@mask/input/checkbox', init => {
       _.el.dispatchEvent($.checkbox._.onInput);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
+      assert(_.el.flattenContent()).to.matchSnapshot('unchecked');
     });
 
     should('set the classlist to display_unknown if unknown', () => {
@@ -66,6 +84,7 @@ test('@mask/input/checkbox', init => {
       _.el.dispatchEvent($.checkbox._.onInput);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unknown']));
+      assert(_.el.flattenContent()).to.matchSnapshot('unknown');
     });
 
     should('update the slot name if the value is set by calling clear', () => {
@@ -73,6 +92,7 @@ test('@mask/input/checkbox', init => {
       _.el.callFunction($.host._.clearFn, []);
 
       assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
+      assert(_.el.flattenContent()).to.matchSnapshot('update');
     });
   });
 

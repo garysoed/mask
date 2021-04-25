@@ -1,0 +1,114 @@
+<mk-number-input mk-action-1="" state-id="1"><style>
+  :host {
+    --icon-visibility: visibility;
+  }
+
+  #icon {
+    visibility: var(--icon-visibility);
+  }
+
+  #icon.hidden {
+    visibility: hidden;
+  }
+
+  #iconContainer {
+    width: 2rem;
+  }
+
+  #input {
+    border: none;
+    color: var(--mkThemeFG);
+    line-height: 2rem;
+    padding: 0;
+  }
+
+  #input:-webkit-autofill {
+    background-color: transparent !important;
+    color: var(--mkThemeFG) !important;
+  }
+
+  #label {
+    text-align: end;
+  }
+
+  #root {
+    height: 4rem;
+    background-color: var(--mkThemeBG);
+  }
+
+  #inputContainer {
+    height: 2rem;
+  }
+
+  :host([mk-disabled]) {
+    cursor: default;
+    --icon-visibility: hidden;
+  }
+
+  :host(:hover),
+  :host(:focus),
+  #input:hover,
+  #input:focus {
+    outline: none;
+  }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
+<div id="root" layout="row">
+  <mk-line-layout id="label" mk-theme-highlight="" mk-body-2=""><style>
+  #root {
+    padding: 1rem;
+  }
+</style>
+
+<div id="root" mk-theme="">
+  <div>Label</div>
+</div>
+<link rel="stylesheet" href="base/test.css"></mk-line-layout>
+  <mk-line-layout flex=""><style>
+  #root {
+    padding: 1rem;
+  }
+</style>
+
+<div id="root" mk-theme="">
+  <div id="inputContainer" layout="row">
+      <input flex="" id="input" mk-body-1="" type="number">
+      <div id="iconContainer">
+        <mk-icon id="icon" icon="mk.numberinput_stepper" class="hidden" aria-hidden="true" role="presentation"><style>
+  :host {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  #root > svg #foreground {
+    fill: var(--mkThemeFG) !important;
+  }
+</style>
+<span id="root">
+  <!-- #content --><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="stepper.svg" inkscape:version="1.0 (4035a4f, 2020-05-01)" id="svg2" viewBox="0 0 24 24" height="100%" version="1.1">
+  <metadata id="metadata10">
+    <rdf:rdf>
+      <cc:work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
+        <dc:title></dc:title>
+      </cc:work>
+    </rdf:rdf>
+  </metadata>
+  <defs id="defs8"></defs>
+  <sodipodi:namedview inkscape:document-rotation="0" inkscape:current-layer="svg2" inkscape:window-maximized="0" inkscape:window-y="25" inkscape:window-x="0" inkscape:cy="10.199995" inkscape:cx="-0.73950701" inkscape:zoom="11.313709" showgrid="false" id="namedview6" inkscape:window-height="732" inkscape:window-width="1383" inkscape:pageshadow="2" inkscape:pageopacity="0" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" bordercolor="#666666" pagecolor="#ffffff"></sodipodi:namedview>
+  <path d="M 12 0 L 0 8 L 24 8 L 12 0 z M 0 16 L 12 24 L 24 16 L 0 16 z " inkscape:transform-center-y="-1.3333333" style="fill:#000000;stroke-width:1.02583" id="foreground"></path>
+</svg>
+</span>
+<link rel="stylesheet" href="base/test.css"></mk-icon>
+      </div>
+    </div>
+</div>
+<link rel="stylesheet" href="base/test.css"></mk-line-layout>
+</div>
+<link rel="stylesheet" href="base/test.css"></mk-number-input>

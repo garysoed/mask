@@ -6,10 +6,11 @@ import {EMPTY, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {_p} from '../app/app';
+import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import {$, AnnotatedText} from './annotated-text';
 import {$annotationSpecs$} from './annotation-service';
-import render from './goldens/annotated-text.html';
+import render from './goldens/annotated-text.txt';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
@@ -20,7 +21,11 @@ test('@mask/display/annotated-text', init => {
   });
 
   const _ = init(() => {
-    const tester = TESTER_FACTORY.build({rootCtrls: [AnnotatedText], rootDoc: document});
+    const tester = TESTER_FACTORY.build({
+      rootCtrls: [AnnotatedText],
+      rootDoc: document,
+      overrides: [THEME_LOADER_TEST_OVERRIDE],
+    });
     const el = tester.createElement(AnnotatedText);
     return {el, tester};
   });
