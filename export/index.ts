@@ -36,7 +36,7 @@ export {Overlay} from '../src/core/overlay';
 export {OverlayService} from '../src/core/overlay-service';
 export {Palette, PALETTE} from '../src/theme/palette';
 export {RootLayout, $rootLayout} from '../src/layout/root-layout';
-export {$theme, start} from '../src/app/app';
+export {$themeLoader as $theme, start} from '../src/app/app';
 export {Theme} from '../src/theme/theme';
 export {BaseThemedCtrl} from '../src/theme/base-themed-ctrl';
 

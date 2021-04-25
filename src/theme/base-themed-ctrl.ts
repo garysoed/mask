@@ -2,12 +2,12 @@ import {BaseCtrl, PersonaContext} from 'persona';
 import {Observable} from 'rxjs';
 import {map, pairwise, startWith, tap} from 'rxjs/operators';
 
-import {$theme, _p} from '../app/app';
+import {$themeLoader, _p} from '../app/app';
 
 
 @_p.baseCustomElement({})
 export abstract class BaseThemedCtrl<S extends {}> extends BaseCtrl<S> {
-  protected readonly theme$ = $theme.get(this.vine);
+  protected readonly themeLoader$ = $themeLoader.get(this.vine);
 
   constructor(context: PersonaContext, specs: S) {
     super(context, specs);
@@ -17,12 +17,8 @@ export abstract class BaseThemedCtrl<S extends {}> extends BaseCtrl<S> {
 
   private setupThemeUpdate(): Observable<unknown> {
     // TODO: Replace with Persona's single.
-    return this.theme$.pipe(
-        map(theme => {
-          const el = this.context.shadowRoot.ownerDocument.createElement('style');
-          el.innerHTML = theme.generateCss();
-          return el;
-        }),
+    return this.themeLoader$.pipe(
+        map(themeLoader => themeLoader.createElement(this.shadowRoot.ownerDocument)),
         startWith(null),
         pairwise(),
         tap(([oldEl, newEl]) => {

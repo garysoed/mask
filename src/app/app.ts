@@ -4,15 +4,18 @@ import {BaseCtrlCtor, CustomElementCtrlCtor} from 'persona/export/internal';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
+import {ThemeClassLoader} from '../theme/loader/theme-class-loader';
+import {ThemeLoader} from '../theme/loader/theme-loader';
 import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
 
 
 export const _p = new PersonaBuilder();
 
-export const $theme = source(
+export const $themeLoader = source(
     'Theme',
-    () => new BehaviorSubject(new Theme(PALETTE.ORANGE, PALETTE.GREEN)),
+    () => new BehaviorSubject<ThemeLoader>(
+        new ThemeClassLoader(new Theme(PALETTE.ORANGE, PALETTE.GREEN))),
 );
 export const $window = source('window', () => window);
 
@@ -20,21 +23,17 @@ export function start(
     appName: string,
     rootCtrls: ReadonlyArray<CustomElementCtrlCtor|BaseCtrlCtor>,
     rootDoc: Document,
-    theme: Theme,
+    themeLoader: ThemeLoader,
     body: HTMLElement,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
   const vine = new Vine({appName});
   _p.build({rootCtrls, rootDoc, customElementRegistry, vine});
-  const theme$ = $theme.get(vine);
-  theme$.next(theme);
-  theme$
+  const themeLoader$ = $themeLoader.get(vine);
+  themeLoader$.next(themeLoader);
+  themeLoader$
       .pipe(
-          map(theme => {
-            const el = rootDoc.createElement('style');
-            el.innerHTML = theme.generateCss();
-            return el;
-          }),
+          map(themeLoader => themeLoader.createElement(rootDoc)),
           startWith(null),
           pairwise(),
       )

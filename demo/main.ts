@@ -3,14 +3,15 @@ import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
 import {LocalStorage} from 'gs-tools/export/store';
 import {identity, json} from 'nabu';
-import {EMPTY, merge} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {combineLatest, EMPTY, merge} from 'rxjs';
+import {startWith, switchMap, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {CheckedValue} from '../src/action/input/checkbox';
-import {$theme, start} from '../src/app/app';
+import {$themeLoader, start} from '../src/app/app';
 import {$saveConfig, $saveService} from '../src/core/save-service';
 import {registerSvg} from '../src/core/svg-service';
+import {ThemeClassLoader} from '../src/theme/loader/theme-class-loader';
 import {PALETTE, Palette} from '../src/theme/palette';
 import {Theme} from '../src/theme/theme';
 
@@ -49,7 +50,7 @@ window.addEventListener('load', () => {
       'demo',
       [Demo],
       document,
-      theme,
+      new ThemeClassLoader(theme),
       document.body,
   );
 
@@ -60,7 +61,7 @@ window.addEventListener('load', () => {
   $locationService.get(vine).run().subscribe();
 
   const stateService = $stateService.get(vine);
-  const theme$ = $theme.get(vine);
+  const themeLoader$ = $themeLoader.get(vine);
 
   // Update the theme based on the demo state.
   $demoState.get(vine)
@@ -71,20 +72,24 @@ window.addEventListener('load', () => {
             }
 
             const {$baseColorName, $accentColorName} = demoState;
-            const onBaseColorName$ = stateService.resolve($baseColorName).pipe(
-                filterNonNullable(),
-                tap(colorName => {
-                  theme$.next(theme$.getValue().setBaseColor(PALETTE[colorName]));
-                }),
-            );
-
-            const onAccentColorName$ = stateService.resolve($accentColorName).pipe(
-                filterNonNullable(),
-                tap(colorName => {
-                  theme$.next(theme$.getValue().setHighlightColor(PALETTE[colorName]));
-                }),
-            );
-            return merge(onBaseColorName$, onAccentColorName$);
+            return combineLatest([
+              stateService.resolve($baseColorName).pipe(
+                  filterNonNullable(),
+                  startWith<keyof Palette>(BASE_COLOR_NAME),
+              ),
+              stateService.resolve($accentColorName).pipe(
+                  filterNonNullable(),
+                  startWith<keyof Palette>(ACCENT_COLOR_NAME),
+              ),
+            ])
+                .pipe(
+                    tap(([base, accent]) => {
+                      themeLoader$.next( new ThemeClassLoader( new Theme(
+                          PALETTE[base],
+                          PALETTE[accent],
+                      )));
+                    }),
+                );
           }),
       )
       .subscribe();
