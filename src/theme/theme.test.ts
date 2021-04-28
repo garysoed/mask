@@ -1,23 +1,45 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {HslColor} from 'gs-tools/export/color';
 
-import render from './goldens/theme.txt';
+import goldenDark from './goldens/theme__dark.html';
+import goldenLight from './goldens/theme__light.html';
+import {PALETTE} from './palette';
 import {Theme} from './theme';
+import template from './theme.html';
 
 
 test('@mask/theme/theme', () => {
   setup(() => {
-    runEnvironment(new BrowserSnapshotsEnv({render}));
+    runEnvironment(new BrowserSnapshotsEnv({light: goldenLight, dark: goldenDark}));
   });
 
-  test('generateCss', () => {
-    should('not throw', () => {
-      const cssString = new Theme(
-          new HslColor(45, 0.75, 0.5),
-          new HslColor(60, 0.75, 0.5),
-      ).generateCss();
-      assert(cssString).to.matchSnapshot('render');
+  test('generateCss', init => {
+    const _ = init(() => {
+      const cssString = new Theme(PALETTE.AMBER, PALETTE.GREEN).generateCss();
+
+      const styleEl = document.createElement('style');
+      styleEl.innerHTML = cssString;
+
+      const rootEl = document.createElement('div');
+      rootEl.innerHTML = template;
+      rootEl.appendChild(styleEl);
+
+      return {
+        rootEl,
+        tableEl: rootEl.querySelector('#table')!,
+      };
+    });
+
+    should('generate light CSS correctly', () => {
+      _.tableEl.setAttribute('mk-theme', 'light');
+
+      assert(_.rootEl).to.matchSnapshot('light');
+    });
+
+    should('generate dark CSS correctly', () => {
+      _.tableEl.setAttribute('mk-theme', 'dark');
+
+      assert(_.rootEl).to.matchSnapshot('dark');
     });
   });
 });
