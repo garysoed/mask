@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-import * as commandLineArgs from 'command-line-args';
+import commandLineArgs from 'command-line-args';
 import {Color, fromCssColor} from 'gs-tools/export/color';
 import {EMPTY, Observable, Subject} from 'rxjs';
 import {catchError, takeUntil} from 'rxjs/operators';

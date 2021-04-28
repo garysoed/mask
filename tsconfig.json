@@ -3,6 +3,7 @@
     "alwaysStrict": true,
     "assumeChangesOnlyAffectDirectDependencies": true,
     "baseUrl": ".",
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "lib": [
       "dom",
