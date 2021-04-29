@@ -7,8 +7,8 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
-import hideStepper from './goldens/number-input__hide_stepper.txt';
-import stepper from './goldens/number-input__stepper.txt';
+import hideStepper from './goldens/number-input__hide_stepper.html';
+import stepper from './goldens/number-input__stepper.html';
 import {$, NumberInput} from './number-input';
 
 

@@ -8,11 +8,11 @@ import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 import {$, Checkbox, CheckedValue} from '../input/checkbox';
 
-import goldenChecked from './goldens/checkbox__checked.txt';
-import goldenDefault from './goldens/checkbox__default.txt';
-import goldenUnchecked from './goldens/checkbox__unchecked.txt';
-import goldenUnknown from './goldens/checkbox__unknown.txt';
-import goldenUpdate from './goldens/checkbox__update.txt';
+import goldenChecked from './goldens/checkbox__checked.html';
+import goldenDefault from './goldens/checkbox__default.html';
+import goldenUnchecked from './goldens/checkbox__unchecked.html';
+import goldenUnknown from './goldens/checkbox__unknown.html';
+import goldenUpdate from './goldens/checkbox__update.html';
 
 
 const testerFactory = new PersonaTesterFactory(_p);

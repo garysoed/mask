@@ -7,9 +7,9 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
-import goldenChecked from './goldens/radio-input__checked.txt';
-import goldenDefault from './goldens/radio-input__default.txt';
-import goldenUnchecked from './goldens/radio-input__unchecked.txt';
+import goldenChecked from './goldens/radio-input__checked.html';
+import goldenDefault from './goldens/radio-input__default.html';
+import goldenUnchecked from './goldens/radio-input__unchecked.html';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import {$, RadioInput} from './radio-input';
 

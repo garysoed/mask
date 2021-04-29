@@ -4,6 +4,7 @@
     color: var(--mkThemeFG);
     line-height: 2rem;
     padding: 0;
+    width: 100%;
   }
 
   #input:-webkit-autofill {
@@ -32,8 +33,8 @@
   }
 </style>
 <div id="root" layout="row">
-  <mk-line-layout id="label" mk-theme-highlight mk-body-2>
-    <slot></slot>
+  <mk-line-layout id="label" mk-theme-highlight mk-body-2 layout="row">
+    <slot name="label"></slot>
   </mk-line-layout>
   <mk-line-layout flex>
     <input id="input" mk-body-1 type="text">

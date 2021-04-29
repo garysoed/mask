@@ -7,6 +7,7 @@ import {map, startWith} from 'rxjs/operators';
 import {_p} from '../../app/app';
 import {stateIdParser} from '../../core/state-id-parser';
 import {CHANGE_EVENT} from '../../event/change-event';
+import {LineLayout} from '../../layout/line-layout';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
 import template from './text-input.html';
@@ -61,6 +62,7 @@ export const $ = {
 
 @_p.customElement({
   ...$textInput,
+  dependencies: [LineLayout],
   template,
 })
 export class TextInput extends BaseInput<string, typeof $> {

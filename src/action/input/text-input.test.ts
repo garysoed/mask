@@ -1,20 +1,34 @@
 import {$stateService} from 'grapevine';
-import {assert, should, test} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
+import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService} from 'gs-tools/export/state';
 import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
+import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
+import goldenDefault from './goldens/text-input__default.html';
+import goldenUpdate from './goldens/text-input__update.html';
 import {$, TextInput} from './text-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/text-input', init => {
+  setup(() => {
+    runEnvironment(
+        new BrowserSnapshotsEnv({
+          default: goldenDefault,
+          update: goldenUpdate,
+        }),
+    );
+  });
+
   const _ = init(() => {
     const stateService = fakeStateService();
     const tester = testerFactory.build({
       overrides: [
+        THEME_LOADER_TEST_OVERRIDE,
         {override: $stateService, withValue: stateService},
       ],
       rootCtrls: [TextInput],
@@ -25,7 +39,19 @@ test('@mask/input/text-input', init => {
     const $state = stateService.modify(x => x.add('init state'));
     el.setAttribute($.host._.stateId, $state);
 
+    const labelEl = document.createElement('div');
+    labelEl.textContent = 'Label';
+    labelEl.setAttribute('slot', 'label');
+    el.element.appendChild(labelEl);
+
     return {$state, el, stateService, tester};
+  });
+
+  test('render', () => {
+    should('render the value correctly', () => {
+      _.el.callFunction($.host._.clearFn, []);
+      assert(_.el.flattenContent()).to.matchSnapshot('default');
+    });
   });
 
   test('domValue$', () => {
@@ -48,7 +74,7 @@ test('@mask/input/text-input', init => {
       _.stateService.modify(x => x.set(_.$state, value));
       _.el.callFunction($.host._.clearFn, []);
 
-      assert(_.el.getElement($.input).value).to.equal(value);
+      assert(_.el.flattenContent()).to.matchSnapshot('update');
     });
   });
 });
