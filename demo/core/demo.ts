@@ -190,7 +190,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get mainContent$(): Observable<RenderSpec|null> {
-    return $locationService.get(this.vine).getLocation().pipe(
+    return $locationService.get(this.vine).location$.pipe(
         map(location => getPageSpec(location.type)),
         map(spec => {
           if (!spec) {
