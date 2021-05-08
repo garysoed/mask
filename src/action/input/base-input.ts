@@ -1,9 +1,9 @@
 import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {StateId} from 'gs-tools/export/state';
-import {handler, hasAttribute, host, InputsOf, PersonaContext} from 'persona';
+import {handler, host, InputsOf, PersonaContext} from 'persona';
 import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
-import {EMPTY, merge, Observable, of as observableOf, Subject} from 'rxjs';
+import {merge, Observable, of as observableOf, Subject} from 'rxjs';
 import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
@@ -17,7 +17,6 @@ export const $baseInput = {
   api: {
     ...$baseAction.api,
     applyFn: handler('apply'),
-    applyOnChange: hasAttribute('apply-on-change'),
     clearFn: handler('clear'),
   },
 };
@@ -76,19 +75,9 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
 
   @cache()
   private get handleOnApply$(): Observable<unknown> {
-    const onAutoApply$ = this.baseInputInputs.host.applyOnChange.pipe(
-        switchMap(applyOnChange => {
-          if (!applyOnChange) {
-            return EMPTY;
-          }
-
-          return this.onChange$;
-        }),
-    );
-
     return merge(
         this.baseInputInputs.host.applyFn,
-        onAutoApply$,
+        this.onChange$,
     )
         .pipe(
             withLatestFrom(this.domValue$, this.stateId$),

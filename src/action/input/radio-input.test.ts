@@ -107,18 +107,14 @@ test('@mask/action/input/radio-input', init => {
       assert(state$).to.emitSequence([null, 3, 2, 3]);
     });
 
-    should('set the state correctly with apply on change', () => {
-      _.el.setHasAttribute($.host._.applyOnChange, true);
-
+    should('set the state correctly', () => {
       const el1 = _.tester.createElement(RadioInput);
       el1.setAttribute($.host._.stateId, _.$state);
       el1.setAttribute($.host._.index, 1);
-      el1.setHasAttribute($.host._.applyOnChange, true);
 
       const el2 = _.tester.createElement(RadioInput);
       el2.setAttribute($.host._.stateId, _.$state);
       el2.setAttribute($.host._.index, 2);
-      el2.setHasAttribute($.host._.applyOnChange, true);
 
       const state$ = createSpySubject(_.stateService.resolve(_.$state));
 

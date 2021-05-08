@@ -154,20 +154,11 @@ test('@mask/input/base-input', init => {
       assert(_.stateService.resolve(_.$value)).to.emitWith(newDomValue);
     });
 
-    should('set the new value of the state on change if apply-on-change is true', () => {
-      _.el.setHasAttribute($.host._.applyOnChange, true);
-
+    should('set the new value of the state on change', () => {
       const newDomValue = 'newDomValue';
       _.stateService.modify(x => x.set(_.$domValue, newDomValue));
 
       assert(_.stateService.resolve(_.$value)).to.emitWith(newDomValue);
-    });
-
-    should('not set the new value on change if apply-on-change is false', () => {
-      const newDomValue = 'newDomValue';
-      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
-
-      assert(_.stateService.resolve(_.$value)).to.emitWith(INIT_STATE_VALUE);
     });
 
     should('do nothing if state ID is not specified', () => {
