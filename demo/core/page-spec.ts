@@ -20,7 +20,7 @@ import {Views} from './location-service';
 
 export interface PageSpec {
   readonly ctor: BaseCtrlCtor;
-  readonly componentSpec: ComponentSpec<any>;
+  readonly componentSpec: ComponentSpec<any, Element>;
   readonly name: string;
   readonly path: Views;
 }

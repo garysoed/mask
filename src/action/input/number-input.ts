@@ -1,7 +1,6 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, classToggle, dispatcher, element, host, integerParser, onDom, onInput, PersonaContext, setAttribute} from 'persona';
+import {$div, $input, attributeIn, attributeOut, classToggle, dispatcher, element, host, integerParser, onDom, onInput, PersonaContext, setAttribute} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, startWith} from 'rxjs/operators';
 
@@ -34,14 +33,14 @@ export const $ = {
   icon: element('icon', $icon, {
     hiddenClass: classToggle('hidden'),
   }),
-  input: element('input', instanceofType(HTMLInputElement), {
+  input: element('input', $input, {
     disabled: setAttribute('disabled'),
     max: attributeOut('max', integerParser()),
     min: attributeOut('min', integerParser()),
     onInput: onInput(),
     step: attributeOut('step', integerParser()),
   }),
-  root: element('root', instanceofType(HTMLDivElement), {
+  root: element('root', $div, {
     onMouseEnter: onDom('mouseenter'),
     onMouseLeave: onDom('mouseleave'),
   }),

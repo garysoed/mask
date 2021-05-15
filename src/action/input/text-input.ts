@@ -1,6 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
+import {$input, attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
@@ -52,7 +51,7 @@ export const $textInput = {
 
 export const $ = {
   host: host($textInput.api),
-  input: element('input', instanceofType(HTMLInputElement), {
+  input: element('input', $input, {
     autocomplete: attributeOut('autocomplete', stringParser()),
     disabled: setAttribute('disabled'),
     onInput: onInput(),

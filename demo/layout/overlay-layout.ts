@@ -1,7 +1,6 @@
 import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
+import {$div, element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, switchMap} from 'rxjs/operators';
 
@@ -24,17 +23,17 @@ export const $overlayLayoutDemo = {
 
 const $ = {
   overlay: element('overlay', $overlayLayout, {}),
-  overlayHorizontal: element('overlayHorizontal', instanceofType(HTMLDivElement), {
+  overlayHorizontal: element('overlayHorizontal', $div, {
     overlayHorizontalAnchors: multi('#overlayHorizontalAnchors'),
   }),
-  overlayVertical: element('overlayVertical', instanceofType(HTMLDivElement), {
+  overlayVertical: element('overlayVertical', $div, {
     overlayVerticalAnchors: multi('#overlayVerticalAnchors'),
   }),
   target: element('target', $button, {}),
-  targetHorizontal: element('targetHorizontal', instanceofType(HTMLDivElement), {
+  targetHorizontal: element('targetHorizontal', $div, {
     targetHorizontalAnchors: multi('#targetHorizontalAnchors'),
   }),
-  targetVertical: element('targetVertical', instanceofType(HTMLDivElement), {
+  targetVertical: element('targetVertical', $div, {
     targetVerticalAnchors: multi('#targetVerticalAnchors'),
   }),
 };

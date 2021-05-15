@@ -1,8 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, classlist, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
+import {$input, $label, $p, attributeIn, attributeOut, classlist, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
 import {concat, EMPTY, merge, Observable} from 'rxjs';
 import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -32,21 +31,21 @@ export const $radioInput = {
 };
 
 export const $ = {
-  checkedLabel: element('checkedLabel', instanceofType(HTMLParagraphElement), {
+  checkedLabel: element('checkedLabel', $p, {
     text: textOut(),
   }),
-  container: element('container', instanceofType(HTMLLabelElement), {
+  container: element('container', $label, {
     checkMode: classlist(),
   }),
   host: host({
     ...$radioInput.api,
   }),
-  input: element('input', instanceofType(HTMLInputElement), {
+  input: element('input', $input, {
     name: attributeOut('name', stateIdParser<number|null>()),
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),
-  uncheckedLabel: element('uncheckedLabel', instanceofType(HTMLParagraphElement), {
+  uncheckedLabel: element('uncheckedLabel', $p, {
     text: textOut(),
   }),
 };

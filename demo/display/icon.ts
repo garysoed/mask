@@ -2,8 +2,7 @@ import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
-import {instanceofType} from 'gs-types';
-import {element, PersonaContext, setAttribute} from 'persona';
+import {$div, element, PersonaContext, setAttribute} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -25,7 +24,7 @@ export const $iconDemo = {
 const $ = {
   fitToWidthCheckbox: element('fitToWidthCheckbox', $checkbox, {}),
   icon: element('icon', $icon, {}),
-  iconContainer: element('iconContainer', instanceofType(HTMLDivElement), {
+  iconContainer: element('iconContainer', $div, {
     action: setAttribute('mk-action-2'),
   }),
   isActionCheckbox: element('isActionCheckbox', $checkbox, {}),

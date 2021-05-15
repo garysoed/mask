@@ -1,6 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {element, host, mutationObservable, PersonaContext, textContent} from 'persona';
+import {$pre, element, host, mutationObservable, PersonaContext, textContent} from 'persona';
 import {Observable} from 'rxjs';
 import {map, startWith, tap} from 'rxjs/operators';
 
@@ -23,7 +22,7 @@ export const $codeBlock = {
 
 const $ = {
   host: host($codeBlock.api),
-  root: element('root', instanceofType(HTMLPreElement), {
+  root: element('root', $pre, {
     text: textContent(),
   }),
 };

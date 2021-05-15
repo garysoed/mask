@@ -3,8 +3,7 @@ import {assert, createSpySubject, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {fakeStateService, StateId} from 'gs-tools/export/state';
-import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
+import {$div, attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
@@ -25,7 +24,7 @@ const $$ = {
   },
 };
 const $ = {
-  div: element('div', instanceofType(HTMLDivElement), {
+  div: element('div', $div, {
     disabled: attributeOut('disabled', booleanParser(), false),
     label: attributeOut('label', stringParser(), ''),
   }),

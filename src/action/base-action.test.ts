@@ -1,6 +1,5 @@
 import {assert, should, test} from 'gs-testing';
-import {instanceofType} from 'gs-types';
-import {attributeOut, booleanParser, element, host, PersonaContext, setAttribute} from 'persona';
+import {$div, attributeOut, booleanParser, element, host, PersonaContext, setAttribute} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {Observable} from 'rxjs';
 
@@ -10,7 +9,7 @@ import {$ as $baseAction, $baseAction as $$baseAction, BaseAction} from './base-
 
 
 const $ = {
-  div: element('div', instanceofType(HTMLDivElement), {
+  div: element('div', $div, {
     disabled: attributeOut('disabled', booleanParser(), false),
   }),
   host: host({

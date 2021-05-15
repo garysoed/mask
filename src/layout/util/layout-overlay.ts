@@ -1,7 +1,6 @@
 import {source, Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {classlist, element, PersonaContext, style} from 'persona';
+import {$div, classlist, element, PersonaContext, style} from 'persona';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -16,13 +15,13 @@ import layoutOverlayTemplate from './layout-overlay.html';
 const $isActive = source('layout.isActive', () => new BehaviorSubject(false));
 
 const $ = {
-  gridLeft: element('gridLeft', instanceofType(HTMLDivElement), {
+  gridLeft: element('gridLeft', $div, {
     backgroundImage: style('backgroundImage'),
   }),
-  gridRight: element('gridRight', instanceofType(HTMLDivElement), {
+  gridRight: element('gridRight', $div, {
     backgroundImage: style('backgroundImage'),
   }),
-  root: element('root', instanceofType(HTMLDivElement), {
+  root: element('root', $div, {
     classlist: classlist(),
   }),
 };

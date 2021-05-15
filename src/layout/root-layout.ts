@@ -1,6 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent} from 'persona';
+import {$p, attributeIn, attributeOut, booleanParser, dispatcher, element, host, mediaQuery, onDom, PersonaContext, stringParser, textContent} from 'persona';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, startWith} from 'rxjs/operators';
 
@@ -33,7 +32,7 @@ export const $ = {
   }),
   host: host($rootLayout.api),
   mainIcon: element('mainIcon', $icon, {}),
-  title: element('title', instanceofType(HTMLParagraphElement), {
+  title: element('title', $p, {
     textContent: textContent(),
   }),
   titleButton: element('titleButton', $button, {}),

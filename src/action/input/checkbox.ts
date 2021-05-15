@@ -1,7 +1,6 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {attributeIn, classlist, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
+import {$input, $label, $p, attributeIn, classlist, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
@@ -32,23 +31,23 @@ export const $checkbox = {
 };
 
 export const $ = {
-  checkbox: element('checkbox', instanceofType(HTMLInputElement), {
+  checkbox: element('checkbox', $input, {
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),
-  checkedLabel: element('checkedLabel', instanceofType(HTMLParagraphElement), {
+  checkedLabel: element('checkedLabel', $p, {
     text: textOut(),
   }),
-  container: element('container', instanceofType(HTMLLabelElement), {
+  container: element('container', $label, {
     checkMode: classlist(),
   }),
   host: host({
     ...$checkbox.api,
   }),
-  uncheckedLabel: element('uncheckedLabel', instanceofType(HTMLParagraphElement), {
+  uncheckedLabel: element('uncheckedLabel', $p, {
     text: textOut(),
   }),
-  unknownLabel: element('unknownLabel', instanceofType(HTMLParagraphElement), {
+  unknownLabel: element('unknownLabel', $p, {
     text: textOut(),
   }),
 };

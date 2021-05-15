@@ -1,7 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {instanceofType} from 'gs-types';
-import {classToggle, element, host, onDom, PersonaContext, renderNode, RenderSpec, resizeObservable, single, style} from 'persona';
+import {$div, classToggle, element, host, onDom, PersonaContext, renderNode, RenderSpec, resizeObservable, single, style} from 'persona';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith} from 'rxjs/operators';
 
@@ -25,12 +24,12 @@ export const $overlay = {
 
 export const $ = {
   host: host($overlay.api),
-  content: element('content', instanceofType(HTMLDivElement), {
+  content: element('content', $div, {
     content: single('#content'),
     styleTop: style('top'),
     styleLeft: style('left'),
   }),
-  root: element('root', instanceofType(HTMLDivElement), {
+  root: element('root', $div, {
     hidden: classToggle('hidden'),
     onClick: onDom('click'),
   }),

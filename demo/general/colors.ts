@@ -1,7 +1,6 @@
 import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {classToggle, element, PersonaContext} from 'persona';
+import {$table, classToggle, element, PersonaContext} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -19,7 +18,7 @@ export const $colorsDemo = {
 };
 
 const $ = {
-  table: element('table', instanceofType(HTMLTableElement), {
+  table: element('table', $table, {
     darkClass: classToggle('dark'),
   }),
 };

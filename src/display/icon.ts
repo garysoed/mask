@@ -8,9 +8,9 @@
  */
 import {cache} from 'gs-tools/export/data';
 import {typeBased} from 'gs-tools/export/serializer';
-import {booleanType, instanceofType} from 'gs-types';
+import {booleanType} from 'gs-types';
 import {compose, json} from 'nabu';
-import {AriaRole, attributeIn, attributeOut, element, enumParser, host, PersonaContext, renderHtml, RenderSpec, single, stringParser} from 'persona';
+import {$span, AriaRole, attributeIn, attributeOut, element, enumParser, host, PersonaContext, renderHtml, RenderSpec, single, stringParser} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
@@ -45,7 +45,7 @@ export const $ = {
     ),
     role: attributeOut('role', stringParser()),
   }),
-  root: element('root', instanceofType(HTMLSpanElement), {
+  root: element('root', $span, {
     content: single('#content'),
   }),
 };

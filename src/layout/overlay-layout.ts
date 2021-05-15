@@ -1,6 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {instanceofType} from 'gs-types';
-import {attributeIn, element, enumParser, handler, host, PersonaContext, slotted, stringParser} from 'persona';
+import {$slot, attributeIn, element, enumParser, handler, host, PersonaContext, slotted, stringParser} from 'persona';
 import {combineLatest, Observable} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -25,7 +24,7 @@ export const $overlayLayout = {
 
 export const $ = {
   host: host($overlayLayout.api),
-  slot: element('slot', instanceofType(HTMLSlotElement), {
+  slot: element('slot', $slot, {
     slotted: slotted(),
   }),
 };

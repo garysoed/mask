@@ -3,8 +3,8 @@ import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {StateId} from 'gs-tools/export/state';
-import {elementWithTagType, enumType, instanceofType} from 'gs-types';
-import {attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, RenderSpec, single, stringParser} from 'persona';
+import {elementWithTagType, enumType} from 'gs-types';
+import {$div, attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, RenderSpec, single, stringParser} from 'persona';
 import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -39,7 +39,7 @@ const $ = {
   content: element('content', elementWithTagType('div'), {
     content: single('content'),
   }),
-  drawerRoot: element('drawerRoot', instanceofType(HTMLElement), {
+  drawerRoot: element('drawerRoot', $div, {
     actionContents: multi('#actionContents'),
     displayContents: multi('#displayContents'),
     generalContents: multi('#generalContents'),
