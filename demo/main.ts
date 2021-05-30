@@ -1,15 +1,12 @@
 import {$stateService} from 'grapevine';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
-import {LocalStorage} from 'gs-tools/export/store';
-import {identity, json} from 'nabu';
+import {StateId, StateService} from 'gs-tools/export/state';
 import {combineLatest, EMPTY} from 'rxjs';
 import {startWith, switchMap, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {CheckedValue} from '../src/action/input/checkbox';
 import {$themeLoader, start} from '../src/app/app';
-import {$saveConfig, $saveService} from '../src/core/save-service';
 import {registerSvg} from '../src/core/svg-service';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {PALETTE, Palette} from '../src/theme/palette';
@@ -26,7 +23,6 @@ import {$demoState, DemoState} from './core/demo-state';
 import {$locationService} from './core/location-service';
 
 
-const DEMO_STATE_KEY = 'demoState';
 const BASE_COLOR_NAME = 'TEAL';
 const ACCENT_COLOR_NAME = 'PURPLE';
 const theme = new Theme(PALETTE[BASE_COLOR_NAME], PALETTE[ACCENT_COLOR_NAME]);
@@ -93,21 +89,7 @@ window.addEventListener('load', () => {
       )
       .subscribe();
 
-  const saveService = $saveService.get(vine);
-  saveService.setSaving(true);
-  saveService.run().subscribe();
-
-  $saveConfig.get(vine).next({
-    loadOnInit: true,
-    saveId: DEMO_STATE_KEY,
-    initFn: init,
-    storage: new LocalStorage<Snapshot<DemoState>, any>(
-        window,
-        'mkd',
-        identity(),
-        json(),
-    ),
-  });
+  init($stateService.get(vine));
 });
 
 function init(stateService: StateService): StateId<DemoState> {

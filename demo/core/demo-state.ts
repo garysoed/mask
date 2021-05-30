@@ -1,10 +1,9 @@
 import {$stateService, Source, source} from 'grapevine';
 import {StateId} from 'gs-tools/export/state';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
-import {$rootId$} from '../../src/core/save-service';
 import {Palette} from '../../src/theme/palette';
 
 
@@ -62,6 +61,11 @@ export interface DemoState {
   readonly radioInputDemo: RadioInputDemoState;
   readonly textInputDemo: TextInputDemoState;
 }
+
+export const $rootId$ = source<BehaviorSubject<StateId<DemoState>|undefined>>(
+    'rootId$',
+    () => new BehaviorSubject<StateId<DemoState>|undefined>(undefined),
+);
 
 export const $demoStateId: Source<Observable<StateId<DemoState>|undefined>> = source(
     'demoStateId',

@@ -1,70 +1,89 @@
 import {$stateService, source, Vine} from 'grapevine';
+import {$asArray, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {Snapshot, StateId, StateService} from 'gs-tools/export/state';
+import {Modifier, StateId} from 'gs-tools/export/state';
 import {EditableStorage} from 'gs-tools/export/store';
-import {BehaviorSubject, combineLatest, EMPTY, merge, Observable, of as observableOf} from 'rxjs';
-import {map, share, switchMap, take, tap} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, EMPTY, merge, Observable, ReplaySubject} from 'rxjs';
+import {map, scan, share, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 
 interface SaveConfig {
-  readonly loadOnInit: boolean;
-  readonly saveId: string;
-  readonly storage: EditableStorage<Snapshot<any>>;
-  initFn(stateService: StateService): StateId<any>;
+  readonly onSave$: Observable<unknown>;
+  readonly storage: EditableStorage<any>;
 }
 
+interface Saveable {
+  readonly storageId: string;
+  readonly stateId: StateId<unknown>;
+}
+
+
 export class SaveService {
-  private readonly shouldSave$ = new BehaviorSubject(false);
+  private readonly saveable$ = new ReplaySubject<Saveable>();
 
   constructor(private readonly vine: Vine) { }
 
-  @cache()
-  private get handleInit$(): Observable<unknown> {
-    return $saveConfig.get(this.vine).pipe(
-        filterNonNullable(),
-        take(1),
-        switchMap(config => {
-          const onLoaded$ = config.loadOnInit ? this.load() : observableOf(false);
-          return onLoaded$.pipe(
-              tap(isLoaded => {
-                if (isLoaded) {
-                  return;
-                }
-
-                const stateService = $stateService.get(this.vine);
-                $rootId$.get(this.vine).next(config.initFn(stateService));
-              }),
-          );
-        }),
-    );
+  declareSaveable<T>(storageId: string, initFn: (modifier: Modifier) => StateId<T>): StateId<T> {
+    const stateService = $stateService.get(this.vine);
+    const stateId = stateService.modify(initFn);
+    this.saveable$.next({storageId, stateId});
+    return stateId;
   }
 
   @cache()
-  private get handleOnSave$(): Observable<unknown> {
+  private get handleOnStorageChange$(): Observable<unknown> {
     const stateService = $stateService.get(this.vine);
-    return combineLatest([
-      this.shouldSave$,
-      $saveConfig.get(this.vine),
-      $rootId$.get(this.vine),
-    ])
+    return combineLatest([this.saveables$, $saveConfig.get(this.vine)])
         .pipe(
-            switchMap(([isSaving, saveConfig, rootId]) => {
-              if (!isSaving || !saveConfig || !rootId) {
+            switchMap(([saveables, config]) => {
+              if (!config) {
                 return EMPTY;
               }
 
-              return stateService.onChange$.pipe(
-                  tap(() => {
-                    const snapshot = stateService.snapshot(rootId);
-                    if (!snapshot) {
-                      saveConfig.storage.delete(saveConfig.saveId);
-                      return;
-                    }
+              const onStorageChange = $pipe(
+                  saveables,
+                  $map(saveable => config.storage.read(saveable.storageId).pipe(
+                      stateService.modifyOperator((x, item) => x.set(saveable.stateId, item)),
+                  )),
+                  $asArray(),
+              );
 
-                    const updated = saveConfig.storage.update(saveConfig.saveId, snapshot);
-                    if (updated) {
-                      return;
+              if (onStorageChange.length <= 0) {
+                return EMPTY;
+              }
+
+              return merge(...onStorageChange);
+            }),
+        );
+  }
+
+  @cache()
+  private get handleOnStateChange$(): Observable<unknown> {
+    const stateService = $stateService.get(this.vine);
+    return combineLatest([
+      $saveConfig.get(this.vine),
+      this.saveables$,
+    ])
+        .pipe(
+            switchMap(([config, saveables]) => {
+              if (!config) {
+                return EMPTY;
+              }
+
+              const states = $pipe(
+                  saveables,
+                  $map(saveable => stateService.resolve(saveable.stateId).pipe(
+                      map(item => ({item, storageId: saveable.storageId})),
+                  )),
+                  $asArray(),
+              );
+
+              const states$ = combineLatest(states);
+              return config.onSave$.pipe(
+                  withLatestFrom(states$),
+                  tap(([, states]) => {
+                    for (const {item, storageId} of states) {
+                      config.storage.update(storageId, item);
                     }
                   }),
               );
@@ -73,45 +92,18 @@ export class SaveService {
         );
   }
 
-  load(): Observable<boolean> {
-    return this.savedState$.pipe(
-        take(1),
-        map(state => {
-          if (state) {
-            $stateService.get(this.vine).init(state);
-            $rootId$.get(this.vine).next(state.rootId);
-            return true;
-          }
-
-          return false;
-        }),
+  @cache()
+  private get saveables$(): Observable<readonly Saveable[]> {
+    return this.saveable$.pipe(
+        scan((acc, item) => [...acc, item], [] as readonly Saveable[]),
     );
   }
 
   run(): Observable<unknown> {
-    return merge(this.handleOnSave$, this.handleInit$);
-  }
-
-  get savedState$(): Observable<Snapshot<unknown>|undefined> {
-    return $saveConfig.get(this.vine).pipe(
-        switchMap(config => {
-          if (!config) {
-            return EMPTY;
-          }
-          return config.storage.read(config.saveId);
-        }),
-    );
-  }
-
-  setSaving(isSaving: boolean): void {
-    this.shouldSave$.next(isSaving);
+    return merge(this.handleOnStateChange$, this.handleOnStorageChange$);
   }
 }
 
-export const $rootId$ = source<BehaviorSubject<StateId<any>|undefined>>(
-    'rootId',
-    () => new BehaviorSubject<StateId<any>|undefined>(undefined),
-);
 export const $saveConfig = source<BehaviorSubject<SaveConfig|undefined>>(
     'saveConfig',
     () => new BehaviorSubject<SaveConfig|undefined>(undefined),
