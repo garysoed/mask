@@ -66,7 +66,7 @@ input::-webkit-inner-spin-button {
 </style>
 
 <div id="root" mk-theme="">
-  <div>Label</div>
+  <slot><slot><div>Label</div></slot></slot>
 </div>
 <link rel="stylesheet" href="base/test.css"></mk-line-layout>
   <mk-line-layout flex=""><style>
@@ -76,7 +76,7 @@ input::-webkit-inner-spin-button {
 </style>
 
 <div id="root" mk-theme="">
-  <div id="inputContainer" layout="row">
+  <slot><div id="inputContainer" layout="row">
       <input flex="" id="input" mk-body-1="" type="number">
       <div id="iconContainer">
         <mk-icon id="icon" icon="mk.numberinput_stepper" class="" aria-hidden="true" role="presentation"><style>
@@ -92,13 +92,13 @@ input::-webkit-inner-spin-button {
 <span id="root">
   <!-- #content --><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="stepper.svg" inkscape:version="1.0 (4035a4f, 2020-05-01)" id="svg2" viewBox="0 0 24 24" height="100%" version="1.1">
   <metadata id="metadata10">
-    <rdf:rdf>
-      <cc:work rdf:about="">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
         <dc:title></dc:title>
-      </cc:work>
-    </rdf:rdf>
+      </cc:Work>
+    </rdf:RDF>
   </metadata>
   <defs id="defs8"></defs>
   <sodipodi:namedview inkscape:document-rotation="0" inkscape:current-layer="svg2" inkscape:window-maximized="0" inkscape:window-y="25" inkscape:window-x="0" inkscape:cy="10.199995" inkscape:cx="-0.73950701" inkscape:zoom="11.313709" showgrid="false" id="namedview6" inkscape:window-height="732" inkscape:window-width="1383" inkscape:pageshadow="2" inkscape:pageopacity="0" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" bordercolor="#666666" pagecolor="#ffffff"></sodipodi:namedview>
@@ -107,7 +107,7 @@ input::-webkit-inner-spin-button {
 </span>
 <link rel="stylesheet" href="base/test.css"></mk-icon>
       </div>
-    </div>
+    </div></slot>
 </div>
 <link rel="stylesheet" href="base/test.css"></mk-line-layout>
 </div>

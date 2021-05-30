@@ -57,12 +57,12 @@ export class Theme {
   }
 
   private generateSectionThemeCss(isDark: boolean): string {
-    const normalSectionSpecs = isDark ?
-      [...PRIMARY_DARK_SECTION_SPECS, ...SECONDARY_DARK_SECTION_SPECS] :
-      [...PRIMARY_LIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_SECTION_SPECS];
-    const highlightSectionSpecs = isDark ?
-      [...PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, ...SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS] :
-      [...PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS];
+    const normalSectionSpecs = isDark
+      ? [...PRIMARY_DARK_SECTION_SPECS, ...SECONDARY_DARK_SECTION_SPECS]
+      : [...PRIMARY_LIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_SECTION_SPECS];
+    const highlightSectionSpecs = isDark
+      ? [...PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, ...SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS]
+      : [...PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS];
 
     const cssVariables = $pipe(
         [...normalSectionSpecs, ...highlightSectionSpecs],
