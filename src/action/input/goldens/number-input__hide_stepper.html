@@ -66,7 +66,9 @@ input::-webkit-inner-spin-button {
 </style>
 
 <div id="root" mk-theme="">
-  <slot><slot><div>Label</div></slot></slot>
+  <slot>
+    <slot><div>Label</div></slot>
+  </slot>
 </div>
 <link rel="stylesheet" href="base/test.css"></mk-line-layout>
   <mk-line-layout flex=""><style>
@@ -76,7 +78,8 @@ input::-webkit-inner-spin-button {
 </style>
 
 <div id="root" mk-theme="">
-  <slot><div id="inputContainer" layout="row">
+  <slot>
+    <div id="inputContainer" layout="row">
       <input flex="" id="input" mk-body-1="" type="number">
       <div id="iconContainer">
         <mk-icon id="icon" icon="mk.numberinput_stepper" class="hidden" aria-hidden="true" role="presentation"><style>
@@ -107,7 +110,8 @@ input::-webkit-inner-spin-button {
 </span>
 <link rel="stylesheet" href="base/test.css"></mk-icon>
       </div>
-    </div></slot>
+    </div>
+  </slot>
 </div>
 <link rel="stylesheet" href="base/test.css"></mk-line-layout>
 </div>

@@ -40,18 +40,18 @@ export interface ColorWithAlpha {
 }
 
 export const SHADES: ReadonlyMap<NonContrastShadeId, Shade> = new Map([
-  [ShadeId.S000HI, {isDarkMix: true,  mixRatio: 0   , alpha: Alpha.HIGH}],
-  [ShadeId.S010HI, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.HIGH}],
-  [ShadeId.S010ML, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.MED_LOW}],
-  [ShadeId.S010VL, {isDarkMix: true,  mixRatio: 0.1 , alpha: Alpha.VERY_LOW}],
-  [ShadeId.S030HI, {isDarkMix: true,  mixRatio: 0.3 , alpha: Alpha.HIGH}],
-  [ShadeId.S050HI, {isDarkMix: true,  mixRatio: 0.5 , alpha: Alpha.HIGH}],
-  [ShadeId.S050ML, {isDarkMix: true,  mixRatio: 0.5 , alpha: Alpha.MED_LOW}],
-  [ShadeId.S100HI, {isDarkMix: true,  mixRatio: 1   , alpha: Alpha.HIGH}],
+  [ShadeId.S000HI, {isDarkMix: true,  mixRatio: 0, alpha: Alpha.HIGH}],
+  [ShadeId.S010HI, {isDarkMix: true,  mixRatio: 0.1, alpha: Alpha.HIGH}],
+  [ShadeId.S010ML, {isDarkMix: true,  mixRatio: 0.1, alpha: Alpha.MED_LOW}],
+  [ShadeId.S010VL, {isDarkMix: true,  mixRatio: 0.1, alpha: Alpha.VERY_LOW}],
+  [ShadeId.S030HI, {isDarkMix: true,  mixRatio: 0.3, alpha: Alpha.HIGH}],
+  [ShadeId.S050HI, {isDarkMix: true,  mixRatio: 0.5, alpha: Alpha.HIGH}],
+  [ShadeId.S050ML, {isDarkMix: true,  mixRatio: 0.5, alpha: Alpha.MED_LOW}],
+  [ShadeId.S100HI, {isDarkMix: true,  mixRatio: 1, alpha: Alpha.HIGH}],
   [ShadeId.S175HI, {isDarkMix: false, mixRatio: 0.25, alpha: Alpha.HIGH}],
-  [ShadeId.S200HI, {isDarkMix: false, mixRatio: 0   , alpha: Alpha.HIGH}],
-  [ShadeId.S200LO, {isDarkMix: false, mixRatio: 0   , alpha: Alpha.LOW}],
-  [ShadeId.S200MH, {isDarkMix: false, mixRatio: 0   , alpha: Alpha.MED_HIGH}],
+  [ShadeId.S200HI, {isDarkMix: false, mixRatio: 0, alpha: Alpha.HIGH}],
+  [ShadeId.S200LO, {isDarkMix: false, mixRatio: 0, alpha: Alpha.LOW}],
+  [ShadeId.S200MH, {isDarkMix: false, mixRatio: 0, alpha: Alpha.MED_HIGH}],
 ]);
 
 const BLACK = new RgbColor(0, 0, 0);

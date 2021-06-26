@@ -79,7 +79,7 @@ window.addEventListener('load', () => {
             ])
                 .pipe(
                     tap(([base, accent]) => {
-                      themeLoader$.next( new ClassThemeLoader( new Theme(
+                      themeLoader$.next(new ClassThemeLoader(new Theme(
                           PALETTE[base],
                           PALETTE[accent],
                       )));
