@@ -156,14 +156,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get darkModeStateId$(): Observable<StateId<boolean>> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => {
-          if (!demoState) {
-            return null;
-          }
-
-          return demoState.$isDarkMode;
-        }),
+    return $demoState.get(this.vine)._('$isDarkMode').pipe(
         filterNonNullable(),
     );
   }
@@ -228,14 +221,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   private renderRootTheme(): Observable<'light'|'dark'> {
-    return $demoState.get(this.vine).pipe(
-        switchMap(demoState => {
-          if (!demoState) {
-            return observableOf(undefined);
-          }
-
-          return $stateService.get(this.vine).resolve(demoState.$isDarkMode);
-        }),
+    return $demoState.get(this.vine).$('$isDarkMode').pipe(
         map(isDarkMode => isDarkMode ? 'dark' : 'light'),
     );
   }

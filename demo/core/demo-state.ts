@@ -1,7 +1,5 @@
 import {$stateService, Source, source} from 'grapevine';
 import {StateId} from 'gs-tools/export/state';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
 import {Palette} from '../../src/theme/palette';
@@ -62,28 +60,56 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const $rootId$ = source<BehaviorSubject<StateId<DemoState>|undefined>>(
-    'rootId$',
-    () => new BehaviorSubject<StateId<DemoState>|undefined>(undefined),
-);
+export const BASE_COLOR_NAME = 'TEAL';
+export const ACCENT_COLOR_NAME = 'PURPLE';
 
-export const $demoStateId: Source<Observable<StateId<DemoState>|undefined>> = source(
+export const $demoStateId: Source<StateId<DemoState>|undefined> = source(
     'demoStateId',
-    vine => $rootId$.get(vine),
+    vine => $stateService.get(vine).modify(x => x.add({
+      $accentColorName: x.add<keyof Palette>(ACCENT_COLOR_NAME),
+      $baseColorName: x.add<keyof Palette>(BASE_COLOR_NAME),
+      $isDarkMode: x.add<boolean>(true),
+      checkboxDemo: {
+        $unknownCheckboxState: x.add<CheckedValue>('unknown'),
+        $disabledCheckboxState: x.add<CheckedValue>(true),
+        $labelCheckboxState: x.add<CheckedValue>(false),
+      },
+      drawerLayoutDemo: {
+        $isExpanded: x.add<CheckedValue>(false),
+        $isHorizontalMode: x.add<CheckedValue>(true),
+      },
+      iconDemo: {
+        $isAction: x.add<CheckedValue>(false),
+        $fitToWidth: x.add<CheckedValue>(false),
+      },
+      numberInputDemo: {
+        $disabledNumberInputState: x.add(123),
+        $enabledNumberInputState: x.add(-10),
+        $rangedNumberInputState: x.add(0),
+        $steppedNumberInputState: x.add(2),
+      },
+      overlayLayoutDemo: {
+        $targetHorizontalIndex: x.add(0),
+        $targetVerticalIndex: x.add(0),
+        $overlayHorizontalIndex: x.add(0),
+        $overlayVerticalIndex: x.add(0),
+      },
+      radioInputDemo: {
+        $selectedIndex: x.add<number|null>(null),
+      },
+      textInputDemo: {
+        $disabledTextInputState: x.add<string>('Disabled text input value'),
+        $enabledTextInputState: x.add<string>('Init value'),
+        $emailTextInputState: x.add<string>('email@host.com'),
+        $telTextInputState: x.add<string>('1 (845) 949 1234'),
+        $urlTextInputState: x.add<string>('www.url.com'),
+      },
+    })),
 );
 
 export const $demoState = source(
     'demoState',
     vine => {
-      return $demoStateId.get(vine)
-          .pipe(
-              switchMap(demoStateId => {
-                if (!demoStateId) {
-                  return of(undefined);
-                }
-
-                return $stateService.get(vine).resolve(demoStateId);
-              }),
-          );
+      return $stateService.get(vine).resolve($demoStateId.get(vine));
     },
 );
