@@ -70,6 +70,7 @@ export class NumberInput extends BaseInput<number, typeof $> {
         $.host._.onChange,
         context,
         $,
+        $.host._,
     );
   }
 

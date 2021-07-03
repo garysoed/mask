@@ -48,7 +48,7 @@ export const $ = {
 })
 export class Button extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super(noop(), context, $);
+    super(noop(), context, $, $.host._);
   }
 
   @cache()

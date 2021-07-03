@@ -79,6 +79,7 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
         $.host._.onChange,
         context,
         $,
+        $.host._,
     );
 
     this.addSetup(this.handleOnGlobalRadioInput$);

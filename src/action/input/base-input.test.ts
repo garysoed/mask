@@ -52,6 +52,7 @@ class TestInput extends BaseInput<string, typeof $> {
         $.host._.onChange,
         context,
         $,
+        $.host._,
     );
 
     this.addSetup(this.forwardDomValueUpdatedByScript$);

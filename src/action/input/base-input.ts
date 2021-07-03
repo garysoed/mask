@@ -8,7 +8,7 @@ import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from '
 
 import {_p} from '../../app/app';
 import {ChangeEvent} from '../../event/change-event';
-import {$baseAction as $baseAction, BaseAction} from '../base-action';
+import {$baseAction as $baseAction, BaseAction, BaseInputOutputs} from '../base-action';
 
 
 export const STATE_ID_ATTR_NAME = 'state-id';
@@ -36,8 +36,9 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
       private readonly onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
       context: PersonaContext,
       specs: S,
+      inputOutputs: BaseInputOutputs,
   ) {
-    super(disabledDomOutput, context, specs);
+    super(disabledDomOutput, context, specs, inputOutputs);
 
     this.addSetup(this.handleOnApply$);
     this.addSetup(this.handleOnClear$);

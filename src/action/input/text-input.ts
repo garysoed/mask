@@ -73,6 +73,7 @@ export class TextInput extends BaseInput<string, typeof $> {
         $.host._.onChange,
         context,
         $,
+        $.host._,
     );
   }
 

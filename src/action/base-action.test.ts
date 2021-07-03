@@ -26,7 +26,7 @@ const $ = {
 })
 class TestAction extends BaseAction<typeof $> {
   constructor(context: PersonaContext) {
-    super($.div._.disabled, context, $);
+    super($.div._.disabled, context, $, $.host._);
   }
 
   get renders(): ReadonlyArray<Observable<unknown>> {

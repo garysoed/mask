@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {attributeOut, hasAttribute, host, InputsOf, PersonaContext, setAttribute, stringParser} from 'persona';
-import {Output} from 'persona/export/internal';
+import {Input, Output} from 'persona/export/internal';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -21,12 +21,21 @@ export const $ = {
   host: host($baseAction.api),
 };
 
+export interface BaseInputOutputs {
+  disabled: Input<boolean>;
+  isSecondary: Input<boolean>;
+  ariaDisabled: Output<string>;
+  action1: Output<boolean>;
+  action2: Output<boolean>;
+}
+
 
 export abstract class BaseAction<S extends typeof $> extends BaseThemedCtrl<S> {
   constructor(
       private readonly disabledDomOutput: Output<boolean>,
       context: PersonaContext,
       specs: S,
+      private readonly inputOutputs: BaseInputOutputs,
   ) {
     super(context, specs);
     this.addSetup(this.renderDisabledDomOutput$);
@@ -34,11 +43,14 @@ export abstract class BaseAction<S extends typeof $> extends BaseThemedCtrl<S> {
 
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.host.ariaDisabled(this.ariaDisabled$),
-      this.renderers.host.action1(
-          this.baseActionInputs.host.isSecondary.pipe(map(isSecondary => !isSecondary)),
+      this.ariaDisabled$.pipe(this.inputOutputs.ariaDisabled.output(this.context)),
+      this.baseActionInputs.host.isSecondary.pipe(
+          map(isSecondary => !isSecondary),
+          this.inputOutputs.action1.output(this.context),
       ),
-      this.renderers.host.action2(this.baseActionInputs.host.isSecondary),
+      this.baseActionInputs.host.isSecondary.pipe(
+          this.inputOutputs.action2.output(this.context),
+      ),
     ];
   }
 

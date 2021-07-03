@@ -86,6 +86,7 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
         $.host._.onChange,
         context,
         $,
+        $.host._,
     );
   }
 
