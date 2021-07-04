@@ -2,14 +2,14 @@ import {$stateService} from 'grapevine';
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService} from 'gs-tools/export/state';
-import {PersonaTesterFactory} from 'persona/export/testing';
+import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
 import hideStepper from './goldens/number-input__hide_stepper.html';
 import stepper from './goldens/number-input__stepper.html';
-import {$, NumberInput} from './number-input';
+import {NumberInput} from './number-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -27,26 +27,24 @@ test('@mask/input/number-input', init => {
       rootCtrls: [NumberInput],
       rootDoc: document,
     });
-    const el = tester.createElement(NumberInput);
+    const {element, harness} = tester.createHarness(NumberInput);
 
     const $state = stateService.modify(x => x.add(-2));
-    el.setAttribute($.host._.stateId, $state);
+    harness.host._.stateId($state);
 
     const labelEl = document.createElement('div');
     labelEl.textContent = 'Label';
-    el.element.appendChild(labelEl);
+    element.appendChild(labelEl);
 
-    return {$state, el, stateService, tester};
+    return {$state, element, harness, stateService, tester};
   });
 
   test('domValue$', () => {
     should('emit the correct value', () => {
       // Change the input and wait for the value to update.
       const value = 123;
-      _.el.setInputValue($.input, `${value}`);
-
-      _.el.dispatchEvent($.input._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.input._.onInput(`${value}`);
+      _.harness.host._.applyFn([]);
 
       assert(_.stateService.resolve(_.$state)).to.emitWith(value);
     });
@@ -54,16 +52,16 @@ test('@mask/input/number-input', init => {
 
   test('hideStepperIcon', () => {
     should('show stepper icon when hovered', () => {
-      _.el.dispatchEvent($.root._.onMouseEnter);
+      _.harness.root._.onMouseEnter();
 
-      assert(_.el.flattenContent()).to.matchSnapshot('stepper');
+      assert(flattenNode(_.element)).to.matchSnapshot('stepper');
     });
 
     should('hide stepper icon on mouseleave', () => {
-      _.el.dispatchEvent($.root._.onMouseEnter);
-      _.el.dispatchEvent($.root._.onMouseLeave);
+      _.harness.root._.onMouseEnter();
+      _.harness.root._.onMouseLeave();
 
-      assert(_.el.flattenContent()).to.matchSnapshot('hideStepper');
+      assert(flattenNode(_.element)).to.matchSnapshot('hideStepper');
     });
   });
 
@@ -72,9 +70,9 @@ test('@mask/input/number-input', init => {
       const value = 123;
 
       _.stateService.modify(x => x.set(_.$state, value));
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getElement($.input).value).to.equal(`${value}`);
+      assert(_.harness.input.selectable.value).to.equal(`${value}`);
     });
   });
 });

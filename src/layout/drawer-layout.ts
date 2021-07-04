@@ -11,7 +11,7 @@
 
 import {cache} from 'gs-tools/export/data';
 import {stringMatchConverter} from 'gs-tools/export/serializer';
-import {$div, $style, attributeIn, booleanParser, element, host, PersonaContext, stringParser, style} from 'persona';
+import {$div, attributeIn, booleanParser, element, host, PersonaContext, stringParser, style} from 'persona';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -48,7 +48,6 @@ export const $ = {
     styleHeight: style('height'),
     styleWidth: style('width'),
   }),
-  theme: element('theme', $style, {}),
 };
 
 @_p.customElement({

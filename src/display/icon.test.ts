@@ -6,7 +6,7 @@ import {ReplaySubject} from 'rxjs';
 import {_p} from '../app/app';
 import {registerSvg} from '../core/svg-service';
 
-import {$, FitTo, Icon} from './icon';
+import {FitTo, Icon} from './icon';
 
 
 const SVG_NAME = 'svgName';
@@ -34,9 +34,9 @@ test('display.Icon', init => {
     fakeFetch.onGet(SVG_URL).text(SVG_CONTENT);
     fakeFetch.install(window);
 
-    const el = tester.createElement(Icon);
+    const {harness} = tester.createHarness(Icon);
 
-    return {el, mockInnerHtmlParseService, svgEl$, tester, fakeFetch};
+    return {harness, mockInnerHtmlParseService, svgEl$, tester, fakeFetch};
   });
 
   test('rootSvg$', () => {
@@ -45,14 +45,14 @@ test('display.Icon', init => {
       svgEl.setAttribute('width', '123');
       _.svgEl$.next(svgEl);
 
-      _.el.setAttribute($.host._.fitTo, FitTo.HEIGHT);
-      _.el.setAttribute($.host._.icon, SVG_NAME);
+      _.harness.host._.fitTo(FitTo.HEIGHT);
+      _.harness.host._.icon(SVG_NAME);
 
-      assert(_.el.getElement($.root).children.item(0)!.tagName).to.equal('SVG');
+      assert(_.harness.root.selectable.children.item(0)!.tagName).to.equal('SVG');
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
 
-      assert(_.el.getElement($.root).children.item(0)!.hasAttribute('width')).to.equal(false);
-      assert(_.el.getElement($.root).children.item(0)!.getAttribute('height')).to.equal('100%');
+      assert(_.harness.root.selectable.children.item(0)!.hasAttribute('width')).to.equal(false);
+      assert(_.harness.root.selectable.children.item(0)!.getAttribute('height')).to.equal('100%');
     });
 
     should('set the innerHTML correctly and set the width to auto', () => {
@@ -60,18 +60,18 @@ test('display.Icon', init => {
       svgEl.setAttribute('height', '123');
       _.svgEl$.next(svgEl);
 
-      _.el.setAttribute($.host._.fitTo, FitTo.WIDTH);
-      _.el.setAttribute($.host._.icon, SVG_NAME);
+      _.harness.host._.fitTo(FitTo.WIDTH);
+      _.harness.host._.icon(SVG_NAME);
 
-      assert(_.el.getElement($.root).children.item(0)!.tagName).to.equal('SVG');
+      assert(_.harness.root.selectable.children.item(0)!.tagName).to.equal('SVG');
       assert(_.mockInnerHtmlParseService.parse).to.haveBeenCalledWith(SVG_CONTENT, 'image/svg+xml');
 
-      assert(_.el.getElement($.root).children.item(0)!.hasAttribute('height')).to.equal(false);
-      assert(_.el.getElement($.root).children.item(0)!.getAttribute('width')).to.equal('100%');
+      assert(_.harness.root.selectable.children.item(0)!.hasAttribute('height')).to.equal(false);
+      assert(_.harness.root.selectable.children.item(0)!.getAttribute('width')).to.equal('100%');
     });
 
     should('set the innerHTML correctly if there are no SVG names specified', () => {
-      assert(_.el.getElement($.root).children.length).to.equal(0);
+      assert(_.harness.root.selectable.children.length).to.equal(0);
     });
   });
 });

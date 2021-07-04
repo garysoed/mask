@@ -1,12 +1,12 @@
 import {$stateService} from 'grapevine';
-import {assert, runEnvironment, setup, should, test} from 'gs-testing';
+import {assert, runEnvironment, setThat, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService} from 'gs-tools/export/state';
-import {PersonaTesterFactory} from 'persona/export/testing';
+import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
-import {$, Checkbox, CheckedValue} from '../input/checkbox';
+import {Checkbox, CheckedValue} from '../input/checkbox';
 
 import goldenChecked from './goldens/checkbox__checked.html';
 import goldenDefault from './goldens/checkbox__default.html';
@@ -37,92 +37,92 @@ test('@mask/input/checkbox', init => {
       rootDoc: document,
     });
 
-    const el = tester.createElement(Checkbox);
+    const {element, harness} = tester.createHarness(Checkbox);
     const $state = stateService.modify(x => x.add<CheckedValue>(true));
-    el.setAttribute($.host._.stateId, $state);
+    harness.host._.stateId($state);
 
-    return {el, $state, stateService};
+    return {element, harness, $state, stateService};
   });
 
   test('render', () => {
     should('render default config correctly', () => {
-      _.el.setAttribute($.host._.label, 'label');
+      _.harness.host._.label('label');
 
-      assert(_.el.flattenContent()).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('render');
     });
   });
 
   test('checkMode$', () => {
     setup(() => {
-      _.el.setAttribute($.host._.label, 'label');
+      _.harness.host._.label('label');
     });
 
     should('set the classlist to display_checked if checked', () => {
-      const el = _.el.getElement($.checkbox);
+      const el = _.harness.checkbox.selectable;
       el.indeterminate = false;
       el.checked = true;
-      _.el.dispatchEvent($.checkbox._.onInput);
+      _.harness.checkbox._.onInput('');
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
-      assert(_.el.flattenContent()).to.matchSnapshot('checked');
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
+      assert(flattenNode(_.element)).to.matchSnapshot('checked');
     });
 
     should('set the classlist to display_unchecked if unchecked', () => {
-      const el = _.el.getElement($.checkbox);
+      const el = _.harness.checkbox.selectable;
       el.indeterminate = false;
       el.checked = false;
-      _.el.dispatchEvent($.checkbox._.onInput);
+      _.harness.checkbox._.onInput('');
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
-      assert(_.el.flattenContent()).to.matchSnapshot('unchecked');
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
+      assert(flattenNode(_.element)).to.matchSnapshot('unchecked');
     });
 
     should('set the classlist to display_unknown if unknown', () => {
-      const el = _.el.getElement($.checkbox);
+      const el = _.harness.checkbox.selectable;
       el.indeterminate = true;
       el.checked = true;
-      _.el.dispatchEvent($.checkbox._.onInput);
+      _.harness.checkbox._.onInput('');
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unknown']));
-      assert(_.el.flattenContent()).to.matchSnapshot('unknown');
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unknown'])));
+      assert(flattenNode(_.element)).to.matchSnapshot('unknown');
     });
 
     should('update the slot name if the value is set by calling clear', () => {
       _.stateService.modify(x => x.set(_.$state, true));
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
-      assert(_.el.flattenContent()).to.matchSnapshot('update');
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
+      assert(flattenNode(_.element)).to.matchSnapshot('update');
     });
   });
 
   test('domValue$', () => {
     should('emit true if the checked', () => {
-      const el = _.el.getElement($.checkbox);
+      const el = _.harness.checkbox.selectable;
       el.indeterminate = false;
       el.checked = true;
-      _.el.dispatchEvent($.checkbox._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.checkbox._.onInput('');
+      _.harness.host._.applyFn([]);
 
       assert(_.stateService.resolve(_.$state)).to.emitWith(true);
     });
 
     should('emit false if the unchecked', () => {
-      const el = _.el.getElement($.checkbox);
+      const el = _.harness.checkbox.selectable;
       el.indeterminate = false;
       el.checked = false;
-      _.el.dispatchEvent($.checkbox._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.checkbox._.onInput('');
+      _.harness.host._.applyFn([]);
 
       assert(_.stateService.resolve(_.$state)).to.emitWith(false);
     });
 
     should('emit unknown if the value is indeterminate', () => {
-      const el = _.el.getElement($.checkbox);
+      const el = _.harness.checkbox.selectable;
       el.indeterminate = true;
       el.checked = true;
-      _.el.dispatchEvent($.checkbox._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.checkbox._.onInput('');
+      _.harness.host._.applyFn([]);
 
       assert(_.stateService.resolve(_.$state)).to.emitWith('unknown');
     });
@@ -132,28 +132,28 @@ test('@mask/input/checkbox', init => {
     should('set true value correctly', () => {
       _.stateService.modify(x => x.set(_.$state, true));
 
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getElement($.checkbox).checked).to.equal(true);
-      assert(_.el.getElement($.checkbox).indeterminate).to.equal(false);
+      assert(_.harness.checkbox.selectable.checked).to.equal(true);
+      assert(_.harness.checkbox.selectable.indeterminate).to.equal(false);
     });
 
     should('set false value correctly', () => {
       _.stateService.modify(x => x.set(_.$state, false));
 
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getElement($.checkbox).checked).to.equal(false);
-      assert(_.el.getElement($.checkbox).indeterminate).to.equal(false);
+      assert(_.harness.checkbox.selectable.checked).to.equal(false);
+      assert(_.harness.checkbox.selectable.indeterminate).to.equal(false);
     });
 
     should('set unknown value correctly', () => {
       _.stateService.modify(x => x.set(_.$state, 'unknown'));
 
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getElement($.checkbox).checked).to.equal(false);
-      assert(_.el.getElement($.checkbox).indeterminate).to.equal(true);
+      assert(_.harness.checkbox.selectable.checked).to.equal(false);
+      assert(_.harness.checkbox.selectable.indeterminate).to.equal(true);
     });
   });
 });

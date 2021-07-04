@@ -1,6 +1,6 @@
-import {Vine, source} from 'grapevine';
+import {source, Vine} from 'grapevine';
 import {PersonaBuilder} from 'persona';
-import {BaseCtrlCtor, CustomElementCtrlCtor} from 'persona/export/internal';
+import {BaseCtrlCtor} from 'persona/export/internal';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ export const $window = source('window', () => window);
 
 export function start(
     appName: string,
-    rootCtrls: ReadonlyArray<CustomElementCtrlCtor|BaseCtrlCtor>,
+    rootCtrls: ReadonlyArray<BaseCtrlCtor<{}>>,
     rootDoc: Document,
     themeLoader: ThemeLoader,
     customElementRegistry: CustomElementRegistry = window.customElements,

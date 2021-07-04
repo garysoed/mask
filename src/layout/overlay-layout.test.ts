@@ -4,16 +4,16 @@ import {PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../app/app';
 import {$overlayService, Anchor, NodeSpec, ShowEvent} from '../core/overlay-service';
 
-import {$, OverlayLayout} from './overlay-layout';
+import {OverlayLayout} from './overlay-layout';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/layout/overlay-layout', init => {
   const _ = init(() => {
     const tester = TESTER_FACTORY.build({rootCtrls: [OverlayLayout], rootDoc: document});
-    const el = tester.createElement(OverlayLayout);
-    document.body.appendChild(el.element);
-    return {el, tester};
+    const {element, harness} = tester.createHarness(OverlayLayout);
+    document.body.appendChild(element);
+    return {element, harness, tester};
   });
 
   test('handleOnShow$', () => {
@@ -22,23 +22,23 @@ test('@mask/layout/overlay-layout', init => {
       const targetId = 'targetId';
       targetEl.id = targetId;
       document.body.appendChild(targetEl);
-      _.el.setAttribute($.host._.targetId, targetId);
+      _.harness.host._.targetId(targetId);
 
       const targetHorizontal = Anchor.START;
-      _.el.setAttribute($.host._.targetHorizontal, targetHorizontal);
+      _.harness.host._.targetHorizontal(targetHorizontal);
       const targetVertical = Anchor.END;
-      _.el.setAttribute($.host._.targetVertical, targetVertical);
+      _.harness.host._.targetVertical(targetVertical);
 
       const contentNode = document.createElement('div');
       contentNode.id = 'content';
-      _.el.addSlotElement($.slot, contentNode);
+      _.harness.slot._.slotted(contentNode);
       const contentHorizontal = Anchor.MIDDLE;
-      _.el.setAttribute($.host._.contentHorizontal, contentHorizontal);
+      _.harness.host._.contentHorizontal(contentHorizontal);
       const contentVertical = Anchor.END;
-      _.el.setAttribute($.host._.contentVertical, contentVertical);
+      _.harness.host._.contentVertical(contentVertical);
 
       const showEvent$ = createSpySubject($overlayService.get(_.tester.vine).onShow$);
-      _.el.callFunction($.host._.showFn, []);
+      _.harness.host._.showFn([]);
 
       assert(showEvent$).to.emitWith(objectThat<ShowEvent>().haveProperties({
         target: objectThat<NodeSpec<Element>>().haveProperties({

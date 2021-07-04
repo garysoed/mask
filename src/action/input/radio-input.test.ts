@@ -1,8 +1,8 @@
 import {$stateService} from 'grapevine';
-import {assert, createSpySubject, objectThat, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, objectThat, runEnvironment, setThat, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService, StateId} from 'gs-tools/export/state';
-import {PersonaTesterFactory} from 'persona/export/testing';
+import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
@@ -11,7 +11,7 @@ import goldenChecked from './goldens/radio-input__checked.html';
 import goldenDefault from './goldens/radio-input__default.html';
 import goldenUnchecked from './goldens/radio-input__unchecked.html';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
-import {$, RadioInput} from './radio-input';
+import {RadioInput} from './radio-input';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -37,98 +37,98 @@ test('@mask/action/input/radio-input', init => {
       rootCtrls: [RadioInput],
       rootDoc: document,
     });
-    const el = tester.createElement(RadioInput);
+    const {element, harness} = tester.createHarness(RadioInput);
 
     const $state = stateService.modify(x => x.add<number|null>(null));
-    el.setAttribute($.host._.stateId, $state);
-    el.setAttribute($.host._.index, INDEX);
+    harness.host._.stateId($state);
+    harness.host._.index(INDEX);
 
-    return {el, $state, stateService, tester};
+    return {$state, element, harness, stateService, tester};
   });
 
   test('render', () => {
     should('render default config correctly', () => {
-      _.el.setAttribute($.host._.label, 'label');
+      _.harness.host._.label('label');
 
-      assert(_.el.flattenContent()).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('render');
     });
   });
 
   test('checkMode$', () => {
     should('set the slot to display_checked if checked', () => {
-      const el = _.el.getElement($.input);
+      const el = _.harness.input.selectable;
       el.checked = true;
-      _.el.setAttribute($.host._.label, 'label');
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.host._.label('label');
+      _.harness.input._.onInput('');
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
-      assert(_.el.flattenContent()).to.matchSnapshot('checked');
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
+      assert(flattenNode(_.element)).to.matchSnapshot('checked');
     });
 
     should('set the slot to display_unchecked if unchecked', () => {
-      const el = _.el.getElement($.input);
+      const el = _.harness.input.selectable;
       el.checked = false;
-      _.el.setAttribute($.host._.label, 'label');
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.host._.label('label');
+      _.harness.input._.onInput('');
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
-      assert(_.el.flattenContent()).to.matchSnapshot('unchecked');
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
+      assert(flattenNode(_.element)).to.matchSnapshot('unchecked');
     });
   });
 
   test('domValue$', () => {
     should('set the state correctly', () => {
-      const el1 = _.tester.createElement(RadioInput);
-      el1.setAttribute($.host._.stateId, _.$state);
-      el1.setAttribute($.host._.index, 1);
+      const {harness: harness1} = _.tester.createHarness(RadioInput);
+      harness1.host._.stateId(_.$state);
+      harness1.host._.index(1);
 
-      const el2 = _.tester.createElement(RadioInput);
-      el2.setAttribute($.host._.stateId, _.$state);
-      el2.setAttribute($.host._.index, 2);
+      const {harness: harness2} = _.tester.createHarness(RadioInput);
+      harness2.host._.stateId(_.$state);
+      harness2.host._.index(2);
 
       const state$ = createSpySubject(_.stateService.resolve(_.$state));
 
       // Click on the third one.
-      const el = _.el.getElement($.input);
+      const el = _.harness.input.selectable;
       el.checked = true;
-      _.el.dispatchEvent($.input._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.input._.onInput('');
+      _.harness.host._.applyFn([]);
 
       // Then the second one.
-      el2.getElement($.input).checked = true;
-      el2.dispatchEvent($.input._.onInput);
-      el2.callFunction($.host._.applyFn, []);
+      harness2.input.selectable.checked = true;
+      harness2.input._.onInput('');
+      harness2.host._.applyFn([]);
 
       // Click on the third one again.
-      _.el.getElement($.input).checked = true;
-      _.el.dispatchEvent($.input._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.input.selectable.checked = true;
+      _.harness.input._.onInput('');
+      _.harness.host._.applyFn([]);
 
       assert(state$).to.emitSequence([null, 3, 2, 3]);
     });
 
     should('set the state correctly', () => {
-      const el1 = _.tester.createElement(RadioInput);
-      el1.setAttribute($.host._.stateId, _.$state);
-      el1.setAttribute($.host._.index, 1);
+      const {harness: harness1} = _.tester.createHarness(RadioInput);
+      harness1.host._.stateId(_.$state);
+      harness1.host._.index(1);
 
-      const el2 = _.tester.createElement(RadioInput);
-      el2.setAttribute($.host._.stateId, _.$state);
-      el2.setAttribute($.host._.index, 2);
+      const {harness: harness2} = _.tester.createHarness(RadioInput);
+      harness2.host._.stateId(_.$state);
+      harness2.host._.index(2);
 
       const state$ = createSpySubject(_.stateService.resolve(_.$state));
 
       // Click on the third one.
-      _.el.getElement($.input).checked = true;
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.input.selectable.checked = true;
+      _.harness.input._.onInput('');
 
       // Then the second one.
-      el2.getElement($.input).checked = true;
-      el2.dispatchEvent($.input._.onInput);
+      harness2.input.selectable.checked = true;
+      harness2.input._.onInput('');
 
       // Click on the third one again.
-      _.el.getElement($.input).checked = true;
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.input.selectable.checked = true;
+      _.harness.input._.onInput('');
 
       assert(state$).to.emitSequence([null, 3, 2, 3]);
     });
@@ -137,8 +137,8 @@ test('@mask/action/input/radio-input', init => {
   test('handleOnGlobalRadioInput$', _, init => {
     const _ = init(_ => {
       // Check the element.
-      _.el.getElement($.input).checked = true;
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.input.selectable.checked = true;
+      _.harness.input._.onInput('');
 
       return _;
     });
@@ -146,20 +146,20 @@ test('@mask/action/input/radio-input', init => {
     should('reset the dom value if global radio input emits for other index and the ID match', () => {
       $onRadioInput$.get(_.tester.vine).next({index: 1, stateId: _.$state});
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_unchecked']));
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
     });
 
     should('do nothing if the global radio input emits for the current index', () => {
       $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: _.$state});
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
     });
 
     should('do nothing if the global radio input emits and the ID doesn\'t match', () => {
       const $otherStateId = _.stateService.modify(x => x.add<number|null>(null));
       $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: $otherStateId});
 
-      assert(_.el.getClassList($.container)).to.haveExactElements(new Set(['display_checked']));
+      assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
     });
   });
 
@@ -168,8 +168,8 @@ test('@mask/action/input/radio-input', init => {
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
       // Check the element.
-      _.el.getElement($.input).checked = true;
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.input.selectable.checked = true;
+      _.harness.input._.onInput('');
 
       assert(onRadioInput$).to.emitWith(objectThat<OnRadioInput>().haveProperties({
         index: INDEX,
@@ -181,8 +181,8 @@ test('@mask/action/input/radio-input', init => {
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
       // Check the element.
-      _.el.getElement($.input).checked = false;
-      _.el.dispatchEvent($.input._.onInput);
+      _.harness.input.selectable.checked = false;
+      _.harness.input._.onInput('');
 
       assert(onRadioInput$).toNot.emit();
     });
@@ -193,9 +193,9 @@ test('@mask/action/input/radio-input', init => {
       // Set the state to some number.
       _.stateService.modify(x => x.set(_.$state, 123));
 
-      _.el.getElement($.input).checked = true;
-      _.el.dispatchEvent($.input._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.input.selectable.checked = true;
+      _.harness.input._.onInput('');
+      _.harness.host._.applyFn([]);
 
       assert(_.stateService.resolve(_.$state)).to.emitWith(INDEX);
     });
@@ -205,9 +205,9 @@ test('@mask/action/input/radio-input', init => {
       // Set the state to some number.
       _.stateService.modify(x => x.set(_.$state, value));
 
-      _.el.getElement($.input).checked = false;
-      _.el.dispatchEvent($.input._.onInput);
-      _.el.callFunction($.host._.applyFn, []);
+      _.harness.input.selectable.checked = false;
+      _.harness.input._.onInput('');
+      _.harness.host._.applyFn([]);
 
       assert(_.stateService.resolve(_.$state)).to.emitWith(null);
     });
@@ -217,17 +217,17 @@ test('@mask/action/input/radio-input', init => {
     should('check the element if new value is the same as the index', () => {
       _.stateService.modify(x => x.set(_.$state, INDEX));
 
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getElement($.input).checked).to.equal(true);
+      assert(_.harness.input.selectable.checked).to.equal(true);
     });
 
     should('uncheck the element if the new value is different from the index', () => {
       _.stateService.modify(x => x.set(_.$state, 1));
 
-      _.el.callFunction($.host._.clearFn, []);
+      _.harness.host._.clearFn([]);
 
-      assert(_.el.getElement($.input).checked).to.equal(false);
+      assert(_.harness.input.selectable.checked).to.equal(false);
     });
   });
 });

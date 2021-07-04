@@ -5,7 +5,7 @@ import {fromEvent} from 'rxjs';
 import {_p} from '../app/app';
 import {ActionEvent} from '../event/action-event';
 
-import {$, Button} from './button';
+import {Button} from './button';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
@@ -14,53 +14,53 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/action/button', init => {
   const _ = init(() => {
     const tester = testerFactory.build({rootCtrls: [Button], rootDoc: document});
-    const el = tester.createElement(Button);
+    const {element, harness} = tester.createHarness(Button);
 
-    return {el, tester};
+    return {element, harness, tester};
   });
 
   test('onAction$', _, init => {
     const _ = init(_ => {
-      const actionSubject = createSpySubject(fromEvent(_.el.element, 'mk-action'));
+      const actionSubject = createSpySubject(fromEvent(_.element, 'mk-action'));
       return {..._, actionSubject};
     });
 
     should('fire the action event if clicked', () => {
-      _.el.element.click();
+      _.harness.host._.onClick();
       assert(_.actionSubject).to.emitWith(
           anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent),
       );
     });
 
     should('fire the action event on pressing Enter', () => {
-      _.el.simulateKeypress($.host, [{key: 'Enter'}]);
+      _.harness.host._.onEnterDown();
       assert(_.actionSubject).to
           .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
     });
 
     should('fire the action event on pressing space', () => {
-      _.el.simulateKeypress($.host, [{key: ' '}]);
+      _.harness.host._.onSpaceDown();
       assert(_.actionSubject).to
           .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
     });
 
     should('not fire the action event if disabled', () => {
-      _.el.setHasAttribute($.host._.disabled, true);
+      _.harness.host._.disabled(true);
 
-      _.el.element.click();
+      _.harness.host._.onClick();
       assert(_.actionSubject).toNot.emit();
     });
   });
 
   test('renderTabIndex', () => {
     should('render 0 if host is not disabled', () => {
-      _.el.setHasAttribute($.host._.disabled, false);
-      assert(_.el.getAttribute($.host._.tabindex)).to.emitWith(0);
+      _.harness.host._.disabled(false);
+      assert(_.harness.host._.tabindex).to.emitWith(0);
     });
 
     should('return -1 if host is disabled', () => {
-      _.el.setHasAttribute($.host._.disabled, true);
-      assert(_.el.getAttribute($.host._.tabindex)).to.emitWith(-1);
+      _.harness.host._.disabled(true);
+      assert(_.harness.host._.tabindex).to.emitWith(-1);
     });
   });
 });

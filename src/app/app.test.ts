@@ -1,5 +1,6 @@
 import {arrayThat, assert, objectThat, should, spy, test} from 'gs-testing';
-import {Config, CustomElementCtrl} from 'persona';
+import {Config} from 'persona';
+import {BaseCtrlCtor} from 'persona/export/internal';
 
 import {ClassThemeLoader} from '../theme/loader/class-theme-loader';
 import {PALETTE} from '../theme/palette';
@@ -7,8 +8,6 @@ import {Theme} from '../theme/theme';
 
 import {start, _p} from './app';
 
-
-type CustomElementCtrlCtor = new (...args: any[]) => CustomElementCtrl;
 
 test('app.App', () => {
   test('start', () => {
@@ -26,7 +25,7 @@ test('app.App', () => {
       );
 
       assert(personaBuilderBuildSpy).to.haveBeenCalledWith(objectThat<Config>().haveProperties({
-        rootCtrls: arrayThat<CustomElementCtrlCtor>().beEmpty(),
+        rootCtrls: arrayThat<BaseCtrlCtor<{}>>().beEmpty(),
         rootDoc: document,
         customElementRegistry: window.customElements,
       }));

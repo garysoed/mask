@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 
 import {_p} from '../app/app';
 
-import {$ as $baseAction, $baseAction as $$baseAction, BaseAction} from './base-action';
+import {$baseAction as $$baseAction, BaseAction} from './base-action';
 
 
 const $ = {
@@ -38,35 +38,35 @@ const factory = new PersonaTesterFactory(_p);
 test('@mask/action/base-action', init => {
   const _ = init(() => {
     const tester = factory.build({rootCtrls: [TestAction], rootDoc: document});
-    const el = tester.createElement('mk-test-base-action');
-    return {el, tester};
+    const {harness} = tester.createHarness(TestAction);
+    return {harness, tester};
   });
 
   test('ariaDisabled$', () => {
     should('set the aria value correctly', () => {
-      _.el.setHasAttribute($.host._.disabled, true);
+      _.harness.host._.disabled(true);
 
-      assert(_.el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('true');
+      assert(_.harness.host._.ariaDisabled).to.emitWith('true');
 
-      _.el.setHasAttribute($.host._.disabled, false);
+      _.harness.host._.disabled(false);
 
-      assert(_.el.getAttribute($baseAction.host._.ariaDisabled)).to.emitWith('');
+      assert(_.harness.host._.ariaDisabled).to.emitWith('');
     });
   });
 
   test('isPrimaryAction$', () => {
     should('render mk-action-1 if primary', () => {
-      _.el.setHasAttribute($.host._.isSecondary, false);
+      _.harness.host._.isSecondary(false);
 
-      assert(_.el.hasAttribute($.host._.action1)).to.equal(true);
-      assert(_.el.hasAttribute($.host._.action2)).to.equal(false);
+      assert(_.harness.host._.action1).to.emitWith(true);
+      assert(_.harness.host._.action2).to.emitWith(false);
     });
 
     should('render mk-action-2 if secondary', () => {
-      _.el.setHasAttribute($.host._.isSecondary, true);
+      _.harness.host._.isSecondary(true);
 
-      assert(_.el.hasAttribute($.host._.action1)).to.equal(false);
-      assert(_.el.hasAttribute($.host._.action2)).to.equal(true);
+      assert(_.harness.host._.action1).to.emitWith(false);
+      assert(_.harness.host._.action2).to.emitWith(true);
     });
   });
 });
