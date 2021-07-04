@@ -1,13 +1,13 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {dispatchResizeEvent, PersonaTesterFactory} from 'persona/export/testing';
+import {dispatchResizeEvent, flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {_p} from '../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import render from './goldens/overlay.txt';
-import {$, Overlay} from './overlay';
+import {Overlay} from './overlay';
 import {$overlayService, Anchor, OverlayService} from './overlay-service';
 
 
@@ -28,10 +28,10 @@ test('@mask/core/overlay', init => {
       rootCtrls: [Overlay],
       rootDoc: document,
     });
-    const el = tester.createElement(Overlay);
-    document.body.appendChild(el.element);
+    const {element, harness} = tester.createHarness(Overlay);
+    document.body.appendChild(element);
 
-    return {el, overlayService, tester};
+    return {element, harness, overlayService, tester};
   });
 
   test('contentRect$', _, init => {
@@ -49,7 +49,7 @@ test('@mask/core/overlay', init => {
     });
 
     function dispatchResize(): void {
-      const contentEl = _.el.getElement($.content);
+      const contentEl = _.harness.content.selectable;
       dispatchResizeEvent(contentEl, [{contentRect: new DOMRect(0, 0, 80, 60)}]);
     }
 
@@ -61,8 +61,8 @@ test('@mask/core/overlay', init => {
 
       dispatchResize();
 
-      assert(_.el.getStyle($.content._.styleLeft)).to.equal('10px');
-      assert(_.el.getStyle($.content._.styleTop)).to.equal('30px');
+      assert(_.harness.content._.styleLeft).to.emitWith('10px');
+      assert(_.harness.content._.styleTop).to.emitWith('30px');
     });
 
     should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
@@ -73,8 +73,8 @@ test('@mask/core/overlay', init => {
 
       dispatchResize();
 
-      assert(_.el.getStyle($.content._.styleLeft)).to.equal('-10px');
-      assert(_.el.getStyle($.content._.styleTop)).to.equal('10px');
+      assert(_.harness.content._.styleLeft).to.emitWith('-10px');
+      assert(_.harness.content._.styleTop).to.emitWith('10px');
     });
 
     should('set the left and top correctly if content and target anchors are END - END', () => {
@@ -85,8 +85,8 @@ test('@mask/core/overlay', init => {
 
       dispatchResize();
 
-      assert(_.el.getStyle($.content._.styleLeft)).to.equal('-30px');
-      assert(_.el.getStyle($.content._.styleTop)).to.equal('-10px');
+      assert(_.harness.content._.styleLeft).to.emitWith('-30px');
+      assert(_.harness.content._.styleTop).to.emitWith('-10px');
     });
   });
 
@@ -109,7 +109,7 @@ test('@mask/core/overlay', init => {
       };
       _.overlayService.show(event);
 
-      assert(_.el.flattenContent()).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('render');
     });
   });
 
@@ -129,7 +129,7 @@ test('@mask/core/overlay', init => {
       };
       _.overlayService.show(event);
 
-      assert(_.el.hasClass($.root._.hidden)).to.equal(false);
+      assert(_.harness.root._.hidden).to.emitWith(false);
     });
 
     should('hide the overlay on clicking root element', () => {
@@ -146,9 +146,9 @@ test('@mask/core/overlay', init => {
         },
       };
       _.overlayService.show(event);
-      _.el.dispatchEvent($.root._.onClick);
+      _.harness.root._.onClick();
 
-      assert(_.el.hasClass($.root._.hidden)).to.equal(true);
+      assert(_.harness.root._.hidden).to.emitWith(true);
     });
 
     should('not hide the overlay when clicking something other than the root element', () => {
@@ -165,9 +165,9 @@ test('@mask/core/overlay', init => {
         },
       };
       _.overlayService.show(event);
-      _.el.element.shadowRoot!.getElementById('content')!.dispatchEvent(new CustomEvent('click'));
+      _.element.shadowRoot!.getElementById('content')!.dispatchEvent(new CustomEvent('click'));
 
-      assert(_.el.hasClass($.root._.hidden)).to.equal(false);
+      assert(_.harness.root._.hidden).to.emitWith(false);
     });
   });
 });
