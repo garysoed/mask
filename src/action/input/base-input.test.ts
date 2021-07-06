@@ -1,25 +1,25 @@
-import {$stateService2, source} from 'grapevine';
+import {$stateService, source} from 'grapevine';
 import {assert, createSpySubject, run, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {fakeStateService2, mutableState, ObjectPath} from 'gs-tools/export/state';
+import {fakeStateService, mutableState, MutablePath} from 'gs-tools/export/state';
 import {$div, attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
-import {objectPathParser} from '../../core/object-path-parser';
+import {mutablePathParser} from '../../core/mutable-path-parser';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 
-import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
+import {$baseInput as $baseInput, BaseInput, MUTABLE_PATH_ATTR_NAME} from './base-input';
 
 
 const $$ = {
   tag: 'mk-test-base-input',
   api: {
     ...$baseInput.api,
-    stateId: attributeIn<ObjectPath<string>>(STATE_ID_ATTR_NAME, objectPathParser()),
+    stateId: attributeIn<MutablePath<string>>(MUTABLE_PATH_ATTR_NAME, mutablePathParser()),
     onChange: dispatcher<ChangeEvent<string>>(CHANGE_EVENT),
   },
 };
@@ -31,7 +31,7 @@ const $ = {
   host: host($$.api),
 };
 
-const $domValueId = source<ObjectPath<string>|null>(() => null);
+const $domValueId = source<MutablePath<string>|null>(() => null);
 const $domValueUpdatedByScript$ = source<Subject<unknown>>(() => new Subject());
 
 const DEFAULT_VALUE = 'DEFAULT_VALUE';
@@ -57,7 +57,7 @@ class TestInput extends BaseInput<string, typeof $> {
 
   @cache()
   protected get domValue$(): Observable<string> {
-    const stateService = $stateService2.get(this.vine);
+    const stateService = $stateService.get(this.vine);
     const domValueId = $domValueId.get(this.vine);
     if (!domValueId) {
       return EMPTY;
@@ -76,7 +76,7 @@ class TestInput extends BaseInput<string, typeof $> {
   }
 
   protected updateDomValue(newValue: string): Observable<unknown> {
-    const stateService = $stateService2.get(this.vine);
+    const stateService = $stateService.get(this.vine);
     const domValueId = $domValueId.get(this.vine);
     if (!domValueId) {
       return EMPTY;
@@ -92,13 +92,13 @@ test('@mask/input/base-input', init => {
   const INIT_STATE_VALUE = 'INIT_STATE_VALUE';
 
   const _ = init(() => {
-    const stateService = fakeStateService2();
+    const stateService = fakeStateService();
     const domValueId = stateService.addRoot(mutableState('init dom value'));
     const $domValue = stateService.mutablePath(domValueId);
     const onDomValueUpdatedByScript$ = new Subject<unknown>();
     const tester = testerFactory.build({
       overrides: [
-        {override: $stateService2, withValue: stateService},
+        {override: $stateService, withValue: stateService},
         {override: $domValueId, withValue: $domValue},
         {override: $domValueUpdatedByScript$, withValue: onDomValueUpdatedByScript$},
       ],

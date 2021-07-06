@@ -8,12 +8,12 @@ import {_p} from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
-import {objectPathParser} from '../../core/object-path-parser';
+import {mutablePathParser} from '../../core/mutable-path-parser';
 import {registerSvg} from '../../core/svg-service';
 import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {ListItemLayout} from '../../layout/list-item-layout';
-import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
+import {$baseInput as $baseInput, BaseInput, MUTABLE_PATH_ATTR_NAME} from '../input/base-input';
 
 import template from './checkbox.html';
 
@@ -25,7 +25,7 @@ export const $checkbox = {
     ...$baseInput.api,
     label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<CheckedValue>>(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, objectPathParser<CheckedValue>()),
+    stateId: attributeIn(MUTABLE_PATH_ATTR_NAME, mutablePathParser<CheckedValue>()),
   },
   tag: 'mk-checkbox',
 };

@@ -8,12 +8,12 @@ import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, ta
 import {_p} from '../../app/app';
 import radioUnchecked from '../../asset/checkbox_empty.svg';
 import radioChecked from '../../asset/radio_checked.svg';
-import {objectPathParser} from '../../core/object-path-parser';
+import {mutablePathParser} from '../../core/mutable-path-parser';
 import {registerSvg} from '../../core/svg-service';
 import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {ListItemLayout} from '../../layout/list-item-layout';
-import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from '../input/base-input';
+import {$baseInput as $baseInput, BaseInput, MUTABLE_PATH_ATTR_NAME} from '../input/base-input';
 
 import {$onRadioInput$} from './on-radio-input';
 import template from './radio-input.html';
@@ -24,7 +24,7 @@ export const $radioInput = {
     ...$baseInput.api,
     label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<number|null>>(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, objectPathParser<number|null>()),
+    stateId: attributeIn(MUTABLE_PATH_ATTR_NAME, mutablePathParser<number|null>()),
     index: attributeIn('index', integerParser()),
   },
   tag: 'mk-radio-input',
@@ -41,7 +41,7 @@ export const $ = {
     ...$radioInput.api,
   }),
   input: element('input', $input, {
-    name: attributeOut('name', objectPathParser<number|null>()),
+    name: attributeOut('name', mutablePathParser<number|null>()),
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),

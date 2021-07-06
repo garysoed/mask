@@ -1,7 +1,7 @@
-import {$stateService2} from 'grapevine';
+import {$stateService} from 'grapevine';
 import {assert, createSpySubject, objectThat, run, runEnvironment, setThat, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {fakeStateService2, mutableState, ObjectPath} from 'gs-tools/export/state';
+import {fakeStateService, mutableState, MutablePath} from 'gs-tools/export/state';
 import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 import {of} from 'rxjs';
 
@@ -29,11 +29,11 @@ test('@mask/action/input/radio-input', init => {
         }),
     );
 
-    const stateService = fakeStateService2();
+    const stateService = fakeStateService();
     const tester = testerFactory.build({
       overrides: [
         THEME_LOADER_TEST_OVERRIDE,
-        {override: $stateService2, withValue: stateService},
+        {override: $stateService, withValue: stateService},
       ],
       rootCtrls: [RadioInput],
       rootDoc: document,
@@ -148,7 +148,7 @@ test('@mask/action/input/radio-input', init => {
 
       assert(onRadioInput$).to.emitWith(objectThat<OnRadioInput>().haveProperties({
         index: INDEX,
-        stateId: objectThat<ObjectPath<number|null>>().haveProperties({id: _.$state.id}),
+        stateId: objectThat<MutablePath<number|null>>().haveProperties({id: _.$state.id}),
       }));
     });
 

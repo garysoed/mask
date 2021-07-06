@@ -1,6 +1,6 @@
-import {$stateService2} from 'grapevine/src/core/state';
+import {$stateService} from 'grapevine/src/core/state';
 import {cache} from 'gs-tools/export/data';
-import {ObjectPath} from 'gs-tools/export/state';
+import {MutablePath} from 'gs-tools/export/state';
 import {handler, host, InputsOf, PersonaContext} from 'persona';
 import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
 import {merge, Observable, Subject} from 'rxjs';
@@ -11,7 +11,7 @@ import {ChangeEvent} from '../../event/change-event';
 import {$baseAction as $baseAction, BaseAction, BaseInputOutputs} from '../base-action';
 
 
-export const STATE_ID_ATTR_NAME = 'state-id';
+export const MUTABLE_PATH_ATTR_NAME = 'mutable-path';
 
 export const $baseInput = {
   api: {
@@ -32,7 +32,7 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
   constructor(
       private readonly defaultValue: T,
       disabledDomOutput: Output<boolean>,
-      private readonly statePathInput: AttributeInput<ObjectPath<T>|undefined>,
+      private readonly statePathInput: AttributeInput<MutablePath<T>|undefined>,
       private readonly onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
       context: PersonaContext,
       specs: S,
@@ -61,7 +61,7 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
 
   @cache()
   private get currentStateValue$(): Observable<T> {
-    return $stateService2.get(this.vine).$(this.statePath$).pipe(
+    return $stateService.get(this.vine).$(this.statePath$).pipe(
         map(value => value ?? this.defaultValue),
     );
   }
@@ -75,7 +75,7 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
         .pipe(
             withLatestFrom(this.domValue$),
             map(([, domValue]) => domValue),
-            $stateService2.get(this.vine).$(this.statePath$).set(),
+            $stateService.get(this.vine).$(this.statePath$).set(),
         );
   }
 

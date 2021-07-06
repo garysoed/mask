@@ -1,4 +1,4 @@
-import {$stateService2, mutablePathSource} from 'grapevine';
+import {$stateService, mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {elementWithTagType} from 'gs-types';
 import {attributeOut, element, PersonaContext, stringParser} from 'persona';
@@ -59,21 +59,21 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get expanded$(): Observable<boolean> {
-    return $stateService2.get(this.vine)
+    return $stateService.get(this.vine)
         .$(isExpandedPath.get(this.vine))
         .pipe(map(checkedValue => !!checkedValue));
   }
 
   @cache()
   private get drawerMode$(): Observable<DrawerMode> {
-    return $stateService2.get(this.vine)
+    return $stateService.get(this.vine)
         .$(isHorizontalModePath.get(this.vine))
         .pipe(map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL));
   }
 
   @cache()
   private get rootPlayLayout$(): Observable<string> {
-    return $stateService2.get(this.vine)
+    return $stateService.get(this.vine)
         .$(isHorizontalModePath.get(this.vine))
         .pipe(map(checkedValue => checkedValue ? 'column' : 'row'));
   }

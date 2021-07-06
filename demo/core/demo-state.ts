@@ -1,4 +1,4 @@
-import {$stateService2, Source, source} from 'grapevine';
+import {$stateService, Source, source} from 'grapevine';
 import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
@@ -64,7 +64,7 @@ export const BASE_COLOR_NAME = 'TEAL';
 export const ACCENT_COLOR_NAME = 'PURPLE';
 
 export const $demoStateId: Source<RootStateId<DemoState>> = source(
-    vine => $stateService2.get(vine).addRoot({
+    vine => $stateService.get(vine).addRoot({
       accentColorName: mutableState(ACCENT_COLOR_NAME),
       baseColorName: mutableState(BASE_COLOR_NAME),
       isDarkMode: mutableState(true),
@@ -106,4 +106,4 @@ export const $demoStateId: Source<RootStateId<DemoState>> = source(
     }),
 );
 
-export const $demoState = source(vine => $stateService2.get(vine)._($demoStateId.get(vine)));
+export const $demoState = source(vine => $stateService.get(vine)._($demoStateId.get(vine)));

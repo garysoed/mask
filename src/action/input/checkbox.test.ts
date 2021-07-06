@@ -1,7 +1,7 @@
-import {$stateService2} from 'grapevine';
+import {$stateService} from 'grapevine';
 import {assert, run, runEnvironment, setThat, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {fakeStateService2, mutableState} from 'gs-tools/export/state';
+import {fakeStateService, mutableState} from 'gs-tools/export/state';
 import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 import {of} from 'rxjs';
 
@@ -28,11 +28,11 @@ test('@mask/input/checkbox', init => {
       update: goldenUpdate,
     }));
 
-    const stateService = fakeStateService2();
+    const stateService = fakeStateService();
     const tester = testerFactory.build({
       overrides: [
         THEME_LOADER_TEST_OVERRIDE,
-        {override: $stateService2, withValue: stateService},
+        {override: $stateService, withValue: stateService},
       ],
       rootCtrls: [Checkbox],
       rootDoc: document,

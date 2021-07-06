@@ -3,9 +3,7 @@ export {_p, $window} from '../src/app/app';
 
 // core
 export {registerSvg, $svgService, SvgService} from '../src/core/svg-service';
-export {stateIdParser} from '../src/core/state-id-parser';
 export {SvgConfig} from '../src/core/svg-config';
-export {$saveConfig, $saveService, SaveService} from '../src/core/save-service';
 
 // events
 export {ActionEvent, ACTION_EVENT} from '../src/event/action-event';
@@ -42,4 +40,4 @@ export {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 export {Theme} from '../src/theme/theme';
 export {BaseThemedCtrl} from '../src/theme/base-themed-ctrl';
 
-export {objectPathParser} from '../src/core/object-path-parser';
+export {mutablePathParser} from '../src/core/mutable-path-parser';
