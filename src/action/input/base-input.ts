@@ -1,9 +1,10 @@
-import {$stateService} from 'grapevine';
+import {$stateService2} from 'grapevine/src/core/state';
 import {cache} from 'gs-tools/export/data';
-import {StateId} from 'gs-tools/export/state';
+import {debug} from 'gs-tools/export/rxjs';
+import {ObjectPath} from 'gs-tools/export/state';
 import {handler, host, InputsOf, PersonaContext} from 'persona';
 import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
-import {merge, Observable, of as observableOf, Subject} from 'rxjs';
+import {merge, Observable, Subject} from 'rxjs';
 import {filter, map, pairwise, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
@@ -27,12 +28,12 @@ export const $ = {
 
 @_p.baseCustomElement({})
 export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
-  private readonly stateId$ = this.stateIdInput.getValue(this.context);
+  private readonly statePath$ = this.statePathInput.getValue(this.context).pipe(debug(null, 'statePath'));
 
   constructor(
       private readonly defaultValue: T,
       disabledDomOutput: Output<boolean>,
-      private readonly stateIdInput: AttributeInput<StateId<T>|undefined>,
+      private readonly statePathInput: AttributeInput<ObjectPath<T>|undefined>,
       private readonly onChangeOutput: DispatcherOutput<ChangeEvent<T>>,
       context: PersonaContext,
       specs: S,
@@ -61,17 +62,10 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
 
   @cache()
   private get currentStateValue$(): Observable<T> {
-    return this.stateId$
-        .pipe(
-            switchMap($stateId => {
-              if (!$stateId) {
-                return observableOf(null);
-              }
-
-              return $stateService.get(this.vine).resolve($stateId);
-            }),
-            map(value => value ?? this.defaultValue),
-        );
+    return $stateService2.get(this.vine).$(this.statePath$).pipe(
+        debug(null, 'statePathValue'),
+        map(value => value ?? this.defaultValue),
+    );
   }
 
   @cache()
@@ -81,14 +75,9 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
         this.onChange$,
     )
         .pipe(
-            withLatestFrom(this.domValue$, this.stateId$),
-            $stateService.get(this.vine).modifyOperator((x, [, domValue, stateId]) => {
-              if (!stateId) {
-                return;
-              }
-
-              x.set(stateId, domValue);
-            }),
+            withLatestFrom(this.domValue$),
+            map(([, domValue]) => domValue),
+            $stateService2.get(this.vine).$(this.statePath$).set(),
         );
   }
 

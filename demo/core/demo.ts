@@ -1,12 +1,11 @@
-import {$stateService} from 'grapevine';
+import {mutablePathSource} from 'grapevine';
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType, enumType} from 'gs-types';
 import {$div, attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, RenderSpec, single, stringParser} from 'persona';
-import {combineLatest, merge, Observable, of as observableOf} from 'rxjs';
-import {distinctUntilChanged, map, mapTo, switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {combineLatest, merge, Observable, of as observableOf, of} from 'rxjs';
+import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
 import {$button, Button} from '../../src/action/button';
 import {$checkbox, Checkbox} from '../../src/action/input/checkbox';
@@ -21,7 +20,7 @@ import {LayoutOverlay} from '../../src/layout/util/layout-overlay';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {PALETTE, Palette} from '../../src/theme/palette';
 
-import {$demoState} from './demo-state';
+import {$demoState, $demoStateId} from './demo-state';
 import template from './demo.html';
 import {$locationService, Views} from './location-service';
 import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec} from './page-spec';
@@ -62,6 +61,8 @@ const $ = {
 const PAGE_CTORS = ALL_SPECS.map(({ctor}) => ctor);
 const COMPONENT_PATH_ATTR = 'path';
 
+const darkModePath = mutablePathSource('darkMode', $demoStateId, demo => demo._('isDarkMode'));
+
 @_p.customElement({
   dependencies: [
     ...PAGE_CTORS,
@@ -93,7 +94,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
     return [
       this.renderers.accentPalette.content(this.accentPaletteContents$),
       this.renderers.basePalette.content(this.basePaletteContents$),
-      this.renderers.darkMode.stateId(this.darkModeStateId$),
+      this.renderers.darkMode.stateId(of(darkModePath.get(this.vine))),
       this.renderers.content.content(this.mainContent$),
       this.renderers.drawerRoot.actionContents(this.renderPageButtons(ACTION_SPECS)),
       this.renderers.drawerRoot.displayContents(this.renderPageButtons(DISPLAY_SPECS)),
@@ -106,16 +107,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = $demoState.get(this.vine)
-        .pipe(
-            switchMap(demoState => {
-              if (!demoState) {
-                return observableOf(undefined);
-              }
-
-              return $stateService.get(this.vine).resolve(demoState.$accentColorName);
-            }),
-        );
+    const selectedColor$ = $demoState.get(this.vine).$('accentColorName');
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
@@ -131,16 +123,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = $demoState.get(this.vine)
-        .pipe(
-            switchMap(demoState => {
-              if (!demoState) {
-                return observableOf(undefined);
-              }
-
-              return $stateService.get(this.vine).resolve(demoState.$baseColorName);
-            }),
-        );
+    const selectedColor$ = $demoState.get(this.vine).$('baseColorName');
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
@@ -152,13 +135,6 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         });
 
     return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
-  }
-
-  @cache()
-  private get darkModeStateId$(): Observable<StateId<boolean>> {
-    return $demoState.get(this.vine)._('$isDarkMode').pipe(
-        filterNonNullable(),
-    );
   }
 
   @cache()
@@ -221,7 +197,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
   }
 
   private renderRootTheme(): Observable<'light'|'dark'> {
-    return $demoState.get(this.vine).$('$isDarkMode').pipe(
+    return $demoState.get(this.vine).$('isDarkMode').pipe(
         map(isDarkMode => isDarkMode ? 'dark' : 'light'),
     );
   }
@@ -242,14 +218,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            withLatestFrom($demoState.get(this.vine)),
-            $stateService.get(this.vine).modifyOperator((x, [color, demoState]) => {
-              if (!demoState) {
-                return;
-              }
-
-              x.set(demoState.$accentColorName, color);
-            }),
+            $demoState.get(this.vine).$('accentColorName').set(),
         );
   }
 
@@ -259,14 +228,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            withLatestFrom($demoState.get(this.vine)),
-            $stateService.get(this.vine).modifyOperator((x, [color, demoState]) => {
-              if (!demoState) {
-                return;
-              }
-
-              x.set(demoState.$baseColorName, color);
-            }),
+            $demoState.get(this.vine).$('baseColorName').set(),
         );
   }
 

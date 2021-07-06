@@ -1,15 +1,15 @@
-import {$stateService, source} from 'grapevine';
-import {assert, createSpySubject, should, test} from 'gs-testing';
+import {$stateService2, source} from 'grapevine';
+import {assert, createSpySubject, run, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {fakeStateService, StateId} from 'gs-tools/export/state';
+import {fakeStateService2, mutableState, ObjectPath} from 'gs-tools/export/state';
 import {$div, attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
-import {stateIdParser} from '../../core/state-id-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 
 import {$baseInput as $baseInput, BaseInput, STATE_ID_ATTR_NAME} from './base-input';
@@ -19,7 +19,7 @@ const $$ = {
   tag: 'mk-test-base-input',
   api: {
     ...$baseInput.api,
-    stateId: attributeIn<StateId<string>>(STATE_ID_ATTR_NAME, stateIdParser()),
+    stateId: attributeIn<ObjectPath<string>>(STATE_ID_ATTR_NAME, objectPathParser()),
     onChange: dispatcher<ChangeEvent<string>>(CHANGE_EVENT),
   },
 };
@@ -31,7 +31,7 @@ const $ = {
   host: host($$.api),
 };
 
-const $domValueId = source<StateId<string>|null>('domValueId', () => null);
+const $domValueId = source<ObjectPath<string>|null>('domValueId', () => null);
 const $domValueUpdatedByScript$ = source<Subject<unknown>>(
     'domValueUpdatedByScript$',
     () => new Subject(),
@@ -60,13 +60,13 @@ class TestInput extends BaseInput<string, typeof $> {
 
   @cache()
   protected get domValue$(): Observable<string> {
-    const stateService = $stateService.get(this.vine);
+    const stateService = $stateService2.get(this.vine);
     const domValueId = $domValueId.get(this.vine);
     if (!domValueId) {
       return EMPTY;
     }
 
-    return stateService.resolve(domValueId).pipe(filterNonNullable());
+    return stateService.$(domValueId).pipe(filterNonNullable());
   }
 
   @cache()
@@ -79,14 +79,13 @@ class TestInput extends BaseInput<string, typeof $> {
   }
 
   protected updateDomValue(newValue: string): Observable<unknown> {
-    const stateService = $stateService.get(this.vine);
+    const stateService = $stateService2.get(this.vine);
     const domValueId = $domValueId.get(this.vine);
     if (!domValueId) {
       return EMPTY;
     }
 
-    stateService.modify(x => x.set(domValueId, newValue));
-    return of({});
+    return of(newValue).pipe(stateService.$(domValueId).set());
   }
 }
 
@@ -96,12 +95,13 @@ test('@mask/input/base-input', init => {
   const INIT_STATE_VALUE = 'INIT_STATE_VALUE';
 
   const _ = init(() => {
-    const stateService = fakeStateService();
-    const $domValue = stateService.modify(x => x.add('init dom value'));
+    const stateService = fakeStateService2();
+    const domValueId = stateService.addRoot(mutableState('init dom value'));
+    const $domValue = stateService.mutablePath(domValueId);
     const onDomValueUpdatedByScript$ = new Subject<unknown>();
     const tester = testerFactory.build({
       overrides: [
-        {override: $stateService, withValue: stateService},
+        {override: $stateService2, withValue: stateService},
         {override: $domValueId, withValue: $domValue},
         {override: $domValueUpdatedByScript$, withValue: onDomValueUpdatedByScript$},
       ],
@@ -110,7 +110,8 @@ test('@mask/input/base-input', init => {
     });
     const {harness} = tester.createHarness(TestInput);
 
-    const $value = stateService.modify(x => x.add(INIT_STATE_VALUE));
+    const valueId = stateService.addRoot(mutableState(INIT_STATE_VALUE));
+    const $value = stateService.mutablePath(valueId);
     harness.host._.stateId($value);
 
     // Clear the component to make test more predictable.
@@ -128,11 +129,11 @@ test('@mask/input/base-input', init => {
   test('currentStateValue$', () => {
     should('emit the value corresponding to the state ID', () => {
       const value = 'value';
-      _.stateService.modify(x => x.set(_.$value, value));
+      run(of(value).pipe(_.stateService.$(_.$value).set()));
 
       _.harness.host._.clearFn([]);
 
-      assert(_.stateService.resolve(_.$domValue)).to.emitWith(value);
+      assert(_.stateService.$(_.$domValue)).to.emitWith(value);
     });
 
     should('emit the default value if state ID is not set', () => {
@@ -140,55 +141,55 @@ test('@mask/input/base-input', init => {
 
       _.harness.host._.clearFn([]);
 
-      assert(_.stateService.resolve(_.$domValue)).to.emitWith(DEFAULT_VALUE);
+      assert(_.stateService.$(_.$domValue)).to.emitWith(DEFAULT_VALUE);
     });
   });
 
   test('handleOnApply$', () => {
     should('set the new value of the state when the function is called', () => {
       const newDomValue = 'newDomValue';
-      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
+      run(of(newDomValue).pipe(_.stateService.$(_.$domValue).set()));
 
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$value)).to.emitWith(newDomValue);
+      assert(_.stateService.$(_.$value)).to.emitWith(newDomValue);
     });
 
     should('set the new value of the state on change', () => {
       const newDomValue = 'newDomValue';
-      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
+      run(of(newDomValue).pipe(_.stateService.$(_.$domValue).set()));
 
-      assert(_.stateService.resolve(_.$value)).to.emitWith(newDomValue);
+      assert(_.stateService.$(_.$value)).to.emitWith(newDomValue);
     });
 
     should('do nothing if state ID is not specified', () => {
       _.harness.host._.stateId(undefined);
       const newDomValue = 'newDomValue';
-      _.stateService.modify(x => x.set(_.$domValue, newDomValue));
+      run(of(newDomValue).pipe(_.stateService.$(_.$domValue).set()));
 
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$value)).to.emitWith(INIT_STATE_VALUE);
+      assert(_.stateService.$(_.$value)).to.emitWith(INIT_STATE_VALUE);
     });
   });
 
   test('handleOnClear$', () => {
     should('set the state\'s value', () => {
       const newStateValue = 'newStateValue';
-      _.stateService.modify(x => x.set(_.$value, newStateValue));
+      run(of(newStateValue).pipe(_.stateService.$(_.$value).set()));
 
       const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
 
       _.harness.host._.clearFn([]);
 
-      assert(_.stateService.resolve(_.$domValue)).to.emitWith(newStateValue);
+      assert(_.stateService.$(_.$domValue)).to.emitWith(newStateValue);
       assert(onDomValueUpdatedByScript$).to.emit();
     });
 
     should('set the default value at the start', () => {
       const onDomValueUpdatedByScript$ = createSpySubject(_.onDomValueUpdatedByScript$);
 
-      assert(_.stateService.resolve(_.$domValue)).to.emitWith(INIT_STATE_VALUE);
+      assert(_.stateService.$(_.$domValue)).to.emitWith(INIT_STATE_VALUE);
       assert(onDomValueUpdatedByScript$).toNot.emit();
     });
   });
@@ -198,18 +199,18 @@ test('@mask/input/base-input', init => {
       const eventValue$ = createSpySubject(_.harness.host._.onChange)
           .pipe(map(({oldValue}) => oldValue));
 
-      _.stateService.modify(x => x.set(_.$domValue, 'newValue'));
+      run(of('newValue').pipe(_.stateService.$(_.$domValue).set()));
 
       assert(eventValue$).to.emitSequence([INIT_STATE_VALUE]);
     });
 
     should('not emit if the dom value does not change', () => {
       const newValue = 'newValue';
-      _.stateService.modify(x => x.set(_.$domValue, newValue));
+      run(of(newValue).pipe(_.stateService.$(_.$domValue).set()));
 
       const eventValue$ = createSpySubject(_.harness.host._.onChange)
           .pipe(map(({oldValue}) => oldValue));
-      _.stateService.modify(x => x.set(_.$domValue, newValue));
+      run(of(newValue).pipe(_.stateService.$(_.$domValue).set()));
 
       assert(eventValue$).to.emitSequence([]);
     });

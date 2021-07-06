@@ -1,8 +1,9 @@
-import {$stateService} from 'grapevine';
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {$stateService2} from 'grapevine';
+import {assert, run, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {fakeStateService} from 'gs-tools/export/state';
+import {fakeStateService2, mutableState} from 'gs-tools/export/state';
 import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {of} from 'rxjs';
 
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
@@ -18,18 +19,19 @@ test('@mask/input/number-input', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv({hideStepper, stepper}));
 
-    const stateService = fakeStateService();
+    const stateService = fakeStateService2();
     const tester = testerFactory.build({
       overrides: [
         THEME_LOADER_TEST_OVERRIDE,
-        {override: $stateService, withValue: stateService},
+        {override: $stateService2, withValue: stateService},
       ],
       rootCtrls: [NumberInput],
       rootDoc: document,
     });
     const {element, harness} = tester.createHarness(NumberInput);
 
-    const $state = stateService.modify(x => x.add(-2));
+    const stateId = stateService.addRoot(mutableState(-2));
+    const $state = stateService.mutablePath(stateId);
     harness.host._.stateId($state);
 
     const labelEl = document.createElement('div');
@@ -46,7 +48,7 @@ test('@mask/input/number-input', init => {
       _.harness.input._.onInput(`${value}`);
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$state)).to.emitWith(value);
+      assert(_.stateService.$(_.$state)).to.emitWith(value);
     });
   });
 
@@ -69,7 +71,7 @@ test('@mask/input/number-input', init => {
     should('set the value correctly', () => {
       const value = 123;
 
-      _.stateService.modify(x => x.set(_.$state, value));
+      run(of(value).pipe(_.stateService.$(_.$state).set()));
       _.harness.host._.clearFn([]);
 
       assert(_.harness.input.selectable.value).to.equal(`${value}`);

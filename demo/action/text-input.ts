@@ -1,14 +1,13 @@
+import {mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {StateId} from 'gs-tools/export/state';
 import {element, PersonaContext} from 'persona';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 import {$textInput, TextInput} from '../../src/action/input/text-input';
 import {_p} from '../../src/app/app';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
-import {$demoState} from '../core/demo-state';
+import {$demoStateId} from '../core/demo-state';
 
 import template from './text-input.html';
 
@@ -26,6 +25,36 @@ const $ = {
   urlInput: element('urlInput', $textInput, {}),
 };
 
+const disabledTextInputStatePath = mutablePathSource(
+    'disabledTextInputState',
+    $demoStateId,
+    demo => demo._('textInputDemo')._('disabledTextInputState'),
+);
+
+const enabledTextInputStatePath = mutablePathSource(
+    'enabledTextInputState',
+    $demoStateId,
+    demo => demo._('textInputDemo')._('enabledTextInputState'),
+);
+
+const emailTextInputStatePath = mutablePathSource(
+    'emailTextInputState',
+    $demoStateId,
+    demo => demo._('textInputDemo')._('emailTextInputState'),
+);
+
+const telTextInputStatePath = mutablePathSource(
+    'telTextInputState',
+    $demoStateId,
+    demo => demo._('textInputDemo')._('telTextInputState'),
+);
+
+const urlTextInputStatePath = mutablePathSource(
+    'urlTextInputState',
+    $demoStateId,
+    demo => demo._('textInputDemo')._('urlTextInputState'),
+);
+
 @_p.customElement({
   ...$textInputDemo,
   dependencies: [
@@ -42,46 +71,11 @@ export class TextInputDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.disabledInput.stateId(this.disabledInputStateId$),
-      this.renderers.emailInput.stateId(this.emailInputStateId$),
-      this.renderers.enabledInput.stateId(this.enabledInputStateId$),
-      this.renderers.telInput.stateId(this.telInputStateId$),
-      this.renderers.urlInput.stateId(this.urlInputStateId$),
+      this.renderers.disabledInput.stateId(of(disabledTextInputStatePath.get(this.vine))),
+      this.renderers.emailInput.stateId(of(emailTextInputStatePath.get(this.vine))),
+      this.renderers.enabledInput.stateId(of(enabledTextInputStatePath.get(this.vine))),
+      this.renderers.telInput.stateId(of(telTextInputStatePath.get(this.vine))),
+      this.renderers.urlInput.stateId(of(urlTextInputStatePath.get(this.vine))),
     ];
-  }
-
-  @cache()
-  private get disabledInputStateId$(): Observable<StateId<string>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.textInputDemo.$disabledTextInputState),
-    );
-  }
-
-  @cache()
-  private get emailInputStateId$(): Observable<StateId<string>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.textInputDemo.$emailTextInputState),
-    );
-  }
-
-  @cache()
-  private get enabledInputStateId$(): Observable<StateId<string>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.textInputDemo.$enabledTextInputState),
-    );
-  }
-
-  @cache()
-  private get telInputStateId$(): Observable<StateId<string>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.textInputDemo.$telTextInputState),
-    );
-  }
-
-  @cache()
-  private get urlInputStateId$(): Observable<StateId<string>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.textInputDemo.$urlTextInputState),
-    );
   }
 }

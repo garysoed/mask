@@ -1,8 +1,9 @@
-import {$stateService} from 'grapevine';
+import {mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
+import {ObjectPath} from 'gs-tools/export/state';
 import {$div, element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
-import {Observable, of as observableOf} from 'rxjs';
-import {map, mapTo, switchMap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {map, mapTo} from 'rxjs/operators';
 
 import {$button, Button} from '../../src/action/button';
 import {$radioInput, RadioInput} from '../../src/action/input/radio-input';
@@ -11,7 +12,7 @@ import {Anchor} from '../../src/core/overlay-service';
 import {$overlayLayout, OverlayLayout} from '../../src/layout/overlay-layout';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
-import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
+import {$demoState, $demoStateId, OverlayLayoutDemoState} from '../core/demo-state';
 
 import template from './overlay-layout.html';
 
@@ -40,6 +41,26 @@ const $ = {
 
 const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
 
+const targetHorizontalIndexPath = mutablePathSource(
+    'targetHorizontalIndexPath',
+    $demoStateId,
+    demo => demo._('overlayLayoutDemo')._('targetHorizontalIndex'),
+);
+const targetVerticalIndexPath = mutablePathSource(
+    'targetVerticalIndexPath',
+    $demoStateId,
+    demo => demo._('overlayLayoutDemo')._('targetVerticalIndex'),
+);
+const overlayHorizontalIndexPath = mutablePathSource(
+    'overlayHorizontalIndexPath',
+    $demoStateId,
+    demo => demo._('overlayLayoutDemo')._('overlayHorizontalIndex'),
+);
+const overlayVerticalIndexPath = mutablePathSource(
+    'overlayVerticalIndexPath',
+    $demoStateId,
+    demo => demo._('overlayLayoutDemo')._('overlayVerticalIndex'),
+);
 
 @_p.customElement({
   ...$overlayLayoutDemo,
@@ -59,57 +80,40 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.overlay.contentHorizontal(this.getAnchor('$overlayHorizontalIndex')),
-      this.renderers.overlay.contentVertical(this.getAnchor('$overlayVerticalIndex')),
-      this.renderers.overlay.targetHorizontal(this.getAnchor('$targetHorizontalIndex')),
-      this.renderers.overlay.targetVertical(this.getAnchor('$targetVerticalIndex')),
+      this.renderers.overlay.contentHorizontal(this.getAnchor('overlayHorizontalIndex')),
+      this.renderers.overlay.contentVertical(this.getAnchor('overlayVerticalIndex')),
+      this.renderers.overlay.targetHorizontal(this.getAnchor('targetHorizontalIndex')),
+      this.renderers.overlay.targetVertical(this.getAnchor('targetVerticalIndex')),
       this.renderers.overlay.showFn(this.inputs.target.actionEvent.pipe(mapTo([]))),
-      this.renderers.overlayHorizontal.overlayHorizontalAnchors(this.getAnchorNodes('$overlayHorizontalIndex')),
-      this.renderers.overlayVertical.overlayVerticalAnchors(this.getAnchorNodes('$overlayVerticalIndex')),
-      this.renderers.targetHorizontal.targetHorizontalAnchors(this.getAnchorNodes('$targetHorizontalIndex')),
-      this.renderers.targetVertical.targetVerticalAnchors(this.getAnchorNodes('$targetHorizontalIndex')),
+      this.renderers.overlayHorizontal.overlayHorizontalAnchors(this.getAnchorNodes(overlayHorizontalIndexPath.get(this.vine))),
+      this.renderers.overlayVertical.overlayVerticalAnchors(this.getAnchorNodes(overlayVerticalIndexPath.get(this.vine))),
+      this.renderers.targetHorizontal.targetHorizontalAnchors(this.getAnchorNodes(targetHorizontalIndexPath.get(this.vine))),
+      this.renderers.targetVertical.targetVerticalAnchors(this.getAnchorNodes(targetVerticalIndexPath.get(this.vine))),
     ];
   }
 
   private getAnchor(anchorIdKey: keyof OverlayLayoutDemoState): Observable<Anchor> {
-    const overlayLayoutDemoState$ = $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.overlayLayoutDemo ?? null),
-    );
-    return overlayLayoutDemoState$.pipe(
-        switchMap(state => {
-          if (!state) {
-            return observableOf(null);
-          }
-
-          return $stateService.get(this.vine).resolve(state[anchorIdKey]);
-        }),
-        map(anchor => ANCHORS[anchor ?? 0]),
-    );
+    return $demoState.get(this.vine)
+        ._('overlayLayoutDemo')
+        .$(anchorIdKey)
+        .pipe(map(anchor => ANCHORS[anchor ?? 0]));
   }
 
   private getAnchorNodes(
-      anchorIdKey: keyof OverlayLayoutDemoState,
+      objectPath: ObjectPath<number|null>,
   ): Observable<readonly RenderSpec[]> {
-    return $demoState.get(this.vine).pipe(
-        map(state => {
-          if (!state) {
-            return [];
-          }
-
-          const $anchor = state.overlayLayoutDemo[anchorIdKey];
-          return ANCHORS.map((anchor, index) => {
-            return renderCustomElement({
-              spec: $radioInput,
-              inputs: {
-                index,
-                label: getAnchorLabel(anchor),
-                stateId: $anchor,
-              },
-              id: index,
-            });
-          });
-        }),
-    );
+    const specs = ANCHORS.map((anchor, index) => {
+      return renderCustomElement({
+        spec: $radioInput,
+        inputs: {
+          index,
+          label: getAnchorLabel(anchor),
+          stateId: objectPath,
+        },
+        id: index,
+      });
+    });
+    return of(specs);
   }
 }
 

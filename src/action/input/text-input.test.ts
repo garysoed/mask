@@ -1,8 +1,9 @@
-import {$stateService} from 'grapevine';
-import {assert, runEnvironment, setup, should, test} from 'gs-testing';
+import {$stateService2} from 'grapevine';
+import {assert, run, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {fakeStateService} from 'gs-tools/export/state';
+import {fakeStateService2, mutableState} from 'gs-tools/export/state';
 import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {of} from 'rxjs';
 
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
@@ -25,18 +26,19 @@ test('@mask/input/text-input', init => {
   });
 
   const _ = init(() => {
-    const stateService = fakeStateService();
+    const stateService = fakeStateService2();
     const tester = testerFactory.build({
       overrides: [
         THEME_LOADER_TEST_OVERRIDE,
-        {override: $stateService, withValue: stateService},
+        {override: $stateService2, withValue: stateService},
       ],
       rootCtrls: [TextInput],
       rootDoc: document,
     });
     const {element, harness} = tester.createHarness(TextInput);
 
-    const $state = stateService.modify(x => x.add('init state'));
+    const stateId = stateService.addRoot(mutableState('init state'));
+    const $state = stateService.mutablePath(stateId);
     harness.host._.stateId($state);
 
     const labelEl = document.createElement('div');
@@ -62,7 +64,7 @@ test('@mask/input/text-input', init => {
       _.harness.input._.onInput(value);
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$state)).to.emitWith(value);
+      assert(_.stateService.$(_.$state)).to.emitWith(value);
     });
   });
 
@@ -70,7 +72,7 @@ test('@mask/input/text-input', init => {
     should('set the value correctly', () => {
       const value = 'value';
 
-      _.stateService.modify(x => x.set(_.$state, value));
+      run(of(value).pipe(_.stateService.$(_.$state).set()));
       _.harness.host._.clearFn([]);
 
       assert(flattenNode(_.element)).to.matchSnapshot('update');

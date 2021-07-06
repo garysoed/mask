@@ -8,7 +8,7 @@ import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, ta
 import {_p} from '../../app/app';
 import radioUnchecked from '../../asset/checkbox_empty.svg';
 import radioChecked from '../../asset/radio_checked.svg';
-import {stateIdParser} from '../../core/state-id-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {registerSvg} from '../../core/svg-service';
 import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
@@ -24,7 +24,7 @@ export const $radioInput = {
     ...$baseInput.api,
     label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<number|null>>(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<number|null>()),
+    stateId: attributeIn(STATE_ID_ATTR_NAME, objectPathParser<number|null>()),
     index: attributeIn('index', integerParser()),
   },
   tag: 'mk-radio-input',
@@ -41,7 +41,7 @@ export const $ = {
     ...$radioInput.api,
   }),
   input: element('input', $input, {
-    name: attributeOut('name', stateIdParser<number|null>()),
+    name: attributeOut('name', objectPathParser<number|null>()),
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),

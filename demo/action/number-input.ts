@@ -1,14 +1,13 @@
+import {mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {StateId} from 'gs-tools/export/state';
 import {element, PersonaContext} from 'persona';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 import {$numberInput, NumberInput} from '../../src/action/input/number-input';
 import {_p} from '../../src/app/app';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
-import {$demoState} from '../core/demo-state';
+import {$demoStateId} from '../core/demo-state';
 
 import template from './number-input.html';
 
@@ -24,6 +23,27 @@ const $ = {
   rangedInput: element('rangedInput', $numberInput, {}),
   steppedInput: element('steppedInput', $numberInput, {}),
 };
+
+const disabledNumberInputStatePath = mutablePathSource(
+    'disabledNumberInputState',
+    $demoStateId,
+    demo => demo._('numberInputDemo')._('disabledNumberInputState'),
+);
+const enabledNumberInputStatePath = mutablePathSource(
+    'enabledNumberInputState',
+    $demoStateId,
+    demo => demo._('numberInputDemo')._('enabledNumberInputState'),
+);
+const rangedNumberInputStatePath = mutablePathSource(
+    'rangedNumberInputState',
+    $demoStateId,
+    demo => demo._('numberInputDemo')._('rangedNumberInputState'),
+);
+const steppedNumberInputStatePath = mutablePathSource(
+    'steppedNumberInputState',
+    $demoStateId,
+    demo => demo._('numberInputDemo')._('steppedNumberInputState'),
+);
 
 @_p.customElement({
   ...$numberInputDemo,
@@ -41,38 +61,10 @@ export class NumberInputDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.disabledInput.stateId(this.disabledInputStateId$),
-      this.renderers.enabledInput.stateId(this.enabledInputStateId$),
-      this.renderers.rangedInput.stateId(this.rangedInputStateId$),
-      this.renderers.steppedInput.stateId(this.steppedInputStateId$),
+      this.renderers.disabledInput.stateId(of(disabledNumberInputStatePath.get(this.vine))),
+      this.renderers.enabledInput.stateId(of(enabledNumberInputStatePath.get(this.vine))),
+      this.renderers.rangedInput.stateId(of(rangedNumberInputStatePath.get(this.vine))),
+      this.renderers.steppedInput.stateId(of(steppedNumberInputStatePath.get(this.vine))),
     ];
-  }
-
-  @cache()
-  private get disabledInputStateId$(): Observable<StateId<number>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.numberInputDemo.$disabledNumberInputState),
-    );
-  }
-
-  @cache()
-  private get enabledInputStateId$(): Observable<StateId<number>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.numberInputDemo.$enabledNumberInputState),
-    );
-  }
-
-  @cache()
-  private get rangedInputStateId$(): Observable<StateId<number>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.numberInputDemo.$rangedNumberInputState),
-    );
-  }
-
-  @cache()
-  private get steppedInputStateId$(): Observable<StateId<number>|undefined> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => demoState?.numberInputDemo.$steppedNumberInputState),
-    );
   }
 }

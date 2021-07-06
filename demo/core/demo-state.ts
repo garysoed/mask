@@ -1,56 +1,57 @@
-import {$stateService, Source, source} from 'grapevine';
-import {StateId} from 'gs-tools/export/state';
+import {Source, source} from 'grapevine';
+import {$stateService2} from 'grapevine/src/core/state';
+import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
 
 import {CheckedValue} from '../../src/action/input/checkbox';
 import {Palette} from '../../src/theme/palette';
 
 
 export interface CheckboxDemoState {
-  readonly $unknownCheckboxState: StateId<CheckedValue>;
-  readonly $disabledCheckboxState: StateId<CheckedValue>;
-  readonly $labelCheckboxState: StateId<CheckedValue>;
+  readonly unknownCheckboxState: MutableState<CheckedValue>;
+  readonly disabledCheckboxState: MutableState<CheckedValue>;
+  readonly labelCheckboxState: MutableState<CheckedValue>;
 }
 
 export interface DrawerLayoutDemoState {
-  readonly $isExpanded: StateId<CheckedValue>;
-  readonly $isHorizontalMode: StateId<CheckedValue>;
+  readonly isExpanded: MutableState<CheckedValue>;
+  readonly isHorizontalMode: MutableState<CheckedValue>;
 }
 
 export interface IconDemoState {
-  readonly $isAction: StateId<CheckedValue>;
-  readonly $fitToWidth: StateId<CheckedValue>;
+  readonly isAction: MutableState<CheckedValue>;
+  readonly fitToWidth: MutableState<CheckedValue>;
 }
 
 export interface OverlayLayoutDemoState {
-  readonly $targetHorizontalIndex: StateId<number|null>;
-  readonly $targetVerticalIndex: StateId<number|null>;
-  readonly $overlayHorizontalIndex: StateId<number|null>;
-  readonly $overlayVerticalIndex: StateId<number|null>;
+  readonly targetHorizontalIndex: MutableState<number|null>;
+  readonly targetVerticalIndex: MutableState<number|null>;
+  readonly overlayHorizontalIndex: MutableState<number|null>;
+  readonly overlayVerticalIndex: MutableState<number|null>;
 }
 
 export interface RadioInputDemoState {
-  readonly $selectedIndex: StateId<number|null>;
+  readonly selectedIndex: MutableState<number|null>;
 }
 
 export interface TextInputDemoState {
-  readonly $enabledTextInputState: StateId<string>;
-  readonly $disabledTextInputState: StateId<string>;
-  readonly $emailTextInputState: StateId<string>;
-  readonly $telTextInputState: StateId<string>;
-  readonly $urlTextInputState: StateId<string>;
+  readonly enabledTextInputState: MutableState<string>;
+  readonly disabledTextInputState: MutableState<string>;
+  readonly emailTextInputState: MutableState<string>;
+  readonly telTextInputState: MutableState<string>;
+  readonly urlTextInputState: MutableState<string>;
 }
 
 export interface NumberInputDemoState {
-  readonly $enabledNumberInputState: StateId<number>;
-  readonly $disabledNumberInputState: StateId<number>;
-  readonly $rangedNumberInputState: StateId<number>;
-  readonly $steppedNumberInputState: StateId<number>;
+  readonly enabledNumberInputState: MutableState<number>;
+  readonly disabledNumberInputState: MutableState<number>;
+  readonly rangedNumberInputState: MutableState<number>;
+  readonly steppedNumberInputState: MutableState<number>;
 }
 
 export interface DemoState {
-  readonly $accentColorName: StateId<keyof Palette>;
-  readonly $baseColorName: StateId<keyof Palette>;
-  readonly $isDarkMode: StateId<boolean>;
+  readonly accentColorName: MutableState<keyof Palette>;
+  readonly baseColorName: MutableState<keyof Palette>;
+  readonly isDarkMode: MutableState<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
   readonly drawerLayoutDemo: DrawerLayoutDemoState;
   readonly iconDemo: IconDemoState;
@@ -63,53 +64,51 @@ export interface DemoState {
 export const BASE_COLOR_NAME = 'TEAL';
 export const ACCENT_COLOR_NAME = 'PURPLE';
 
-export const $demoStateId: Source<StateId<DemoState>|undefined> = source(
+export const $demoStateId: Source<RootStateId<DemoState>> = source(
     'demoStateId',
-    vine => $stateService.get(vine).modify(x => x.add({
-      $accentColorName: x.add<keyof Palette>(ACCENT_COLOR_NAME),
-      $baseColorName: x.add<keyof Palette>(BASE_COLOR_NAME),
-      $isDarkMode: x.add<boolean>(true),
+    vine => $stateService2.get(vine).addRoot({
+      accentColorName: mutableState(ACCENT_COLOR_NAME),
+      baseColorName: mutableState(BASE_COLOR_NAME),
+      isDarkMode: mutableState(true),
       checkboxDemo: {
-        $unknownCheckboxState: x.add<CheckedValue>('unknown'),
-        $disabledCheckboxState: x.add<CheckedValue>(true),
-        $labelCheckboxState: x.add<CheckedValue>(false),
+        unknownCheckboxState: mutableState('unknown'),
+        disabledCheckboxState: mutableState(true),
+        labelCheckboxState: mutableState(false),
       },
       drawerLayoutDemo: {
-        $isExpanded: x.add<CheckedValue>(false),
-        $isHorizontalMode: x.add<CheckedValue>(true),
+        isExpanded: mutableState(false),
+        isHorizontalMode: mutableState(true),
       },
       iconDemo: {
-        $isAction: x.add<CheckedValue>(false),
-        $fitToWidth: x.add<CheckedValue>(false),
+        isAction: mutableState(false),
+        fitToWidth: mutableState(false),
       },
       numberInputDemo: {
-        $disabledNumberInputState: x.add(123),
-        $enabledNumberInputState: x.add(-10),
-        $rangedNumberInputState: x.add(0),
-        $steppedNumberInputState: x.add(2),
+        disabledNumberInputState: mutableState(123),
+        enabledNumberInputState: mutableState(-10),
+        rangedNumberInputState: mutableState(0),
+        steppedNumberInputState: mutableState(2),
       },
       overlayLayoutDemo: {
-        $targetHorizontalIndex: x.add(0),
-        $targetVerticalIndex: x.add(0),
-        $overlayHorizontalIndex: x.add(0),
-        $overlayVerticalIndex: x.add(0),
+        targetHorizontalIndex: mutableState(0),
+        targetVerticalIndex: mutableState(0),
+        overlayHorizontalIndex: mutableState(0),
+        overlayVerticalIndex: mutableState(0),
       },
       radioInputDemo: {
-        $selectedIndex: x.add<number|null>(null),
+        selectedIndex: mutableState(null),
       },
       textInputDemo: {
-        $disabledTextInputState: x.add<string>('Disabled text input value'),
-        $enabledTextInputState: x.add<string>('Init value'),
-        $emailTextInputState: x.add<string>('email@host.com'),
-        $telTextInputState: x.add<string>('1 (845) 949 1234'),
-        $urlTextInputState: x.add<string>('www.url.com'),
+        disabledTextInputState: mutableState('Disabled text input value'),
+        enabledTextInputState: mutableState('Init value'),
+        emailTextInputState: mutableState('email@host.com'),
+        telTextInputState: mutableState('1 (845) 949 1234'),
+        urlTextInputState: mutableState('www.url.com'),
       },
-    })),
+    }),
 );
 
 export const $demoState = source(
     'demoState',
-    vine => {
-      return $stateService.get(vine).resolve($demoStateId.get(vine));
-    },
+    vine => $stateService2.get(vine)._($demoStateId.get(vine)),
 );

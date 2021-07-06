@@ -1,8 +1,7 @@
-import {$stateService} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {$table, classToggle, element, PersonaContext} from 'persona';
-import {Observable, of as observableOf} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {_p} from '../../src/app/app';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
@@ -39,17 +38,8 @@ export class ColorsDemo extends BaseThemedCtrl<typeof $> {
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
       this.renderers.table.darkClass(
-          $demoState.get(this.vine)
-              .pipe(
-                  switchMap(demoState => {
-                    if (!demoState) {
-                      return observableOf(undefined);
-                    }
-
-                    return $stateService.get(this.vine).resolve(demoState.$isDarkMode);
-                  }),
-                  map(isDark => !!isDark),
-              )),
+          $demoState.get(this.vine).$('isDarkMode').pipe(map(isDark => !!isDark)),
+      ),
     ];
   }
 }

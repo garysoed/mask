@@ -4,7 +4,7 @@ import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
-import {stateIdParser} from '../../core/state-id-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {CHANGE_EVENT} from '../../event/change-event';
 import {LineLayout} from '../../layout/line-layout';
 
@@ -43,7 +43,7 @@ export const $textInput = {
     ...$baseInput.api,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
     onChange: dispatcher(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<string>()),
+    stateId: attributeIn(STATE_ID_ATTR_NAME, objectPathParser<string>()),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
   },
   tag: 'mk-text-input',

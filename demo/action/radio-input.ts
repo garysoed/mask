@@ -1,9 +1,7 @@
+import {mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {StateId} from 'gs-tools/export/state';
 import {element, PersonaContext} from 'persona';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 import {$radioInput, RadioInput} from '../../src/action/input/radio-input';
 import {_p} from '../../src/app/app';
@@ -11,7 +9,7 @@ import radioUnchecked from '../../src/asset/checkbox_empty.svg';
 import radioChecked from '../../src/asset/radio_checked.svg';
 import {registerSvg} from '../../src/core/svg-service';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
-import {$demoState} from '../core/demo-state';
+import {$demoStateId} from '../core/demo-state';
 
 import template from './radio-input.html';
 
@@ -27,6 +25,12 @@ const $ = {
   optionC: element('optionC', $radioInput, {}),
   optionD: element('optionD', $radioInput, {}),
 };
+
+const statePath = mutablePathSource(
+    'state',
+    $demoStateId,
+    demo => demo._('radioInputDemo')._('selectedIndex'),
+);
 
 @_p.customElement({
   ...$radioInputDemo,
@@ -55,24 +59,10 @@ export class RadioInputDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.optionA.stateId(this.stateId$),
-      this.renderers.optionB.stateId(this.stateId$),
-      this.renderers.optionC.stateId(this.stateId$),
-      this.renderers.optionD.stateId(this.stateId$),
+      this.renderers.optionA.stateId(of(statePath.get(this.vine))),
+      this.renderers.optionB.stateId(of(statePath.get(this.vine))),
+      this.renderers.optionC.stateId(of(statePath.get(this.vine))),
+      this.renderers.optionD.stateId(of(statePath.get(this.vine))),
     ];
-  }
-
-  @cache()
-  private get stateId$(): Observable<StateId<number|null>> {
-    return $demoState.get(this.vine).pipe(
-        map(demoState => {
-          if (!demoState) {
-            return null;
-          }
-
-          return demoState.radioInputDemo.$selectedIndex;
-        }),
-        filterNonNullable(),
-    );
   }
 }

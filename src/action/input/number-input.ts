@@ -6,7 +6,7 @@ import {map, mapTo, startWith} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
 import stepper from '../../asset/stepper.svg';
-import {stateIdParser} from '../../core/state-id-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {registerSvg} from '../../core/svg-service';
 import {$icon, Icon} from '../../display/icon';
 import {CHANGE_EVENT} from '../../event/change-event';
@@ -22,7 +22,7 @@ export const $numberInput = {
     max: attributeIn('max', integerParser()),
     min: attributeIn('min', integerParser()),
     onChange: dispatcher(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<number>()),
+    stateId: attributeIn(STATE_ID_ATTR_NAME, objectPathParser<number>()),
     step: attributeIn('step', integerParser()),
   },
   tag: 'mk-number-input',

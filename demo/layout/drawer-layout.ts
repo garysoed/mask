@@ -1,18 +1,16 @@
-import {$stateService} from 'grapevine';
+import {$stateService2, mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {StateId} from 'gs-tools/export/state';
 import {elementWithTagType} from 'gs-types';
 import {attributeOut, element, PersonaContext, stringParser} from 'persona';
-import {Observable, of as observableOf} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import {$checkbox, Checkbox, CheckedValue} from '../../src/action/input/checkbox';
+import {$checkbox, Checkbox} from '../../src/action/input/checkbox';
 import {_p} from '../../src/app/app';
 import {$drawerLayout, DrawerLayout, DrawerMode} from '../../src/layout/drawer-layout';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {DemoLayout} from '../base/demo-layout';
-import {$demoState} from '../core/demo-state';
+import {$demoStateId} from '../core/demo-state';
 
 import template from './drawer-layout.html';
 
@@ -25,6 +23,9 @@ const $ = {
   }),
   horizontalModeCheckbox: element('horizontalModeCheckbox', $checkbox, {}),
 };
+
+const isExpandedPath = mutablePathSource('isExpanded', $demoStateId, demo => demo._('drawerLayoutDemo')._('isExpanded'));
+const isHorizontalModePath = mutablePathSource('isHorizontal', $demoStateId, demo => demo._('drawerLayoutDemo')._('isHorizontalMode'));
 
 export const $drawerLayoutDemo = {
   tag: 'mkd-drawer',
@@ -48,8 +49,8 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.expandCheckbox.stateId(this.$isExpanded$),
-      this.renderers.horizontalModeCheckbox.stateId(this.$isHorizontalMode$),
+      this.renderers.expandCheckbox.stateId(of(isExpandedPath.get(this.vine))),
+      this.renderers.horizontalModeCheckbox.stateId(of(isHorizontalModePath.get(this.vine))),
       this.renderers.rootPlay.layout(this.rootPlayLayout$),
       this.renderers.drawer.expanded(this.expanded$),
       this.renderers.drawer.mode(this.drawerMode$),
@@ -58,62 +59,22 @@ export class DrawerLayoutDemo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get expanded$(): Observable<boolean> {
-    return this.$isExpanded$
-        .pipe(
-            switchMap($isExpanded => {
-              if (!$isExpanded) {
-                return observableOf(undefined);
-              }
-
-              return $stateService.get(this.vine).resolve($isExpanded);
-            }),
-            map(checkedValue => !!checkedValue),
-        );
-  }
-
-  @cache()
-  private get $isExpanded$(): Observable<StateId<CheckedValue>> {
-    return $demoState.get(this.vine).pipe(
-        map(state => state?.drawerLayoutDemo.$isExpanded),
-        filterNonNullable(),
-    );
-  }
-
-  @cache()
-  private get $isHorizontalMode$(): Observable<StateId<CheckedValue>> {
-    return $demoState.get(this.vine).pipe(
-        map(state => state?.drawerLayoutDemo.$isHorizontalMode),
-        filterNonNullable(),
-    );
+    return $stateService2.get(this.vine)
+        .$(isExpandedPath.get(this.vine))
+        .pipe(map(checkedValue => !!checkedValue));
   }
 
   @cache()
   private get drawerMode$(): Observable<DrawerMode> {
-    return this.$isHorizontalMode$
-        .pipe(
-            switchMap($isHorizontalMode => {
-              if (!$isHorizontalMode) {
-                return observableOf(undefined);
-              }
-
-              return $stateService.get(this.vine).resolve($isHorizontalMode);
-            }),
-            map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL),
-        );
+    return $stateService2.get(this.vine)
+        .$(isHorizontalModePath.get(this.vine))
+        .pipe(map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL));
   }
 
   @cache()
   private get rootPlayLayout$(): Observable<string> {
-    return this.$isHorizontalMode$
-        .pipe(
-            switchMap($isHorizontalMode => {
-              if (!$isHorizontalMode) {
-                return observableOf(undefined);
-              }
-
-              return $stateService.get(this.vine).resolve($isHorizontalMode);
-            }),
-            map(checkedValue => checkedValue ? 'column' : 'row'),
-        );
+    return $stateService2.get(this.vine)
+        .$(isHorizontalModePath.get(this.vine))
+        .pipe(map(checkedValue => checkedValue ? 'column' : 'row'));
   }
 }

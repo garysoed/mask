@@ -1,8 +1,9 @@
-import {$stateService} from 'grapevine';
-import {assert, runEnvironment, setThat, setup, should, test} from 'gs-testing';
+import {$stateService2} from 'grapevine';
+import {assert, run, runEnvironment, setThat, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {fakeStateService} from 'gs-tools/export/state';
+import {fakeStateService2, mutableState} from 'gs-tools/export/state';
 import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {of} from 'rxjs';
 
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
@@ -27,18 +28,19 @@ test('@mask/input/checkbox', init => {
       update: goldenUpdate,
     }));
 
-    const stateService = fakeStateService();
+    const stateService = fakeStateService2();
     const tester = testerFactory.build({
       overrides: [
         THEME_LOADER_TEST_OVERRIDE,
-        {override: $stateService, withValue: stateService},
+        {override: $stateService2, withValue: stateService},
       ],
       rootCtrls: [Checkbox],
       rootDoc: document,
     });
 
     const {element, harness} = tester.createHarness(Checkbox);
-    const $state = stateService.modify(x => x.add<CheckedValue>(true));
+    const stateId = stateService.addRoot(mutableState<CheckedValue>(true));
+    const $state = stateService.mutablePath(stateId);
     harness.host._.stateId($state);
 
     return {element, harness, $state, stateService};
@@ -88,7 +90,7 @@ test('@mask/input/checkbox', init => {
     });
 
     should('update the slot name if the value is set by calling clear', () => {
-      _.stateService.modify(x => x.set(_.$state, true));
+      run(of(true).pipe(_.stateService.$(_.$state).set()));
       _.harness.host._.clearFn([]);
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
@@ -104,7 +106,7 @@ test('@mask/input/checkbox', init => {
       _.harness.checkbox._.onInput('');
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$state)).to.emitWith(true);
+      assert(_.stateService.$(_.$state)).to.emitWith(true);
     });
 
     should('emit false if the unchecked', () => {
@@ -114,7 +116,7 @@ test('@mask/input/checkbox', init => {
       _.harness.checkbox._.onInput('');
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$state)).to.emitWith(false);
+      assert(_.stateService.$(_.$state)).to.emitWith(false);
     });
 
     should('emit unknown if the value is indeterminate', () => {
@@ -124,13 +126,13 @@ test('@mask/input/checkbox', init => {
       _.harness.checkbox._.onInput('');
       _.harness.host._.applyFn([]);
 
-      assert(_.stateService.resolve(_.$state)).to.emitWith('unknown');
+      assert(_.stateService.$(_.$state)).to.emitWith('unknown');
     });
   });
 
   test('updateDomValue', () => {
     should('set true value correctly', () => {
-      _.stateService.modify(x => x.set(_.$state, true));
+      run(of(true).pipe(_.stateService.$(_.$state).set()));
 
       _.harness.host._.clearFn([]);
 
@@ -139,7 +141,7 @@ test('@mask/input/checkbox', init => {
     });
 
     should('set false value correctly', () => {
-      _.stateService.modify(x => x.set(_.$state, false));
+      run(of(false).pipe(_.stateService.$(_.$state).set()));
 
       _.harness.host._.clearFn([]);
 
@@ -148,7 +150,7 @@ test('@mask/input/checkbox', init => {
     });
 
     should('set unknown value correctly', () => {
-      _.stateService.modify(x => x.set(_.$state, 'unknown'));
+      run(of<CheckedValue>('unknown').pipe(_.stateService.$(_.$state).set()));
 
       _.harness.host._.clearFn([]);
 

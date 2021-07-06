@@ -54,11 +54,11 @@ window.addEventListener('load', () => {
 
   // Update the theme based on the demo state.
   combineLatest([
-    $demoState.get(vine).$('$baseColorName').pipe(
+    $demoState.get(vine).$('baseColorName').pipe(
         filterNonNullable(),
         startWith<keyof Palette>(BASE_COLOR_NAME),
     ),
-    $demoState.get(vine).$('$accentColorName').pipe(
+    $demoState.get(vine).$('accentColorName').pipe(
         filterNonNullable(),
         startWith<keyof Palette>(ACCENT_COLOR_NAME),
     ),

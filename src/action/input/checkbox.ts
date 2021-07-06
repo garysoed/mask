@@ -1,14 +1,14 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {$input, $label, $p, attributeIn, classlist, dispatcher, element, host, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
-import {defer, merge, Observable, of as observableOf} from 'rxjs';
+import {defer, merge, Observable, of} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
 import checkboxChecked from '../../asset/checkbox_checked.svg';
 import checkboxEmpty from '../../asset/checkbox_empty.svg';
 import checkboxUnknown from '../../asset/checkbox_unknown.svg';
-import {stateIdParser} from '../../core/state-id-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {registerSvg} from '../../core/svg-service';
 import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
@@ -25,7 +25,7 @@ export const $checkbox = {
     ...$baseInput.api,
     label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<CheckedValue>>(CHANGE_EVENT),
-    stateId: attributeIn(STATE_ID_ATTR_NAME, stateIdParser<CheckedValue>()),
+    stateId: attributeIn(STATE_ID_ATTR_NAME, objectPathParser<CheckedValue>()),
   },
   tag: 'mk-checkbox',
 };
@@ -145,7 +145,7 @@ export class Checkbox extends BaseInput<CheckedValue, typeof $> {
         el.checked = newValue;
       }
 
-      return observableOf({});
+      return of({});
     });
   }
 }
