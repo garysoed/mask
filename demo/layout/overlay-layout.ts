@@ -42,22 +42,18 @@ const $ = {
 const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
 
 const targetHorizontalIndexPath = mutablePathSource(
-    'targetHorizontalIndexPath',
     $demoStateId,
     demo => demo._('overlayLayoutDemo')._('targetHorizontalIndex'),
 );
 const targetVerticalIndexPath = mutablePathSource(
-    'targetVerticalIndexPath',
     $demoStateId,
     demo => demo._('overlayLayoutDemo')._('targetVerticalIndex'),
 );
 const overlayHorizontalIndexPath = mutablePathSource(
-    'overlayHorizontalIndexPath',
     $demoStateId,
     demo => demo._('overlayLayoutDemo')._('overlayHorizontalIndex'),
 );
 const overlayVerticalIndexPath = mutablePathSource(
-    'overlayVerticalIndexPath',
     $demoStateId,
     demo => demo._('overlayLayoutDemo')._('overlayVerticalIndex'),
 );

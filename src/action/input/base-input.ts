@@ -1,6 +1,5 @@
 import {$stateService2} from 'grapevine/src/core/state';
 import {cache} from 'gs-tools/export/data';
-import {debug} from 'gs-tools/export/rxjs';
 import {ObjectPath} from 'gs-tools/export/state';
 import {handler, host, InputsOf, PersonaContext} from 'persona';
 import {AttributeInput, DispatcherOutput, Output} from 'persona/export/internal';
@@ -28,7 +27,7 @@ export const $ = {
 
 @_p.baseCustomElement({})
 export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
-  private readonly statePath$ = this.statePathInput.getValue(this.context).pipe(debug(null, 'statePath'));
+  private readonly statePath$ = this.statePathInput.getValue(this.context);
 
   constructor(
       private readonly defaultValue: T,
@@ -63,7 +62,6 @@ export abstract class BaseInput<T, S extends typeof $> extends BaseAction<S> {
   @cache()
   private get currentStateValue$(): Observable<T> {
     return $stateService2.get(this.vine).$(this.statePath$).pipe(
-        debug(null, 'statePathValue'),
         map(value => value ?? this.defaultValue),
     );
   }

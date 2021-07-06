@@ -28,17 +28,8 @@ const $ = {
   isActionCheckbox: element('isActionCheckbox', $checkbox, {}),
 };
 
-const isActionPath = mutablePathSource(
-    'isAction',
-    $demoStateId,
-    demo => demo._('iconDemo')._('isAction'),
-);
-
-const fitToWidthPath = mutablePathSource(
-    'fitToWidth',
-    $demoStateId,
-    demo => demo._('iconDemo')._('fitToWidth'),
-);
+const isActionPath = mutablePathSource($demoStateId, demo => demo._('iconDemo')._('isAction'));
+const fitToWidthPath = mutablePathSource($demoStateId, demo => demo._('iconDemo')._('fitToWidth'));
 
 @_p.customElement({
   ...$iconDemo,

@@ -7,7 +7,4 @@ export interface OnRadioInput {
   readonly stateId: ObjectPath<number|null>;
 }
 
-export const $onRadioInput$ = source<Subject<OnRadioInput>>(
-    'onRadioInput$',
-    () => new Subject<OnRadioInput>(),
-);
+export const $onRadioInput$ = source<Subject<OnRadioInput>>(() => new Subject<OnRadioInput>());

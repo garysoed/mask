@@ -25,22 +25,18 @@ const $ = {
 };
 
 const disabledNumberInputStatePath = mutablePathSource(
-    'disabledNumberInputState',
     $demoStateId,
     demo => demo._('numberInputDemo')._('disabledNumberInputState'),
 );
 const enabledNumberInputStatePath = mutablePathSource(
-    'enabledNumberInputState',
     $demoStateId,
     demo => demo._('numberInputDemo')._('enabledNumberInputState'),
 );
 const rangedNumberInputStatePath = mutablePathSource(
-    'rangedNumberInputState',
     $demoStateId,
     demo => demo._('numberInputDemo')._('rangedNumberInputState'),
 );
 const steppedNumberInputStatePath = mutablePathSource(
-    'steppedNumberInputState',
     $demoStateId,
     demo => demo._('numberInputDemo')._('steppedNumberInputState'),
 );

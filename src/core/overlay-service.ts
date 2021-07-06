@@ -30,4 +30,4 @@ export class OverlayService {
   }
 }
 
-export const $overlayService = source('OverlayService', () => new OverlayService());
+export const $overlayService = source(() => new OverlayService());

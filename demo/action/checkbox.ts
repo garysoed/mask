@@ -27,19 +27,16 @@ const $ = {
 };
 
 const disabledCheckboxStatePath = mutablePathSource(
-    'disabledCheckboxState',
     $demoStateId,
     demo => demo._('checkboxDemo')._('disabledCheckboxState'),
 );
 
 const unknownCheckboxStatePath = mutablePathSource(
-    'unknownCheckboxState',
     $demoStateId,
     demo => demo._('checkboxDemo')._('unknownCheckboxState'),
 );
 
 const labelCheckboxStatePath = mutablePathSource(
-    'labelCheckboxState',
     $demoStateId,
     demo => demo._('checkboxDemo')._('labelCheckboxState'),
 );

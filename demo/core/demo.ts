@@ -61,7 +61,7 @@ const $ = {
 const PAGE_CTORS = ALL_SPECS.map(({ctor}) => ctor);
 const COMPONENT_PATH_ATTR = 'path';
 
-const darkModePath = mutablePathSource('darkMode', $demoStateId, demo => demo._('isDarkMode'));
+const darkModePath = mutablePathSource($demoStateId, demo => demo._('isDarkMode'));
 
 @_p.customElement({
   dependencies: [

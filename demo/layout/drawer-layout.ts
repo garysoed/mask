@@ -24,8 +24,8 @@ const $ = {
   horizontalModeCheckbox: element('horizontalModeCheckbox', $checkbox, {}),
 };
 
-const isExpandedPath = mutablePathSource('isExpanded', $demoStateId, demo => demo._('drawerLayoutDemo')._('isExpanded'));
-const isHorizontalModePath = mutablePathSource('isHorizontal', $demoStateId, demo => demo._('drawerLayoutDemo')._('isHorizontalMode'));
+const isExpandedPath = mutablePathSource($demoStateId, demo => demo._('drawerLayoutDemo')._('isExpanded'));
+const isHorizontalModePath = mutablePathSource($demoStateId, demo => demo._('drawerLayoutDemo')._('isHorizontalMode'));
 
 export const $drawerLayoutDemo = {
   tag: 'mkd-drawer',

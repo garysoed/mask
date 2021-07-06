@@ -26,31 +26,26 @@ const $ = {
 };
 
 const disabledTextInputStatePath = mutablePathSource(
-    'disabledTextInputState',
     $demoStateId,
     demo => demo._('textInputDemo')._('disabledTextInputState'),
 );
 
 const enabledTextInputStatePath = mutablePathSource(
-    'enabledTextInputState',
     $demoStateId,
     demo => demo._('textInputDemo')._('enabledTextInputState'),
 );
 
 const emailTextInputStatePath = mutablePathSource(
-    'emailTextInputState',
     $demoStateId,
     demo => demo._('textInputDemo')._('emailTextInputState'),
 );
 
 const telTextInputStatePath = mutablePathSource(
-    'telTextInputState',
     $demoStateId,
     demo => demo._('textInputDemo')._('telTextInputState'),
 );
 
 const urlTextInputStatePath = mutablePathSource(
-    'urlTextInputState',
     $demoStateId,
     demo => demo._('textInputDemo')._('urlTextInputState'),
 );

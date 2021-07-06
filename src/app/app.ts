@@ -13,11 +13,11 @@ import {Theme} from '../theme/theme';
 export const _p = new PersonaBuilder();
 
 export const $themeLoader = source(
-    'Theme',
     () => new BehaviorSubject<ThemeLoader>(
-        new ClassThemeLoader(new Theme(PALETTE.ORANGE, PALETTE.GREEN))),
+        new ClassThemeLoader(new Theme(PALETTE.ORANGE, PALETTE.GREEN)),
+    ),
 );
-export const $window = source('window', () => window);
+export const $window = source(() => window);
 
 export function start(
     appName: string,

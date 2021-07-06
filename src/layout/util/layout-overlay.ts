@@ -12,7 +12,7 @@ import {BaseThemedCtrl} from '../../theme/base-themed-ctrl';
 import layoutOverlayTemplate from './layout-overlay.html';
 
 
-const $isActive = source('layout.isActive', () => new BehaviorSubject(false));
+const $isActive = source(() => new BehaviorSubject(false));
 
 const $ = {
   gridLeft: element('gridLeft', $div, {

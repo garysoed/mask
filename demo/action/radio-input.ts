@@ -26,11 +26,7 @@ const $ = {
   optionD: element('optionD', $radioInput, {}),
 };
 
-const statePath = mutablePathSource(
-    'state',
-    $demoStateId,
-    demo => demo._('radioInputDemo')._('selectedIndex'),
-);
+const statePath = mutablePathSource($demoStateId, demo => demo._('radioInputDemo')._('selectedIndex'));
 
 @_p.customElement({
   ...$radioInputDemo,

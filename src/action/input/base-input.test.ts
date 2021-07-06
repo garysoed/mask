@@ -31,11 +31,8 @@ const $ = {
   host: host($$.api),
 };
 
-const $domValueId = source<ObjectPath<string>|null>('domValueId', () => null);
-const $domValueUpdatedByScript$ = source<Subject<unknown>>(
-    'domValueUpdatedByScript$',
-    () => new Subject(),
-);
+const $domValueId = source<ObjectPath<string>|null>(() => null);
+const $domValueUpdatedByScript$ = source<Subject<unknown>>(() => new Subject());
 
 const DEFAULT_VALUE = 'DEFAULT_VALUE';
 

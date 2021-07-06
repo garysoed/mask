@@ -105,7 +105,6 @@ export class SaveService {
 }
 
 export const $saveConfig = source<BehaviorSubject<SaveConfig|undefined>>(
-    'saveConfig',
     () => new BehaviorSubject<SaveConfig|undefined>(undefined),
 );
-export const $saveService = source('SaveService', vine => new SaveService(vine));
+export const $saveService = source(vine => new SaveService(vine));
