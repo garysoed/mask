@@ -1,6 +1,6 @@
 import {mutablePathSource} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {MutablePath} from 'gs-tools/export/state';
+import {MutableState, ObjectPath} from 'gs-tools/export/state';
 import {$div, element, multi, PersonaContext, renderCustomElement, RenderSpec} from 'persona';
 import {Observable, of} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
@@ -96,7 +96,7 @@ export class OverlayLayoutDemo extends BaseThemedCtrl<typeof $> {
   }
 
   private getAnchorNodes(
-      objectPath: MutablePath<number|null>,
+      objectPath: ObjectPath<MutableState<number|null>>,
   ): Observable<readonly RenderSpec[]> {
     const specs = ANCHORS.map((anchor, index) => {
       return renderCustomElement({

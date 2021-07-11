@@ -1,7 +1,7 @@
 import {$stateService} from 'grapevine';
 import {assert, createSpySubject, objectThat, run, runEnvironment, setThat, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {fakeStateService, mutableState, MutablePath} from 'gs-tools/export/state';
+import {fakeStateService, immutablePathOf, mutableState, ObjectPath} from 'gs-tools/export/state';
 import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 import {of} from 'rxjs';
 
@@ -116,13 +116,13 @@ test('@mask/action/input/radio-input', init => {
     });
 
     should('reset the dom value if global radio input emits for other index and the ID match', () => {
-      $onRadioInput$.get(_.tester.vine).next({index: 1, stateId: _.$state});
+      $onRadioInput$.get(_.tester.vine).next({index: 1, stateId: immutablePathOf(_.$state)});
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
     });
 
     should('do nothing if the global radio input emits for the current index', () => {
-      $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: _.$state});
+      $onRadioInput$.get(_.tester.vine).next({index: INDEX, stateId: immutablePathOf(_.$state)});
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
     });
@@ -131,7 +131,7 @@ test('@mask/action/input/radio-input', init => {
       const otherStateId = _.stateService.addRoot(mutableState<number|null>(null));
       $onRadioInput$.get(_.tester.vine).next({
         index: INDEX,
-        stateId: _.stateService.mutablePath(otherStateId),
+        stateId: immutablePathOf(_.stateService.mutablePath(otherStateId)),
       });
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
@@ -148,7 +148,9 @@ test('@mask/action/input/radio-input', init => {
 
       assert(onRadioInput$).to.emitWith(objectThat<OnRadioInput>().haveProperties({
         index: INDEX,
-        stateId: objectThat<MutablePath<number|null>>().haveProperties({id: _.$state.id}),
+        stateId: objectThat<ObjectPath<number|null>>().haveProperties({
+          id: immutablePathOf(_.$state).id,
+        }),
       }));
     });
 

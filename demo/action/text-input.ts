@@ -66,11 +66,11 @@ export class TextInputDemo extends BaseThemedCtrl<typeof $> {
   @cache()
   protected get renders(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.disabledInput.stateId(of(disabledTextInputStatePath.get(this.vine))),
-      this.renderers.emailInput.stateId(of(emailTextInputStatePath.get(this.vine))),
-      this.renderers.enabledInput.stateId(of(enabledTextInputStatePath.get(this.vine))),
-      this.renderers.telInput.stateId(of(telTextInputStatePath.get(this.vine))),
-      this.renderers.urlInput.stateId(of(urlTextInputStatePath.get(this.vine))),
+      this.renderers.disabledInput.objectPath(of(disabledTextInputStatePath.get(this.vine))),
+      this.renderers.emailInput.objectPath(of(emailTextInputStatePath.get(this.vine))),
+      this.renderers.enabledInput.objectPath(of(enabledTextInputStatePath.get(this.vine))),
+      this.renderers.telInput.objectPath(of(telTextInputStatePath.get(this.vine))),
+      this.renderers.urlInput.objectPath(of(urlTextInputStatePath.get(this.vine))),
     ];
   }
 }

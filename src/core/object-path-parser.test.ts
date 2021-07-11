@@ -1,12 +1,12 @@
 import {assert, objectThat, should, test} from 'gs-testing';
-import {createMutablePath, MutablePath} from 'gs-tools/export/state';
+import {createObjectPath, ObjectPath} from 'gs-tools/export/state';
 
-import {mutablePathParser} from './mutable-path-parser';
+import {objectPathParser} from './object-path-parser';
 
 
-test('@mask/core/mutable-path-parser', init => {
+test('@mask/core/object-path-parser', init => {
   const _ = init(() => {
-    const parser = mutablePathParser<number>();
+    const parser = objectPathParser<number>();
     return {parser};
   });
 
@@ -15,7 +15,7 @@ test('@mask/core/mutable-path-parser', init => {
       const id = 'id';
       assert(_.parser.convertBackward(id)).to.haveProperties({
         success: true,
-        result: objectThat<MutablePath<number>>().haveProperties({id}),
+        result: objectThat<ObjectPath<number>>().haveProperties({id}),
       });
     });
 
@@ -29,7 +29,7 @@ test('@mask/core/mutable-path-parser', init => {
   test('convertForward', () => {
     should('return the inner ID', () => {
       const id = 'id';
-      assert(_.parser.convertForward(createMutablePath(id))).to.haveProperties({
+      assert(_.parser.convertForward(createObjectPath(id))).to.haveProperties({
         success: true,
         result: id,
       });

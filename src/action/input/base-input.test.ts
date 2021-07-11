@@ -2,24 +2,24 @@ import {$stateService, source} from 'grapevine';
 import {assert, createSpySubject, run, should, test} from 'gs-testing';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {fakeStateService, mutableState, MutablePath} from 'gs-tools/export/state';
+import {fakeStateService, MutableState, mutableState, ObjectPath} from 'gs-tools/export/state';
 import {$div, attributeIn, attributeOut, booleanParser, dispatcher, element, host, PersonaContext, stringParser} from 'persona';
 import {PersonaTesterFactory} from 'persona/export/testing';
 import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
-import {mutablePathParser} from '../../core/mutable-path-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 
-import {$baseInput as $baseInput, BaseInput, MUTABLE_PATH_ATTR_NAME} from './base-input';
+import {$baseInput as $baseInput, BaseInput, OBJECT_PATH_ATTR_NAME} from './base-input';
 
 
 const $$ = {
   tag: 'mk-test-base-input',
   api: {
     ...$baseInput.api,
-    stateId: attributeIn<MutablePath<string>>(MUTABLE_PATH_ATTR_NAME, mutablePathParser()),
+    stateId: attributeIn<ObjectPath<MutableState<string>>>(OBJECT_PATH_ATTR_NAME, objectPathParser()),
     onChange: dispatcher<ChangeEvent<string>>(CHANGE_EVENT),
   },
 };
@@ -31,7 +31,7 @@ const $ = {
   host: host($$.api),
 };
 
-const $domValueId = source<MutablePath<string>|null>(() => null);
+const $domValueId = source<ObjectPath<MutableState<string>>|null>(() => null);
 const $domValueUpdatedByScript$ = source<Subject<unknown>>(() => new Subject());
 
 const DEFAULT_VALUE = 'DEFAULT_VALUE';

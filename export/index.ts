@@ -40,4 +40,4 @@ export {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 export {Theme} from '../src/theme/theme';
 export {BaseThemedCtrl} from '../src/theme/base-themed-ctrl';
 
-export {mutablePathParser} from '../src/core/mutable-path-parser';
+export {objectPathParser} from '../src/core/object-path-parser';

@@ -39,7 +39,7 @@ test('@mask/input/text-input', init => {
 
     const stateId = stateService.addRoot(mutableState('init state'));
     const $state = stateService.mutablePath(stateId);
-    harness.host._.stateId($state);
+    harness.host._.objectPath($state);
 
     const labelEl = document.createElement('div');
     labelEl.textContent = 'Label';

@@ -1,6 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
+import {immutablePathOf, isObjectPathEqual, MutableState} from 'gs-tools/export/state';
 import {$input, $label, $p, attributeIn, attributeOut, classlist, dispatcher, element, host, integerParser, onInput, PersonaContext, setAttribute, stringParser, textOut} from 'persona';
 import {concat, EMPTY, merge, Observable} from 'rxjs';
 import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
@@ -8,12 +9,12 @@ import {filter, map, pairwise, shareReplay, skip, startWith, switchMap, take, ta
 import {_p} from '../../app/app';
 import radioUnchecked from '../../asset/checkbox_empty.svg';
 import radioChecked from '../../asset/radio_checked.svg';
-import {mutablePathParser} from '../../core/mutable-path-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {registerSvg} from '../../core/svg-service';
 import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {ListItemLayout} from '../../layout/list-item-layout';
-import {$baseInput as $baseInput, BaseInput, MUTABLE_PATH_ATTR_NAME} from '../input/base-input';
+import {$baseInput as $baseInput, BaseInput, OBJECT_PATH_ATTR_NAME} from '../input/base-input';
 
 import {$onRadioInput$} from './on-radio-input';
 import template from './radio-input.html';
@@ -24,7 +25,7 @@ export const $radioInput = {
     ...$baseInput.api,
     label: attributeIn('label', stringParser(), ''),
     onChange: dispatcher<ChangeEvent<number|null>>(CHANGE_EVENT),
-    stateId: attributeIn(MUTABLE_PATH_ATTR_NAME, mutablePathParser<number|null>()),
+    stateId: attributeIn(OBJECT_PATH_ATTR_NAME, objectPathParser<MutableState<number|null>>()),
     index: attributeIn('index', integerParser()),
   },
   tag: 'mk-radio-input',
@@ -41,7 +42,7 @@ export const $ = {
     ...$radioInput.api,
   }),
   input: element('input', $input, {
-    name: attributeOut('name', mutablePathParser<number|null>()),
+    name: attributeOut('name', objectPathParser<number|null>()),
     onInput: onInput(),
     disabled: setAttribute('disabled'),
   }),
@@ -102,7 +103,7 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
     return [
       ...super.renders,
       this.renderers.container.checkMode(this.checkMode$),
-      this.renderers.input.name(this.inputs.host.stateId.pipe(filterNonNullable())),
+      this.renderers.input.name(this.inputs.host.stateId.pipe(map(id => immutablePathOf(id)))),
       this.renderers.checkedLabel.text(this.inputs.host.label),
       this.renderers.uncheckedLabel.text(this.inputs.host.label),
     ];
@@ -134,7 +135,9 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
     return $onRadioInput$.get(this.vine).pipe(
         withLatestFrom(this.inputs.host.stateId, this.inputs.host.index),
         filter(([event, stateId, index]) => {
-          return event.index !== index && event.stateId.id === stateId?.id;
+          return event.index !== index
+              && !!stateId
+              && isObjectPathEqual(event.stateId, stateId);
         }),
         withLatestFrom(this.domValue$),
         switchMap(([, domValue]) => {
@@ -171,7 +174,7 @@ export class RadioInput extends BaseInput<number|null, typeof $> {
                 return;
               }
 
-              $onRadioInput$.get(this.vine).next({index, stateId});
+              $onRadioInput$.get(this.vine).next({index, stateId: immutablePathOf(stateId)});
             }),
         );
   }

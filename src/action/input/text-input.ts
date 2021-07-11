@@ -1,14 +1,15 @@
 import {cache} from 'gs-tools/export/data';
+import {MutableState} from 'gs-tools/export/state';
 import {$input, attributeIn, attributeOut, dispatcher, element, enumParser, host, onInput, PersonaContext, setAttribute, stringParser} from 'persona';
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import {_p} from '../../app/app';
-import {mutablePathParser} from '../../core/mutable-path-parser';
+import {objectPathParser} from '../../core/object-path-parser';
 import {CHANGE_EVENT} from '../../event/change-event';
 import {LineLayout} from '../../layout/line-layout';
 
-import {$baseInput as $baseInput, BaseInput, MUTABLE_PATH_ATTR_NAME} from './base-input';
+import {$baseInput as $baseInput, BaseInput, OBJECT_PATH_ATTR_NAME} from './base-input';
 import template from './text-input.html';
 
 
@@ -43,7 +44,7 @@ export const $textInput = {
     ...$baseInput.api,
     autocomplete: attributeIn('autocomplete', enumParser(AutocompleteType), 'off'),
     onChange: dispatcher(CHANGE_EVENT),
-    stateId: attributeIn(MUTABLE_PATH_ATTR_NAME, mutablePathParser<string>()),
+    objectPath: attributeIn(OBJECT_PATH_ATTR_NAME, objectPathParser<MutableState<string>>()),
     type: attributeIn('type', enumParser(InputType), InputType.TEXT),
   },
   tag: 'mk-text-input',
@@ -69,7 +70,7 @@ export class TextInput extends BaseInput<string, typeof $> {
     super(
         '',
         $.input._.disabled,
-        $.host._.stateId,
+        $.host._.objectPath,
         $.host._.onChange,
         context,
         $,
