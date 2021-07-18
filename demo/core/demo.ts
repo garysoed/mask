@@ -168,6 +168,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
           return renderCustomElement({
             spec: spec.componentSpec,
+            inputs: {},
             id: {},
           });
         }),
@@ -180,12 +181,15 @@ export class Demo extends BaseThemedCtrl<typeof $> {
           return renderCustomElement({
             spec: $button,
             attrs: new Map([[COMPONENT_PATH_ATTR, `${path}`]]),
-            children: [renderCustomElement({
-              spec: $lineLayout,
-              attrs: new Map([['mk-body-1', '']]),
-              textContent: name,
-              id: name,
-            })],
+            children: [
+              renderCustomElement({
+                spec: $lineLayout,
+                attrs: new Map([['mk-body-1', '']]),
+                textContent: name,
+                inputs: {},
+                id: name,
+              }),
+            ],
             inputs: {
               isSecondary: observableOf(true),
             },
