@@ -8,8 +8,7 @@ import {of} from 'rxjs';
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
-import hideStepper from './goldens/number-input__hide_stepper.html';
-import stepper from './goldens/number-input__stepper.html';
+import goldens from './goldens/goldens.json';
 import {NumberInput} from './number-input';
 
 
@@ -17,7 +16,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/number-input', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv({hideStepper, stepper}));
+    runEnvironment(new BrowserSnapshotsEnv('src/action/input/goldens', goldens));
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
@@ -56,14 +55,14 @@ test('@mask/input/number-input', init => {
     should('show stepper icon when hovered', () => {
       _.harness.root._.onMouseEnter();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('stepper');
+      assert(flattenNode(_.element)).to.matchSnapshot('number-input__stepper');
     });
 
     should('hide stepper icon on mouseleave', () => {
       _.harness.root._.onMouseEnter();
       _.harness.root._.onMouseLeave();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('hideStepper');
+      assert(flattenNode(_.element)).to.matchSnapshot('number-input__hide-stepper');
     });
   });
 

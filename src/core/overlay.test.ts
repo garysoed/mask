@@ -6,7 +6,7 @@ import {ON_LOG_$, WebConsoleDestination} from 'santa';
 import {_p} from '../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
-import render from './goldens/overlay.txt';
+import goldens from './goldens/goldens.json';
 import {Overlay} from './overlay';
 import {$overlayService, Anchor, OverlayService} from './overlay-service';
 
@@ -17,7 +17,9 @@ ON_LOG_$.subscribe(event => dest.log(event));
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/core/overlay', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv({render}));
+    runEnvironment(
+        new BrowserSnapshotsEnv('src/core/goldens', goldens),
+    );
 
     const overlayService = new OverlayService();
     const tester = TESTER_FACTORY.build({
@@ -109,7 +111,7 @@ test('@mask/core/overlay', init => {
       };
       _.overlayService.show(event);
 
-      assert(flattenNode(_.element)).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay');
     });
   });
 

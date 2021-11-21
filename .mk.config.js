@@ -1,3 +1,15 @@
+set_vars({
+  vars: {
+    goldens: [
+      'src/action/input/goldens',
+      'src/core/goldens',
+      'src/display/goldens',
+      'src/theme/goldens',
+    ],
+  },
+});
+
+
 declare({
   name: 'link',
   as: shell({
@@ -22,7 +34,8 @@ declare({
   name: 'demo',
   as: parallel(({vars}) => ({
     cmds: [
-      vars.webpackWatch,shell({
+      vars.webpackWatch,
+      shell({
         bin: 'simpleserver',
         flags: [
           'demo/static.conf.json',

@@ -1,8 +1,7 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 
-import goldenDark from './goldens/theme__dark.html';
-import goldenLight from './goldens/theme__light.html';
+import goldens from './goldens/goldens.json';
 import {PALETTE} from './palette';
 import {Theme} from './theme';
 import template from './theme.html';
@@ -10,7 +9,10 @@ import template from './theme.html';
 
 test('@mask/theme/theme', () => {
   setup(() => {
-    runEnvironment(new BrowserSnapshotsEnv({light: goldenLight, dark: goldenDark}));
+    runEnvironment(new BrowserSnapshotsEnv(
+        'src/theme/goldens',
+        goldens,
+    ));
   });
 
   test('generateCss', init => {
@@ -33,13 +35,13 @@ test('@mask/theme/theme', () => {
     should('generate light CSS correctly', () => {
       _.tableEl.setAttribute('mk-theme', 'light');
 
-      assert(_.rootEl).to.matchSnapshot('light');
+      assert(_.rootEl).to.matchSnapshot('theme__light');
     });
 
     should('generate dark CSS correctly', () => {
       _.tableEl.setAttribute('mk-theme', 'dark');
 
-      assert(_.rootEl).to.matchSnapshot('dark');
+      assert(_.rootEl).to.matchSnapshot('theme__dark');
     });
   });
 });

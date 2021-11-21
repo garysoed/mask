@@ -8,8 +8,7 @@ import {of} from 'rxjs';
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
-import goldenDefault from './goldens/text-input__default.html';
-import goldenUpdate from './goldens/text-input__update.html';
+import goldens from './goldens/goldens.json';
 import {TextInput} from './text-input';
 
 
@@ -18,10 +17,7 @@ const testerFactory = new PersonaTesterFactory(_p);
 test('@mask/input/text-input', init => {
   setup(() => {
     runEnvironment(
-        new BrowserSnapshotsEnv({
-          default: goldenDefault,
-          update: goldenUpdate,
-        }),
+        new BrowserSnapshotsEnv('src/action/input/goldens', goldens),
     );
   });
 
@@ -52,7 +48,7 @@ test('@mask/input/text-input', init => {
   test('render', () => {
     should('render the value correctly', () => {
       _.harness.host._.clearFn([]);
-      assert(flattenNode(_.element)).to.matchSnapshot('default');
+      assert(flattenNode(_.element)).to.matchSnapshot('text-input__default');
     });
   });
 
@@ -75,7 +71,7 @@ test('@mask/input/text-input', init => {
       run(of(value).pipe(_.stateService.$(_.$state).set()));
       _.harness.host._.clearFn([]);
 
-      assert(flattenNode(_.element)).to.matchSnapshot('update');
+      assert(flattenNode(_.element)).to.matchSnapshot('text-input__update');
     });
   });
 });

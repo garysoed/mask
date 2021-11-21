@@ -9,24 +9,14 @@ import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 import {Checkbox, CheckedValue} from '../input/checkbox';
 
-import goldenChecked from './goldens/checkbox__checked.html';
-import goldenDefault from './goldens/checkbox__default.html';
-import goldenUnchecked from './goldens/checkbox__unchecked.html';
-import goldenUnknown from './goldens/checkbox__unknown.html';
-import goldenUpdate from './goldens/checkbox__update.html';
+import goldens from './goldens/goldens.json';
 
 
 const testerFactory = new PersonaTesterFactory(_p);
 
 test('@mask/input/checkbox', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv({
-      render: goldenDefault,
-      checked: goldenChecked,
-      unchecked: goldenUnchecked,
-      unknown: goldenUnknown,
-      update: goldenUpdate,
-    }));
+    runEnvironment(new BrowserSnapshotsEnv('src/action/input/goldens', goldens));
 
     const stateService = fakeStateService();
     const tester = testerFactory.build({
@@ -50,7 +40,7 @@ test('@mask/input/checkbox', init => {
     should('render default config correctly', () => {
       _.harness.host._.label('label');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('checkbox__default');
     });
   });
 
@@ -66,7 +56,7 @@ test('@mask/input/checkbox', init => {
       _.harness.checkbox._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('checked');
+      assert(flattenNode(_.element)).to.matchSnapshot('checkbox__checked');
     });
 
     should('set the classlist to display_unchecked if unchecked', () => {
@@ -76,7 +66,7 @@ test('@mask/input/checkbox', init => {
       _.harness.checkbox._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('unchecked');
+      assert(flattenNode(_.element)).to.matchSnapshot('checkbox__unchecked');
     });
 
     should('set the classlist to display_unknown if unknown', () => {
@@ -86,7 +76,7 @@ test('@mask/input/checkbox', init => {
       _.harness.checkbox._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unknown'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('unknown');
+      assert(flattenNode(_.element)).to.matchSnapshot('checkbox__unknown');
     });
 
     should('update the slot name if the value is set by calling clear', () => {
@@ -94,7 +84,7 @@ test('@mask/input/checkbox', init => {
       _.harness.host._.clearFn([]);
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('update');
+      assert(flattenNode(_.element)).to.matchSnapshot('checkbox__update');
     });
   });
 

@@ -5,14 +5,14 @@ import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
 import {_p} from '../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
-import render from './goldens/keyboard.txt';
+import goldens from './goldens/goldens.json';
 import {Keyboard} from './keyboard';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 test('@mask/display/keyboard', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv({render}));
+    runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = TESTER_FACTORY.build({
       rootCtrls: [Keyboard],
       rootDoc: document,
@@ -27,7 +27,7 @@ test('@mask/display/keyboard', init => {
     should('render the nodes correctly', () => {
       _.harness.host._.text('meta alt enter 3');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('keyboard');
     });
   });
 });

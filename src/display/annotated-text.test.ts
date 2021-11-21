@@ -10,14 +10,14 @@ import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override'
 
 import {AnnotatedText} from './annotated-text';
 import {$annotationSpecs$} from './annotation-service';
-import render from './goldens/annotated-text.txt';
+import goldens from './goldens/goldens.json';
 
 
 const TESTER_FACTORY = new PersonaTesterFactory(_p);
 
 test('@mask/display/annotated-text', init => {
   setup(() => {
-    runEnvironment(new BrowserSnapshotsEnv({render}));
+    runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
   });
 
   const _ = init(() => {
@@ -55,7 +55,7 @@ test('@mask/display/annotated-text', init => {
       _.harness.host._.annotations(['atob', 'btoc']);
       _.harness.host._.text('banana');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('annotated-text');
     });
   });
 });

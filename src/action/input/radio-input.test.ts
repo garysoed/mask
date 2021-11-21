@@ -8,9 +8,7 @@ import {of} from 'rxjs';
 import {_p} from '../../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../../testing/theme-loader-test-override';
 
-import goldenChecked from './goldens/radio-input__checked.html';
-import goldenDefault from './goldens/radio-input__default.html';
-import goldenUnchecked from './goldens/radio-input__unchecked.html';
+import goldens from './goldens/goldens.json';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import {RadioInput} from './radio-input';
 
@@ -22,11 +20,7 @@ test('@mask/action/input/radio-input', init => {
 
   const _ = init(() => {
     runEnvironment(
-        new BrowserSnapshotsEnv({
-          render: goldenDefault,
-          checked: goldenChecked,
-          unchecked: goldenUnchecked,
-        }),
+        new BrowserSnapshotsEnv('src/action/input/goldens', goldens),
     );
 
     const stateService = fakeStateService();
@@ -52,7 +46,7 @@ test('@mask/action/input/radio-input', init => {
     should('render default config correctly', () => {
       _.harness.host._.label('label');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('render');
+      assert(flattenNode(_.element)).to.matchSnapshot('radio-input__default');
     });
   });
 
@@ -64,7 +58,7 @@ test('@mask/action/input/radio-input', init => {
       _.harness.input._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('checked');
+      assert(flattenNode(_.element)).to.matchSnapshot('radio-input__checked');
     });
 
     should('set the slot to display_unchecked if unchecked', () => {
@@ -74,7 +68,7 @@ test('@mask/action/input/radio-input', init => {
       _.harness.input._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('unchecked');
+      assert(flattenNode(_.element)).to.matchSnapshot('radio-input__unchecked');
     });
   });
 
