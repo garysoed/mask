@@ -1,0 +1,126 @@
+<style>
+  #accentPalette,
+  #basePalette {
+    height: 0;
+    overflow: hidden;
+    transition: height var(--mkAnimationTime);
+  }
+
+  #settingsDrawer[expanded="T"] #accentPalette,
+  #settingsDrawer[expanded="T"] #basePalette {
+    height: 16rem;
+    transition: height var(--mkAnimationTime);
+  }
+
+  #drawerRoot {
+    overflow: auto;
+  }
+
+  #rootLayout[drawer-expanded="F"] #drawerRoot {
+    display: none;
+  }
+
+  #content {
+    position: relative;
+  }
+
+  #drawerContent {
+    overflow: hidden;
+    width: 16rem;
+  }
+
+  .iconContainer {
+    height: 2rem;
+  }
+
+  .palette {
+    cursor: pointer;
+    display: inline-block;
+    height: 4rem;
+    width: 4rem;
+  }
+
+  .palette.selected {
+    outline: black solid 4px;
+    outline-offset: -4px;
+  }
+</style>
+<style id="globalStyle"></style>
+
+<section id="root" layout="row" mk-theme="dark" fill-parent>
+  <mk-root-layout icon="logo" id="rootLayout" label="Mask: Demo">
+    <div id="drawerRoot" slot="drawer">
+      <mk-line-layout mk-body-2>General</mk-line-layout>
+      <!-- #generalContents -->
+      <mk-line-layout mk-body-2>Displays</mk-line-layout>
+      <!-- #displayContents -->
+      <mk-line-layout mk-body-2>Actions</mk-line-layout>
+      <!-- #actionContents -->
+      <mk-line-layout mk-body-2>Layouts</mk-line-layout>
+      <!-- #layoutContents -->
+    </div>
+
+    <div id="main" layout="row" slot="main">
+      <div flex id="content">
+        <!-- content -->
+      </div>
+      <mk-drawer-layout
+          id="settingsDrawer"
+          max-size="16rem"
+          min-size="4rem"
+          mk-theme-highlight
+          mode="vertical"
+          shadow="down"
+      >
+        <div id="drawerContent" mk-body-1>
+          <mk-list-item-layout>
+            <div class="iconContainer" slot="bullet">
+              <mk-icon icon="settings"></mk-icon>
+            </div>
+            <p slot="label">Settings</p>
+          </mk-list-item-layout>
+          <div id="basePaletteSection">
+            <mk-list-item-layout>
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="palette"></mk-icon>
+              </div>
+              <p slot="label">Base Palette</p>
+            </mk-list-item-layout>
+            <div id="basePalette" shadow="down">
+              <!-- content -->
+            </div>
+          </div>
+
+          <div id="accentPaletteSection">
+            <mk-list-item-layout>
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="highlight"></mk-icon>
+              </div>
+              <p slot="label">Accent Palette</p>
+            </mk-list-item-layout>
+            <div id="accentPalette" shadow="down">
+              <!-- content -->
+            </div>
+          </div>
+
+          <mk-checkbox id="darkMode" is-secondary>
+            <mk-list-item-layout slot="display_checked">
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="mk.checkbox_checked"></mk-icon>
+              </div>
+              <p slot="label">Dark mode</p>
+            </mk-list-item-layout>
+            <mk-list-item-layout slot="display_unchecked">
+              <div class="iconContainer" slot="bullet">
+                <mk-icon icon="mk.checkbox_unchecked"></mk-icon>
+              </div>
+              <p slot="label">Light mode</p>
+            </mk-list-item-layout>
+          </mk-checkbox>
+        </div>
+      </mk-drawer-layout>
+      <mk-layout-overlay></mk-layout-overlay>
+    </div>
+  </mk-root-layout>
+  <mk-overlay></mk-overlay>
+</section>

@@ -39,7 +39,7 @@ declare({
       shell({
         bin: 'simpleserver',
         flags: [
-          'demo/static.conf.json',
+          'demo-next/static.conf.json',
         ],
       }),
     ],

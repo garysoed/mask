@@ -3,7 +3,7 @@ const glob = require('glob');
 
 module.exports = webpackBuilder(__dirname)
     .forDevelopment('main', builder => builder
-        .addEntry('demo', './demo/main.ts')
+        .addEntry('demo', './demo-next/main.ts')
         .addEntry('test', glob.sync('./src-next/**/*.test.ts'))
         .setOutput('bundle-[name].js', '/out')
         .addTypeScript()

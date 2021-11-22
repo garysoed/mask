@@ -1,6 +1,5 @@
 import {source, Vine} from 'grapevine';
-import {PersonaBuilder} from 'persona';
-import {BaseCtrlCtor} from 'persona/export/internal';
+import {ElementSpec, installCustomElements, Registration} from 'persona';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
@@ -9,8 +8,6 @@ import {ThemeLoader} from '../theme/loader/theme-loader';
 import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
 
-
-export const _p = new PersonaBuilder();
 
 export const $themeLoader = source(
     () => new BehaviorSubject<ThemeLoader>(
@@ -21,13 +18,13 @@ export const $window = source(() => window);
 
 export function start(
     appName: string,
-    rootCtrls: ReadonlyArray<BaseCtrlCtor<{}>>,
+    roots: ReadonlyArray<Registration<HTMLElement, ElementSpec>>,
     rootDoc: Document,
     themeLoader: ThemeLoader,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
   const vine = new Vine({appName});
-  _p.build({rootCtrls, rootDoc, customElementRegistry, vine});
+  installCustomElements({roots, rootDoc, customElementRegistry, vine});
   const themeLoader$ = $themeLoader.get(vine);
   themeLoader$.next(themeLoader);
   themeLoader$

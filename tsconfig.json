@@ -29,6 +29,7 @@
   },
   "include": [
     "demo/**/*.ts",
+    "demo-next/**/*.ts",
     "src/**/*.test.ts",
     "src-next/**/*.test.ts",
     "src/cli/*.ts",
