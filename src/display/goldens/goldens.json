@@ -1,4 +1,4 @@
 {
-  "annotated-text": "<mk-annotated-text annotations=\"['atob' 'btoc']\"><!-- #contents -->ccncnc<link rel=\"stylesheet\" href=\"base/test.css\"></mk-annotated-text>",
-  "keyboard": "<mk-keyboard><style>\n   kbd {\n    padding: .1rem .4rem;\n    margin: 0 .2rem;\n  }\n</style>\n\n<!-- #content --><kbd><kbd mk-theme-highlight=\"\">⌘</kbd>+<kbd mk-theme-highlight=\"\">⎇ Alt</kbd>+<kbd mk-theme-highlight=\"\">↵ Enter</kbd>+<kbd mk-theme-highlight=\"\">3</kbd></kbd><link rel=\"stylesheet\" href=\"base/test.css\"></mk-keyboard>"
+  "annotated-text.html": "<mk-annotated-text annotations=\"['atob' 'btoc']\"><!-- #contents -->ccncnc<link rel=\"stylesheet\" href=\"base/test.css\"></mk-annotated-text>",
+  "keyboard.html": "<mk-keyboard><style>\n   kbd {\n    padding: .1rem .4rem;\n    margin: 0 .2rem;\n  }\n</style>\n\n<!-- #content --><kbd><kbd mk-theme-highlight=\"\">⌘</kbd>+<kbd mk-theme-highlight=\"\">⎇ Alt</kbd>+<kbd mk-theme-highlight=\"\">↵ Enter</kbd>+<kbd mk-theme-highlight=\"\">3</kbd></kbd><link rel=\"stylesheet\" href=\"base/test.css\"></mk-keyboard>"
 }

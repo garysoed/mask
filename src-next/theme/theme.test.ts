@@ -35,13 +35,13 @@ test('@mask/theme/theme', () => {
     should('generate light CSS correctly', () => {
       _.tableEl.setAttribute('mk-theme', 'light');
 
-      assert(_.rootEl).to.matchSnapshot('theme__light');
+      assert(_.rootEl).to.matchSnapshot('theme__light.html');
     });
 
     should('generate dark CSS correctly', () => {
       _.tableEl.setAttribute('mk-theme', 'dark');
 
-      assert(_.rootEl).to.matchSnapshot('theme__dark');
+      assert(_.rootEl).to.matchSnapshot('theme__dark.html');
     });
   });
 });
