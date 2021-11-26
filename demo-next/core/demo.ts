@@ -5,6 +5,7 @@ import {combineLatest, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {PALETTE, Palette} from '../../src-next/theme/palette';
+import {renderTheme} from '../../src-next/theme/render-theme';
 
 import {$demoState} from './demo-state';
 import template from './demo.html';
@@ -63,6 +64,7 @@ class DemoCtrl implements Ctrl {
     return [
       this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content()),
       this.basePaletteContents$.pipe(this.$.shadow.basePalette.content()),
+      renderTheme(this.$),
       // this.renderers.darkMode.stateId(of(darkModePath.get(this.vine))),
       // this.renderers.content.content(this.mainContent$),
       // this.renderers.drawerRoot.actionContents(this.renderPageButtons(ACTION_SPECS)),
