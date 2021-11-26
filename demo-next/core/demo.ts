@@ -1,23 +1,28 @@
+import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
-import {Ctrl, registerCustomElement} from 'persona';
-import {Observable} from 'rxjs';
+import {Context, Ctrl, DIV, id, ievent, omulti, registerCustomElement, renderElement, RenderSpec} from 'persona';
+import {combineLatest, Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
+import {PALETTE, Palette} from '../../src-next/theme/palette';
+
+import {$demoState} from './demo-state';
 import template from './demo.html';
 
 
-const $ = {
+const $demo = {
   host: {},
   shadow: {
-    // accentPalette: element('accentPalette', elementWithTagType('div'), {
-    //   content: multi('content'),
-    //   onClick: onDom<MouseEvent>('click'),
-    // }),
-    // basePalette: element('basePalette', elementWithTagType('div'), {
-    //   content: multi('content'),
-    //   onClick: onDom<MouseEvent>('click'),
-    // }),
+    accentPalette: id('accentPalette', DIV, {
+      content: omulti('#content'),
+      onClick: ievent('click'),
+    }),
+    basePalette: id('basePalette', DIV, {
+      content: omulti('#content'),
+      onClick: ievent('click'),
+    }),
     // content: element('content', elementWithTagType('div'), {
-    //   content: single('content'),
+    //   content: single('#content'),
     // }),
     // drawerRoot: element('drawerRoot', $div, {
     //   actionContents: multi('#actionContents'),
@@ -46,7 +51,7 @@ const $ = {
 // const darkModePath = mutablePathSource($demoStateId, demo => demo._('isDarkMode'));
 
 class DemoCtrl implements Ctrl {
-  constructor() {
+  constructor(private readonly $: Context<typeof $demo>) {
     // this.addSetup(this.onAccentPaletteClick$);
     // this.addSetup(this.onBasePaletteClick$);
     // this.addSetup(this.onDrawerRootClick$);
@@ -56,8 +61,8 @@ class DemoCtrl implements Ctrl {
   @cache()
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      // this.renderers.accentPalette.content(this.accentPaletteContents$),
-      // this.renderers.basePalette.content(this.basePaletteContents$),
+      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content()),
+      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content()),
       // this.renderers.darkMode.stateId(of(darkModePath.get(this.vine))),
       // this.renderers.content.content(this.mainContent$),
       // this.renderers.drawerRoot.actionContents(this.renderPageButtons(ACTION_SPECS)),
@@ -69,37 +74,37 @@ class DemoCtrl implements Ctrl {
     ];
   }
 
-  // @cache()
-  // private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
-  //   const selectedColor$ = $demoState.get(this.vine).$('accentColorName');
-  //   const paletteNode$List = ORDERED_PALETTES
-  //       .map(([colorName, color]) => {
-  //         const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
-  //         return renderPaletteData(
-  //             colorName,
-  //             color,
-  //             isSelected$,
-  //         );
-  //       });
+  @cache()
+  private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
+    const selectedColor$ = $demoState.get(this.$.vine).$('accentColorName');
+    const paletteNode$List = ORDERED_PALETTES
+        .map(([colorName, color]) => {
+          const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
+          return renderPaletteData(
+              colorName,
+              color,
+              isSelected$,
+          );
+        });
 
-  //   return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
-  // }
+    return paletteNode$List.length <= 0 ? of([]) : combineLatest(paletteNode$List);
+  }
 
-  // @cache()
-  // private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
-  //   const selectedColor$ = $demoState.get(this.vine).$('baseColorName');
-  //   const paletteNode$List = ORDERED_PALETTES
-  //       .map(([colorName, color]) => {
-  //         const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
-  //         return renderPaletteData(
-  //             colorName,
-  //             color,
-  //             isSelected$,
-  //         );
-  //       });
+  @cache()
+  private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
+    const selectedColor$ = $demoState.get(this.$.vine).$('baseColorName');
+    const paletteNode$List = ORDERED_PALETTES
+        .map(([colorName, color]) => {
+          const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
+          return renderPaletteData(
+              colorName,
+              color,
+              isSelected$,
+          );
+        });
 
-  //   return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
-  // }
+    return paletteNode$List.length <= 0 ? of([]) : combineLatest(paletteNode$List);
+  }
 
   // @cache()
   // private get onDrawerRootClick$(): Observable<unknown> {
@@ -155,13 +160,13 @@ class DemoCtrl implements Ctrl {
   //             }),
   //           ],
   //           inputs: {
-  //             isSecondary: observableOf(true),
+  //             isSecondary: of(true),
   //           },
   //           id: name,
   //         });
   //       });
 
-  //   return observableOf(node$List);
+  //   return of(node$List);
   // }
 
   // private renderRootTheme(): Observable<'light'|'dark'> {
@@ -224,52 +229,53 @@ export const DEMO = registerCustomElement({
   tag: 'mkd-demo',
   template,
   ctrl: DemoCtrl,
-  spec: $,
+  spec: $demo,
 });
 
-// const ORDERED_PALETTES: ReadonlyArray<[keyof Palette, Color]> = [
-//   ['RED', PALETTE.RED],
-//   ['ORANGE', PALETTE.ORANGE],
-//   ['AMBER', PALETTE.AMBER],
-//   ['YELLOW', PALETTE.YELLOW],
-//   ['LIME', PALETTE.LIME],
-//   ['GREEN', PALETTE.GREEN],
-//   ['TEAL', PALETTE.TEAL],
-//   ['CYAN', PALETTE.CYAN],
-//   ['AZURE', PALETTE.AZURE],
-//   ['BLUE', PALETTE.BLUE],
-//   ['VIOLET', PALETTE.VIOLET],
-//   ['PURPLE', PALETTE.PURPLE],
-//   ['MAGENTA', PALETTE.MAGENTA],
-//   ['PINK', PALETTE.PINK],
-//   ['BROWN', PALETTE.BROWN],
-//   ['GREY', PALETTE.GREY],
-// ];
 
-// function renderPaletteData(
-//     colorName: string,
-//     color: Color,
-//     selected$: Observable<boolean>,
-// ): Observable<RenderSpec> {
-//   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+const ORDERED_PALETTES: ReadonlyArray<[keyof Palette, Color]> = [
+  ['RED', PALETTE.RED],
+  ['ORANGE', PALETTE.ORANGE],
+  ['AMBER', PALETTE.AMBER],
+  ['YELLOW', PALETTE.YELLOW],
+  ['LIME', PALETTE.LIME],
+  ['GREEN', PALETTE.GREEN],
+  ['TEAL', PALETTE.TEAL],
+  ['CYAN', PALETTE.CYAN],
+  ['AZURE', PALETTE.AZURE],
+  ['BLUE', PALETTE.BLUE],
+  ['VIOLET', PALETTE.VIOLET],
+  ['PURPLE', PALETTE.PURPLE],
+  ['MAGENTA', PALETTE.MAGENTA],
+  ['PINK', PALETTE.PINK],
+  ['BROWN', PALETTE.BROWN],
+  ['GREY', PALETTE.GREY],
+];
 
-//   const classes$ = selected$.pipe(
-//       map(selected => {
-//         return selected ? ['palette', 'selected'] : ['palette'];
-//       }),
-//       map(classes => classes.join(' ')),
-//   );
+function renderPaletteData(
+    colorName: string,
+    color: Color,
+    selected$: Observable<boolean>,
+): Observable<RenderSpec> {
+  const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
-//   return observableOf(renderElement({
-//     tag: 'div',
-//     attrs: new Map<string, string|Observable<string>>([
-//       ['class', classes$],
-//       ['color', colorName],
-//       ['style', `background-color: ${colorCss};`],
-//     ]),
-//     id: colorName,
-//   }));
-// }
+  const classes$ = selected$.pipe(
+      map(selected => {
+        return selected ? ['palette', 'selected'] : ['palette'];
+      }),
+      map(classes => classes.join(' ')),
+  );
+
+  return of(renderElement({
+    tag: 'div',
+    attrs: new Map<string, string|Observable<string>>([
+      ['class', classes$],
+      ['color', colorName],
+      ['style', `background-color: ${colorCss};`],
+    ]),
+    id: colorName,
+  }));
+}
 
 // function getColor(event: MouseEvent): keyof Palette|null {
 //   const target = event.target;
