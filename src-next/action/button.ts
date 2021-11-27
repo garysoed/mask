@@ -4,6 +4,7 @@ import {merge, Observable} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
 import {ActionEvent, ACTION_EVENT} from '../event/action-event';
+import {renderTheme} from '../theme/render-theme';
 
 import {$baseAction, $baseRootOutputs, BaseAction} from './base-action';
 import template from './button.html';
@@ -42,6 +43,7 @@ class Button extends BaseAction {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
+      renderTheme(this.$),
       this.onAction$.pipe(this.$.host.actionEvent()),
       this.tabIndex$.pipe(
           map(index => `${index}`),

@@ -55,12 +55,14 @@ test('@mask/action/button', init => {
   test('renderTabIndex', () => {
     should('render 0 if host is not disabled', () => {
       const element = _.tester.createElement(BUTTON);
+      element.textContent = 'Button';
 
       assert(flattenNode(element)).to.matchSnapshot('button__enabled.html');
     });
 
     should('return -1 if host is disabled', () => {
       const element = _.tester.createElement(BUTTON);
+      element.textContent = 'Button';
       element.setAttribute('disabled', '');
 
       assert(flattenNode(element)).to.matchSnapshot('button__disabled.html');
