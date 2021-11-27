@@ -22,13 +22,13 @@ export {TextInput, $textInput} from '../src/action/input/text-input';
 export {$annotatedText, AnnotatedText} from '../src/display/annotated-text';
 export {$annotationConfig} from '../src/display/annotation-service';
 export {$codeBlock, CodeBlock} from '../src/display/code-block';
-export {$icon, Icon} from '../src/display/icon';
+export {ICON} from '../src-next/display/icon';
 export {$keyboard, Keyboard, SpecialKeys} from '../src/display/keyboard';
 
 export {DRAWER_LAYOUT, DrawerMode} from '../src-next/layout/drawer-layout';
 export {LayoutOverlay} from '../src/layout/util/layout-overlay';
 export {LineLayout, $lineLayout} from '../src/layout/line-layout';
-export {ListItemLayout, $listItemLayout} from '../src/layout/list-item-layout';
+export {LIST_ITEM_LAYOUT} from '../src-next/layout/list-item-layout';
 export {OverlayLayout, $overlayLayout} from '../src/layout/overlay-layout';
 export {Overlay} from '../src/core/overlay';
 export {OverlayService} from '../src/core/overlay-service';
