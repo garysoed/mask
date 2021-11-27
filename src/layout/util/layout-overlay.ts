@@ -4,9 +4,9 @@ import {$div, classlist, element, PersonaContext, style} from 'persona';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
+import {$svgService, registerSvg} from '../../../src-next/core/svg-service';
 import {_p} from '../../app/app';
 import layoutOverlaySvg from '../../asset/layout_overlay.svg';
-import {$svgService, registerSvg} from '../../core/svg-service';
 import {BaseThemedCtrl} from '../../theme/base-themed-ctrl';
 
 import layoutOverlayTemplate from './layout-overlay.html';

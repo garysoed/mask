@@ -4,7 +4,7 @@ import {startWith, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {$themeLoader, start} from '../src/app/app';
-import {registerSvg} from '../src/core/svg-service';
+import {registerSvg} from '../src-next/core/svg-service';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {PALETTE, Palette} from '../src/theme/palette';
 import {Theme} from '../src/theme/theme';

@@ -8,7 +8,7 @@ import {map, mapTo, startWith} from 'rxjs/operators';
 import {_p} from '../../app/app';
 import stepper from '../../asset/stepper.svg';
 import {objectPathParser} from '../../core/object-path-parser';
-import {registerSvg} from '../../core/svg-service';
+import {registerSvg} from '../../../src-next/core/svg-service';
 import {$icon, Icon} from '../../display/icon';
 import {CHANGE_EVENT} from '../../event/change-event';
 import {LineLayout} from '../../layout/line-layout';

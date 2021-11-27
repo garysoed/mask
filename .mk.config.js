@@ -6,6 +6,7 @@ set_vars({
       'src/display/goldens',
       'src/theme/goldens',
       'src-next/action/goldens',
+      'src-next/display/goldens',
       'src-next/layout/goldens',
       'src-next/theme/goldens',
     ],

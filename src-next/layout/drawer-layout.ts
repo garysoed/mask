@@ -25,7 +25,7 @@ export enum DrawerMode {
   VERTICAL = 'vertical',
 }
 
-export const $drawerLayout = {
+const $drawerLayout = {
   host: {
     expanded: iflag('expanded'),
     maxSize: iattr('max-size'),

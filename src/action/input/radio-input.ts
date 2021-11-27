@@ -10,7 +10,7 @@ import {_p} from '../../app/app';
 import radioUnchecked from '../../asset/checkbox_empty.svg';
 import radioChecked from '../../asset/radio_checked.svg';
 import {objectPathParser} from '../../core/object-path-parser';
-import {registerSvg} from '../../core/svg-service';
+import {registerSvg} from '../../../src-next/core/svg-service';
 import {Icon} from '../../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../../event/change-event';
 import {ListItemLayout} from '../../layout/list-item-layout';

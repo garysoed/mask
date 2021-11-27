@@ -7,7 +7,7 @@ import {$radioInput, RadioInput} from '../../src/action/input/radio-input';
 import {_p} from '../../src/app/app';
 import radioUnchecked from '../../src/asset/checkbox_empty.svg';
 import radioChecked from '../../src/asset/radio_checked.svg';
-import {registerSvg} from '../../src/core/svg-service';
+import {registerSvg} from '../../src-next/core/svg-service';
 import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
 import {$demoStateId} from '../core/demo-state';
 

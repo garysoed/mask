@@ -7,16 +7,14 @@
  * @slot The glyph of the icon to display.
  */
 import {cache} from 'gs-tools/export/data';
-import {typeBased} from 'gs-tools/export/serializer';
-import {booleanType} from 'gs-types';
-import {compose, json} from 'nabu';
-import {$span, AriaRole, attributeIn, attributeOut, element, enumParser, host, PersonaContext, renderHtml, RenderSpec, single, stringParser} from 'persona';
-import {Observable, of as observableOf} from 'rxjs';
+import {filterByType} from 'gs-tools/export/rxjs';
+import {enumType} from 'gs-types';
+import {Context, Ctrl, iattr, id, osingle, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
+import {Observable, of} from 'rxjs';
 import {map, share, switchMap, tap} from 'rxjs/operators';
 
-import {_p} from '../app/app';
 import {$svgService} from '../core/svg-service';
-import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
+import {renderTheme} from '../theme/render-theme';
 
 import template from './icon.html';
 
@@ -27,51 +25,33 @@ export enum FitTo {
 }
 
 
-export const $icon = {
-  api: {
-    icon: attributeIn('icon', stringParser(), ''),
-    fitTo: attributeIn('fit-to', enumParser<FitTo>(FitTo), FitTo.HEIGHT),
+const $icon = {
+  host: {
+    icon: iattr('icon'),
+    fitTo: iattr('fit-to'),
   },
-  tag: 'mk-icon',
+  shadow: {
+    root: id('root', SPAN, {
+      content: osingle(),
+    }),
+  },
 };
 
-export const $ = {
-  host: host({
-    ...$icon.api,
-    ariaHidden: attributeOut(
-        'aria-hidden',
-        compose<boolean, unknown, string>(typeBased(booleanType), json()),
-        false,
-    ),
-    role: attributeOut('role', stringParser()),
-  }),
-  root: element('root', $span, {
-    content: single('#content'),
-  }),
-};
+class Icon implements Ctrl {
+  constructor(private readonly $: Context<typeof $icon>) { }
 
-@_p.customElement({
-  ...$icon,
-  template,
-})
-export class Icon extends BaseThemedCtrl<typeof $> {
-  constructor(context: PersonaContext) {
-    super(context, $);
-  }
-
-  get renders(): ReadonlyArray<Observable<unknown>> {
+  get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.host.ariaHidden(observableOf(true)),
-      this.renderers.host.role(observableOf(AriaRole.PRESENTATION)),
-      this.renderers.root.content(this.rootSvg$),
+      renderTheme(this.$),
+      this.rootSvg$.pipe(this.$.shadow.root.content()),
     ];
   }
 
   @cache()
   private get rootSvg$(): Observable<RenderSpec|null> {
-    return this.inputs.host.icon
+    return this.$.host.icon
         .pipe(
-            switchMap(svgName => $svgService.get(this.vine).getSvg(svgName)),
+            switchMap(svgName => svgName ? $svgService.get(this.$.vine).getSvg(svgName) : of(null)),
             map(svg => {
               if (!svg) {
                 return null;
@@ -79,8 +59,9 @@ export class Icon extends BaseThemedCtrl<typeof $> {
 
               return renderHtml({
                 decorators: [
-                  element => this.inputs.host.fitTo
+                  element => this.$.host.fitTo
                       .pipe(
+                          filterByType(enumType<FitTo>(FitTo)),
                           tap(fitTo => {
                             if (fitTo === FitTo.HEIGHT) {
                               element.removeAttribute('width');
@@ -102,3 +83,10 @@ export class Icon extends BaseThemedCtrl<typeof $> {
         );
   }
 }
+
+export const ICON = registerCustomElement({
+  ctrl: Icon,
+  spec: $icon,
+  tag: 'mk-icon',
+  template,
+});
