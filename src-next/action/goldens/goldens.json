@@ -1,0 +1,8 @@
+{
+  "base-action__aria_disabled_false.html": "<mk-test-base-action><div id=\"el\" aria-disabled=\"false\" mk-action-1=\"\"></div></mk-test-base-action>",
+  "base-action__aria_disabled_true.html": "<mk-test-base-action disabled=\"\"><div id=\"el\" aria-disabled=\"true\" mk-action-1=\"\" disabled=\"\"></div></mk-test-base-action>",
+  "base-action__is-secondary_false.html": "<mk-test-base-action><div id=\"el\" aria-disabled=\"false\" mk-action-1=\"\"></div></mk-test-base-action>",
+  "base-action__is-secondary_true.html": "<mk-test-base-action is-secondary=\"\"><div id=\"el\" aria-disabled=\"false\" mk-action-2=\"\"></div></mk-test-base-action>",
+  "button__disabled.html": "<mk-button disabled=\"\"><style>\n  #root {\n    user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    -webkit-user-select: none;\n  }\n\n  :host {\n    cursor: pointer;\n  }\n\n  :host([disabled]),\n  :host([disabled]:focus) {\n    cursor: default;\n  }\n\n  :host(:hover),\n  :host(:focus) {\n    outline: none;\n  }\n</style>\n<button id=\"root\" aria-disabled=\"true\" mk-action-1=\"\" tabindex=\"-1\" disabled=\"\">\n  <slot></slot>\n</button>\n</mk-button>",
+  "button__enabled.html": "<mk-button><style>\n  #root {\n    user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    -webkit-user-select: none;\n  }\n\n  :host {\n    cursor: pointer;\n  }\n\n  :host([disabled]),\n  :host([disabled]:focus) {\n    cursor: default;\n  }\n\n  :host(:hover),\n  :host(:focus) {\n    outline: none;\n  }\n</style>\n<button id=\"root\" aria-disabled=\"false\" mk-action-1=\"\" tabindex=\"0\">\n  <slot></slot>\n</button>\n</mk-button>"
+}

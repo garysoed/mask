@@ -5,6 +5,7 @@ set_vars({
       'src/core/goldens',
       'src/display/goldens',
       'src/theme/goldens',
+      'src-next/action/goldens',
       'src-next/theme/goldens',
     ],
   },

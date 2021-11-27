@@ -1,0 +1,25 @@
+<style>
+  #root {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+  }
+
+  :host {
+    cursor: pointer;
+  }
+
+  :host([disabled]),
+  :host([disabled]:focus) {
+    cursor: default;
+  }
+
+  :host(:hover),
+  :host(:focus) {
+    outline: none;
+  }
+</style>
+<button id="root">
+  <slot></slot>
+</button>
