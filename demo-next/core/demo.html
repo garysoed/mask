@@ -6,8 +6,8 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #settingsDrawer[expanded="T"] #accentPalette,
-  #settingsDrawer[expanded="T"] #basePalette {
+  #settingsDrawer[expanded] #accentPalette,
+  #settingsDrawer[expanded] #basePalette {
     height: 16rem;
     transition: height var(--mkAnimationTime);
   }
@@ -16,7 +16,7 @@
     overflow: auto;
   }
 
-  #rootLayout[drawer-expanded="F"] #drawerRoot {
+  #rootLayout:not([drawer-expanded]) #drawerRoot {
     display: none;
   }
 

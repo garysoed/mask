@@ -4,6 +4,11 @@ import {Context, Ctrl, DIV, id, ievent, omulti, registerCustomElement, renderEle
 import {combineLatest, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
+import {BUTTON} from '../../src-next/action/button';
+import {OVERLAY} from '../../src-next/core/overlay';
+import {DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
+import {LIST_ITEM_LAYOUT} from '../../src-next/layout/list-item-layout';
+import {ROOT_LAYOUT} from '../../src-next/layout/root-layout';
 import {PALETTE, Palette} from '../../src-next/theme/palette';
 import {renderTheme} from '../../src-next/theme/render-theme';
 
@@ -219,14 +224,14 @@ class DemoCtrl implements Ctrl {
 export const DEMO = registerCustomElement({
   deps: [
     // ...PAGE_CTORS,
-    // Button,
+    BUTTON,
     // Checkbox,
-    // DrawerLayout,
-    // Overlay,
+    DRAWER_LAYOUT,
+    OVERLAY,
     // LayoutOverlay,
     // LineLayout,
-    // ListItemLayout,
-    // RootLayout,
+    LIST_ITEM_LAYOUT,
+    ROOT_LAYOUT,
   ],
   tag: 'mkd-demo',
   template,
