@@ -1,5 +1,5 @@
 // app
-export {$themeLoader as $theme, $themeLoader, start} from '../src-next/app/app';
+export {$themeLoader as $theme, $themeLoader, start, $window} from '../src-next/app/app';
 
 // core
 export {registerSvg, $svgService, SvgService} from '../src-next/core/svg-service';
