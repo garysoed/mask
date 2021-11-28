@@ -1,3 +1,0 @@
-{
-  "overlay.html": "<mk-overlay><style>\n  #root {\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n  }\n\n  #root.hidden {\n    display: none;\n  }\n\n  #content {\n    position: fixed;\n  }\n</style>\n<div id=\"root\" class=\"\">\n  <div id=\"content\" shadow=\"up\" style=\"left: 0px; top: 0px;\">\n    <!-- #content --><div id=\"testContent\">test content</div>\n  </div>\n</div>\n<link rel=\"stylesheet\" href=\"base/test.css\"></mk-overlay>"
-}

@@ -1,39 +1,30 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {dispatchResizeEvent, flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {flattenNode, getEl, setupTest} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
-import {_p} from '../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
-import {Overlay} from './overlay';
-import {$overlayService, Anchor, OverlayService} from './overlay-service';
+import {OVERLAY} from './overlay';
+import {$overlayService, Anchor} from './overlay-service';
 
 
 const dest = new WebConsoleDestination({installTrigger: true});
 ON_LOG_$.subscribe(event => dest.log(event));
 
-const TESTER_FACTORY = new PersonaTesterFactory(_p);
-test('@mask/core/overlay', init => {
+test('@mask/src/core/overlay', init => {
   const _ = init(() => {
-    runEnvironment(
-        new BrowserSnapshotsEnv('src/core/goldens', goldens),
-    );
+    runEnvironment(new BrowserSnapshotsEnv('src-next/core/goldens', goldens));
 
-    const overlayService = new OverlayService();
-    const tester = TESTER_FACTORY.build({
-      overrides: [
-        THEME_LOADER_TEST_OVERRIDE,
-        {override: $overlayService, withValue: overlayService},
-      ],
-      rootCtrls: [Overlay],
-      rootDoc: document,
+    const tester = setupTest({
+      roots: [OVERLAY],
+      overrides: [THEME_LOADER_TEST_OVERRIDE],
     });
-    const {element, harness} = tester.createHarness(Overlay);
+    const element = tester.createElement(OVERLAY);
     document.body.appendChild(element);
 
-    return {element, harness, overlayService, tester};
+    return {element, tester};
   });
 
   test('contentRect$', _, init => {
@@ -51,44 +42,41 @@ test('@mask/core/overlay', init => {
     });
 
     function dispatchResize(): void {
-      const contentEl = _.harness.content.selectable;
-      dispatchResizeEvent(contentEl, [{contentRect: new DOMRect(0, 0, 80, 60)}]);
+      const contentEl = getEl(_.element, 'content')!;
+      contentEl.simulateResize(new DOMRect(0, 0, 80, 60));
     }
 
     should('set the left and top correctly if content and target anchors are START - START', () => {
-      _.overlayService.show({
+      $overlayService.get(_.tester.vine).show({
         target: {node: _.targetEl, horizontal: Anchor.START, vertical: Anchor.START},
         content: {node: _.contentEl, horizontal: Anchor.START, vertical: Anchor.START},
       });
 
       dispatchResize();
 
-      assert(_.harness.content._.styleLeft).to.emitWith('10px');
-      assert(_.harness.content._.styleTop).to.emitWith('30px');
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__start-start.html');
     });
 
     should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
-      _.overlayService.show({
+      $overlayService.get(_.tester.vine).show({
         target: {node: _.targetEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
         content: {node: _.contentEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
       });
 
       dispatchResize();
 
-      assert(_.harness.content._.styleLeft).to.emitWith('-10px');
-      assert(_.harness.content._.styleTop).to.emitWith('10px');
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__middle-middle.html');
     });
 
     should('set the left and top correctly if content and target anchors are END - END', () => {
-      _.overlayService.show({
+      $overlayService.get(_.tester.vine).show({
         target: {node: _.targetEl, horizontal: Anchor.END, vertical: Anchor.END},
         content: {node: _.contentEl, horizontal: Anchor.END, vertical: Anchor.END},
       });
 
       dispatchResize();
 
-      assert(_.harness.content._.styleLeft).to.emitWith('-30px');
-      assert(_.harness.content._.styleTop).to.emitWith('-10px');
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__end-end.html');
     });
   });
 
@@ -109,9 +97,9 @@ test('@mask/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
       };
-      _.overlayService.show(event);
+      $overlayService.get(_.tester.vine).show(event);
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay');
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__content.html');
     });
   });
 
@@ -129,9 +117,9 @@ test('@mask/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
       };
-      _.overlayService.show(event);
+      $overlayService.get(_.tester.vine).show(event);
 
-      assert(_.harness.root._.hidden).to.emitWith(false);
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__show.html');
     });
 
     should('hide the overlay on clicking root element', () => {
@@ -147,10 +135,10 @@ test('@mask/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
       };
-      _.overlayService.show(event);
-      _.harness.root._.onClick();
+      $overlayService.get(_.tester.vine).show(event);
+      getEl(_.element, 'root')!.simulateClick();
 
-      assert(_.harness.root._.hidden).to.emitWith(true);
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__click-root.html');
     });
 
     should('not hide the overlay when clicking something other than the root element', () => {
@@ -166,10 +154,10 @@ test('@mask/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
       };
-      _.overlayService.show(event);
-      _.element.shadowRoot!.getElementById('content')!.dispatchEvent(new CustomEvent('click'));
+      $overlayService.get(_.tester.vine).show(event);
+      getEl(_.element, 'content')!.simulateClick();
 
-      assert(_.harness.root._.hidden).to.emitWith(false);
+      assert(flattenNode(_.element)).to.matchSnapshot('overlay__click-content.html');
     });
   });
 });

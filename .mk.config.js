@@ -2,10 +2,10 @@ set_vars({
   vars: {
     goldens: [
       'src/action/input/goldens',
-      'src/core/goldens',
       'src/display/goldens',
       'src/theme/goldens',
       'src-next/action/goldens',
+      'src-next/core/goldens',
       'src-next/display/goldens',
       'src-next/layout/goldens',
       'src-next/theme/goldens',
