@@ -43,11 +43,11 @@ test('@mask/action/base-action', init => {
   test('ariaDisabled$', () => {
     should('set the aria value correctly', () => {
       const element = _.tester.createElement(TEST);
-      element.setAttribute('disabled', '');
+      element.setAttribute('mk-disabled', '');
 
       assert(flattenNode(element)).to.matchSnapshot('base-action__aria_disabled_true.html');
 
-      element.removeAttribute('disabled');
+      element.removeAttribute('mk-disabled');
 
       assert(flattenNode(element)).to.matchSnapshot('base-action__aria_disabled_false.html');
     });

@@ -7,7 +7,7 @@ import {map} from 'rxjs/operators';
 
 export const $baseAction = {
   host: {
-    disabled: iflag('disabled'),
+    disabled: iflag('mk-disabled'),
     isSecondary: iflag('is-secondary'),
   },
 };

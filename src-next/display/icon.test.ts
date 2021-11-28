@@ -4,6 +4,7 @@ import {flattenNode, setupTest} from 'persona/export/testing';
 
 import maskSvg from '../../demo-next/asset/mask.svg';
 import {registerSvg} from '../core/svg-service';
+import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
 import {FitTo, ICON} from './icon';
@@ -15,7 +16,10 @@ const SVG_NAME = 'svgName';
 test('@mask/src/display/icon', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
-    const tester = setupTest({roots: [ICON]});
+    const tester = setupTest({
+      roots: [ICON],
+      overrides: [THEME_LOADER_TEST_OVERRIDE],
+    });
     registerSvg(tester.vine, SVG_NAME, {type: 'embed', content: maskSvg});
 
     return {tester};

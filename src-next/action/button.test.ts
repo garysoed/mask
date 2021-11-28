@@ -4,6 +4,7 @@ import {flattenNode, getEl, setupTest} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 
 import {ActionEvent} from '../event/action-event';
+import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import {BUTTON} from './button';
 import goldens from './goldens/goldens.json';
@@ -12,7 +13,10 @@ import goldens from './goldens/goldens.json';
 test('@mask/action/button', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
-    const tester = setupTest({roots: [BUTTON]});
+    const tester = setupTest({
+      roots: [BUTTON],
+      overrides: [THEME_LOADER_TEST_OVERRIDE],
+    });
 
     return {tester};
   });
@@ -45,7 +49,7 @@ test('@mask/action/button', init => {
     });
 
     should('not fire the action event if disabled', () => {
-      _.element.setAttribute('disabled', '');
+      _.element.setAttribute('mk-disabled', '');
 
       _.root.simulateClick();
       assert(_.onAction$).toNot.emit();
@@ -63,7 +67,7 @@ test('@mask/action/button', init => {
     should('return -1 if host is disabled', () => {
       const element = _.tester.createElement(BUTTON);
       element.textContent = 'Button';
-      element.setAttribute('disabled', '');
+      element.setAttribute('mk-disabled', '');
 
       assert(flattenNode(element)).to.matchSnapshot('button__disabled.html');
     });
