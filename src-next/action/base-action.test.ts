@@ -4,13 +4,13 @@ import {Context, DIV, id, registerCustomElement} from 'persona';
 import {flattenNode, setupTest} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 
-import {$baseAction as $$baseAction, $baseRootOutputs, BaseAction} from './base-action';
+import {create$baseAction, $baseRootOutputs, BaseAction} from './base-action';
 import goldens from './goldens/goldens.json';
 
 
 const $test = {
   host: {
-    ...$$baseAction.host,
+    ...create$baseAction().host,
   },
   shadow: {
     div: id('el', DIV, {

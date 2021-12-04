@@ -6,7 +6,7 @@ import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {renderTheme} from '../theme/render-theme';
 
-import {$baseAction, $baseRootOutputs, BaseAction} from './base-action';
+import {create$baseAction, $baseRootOutputs, BaseAction} from './base-action';
 import template from './button.html';
 
 
@@ -14,7 +14,7 @@ const THROTTLE_MS = 500;
 
 const $button = {
   host: {
-    ...$baseAction.host,
+    ...create$baseAction().host,
     actionEvent: oevent(ACTION_EVENT),
   },
   shadow: {
