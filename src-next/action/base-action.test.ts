@@ -33,7 +33,7 @@ const TEST = registerCustomElement({
   spec: $test,
 });
 
-test('@mask/action/base-action', init => {
+test('@mask/src/action/base-action', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
     const tester = setupTest({roots: [TEST]});

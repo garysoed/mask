@@ -1,0 +1,4 @@
+{
+  "base-input__clear.html": "<mk-test-base-input><div id=\"div\" value=\"initValue\"></div></mk-test-base-input>",
+  "base-input__init.html": "<mk-test-base-input><div id=\"div\"></div></mk-test-base-input>"
+}

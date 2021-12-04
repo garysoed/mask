@@ -7,7 +7,7 @@ import {Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 
-interface BaseActionSpecType extends Spec {
+export interface BaseActionSpecType extends Spec {
   host: {
     readonly disabled: UnresolvedIO<IFlag>;
     readonly isSecondary: UnresolvedIO<IFlag>;
@@ -32,7 +32,7 @@ export const $baseRootOutputs = {
 
 export abstract class BaseAction implements Ctrl {
   constructor(
-      protected readonly $: Context<BaseActionSpecType>,
+      protected readonly actionContext: Context<BaseActionSpecType>,
       protected readonly renderDisabled: () => OperatorFunction<boolean, unknown>,
       protected readonly rootBindings: Bindings<typeof $baseRootOutputs>,
   ) {
@@ -41,27 +41,27 @@ export abstract class BaseAction implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       this.ariaDisabled$.pipe(this.rootBindings.ariaDisabled()),
-      this.$.host.isSecondary.pipe(
+      this.actionContext.host.isSecondary.pipe(
           map(isSecondary => !isSecondary),
           this.rootBindings.action1(),
       ),
-      this.$.host.isSecondary.pipe(this.rootBindings.action2()),
+      this.actionContext.host.isSecondary.pipe(this.rootBindings.action2()),
       this.renderDisabledDomOutput$,
     ];
   }
 
   @cache()
   private get ariaDisabled$(): Observable<string> {
-    return this.$.host.disabled.pipe(map(v => v ? 'true' : 'false'));
+    return this.actionContext.host.disabled.pipe(map(v => v ? 'true' : 'false'));
   }
 
   @cache()
   protected get disabled$(): Observable<boolean> {
-    return this.$.host.disabled;
+    return this.actionContext.host.disabled;
   }
 
   @cache()
   private get renderDisabledDomOutput$(): Observable<unknown> {
-    return this.$.host.disabled.pipe(this.renderDisabled());
+    return this.actionContext.host.disabled.pipe(this.renderDisabled());
   }
 }

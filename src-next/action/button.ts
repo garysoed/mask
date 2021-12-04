@@ -31,11 +31,11 @@ const $button = {
 
 
 class Button extends BaseAction {
-  constructor(protected readonly $: Context<typeof $button>) {
+  constructor(protected readonly actionContext: Context<typeof $button>) {
     super(
-        $,
-        $.shadow.rootEl.disabled,
-        $.shadow.rootEl,
+        actionContext,
+        actionContext.shadow.rootEl.disabled,
+        actionContext.shadow.rootEl,
     );
   }
 
@@ -43,11 +43,11 @@ class Button extends BaseAction {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
-      renderTheme(this.$),
-      this.onAction$.pipe(this.$.host.actionEvent()),
+      renderTheme(this.actionContext),
+      this.onAction$.pipe(this.actionContext.host.actionEvent()),
       this.tabIndex$.pipe(
           map(index => `${index}`),
-          this.$.shadow.rootEl.tabindex(),
+          this.actionContext.shadow.rootEl.tabindex(),
       ),
     ];
   }
@@ -55,9 +55,9 @@ class Button extends BaseAction {
   @cache()
   private get onAction$(): Observable<ActionEvent<void>> {
     return merge(
-        this.$.shadow.rootEl.onClick,
-        this.$.shadow.rootEl.onEnterDown,
-        this.$.shadow.rootEl.onSpaceDown,
+        this.actionContext.shadow.rootEl.onClick,
+        this.actionContext.shadow.rootEl.onEnterDown,
+        this.actionContext.shadow.rootEl.onSpaceDown,
     )
         .pipe(
             throttleTime(THROTTLE_MS),
