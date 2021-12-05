@@ -178,7 +178,7 @@ a {
  * Applied CSS
  *************/
 
-html, input {
+html, button, input {
   font-family: var(--mkFontFamilyNormal);
 }
 
@@ -193,6 +193,7 @@ body {
 [mk-body-1],
 [mk-body-2],
 a,
+button,
 code,
 pre,
 kbd {

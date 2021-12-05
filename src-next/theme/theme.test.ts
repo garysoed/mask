@@ -10,7 +10,7 @@ import template from './theme.html';
 test('@mask/theme/theme', () => {
   setup(() => {
     runEnvironment(new BrowserSnapshotsEnv(
-        'src/theme/goldens',
+        'src-next/theme/goldens',
         goldens,
     ));
   });

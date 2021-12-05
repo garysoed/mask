@@ -1,5 +1,5 @@
-import {ComponentSpec} from 'persona';
-import {BaseCtrlCtor} from 'persona/src/core/base-ctrl';
+import {Registration} from 'persona';
+import {Spec} from 'persona/src-next/types/ctrl';
 
 // import {$buttonDemo, ButtonDemo} from '../action/button';
 // import {$checkboxDemo, CheckboxDemo} from '../action/checkbox';
@@ -14,13 +14,11 @@ import {BaseCtrlCtor} from 'persona/src/core/base-ctrl';
 // import {$textsDemo, TextsDemo} from '../general/texts';
 // import {$drawerLayoutDemo, DrawerLayoutDemo} from '../layout/drawer-layout';
 // import {$overlayLayoutDemo, OverlayLayoutDemo} from '../layout/overlay-layout';
-
 import {Views} from './location-service';
 
 
 export interface PageSpec {
-  readonly ctor: BaseCtrlCtor<{}>;
-  readonly componentSpec: ComponentSpec<any, Element>;
+  readonly registration: Registration<HTMLElement, Spec>;
   readonly name: string;
   readonly path: Views;
 }
