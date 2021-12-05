@@ -30,7 +30,7 @@
   "include": [
     "demo-next/**/*.ts",
     "src-next/**/*.test.ts",
-    "src/cli/*.ts",
+    "src-next/cli/*.ts",
     "node_modules/devbase/ts/typings/*.d.ts",
   ]
 }

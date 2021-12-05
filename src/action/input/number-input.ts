@@ -5,10 +5,10 @@ import {$div, $input, attributeIn, attributeOut, classToggle, dispatcher, elemen
 import {defer, merge, Observable, of as observableOf} from 'rxjs';
 import {map, mapTo, startWith} from 'rxjs/operators';
 
+import {registerSvg} from '../../../src-next/core/svg-service';
 import {_p} from '../../app/app';
 import stepper from '../../asset/stepper.svg';
 import {objectPathParser} from '../../core/object-path-parser';
-import {registerSvg} from '../../../src-next/core/svg-service';
 import {$icon, Icon} from '../../display/icon';
 import {CHANGE_EVENT} from '../../event/change-event';
 import {LineLayout} from '../../layout/line-layout';

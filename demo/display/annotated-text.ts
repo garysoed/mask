@@ -3,8 +3,8 @@ import {PersonaContext, renderCustomElement, RenderSpec, RenderSpecType, renderT
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {_p} from '../../src/app/app';
 import {registerSvg} from '../../src-next/core/svg-service';
+import {_p} from '../../src/app/app';
 import {AnnotatedText} from '../../src/display/annotated-text';
 import {$annotationSpecs$} from '../../src/display/annotation-service';
 import {$icon, Icon} from '../../src/display/icon';

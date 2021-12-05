@@ -3,8 +3,8 @@ import {combineLatest} from 'rxjs';
 import {startWith, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
-import {$themeLoader, start} from '../src/app/app';
 import {registerSvg} from '../src-next/core/svg-service';
+import {$themeLoader, start} from '../src/app/app';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {PALETTE, Palette} from '../src/theme/palette';
 import {Theme} from '../src/theme/theme';

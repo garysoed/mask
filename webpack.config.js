@@ -10,7 +10,7 @@ module.exports = webpackBuilder(__dirname)
         .addHtml(),
     )
     .forDevelopment('node', builder => builder
-        .addEntry('cli', './src/cli/theme.ts')
+        .addEntry('cli', './src/cli-next/theme.ts')
         .setOutput('cli-[name].js', '/out')
         .addTypeScript()
         .addHtml()

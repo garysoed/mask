@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 
 import {BUTTON} from '../../src-next/action/button';
 import {OVERLAY} from '../../src-next/core/overlay';
+import {CHECKBOX} from '../../src-next/input/checkbox';
 import {DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
 import {LINE_LAYOUT} from '../../src-next/layout/line-layout';
 import {LIST_ITEM_LAYOUT} from '../../src-next/layout/list-item-layout';
@@ -226,7 +227,7 @@ export const DEMO = registerCustomElement({
   deps: [
     // ...PAGE_CTORS,
     BUTTON,
-    // Checkbox,
+    CHECKBOX,
     DRAWER_LAYOUT,
     OVERLAY,
     // LayoutOverlay,
