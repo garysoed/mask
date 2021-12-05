@@ -27,7 +27,7 @@ export {$keyboard, Keyboard, SpecialKeys} from '../src/display/keyboard';
 
 export {DRAWER_LAYOUT, DrawerMode} from '../src-next/layout/drawer-layout';
 export {LayoutOverlay} from '../src/layout/util/layout-overlay';
-export {LineLayout, $lineLayout} from '../src/layout/line-layout';
+export {LINE_LAYOUT} from '../src-next/layout/line-layout';
 export {LIST_ITEM_LAYOUT} from '../src-next/layout/list-item-layout';
 export {OVERLAY} from '../src-next/core/overlay';
 export {OverlayService} from '../src-next/core/overlay-service';

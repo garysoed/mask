@@ -1,0 +1,39 @@
+<style>
+  /* Customize the label (the container) */
+  #container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Hide the browser's default checkbox */
+  #input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  #container[disabled],
+  #container[disabled]:focus,
+  #container[disabled] #input,
+  #container[disabled]:focus #input {
+    cursor: default;
+  }
+
+  #iconContainer {
+    height: 2rem;
+  }
+</style>
+
+<label id="container" mk-body-2>
+  <input id="input" type="checkbox">
+  <mk-list-item-layout>
+    <div id="iconContainer" slot="bullet">
+      <mk-icon id="icon"></mk-icon>
+    </div>
+    <slot slot="label"></slot>
+  </mk-list-item-layout>
+</label>

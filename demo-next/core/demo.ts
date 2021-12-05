@@ -7,6 +7,7 @@ import {map} from 'rxjs/operators';
 import {BUTTON} from '../../src-next/action/button';
 import {OVERLAY} from '../../src-next/core/overlay';
 import {DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
+import {LINE_LAYOUT} from '../../src-next/layout/line-layout';
 import {LIST_ITEM_LAYOUT} from '../../src-next/layout/list-item-layout';
 import {ROOT_LAYOUT} from '../../src-next/layout/root-layout';
 import {PALETTE, Palette} from '../../src-next/theme/palette';
@@ -229,7 +230,7 @@ export const DEMO = registerCustomElement({
     DRAWER_LAYOUT,
     OVERLAY,
     // LayoutOverlay,
-    // LineLayout,
+    LINE_LAYOUT,
     LIST_ITEM_LAYOUT,
     ROOT_LAYOUT,
   ],
