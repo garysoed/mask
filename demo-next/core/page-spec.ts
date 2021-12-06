@@ -1,7 +1,8 @@
 import {Registration} from 'persona';
-import {Spec} from 'persona/src-next/types/ctrl';
 
 import {BUTTON_DEMO} from '../action/button';
+import {COLORS_DEMO} from '../general/colors';
+import {TEXTS_DEMO} from '../general/texts';
 
 // import {$buttonDemo, ButtonDemo} from '../action/button';
 // import {$checkboxDemo, CheckboxDemo} from '../action/checkbox';
@@ -12,15 +13,13 @@ import {BUTTON_DEMO} from '../action/button';
 // import {$codeBlockDemo, CodeBlockDemo} from '../display/code-block';
 // import {$iconDemo, IconDemo} from '../display/icon';
 // import {$keyboardDemo, KeyboardDemo} from '../display/keyboard';
-// import {$colorsDemo, ColorsDemo} from '../general/colors';
-// import {$textsDemo, TextsDemo} from '../general/texts';
 // import {$drawerLayoutDemo, DrawerLayoutDemo} from '../layout/drawer-layout';
 // import {$overlayLayoutDemo, OverlayLayoutDemo} from '../layout/overlay-layout';
 import {Views} from './location-service';
 
 
 export interface PageSpec {
-  readonly registration: Registration<HTMLElement, Spec>;
+  readonly registration: Registration<HTMLElement, any>;
   readonly name: string;
   readonly path: Views;
 }
@@ -51,8 +50,8 @@ export const DISPLAY_SPECS: readonly PageSpec[] = [
 ];
 
 export const GENERAL_SPECS: readonly PageSpec[] = [
-  // {ctor: ColorsDemo, componentSpec: $colorsDemo, name: 'Colors', path: Views.COLORS},
-  // {ctor: TextsDemo, componentSpec: $textsDemo, name: 'Texts', path: Views.TEXT},
+  {registration: COLORS_DEMO, name: 'Colors', path: Views.COLORS},
+  {registration: TEXTS_DEMO, name: 'Texts', path: Views.TEXT},
 ];
 
 export const LAYOUT_SPECS: readonly PageSpec[] = [

@@ -1,8 +1,8 @@
 import {$stateService, Source, source} from 'grapevine';
 import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
 
-import {CheckedValue} from '../../src/action/input/checkbox';
-import {Palette} from '../../src/theme/palette';
+import {CheckedValue} from '../../src-next/input/checkbox';
+import {Palette} from '../../src-next/theme/palette';
 
 
 export interface CheckboxDemoState {
