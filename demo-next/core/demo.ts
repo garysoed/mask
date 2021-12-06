@@ -20,7 +20,7 @@ import {renderTheme} from '../../src-next/theme/render-theme';
 import {$demoState} from './demo-state';
 import template from './demo.html';
 import {$locationService, Views} from './location-service';
-import {getPageSpec, PageSpec} from './page-spec';
+import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec} from './page-spec';
 
 
 const $demo = {
@@ -58,10 +58,8 @@ const $demo = {
   },
 };
 
-// const PAGE_CTORS = ALL_SPECS.map(({ctor}) => ctor);
+const PAGE_REGISTRATIONS = ALL_SPECS.map(({registration}) => registration);
 const COMPONENT_PATH_ATTR = 'path';
-
-// const darkModePath = mutablePathSource($demoStateId, demo => demo._('isDarkMode'));
 
 class DemoCtrl implements Ctrl {
   constructor(private readonly $: Context<typeof $demo>) {
@@ -82,10 +80,10 @@ class DemoCtrl implements Ctrl {
           $demoState.get(this.$.vine).$('isDarkMode').set(),
       ),
       this.mainContent$.pipe(this.$.shadow.content.content()),
-      // this.renderPageButtons(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents()),
-      // this.renderPageButtons(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents()),
-      // this.renderPageButtons(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents()),
-      // this.renderPageButtons(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents()),
+      this.renderPageButtons(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents()),
+      this.renderPageButtons(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents()),
+      this.renderPageButtons(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents()),
+      this.renderPageButtons(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents()),
       this.isDrawerExpanded$.pipe(this.$.shadow.settingsDrawer.expanded()),
       this.rootTheme$.pipe(this.$.shadow.root.theme()),
     ];
@@ -235,7 +233,7 @@ class DemoCtrl implements Ctrl {
 }
 export const DEMO = registerCustomElement({
   deps: [
-    // ...PAGE_CTORS,
+    ...PAGE_REGISTRATIONS,
     BUTTON,
     CHECKBOX,
     DRAWER_LAYOUT,

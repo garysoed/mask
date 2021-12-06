@@ -1,6 +1,8 @@
 import {Registration} from 'persona';
 import {Spec} from 'persona/src-next/types/ctrl';
 
+import {BUTTON_DEMO} from '../action/button';
+
 // import {$buttonDemo, ButtonDemo} from '../action/button';
 // import {$checkboxDemo, CheckboxDemo} from '../action/checkbox';
 // import {$numberInputDemo, NumberInputDemo} from '../action/number-input';
@@ -24,7 +26,7 @@ export interface PageSpec {
 }
 
 export const ACTION_SPECS: readonly PageSpec[] = [
-  // {ctor: ButtonDemo, componentSpec: $buttonDemo, name: 'Button', path: Views.BUTTON},
+  {registration: BUTTON_DEMO, name: 'Button', path: Views.BUTTON},
   // {ctor: CheckboxDemo, componentSpec: $checkboxDemo, name: 'Checkbox', path: Views.CHECKBOX},
   // {ctor: NumberInputDemo, componentSpec: $numberInputDemo, name: 'Number input', path: Views.NUMBER_INPUT},
   // {
