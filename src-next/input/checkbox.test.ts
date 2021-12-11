@@ -53,7 +53,7 @@ test('@mask/src/input/checkbox', init => {
     should('set the classlist to display_unknown if unknown', () => {
       const element = _.tester.createElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = 'unknown';
+      element.initValue = null;
       element.clearFn(undefined);
 
       assert(flattenNode(element)).to.matchSnapshot('checkbox__unknown.html');
@@ -110,7 +110,7 @@ test('@mask/src/input/checkbox', init => {
     should('set unknown value correctly', () => {
       const element = _.tester.createElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = 'unknown';
+      element.initValue = null;
       element.clearFn(undefined);
 
       const inputEl = getEl(element, 'input')! as unknown as HTMLInputElement;

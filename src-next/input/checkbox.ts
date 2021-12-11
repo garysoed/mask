@@ -1,6 +1,6 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {booleanType, equalType, Type, unionType} from 'gs-types';
+import {booleanType, nullType, Type, unionType} from 'gs-types';
 import {Context, DIV, id, ievent, INPUT, itarget, registerCustomElement} from 'persona';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
@@ -18,10 +18,10 @@ import {renderTheme} from '../theme/render-theme';
 import template from './checkbox.html';
 
 
-export type CheckedValue = boolean | 'unknown';
+export type CheckedValue = boolean | null;
 const CHECKED_VALUE_TYPE: Type<CheckedValue> = unionType([
   booleanType,
-  equalType<'unknown'>('unknown'),
+  nullType,
 ]);
 
 const $checkbox = {
@@ -64,11 +64,14 @@ export class Checkbox extends BaseInput<CheckedValue> {
   private get checkMode$(): Observable<string> {
     return this.domValue$.pipe(
         map(checkState => {
-          if (checkState === 'unknown') {
-            return 'unknown';
+          switch (checkState) {
+            case null:
+              return 'unknown';
+            case true:
+              return 'checked';
+            case false:
+              return 'unchecked';
           }
-
-          return checkState ? 'checked' : 'unchecked';
         }),
         map(base => `mk.checkbox_${base}`),
     );
@@ -89,7 +92,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
               }
 
               if (element.indeterminate) {
-                return 'unknown';
+                return null;
               }
 
               return element.checked;
@@ -105,7 +108,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
             throw new Error('Element is not an HTMLInputElement');
           }
 
-          if (newValue === 'unknown') {
+          if (newValue === null) {
             element.indeterminate = true;
             element.checked = false;
           } else {

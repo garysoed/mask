@@ -3,7 +3,7 @@ import {Context, Ctrl, id, oclass, registerCustomElement, TABLE} from 'persona';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {$demoState} from '../../demo/core/demo-state';
+import {$demoState} from '../../demo-next/core/demo-state';
 import {renderTheme} from '../../src-next/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 
