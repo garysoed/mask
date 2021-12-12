@@ -1,14 +1,14 @@
 import {$stateService, Source, source} from 'grapevine';
 import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
 
-// import {CheckedValue} from '../../src/action/input/checkbox';
+import {CheckedValue} from '../../src-next/input/checkbox';
 import {Palette} from '../../src-next/theme/palette';
 
 
 export interface CheckboxDemoState {
-  // readonly unknownCheckboxState: MutableState<CheckedValue>;
-  // readonly disabledCheckboxState: MutableState<CheckedValue>;
-  // readonly labelCheckboxState: MutableState<CheckedValue>;
+  readonly unknownCheckboxState: MutableState<CheckedValue>;
+  readonly disabledCheckboxState: MutableState<CheckedValue>;
+  readonly labelCheckboxState: MutableState<CheckedValue>;
 }
 
 export interface DrawerLayoutDemoState {
@@ -69,7 +69,7 @@ export const $demoStateId: Source<RootStateId<DemoState>> = source(
       baseColorName: mutableState(BASE_COLOR_NAME),
       isDarkMode: mutableState(true),
       checkboxDemo: {
-        unknownCheckboxState: mutableState('unknown'),
+        unknownCheckboxState: mutableState(null),
         disabledCheckboxState: mutableState(true),
         labelCheckboxState: mutableState(false),
       },

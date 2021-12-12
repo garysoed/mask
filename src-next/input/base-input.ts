@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Type, undefinedType} from 'gs-types';
+import {Type, unknownType} from 'gs-types';
 import {icall, oevent} from 'persona';
 import {ivalue} from 'persona/src-next/input/value';
 import {ovalue} from 'persona/src-next/output/value';
@@ -14,7 +14,7 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 export interface BaseInputSpecType<T> extends BaseActionSpecType {
   host: BaseActionSpecType['host'] & {
-    readonly clearFn: UnresolvedIO<ICall<undefined>>;
+    readonly clearFn: UnresolvedIO<ICall<unknown>>;
     readonly initValue: UnresolvedIO<IValue<T>>;
     readonly onChange: UnresolvedIO<OEvent>;
     readonly value: UnresolvedIO<OValue<T>>;
@@ -26,7 +26,7 @@ export function create$baseInput<T>(valueType: Type<T>, defaultValue: T): BaseIn
   return {
     host: {
       ...create$baseAction().host,
-      clearFn: icall('clearFn', undefinedType),
+      clearFn: icall('clearFn', unknownType),
       initValue: ivalue('initValue', valueType, defaultValue),
       onChange: oevent(CHANGE_EVENT),
       value: ovalue('value', valueType, defaultValue),
@@ -46,6 +46,7 @@ export abstract class BaseInput<T> extends BaseAction implements Ctrl {
 
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
+      ...super.runs,
       this.handleOnClear$,
       this.onChange$.pipe(this.inputContext.host.onChange()),
       this.domValue$.pipe(this.inputContext.host.value()),

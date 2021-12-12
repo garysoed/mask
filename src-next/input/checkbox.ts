@@ -2,8 +2,9 @@ import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {booleanType, nullType, Type, unionType} from 'gs-types';
 import {Context, DIV, id, ievent, INPUT, itarget, registerCustomElement} from 'persona';
-import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
-import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
+import {oflag} from 'persona/src-next/output/flag';
+import {merge, Observable, of, OperatorFunction, pipe, Subject} from 'rxjs';
+import {map, startWith, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
 import checkboxChecked from '../asset/checkbox_checked.svg';
@@ -31,6 +32,7 @@ const $checkbox = {
   shadow: {
     container: id('container', DIV, {
       ...$baseRootOutputs,
+      disabled: oflag('mk-disabled'),
     }),
     icon: id('icon', ICON),
     input: id('input', INPUT, {
@@ -46,7 +48,10 @@ export class Checkbox extends BaseInput<CheckedValue> {
   constructor(private readonly $: Context<typeof $checkbox>) {
     super(
         $,
-        $.shadow.input.disabled,
+        () => switchMap(value => merge(
+            of(value).pipe($.shadow.input.disabled()),
+            of(value).pipe($.shadow.container.disabled()),
+        )),
         $.shadow.container,
     );
   }

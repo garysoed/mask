@@ -10,7 +10,7 @@ import {BUTTON} from './button';
 import goldens from './goldens/goldens.json';
 
 
-test('@mask/action/button', init => {
+test('@mask/src/action/button', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
     const tester = setupTest({

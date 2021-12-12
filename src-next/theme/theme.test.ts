@@ -7,7 +7,7 @@ import {Theme} from './theme';
 import template from './theme.html';
 
 
-test('@mask/theme/theme', () => {
+test('@mask/src/theme/theme', () => {
   setup(() => {
     runEnvironment(new BrowserSnapshotsEnv(
         'src-next/theme/goldens',

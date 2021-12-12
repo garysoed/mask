@@ -16,10 +16,10 @@
     width: 0;
   }
 
-  #container[disabled],
-  #container[disabled]:focus,
-  #container[disabled] #input,
-  #container[disabled]:focus #input {
+  #container[mk-disabled],
+  #container[mk-disabled]:focus,
+  #container[mk-disabled] #input,
+  #container[mk-disabled]:focus #input {
     cursor: default;
   }
 
@@ -28,7 +28,7 @@
   }
 </style>
 
-<label id="container" mk-body-2="">
+<label id="container" mk-body-2="" aria-disabled="false" mk-action-1="">
   <input id="input" type="checkbox">
   <mk-list-item-layout><style>
   #bulletContainer {

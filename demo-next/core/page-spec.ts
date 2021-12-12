@@ -1,20 +1,10 @@
 import {Registration} from 'persona';
 
 import {BUTTON_DEMO} from '../action/button';
+import {CHECKBOX_DEMO} from '../action/checkbox';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
 
-// import {$buttonDemo, ButtonDemo} from '../action/button';
-// import {$checkboxDemo, CheckboxDemo} from '../action/checkbox';
-// import {$numberInputDemo, NumberInputDemo} from '../action/number-input';
-// import {$radioInputDemo, RadioInputDemo} from '../action/radio-input';
-// import {$textInputDemo, TextInputDemo} from '../action/text-input';
-// import {$annotatedTextDemo, AnnotatedTextDemo} from '../display/annotated-text';
-// import {$codeBlockDemo, CodeBlockDemo} from '../display/code-block';
-// import {$iconDemo, IconDemo} from '../display/icon';
-// import {$keyboardDemo, KeyboardDemo} from '../display/keyboard';
-// import {$drawerLayoutDemo, DrawerLayoutDemo} from '../layout/drawer-layout';
-// import {$overlayLayoutDemo, OverlayLayoutDemo} from '../layout/overlay-layout';
 import {Views} from './location-service';
 
 
@@ -26,7 +16,7 @@ export interface PageSpec {
 
 export const ACTION_SPECS: readonly PageSpec[] = [
   {registration: BUTTON_DEMO, name: 'Button', path: Views.BUTTON},
-  // {ctor: CheckboxDemo, componentSpec: $checkboxDemo, name: 'Checkbox', path: Views.CHECKBOX},
+  {registration: CHECKBOX_DEMO, name: 'Checkbox', path: Views.CHECKBOX},
   // {ctor: NumberInputDemo, componentSpec: $numberInputDemo, name: 'Number input', path: Views.NUMBER_INPUT},
   // {
   //   ctor: RadioInputDemo,

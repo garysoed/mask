@@ -9,6 +9,7 @@ set_vars({
       'src-next/input/goldens',
       'src-next/layout/goldens',
       'src-next/theme/goldens',
+      'src-next/util/goldens',
     ],
   },
 });

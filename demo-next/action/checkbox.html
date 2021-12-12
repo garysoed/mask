@@ -29,24 +29,7 @@
 <mkd-demo-layout label="Checkbox">
   <div id="play" slot="play" layout="grid">
     <mk-checkbox id="unknownCheckbox">
-      <mk-list-item-layout slot="display_unknown">
-        <div class="iconContainer" slot="bullet">
-          <mk-icon icon="mk.checkbox_unknown"></mk-icon>
-        </div>
-        <p slot="label">Initially unknown</p>
-      </mk-list-item-layout>
-      <mk-list-item-layout slot="display_checked">
-        <div class="iconContainer" slot="bullet">
-          <mk-icon icon="mk.checkbox_checked"></mk-icon>
-        </div>
-        <p slot="label">Checked</p>
-      </mk-list-item-layout>
-      <mk-list-item-layout slot="display_unchecked">
-        <div class="iconContainer" slot="bullet">
-          <mk-icon icon="mk.checkbox_unchecked"></mk-icon>
-        </div>
-        <p slot="label">Unchecked</p>
-      </mk-list-item-layout>
+      <mk-line-layout id="unknownCheckboxContent"></mk-line-layout>
     </mk-checkbox>
 
     <mk-button id="resetButton">
@@ -54,15 +37,12 @@
     </mk-button>
 
     <mk-checkbox id="disabledCheckbox" mk-disabled>
-      <mk-line-layout slot="display_checked">Disabled</mk-line-layout>
+      <mk-line-layout>Disabled</mk-line-layout>
     </mk-checkbox>
 
     <mk-checkbox id="labelCheckbox" is-secondary>
-      <mk-line-layout slot="display_unchecked">Unchecked</mk-line-layout>
-      <mk-line-layout slot="display_checked">Checked</mk-line-layout>
+      <mk-line-layout id="labelCheckboxContent"></mk-line-layout>
     </mk-checkbox>
-
-    <mk-checkbox label="Simple checkbox with default settings"></mk-checkbox>
   </div>
   <div slot="docs">
     <p mk-body-1>

@@ -29,6 +29,14 @@ test('@mask/src/input/checkbox', init => {
 
       assert(flattenNode(element)).to.matchSnapshot('checkbox__default.html');
     });
+
+    should('render disabled checkbox correctly', () => {
+      const element = _.tester.createElement(CHECKBOX);
+      element.textContent = 'Label';
+      element.setAttribute('mk-disabled', '');
+
+      assert(flattenNode(element)).to.matchSnapshot('checkbox__disabled.html');
+    });
   });
 
   test('checkMode$', () => {

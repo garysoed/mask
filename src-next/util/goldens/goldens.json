@@ -1,0 +1,3 @@
+{
+  "bind-input-to-state__init.html": "<mk-test-parent><mk-test-base-input id=\"test\"><div id=\"div\" aria-disabled=\"false\" mk-action-1=\"\" value=\"default\"></div></mk-test-base-input></mk-test-parent>"
+}
