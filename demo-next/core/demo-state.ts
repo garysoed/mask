@@ -17,8 +17,8 @@ export interface DrawerLayoutDemoState {
 }
 
 export interface IconDemoState {
-  // readonly isAction: MutableState<CheckedValue>;
-  // readonly fitToWidth: MutableState<CheckedValue>;
+  readonly isAction: MutableState<CheckedValue>;
+  readonly fitToWidth: MutableState<CheckedValue>;
 }
 
 export interface OverlayLayoutDemoState {

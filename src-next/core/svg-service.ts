@@ -1,7 +1,7 @@
 import {source, Vine} from 'grapevine';
 import {$asArray, $map, $pipe} from 'gs-tools/export/collect';
 import {combineLatest, defer, from as observableFrom, Observable, of, ReplaySubject, Subject} from 'rxjs';
-import {map, retry, shareReplay, switchMap, scan} from 'rxjs/operators';
+import {map, retry, shareReplay, switchMap, scan, distinctUntilChanged, startWith} from 'rxjs/operators';
 
 import {SvgConfig} from '../../src/core/svg-config';
 
@@ -46,6 +46,8 @@ export class SvgService {
         map(map => {
           return map.get(name) ?? null;
         }),
+        // Important so we do not keep emitting everytime there's a new SVG is being registered.
+        distinctUntilChanged(),
     );
   }
 }
@@ -66,6 +68,8 @@ function createSvgObs(
         return combineLatest(pairs$);
       }),
       map(pairs => new Map(pairs)),
+      startWith(new Map<string, string>()),
+      shareReplay({bufferSize: 1, refCount: false}),
   );
 }
 

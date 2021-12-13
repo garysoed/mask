@@ -2,6 +2,7 @@ import {Registration} from 'persona';
 
 import {BUTTON_DEMO} from '../action/button';
 import {CHECKBOX_DEMO} from '../action/checkbox';
+import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
 
@@ -35,7 +36,7 @@ export const DISPLAY_SPECS: readonly PageSpec[] = [
   //   path: Views.ANNOTATED_TEXT,
   // },
   // {ctor: CodeBlockDemo, componentSpec: $codeBlockDemo, name: 'Code Block', path: Views.CODE_BLOCK},
-  // {ctor: IconDemo, componentSpec: $iconDemo, name: 'Icon', path: Views.ICON},
+  {registration: ICON_DEMO, name: 'Icon', path: Views.ICON},
   // {ctor: KeyboardDemo, componentSpec: $keyboardDemo, name: 'Keyboard', path: Views.KEYBOARD},
 ];
 
