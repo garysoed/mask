@@ -5,6 +5,7 @@ import {CHECKBOX_DEMO} from '../action/checkbox';
 import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
+import {DRAWER_LAYOUT_DEMO} from '../layout/drawer-layout';
 
 import {Views} from './location-service';
 
@@ -46,12 +47,7 @@ export const GENERAL_SPECS: readonly PageSpec[] = [
 ];
 
 export const LAYOUT_SPECS: readonly PageSpec[] = [
-  // {
-  //   ctor: DrawerLayoutDemo,
-  //   componentSpec: $drawerLayoutDemo,
-  //   name: 'Drawer Layout',
-  //   path: Views.DRAWER_LAYOUT,
-  // },
+  {registration: DRAWER_LAYOUT_DEMO, name: 'Drawer Layout', path: Views.DRAWER_LAYOUT},
   // {
   //   ctor: OverlayLayoutDemo,
   //   componentSpec: $overlayLayoutDemo,

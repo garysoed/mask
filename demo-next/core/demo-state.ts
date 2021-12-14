@@ -12,8 +12,8 @@ export interface CheckboxDemoState {
 }
 
 export interface DrawerLayoutDemoState {
-  // readonly isExpanded: MutableState<CheckedValue>;
-  // readonly isHorizontalMode: MutableState<CheckedValue>;
+  readonly isExpanded: MutableState<CheckedValue>;
+  readonly isHorizontalMode: MutableState<CheckedValue>;
 }
 
 export interface IconDemoState {
