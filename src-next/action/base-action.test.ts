@@ -42,17 +42,15 @@ test('@mask/src/action/base-action', init => {
     return {tester};
   });
 
-  test('ariaDisabled$', () => {
-    should('set the aria value correctly', () => {
-      const element = _.tester.createElement(TEST);
-      element.setAttribute('mk-disabled', '');
+  should('render disabled correctly', () => {
+    const element = _.tester.createElement(TEST);
+    element.setAttribute('mk-disabled', '');
 
-      assert(flattenNode(element)).to.matchSnapshot('base-action__aria_disabled_true.html');
+    assert(flattenNode(element)).to.matchSnapshot('base-action__aria_disabled_true.html');
 
-      element.removeAttribute('mk-disabled');
+    element.removeAttribute('mk-disabled');
 
-      assert(flattenNode(element)).to.matchSnapshot('base-action__aria_disabled_false.html');
-    });
+    assert(flattenNode(element)).to.matchSnapshot('base-action__aria_disabled_false.html');
   });
 
   test('isSecondary', () => {

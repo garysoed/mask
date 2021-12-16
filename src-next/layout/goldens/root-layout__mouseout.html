@@ -62,13 +62,13 @@
     cursor: pointer;
   }
 
-  :host([disabled]),
-  :host([disabled]:focus) {
+  #root[disabled],
+  #root[disabled]:focus {
     cursor: default;
   }
 
-  :host(:hover),
-  :host(:focus) {
+  #root:hover,
+  #root:focus {
     outline: none;
   }
 </style>

@@ -1,5 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, id, ievent, oattr, oevent, registerCustomElement, BUTTON as HTML_BUTTON, ikeydown} from 'persona';
+import {oflag} from 'persona/src-next/output/flag';
 import {merge, Observable} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
@@ -20,6 +21,7 @@ const $button = {
   shadow: {
     rootEl: id('root', HTML_BUTTON, {
       ...$baseRootOutputs,
+      disabled: oflag('disabled'),
       onClick: ievent('click'),
       onEnterDown: ikeydown('Enter'),
       onSpaceDown: ikeydown(' '),

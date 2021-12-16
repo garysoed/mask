@@ -22,6 +22,14 @@ test('@mask/src/action/button', init => {
     return {tester};
   });
 
+  should('render disabled button correctly', () => {
+    const element = _.tester.createElement(BUTTON);
+    element.textContent = 'Button';
+    element.setAttribute('mk-disabled', '');
+
+    assert(flattenNode(element)).to.matchSnapshot('button__disabled.html');
+  });
+
   test('onAction$', _, init => {
     const _ = init(_ => {
       const element = _.tester.createElement(BUTTON);
@@ -63,14 +71,6 @@ test('@mask/src/action/button', init => {
       element.textContent = 'Button';
 
       assert(flattenNode(element)).to.matchSnapshot('button__enabled.html');
-    });
-
-    should('return -1 if host is disabled', () => {
-      const element = _.tester.createElement(BUTTON);
-      element.textContent = 'Button';
-      element.setAttribute('mk-disabled', '');
-
-      assert(flattenNode(element)).to.matchSnapshot('button__disabled.html');
     });
   });
 });
