@@ -1,8 +1,9 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, getEl, setupTest} from 'persona/export/testing';
+import {flattenNode, getEl} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
+import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
@@ -17,7 +18,7 @@ test('@mask/src/core/overlay', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/core/goldens', goldens));
 
-    const tester = setupTest({
+    const tester = setupThemedTest({
       roots: [OVERLAY],
       overrides: [THEME_LOADER_TEST_OVERRIDE],
     });

@@ -1,9 +1,10 @@
 import {anyThat, assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, getEl, setupTest} from 'persona/export/testing';
+import {flattenNode, getEl} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 
 import {ActionEvent} from '../event/action-event';
+import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import {BUTTON} from './button';
@@ -13,7 +14,7 @@ import goldens from './goldens/goldens.json';
 test('@mask/src/action/button', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
-    const tester = setupTest({
+    const tester = setupThemedTest({
       roots: [BUTTON],
       overrides: [THEME_LOADER_TEST_OVERRIDE],
     });

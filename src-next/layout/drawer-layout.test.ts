@@ -1,7 +1,8 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, setupTest} from 'persona/export/testing';
+import {flattenNode} from 'persona/export/testing';
 
+import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import {DrawerMode, DRAWER_LAYOUT} from './drawer-layout';
@@ -11,7 +12,7 @@ import goldens from './goldens/goldens.json';
 test('@mask/src/layout/drawer-layout', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/layout/goldens', goldens));
-    const tester = setupTest({
+    const tester = setupThemedTest({
       roots: [DRAWER_LAYOUT],
       overrides: [THEME_LOADER_TEST_OVERRIDE],
     });

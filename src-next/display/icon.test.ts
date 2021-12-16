@@ -1,9 +1,10 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, setupTest} from 'persona/export/testing';
+import {flattenNode} from 'persona/export/testing';
 
 import maskSvg from '../../demo-next/asset/mask.svg';
 import {registerSvg} from '../core/svg-service';
+import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
@@ -16,7 +17,7 @@ const SVG_NAME = 'svgName';
 test('@mask/src/display/icon', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
-    const tester = setupTest({
+    const tester = setupThemedTest({
       roots: [ICON],
       overrides: [THEME_LOADER_TEST_OVERRIDE],
     });

@@ -1,10 +1,12 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {Context, DIV, id, registerCustomElement} from 'persona';
-import {flattenNode, setupTest} from 'persona/export/testing';
+import {flattenNode} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 
-import {create$baseAction, $baseRootOutputs, BaseAction} from './base-action';
+import {setupThemedTest} from '../testing/setup-themed-test';
+
+import {$baseRootOutputs, BaseAction, create$baseAction} from './base-action';
 import goldens from './goldens/goldens.json';
 
 
@@ -36,7 +38,7 @@ const TEST = registerCustomElement({
 test('@mask/src/action/base-action', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
-    const tester = setupTest({roots: [TEST]});
+    const tester = setupThemedTest({roots: [TEST]});
     return {tester};
   });
 

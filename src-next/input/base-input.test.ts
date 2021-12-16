@@ -4,13 +4,14 @@ import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {stringType} from 'gs-types';
 import {Context, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
-import {flattenNode, getEl, setupTest} from 'persona/export/testing';
+import {flattenNode, getEl} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 import {fromEvent, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
+import {setupThemedTest} from '../testing/setup-themed-test';
 
 import {BaseInput, create$baseInput} from './base-input';
 import goldens from './goldens/goldens.json';
@@ -61,7 +62,7 @@ const TEST = registerCustomElement({
 test('@mask/src/input/base-input', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
-    const tester = setupTest({roots: [TEST]});
+    const tester = setupThemedTest({roots: [TEST]});
     return {tester};
   });
 

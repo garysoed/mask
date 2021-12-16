@@ -6,15 +6,17 @@ import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {mutableState} from 'gs-tools/export/state';
 import {stringType} from 'gs-types';
 import {Context, Ctrl, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
-import {flattenNode, getEl, setupTest} from 'persona/export/testing';
+import {flattenNode, getEl} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 import {Observable, of, OperatorFunction} from 'rxjs';
 
 import {$baseRootOutputs} from '../action/base-action';
 import {BaseInput, create$baseInput} from '../input/base-input';
+import {setupThemedTest} from '../testing/setup-themed-test';
 
 import {bindInputToState} from './bind-input-to-state';
 import goldens from './goldens/goldens.json';
+
 
 const DEFAULT = 'default';
 const $valueId = source(vine => $stateService.get(vine).addRoot(mutableState(DEFAULT)));
@@ -91,7 +93,7 @@ const PARENT = registerCustomElement({
 test('@mask/src/util/bind-input-to-state', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/util/goldens', goldens));
-    const tester = setupTest({roots: [PARENT]});
+    const tester = setupThemedTest({roots: [PARENT]});
     return {tester};
   });
 
