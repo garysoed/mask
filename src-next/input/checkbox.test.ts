@@ -81,6 +81,7 @@ test('@mask/src/input/checkbox', init => {
       });
 
       assert(flattenNode(element)).to.matchSnapshot('checkbox__change-to-checked.html');
+      assert(element.value).to.equal(true);
     });
 
     should('react to clear function', () => {
@@ -90,6 +91,7 @@ test('@mask/src/input/checkbox', init => {
       element.clearFn(undefined);
 
       assert(flattenNode(element)).to.matchSnapshot('checkbox__clear-to-checked.html');
+      assert(element.value).to.equal(true);
     });
   });
 
