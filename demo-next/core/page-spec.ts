@@ -2,6 +2,7 @@ import {Registration} from 'persona';
 
 import {BUTTON_DEMO} from '../action/button';
 import {CHECKBOX_DEMO} from '../action/checkbox';
+import {NUMBER_INPUT_DEMO} from '../action/number-input';
 import {TEXT_INPUT_DEMO} from '../action/text-input';
 import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
@@ -20,7 +21,7 @@ export interface PageSpec {
 export const ACTION_SPECS: readonly PageSpec[] = [
   {registration: BUTTON_DEMO, name: 'Button', path: Views.BUTTON},
   {registration: CHECKBOX_DEMO, name: 'Checkbox', path: Views.CHECKBOX},
-  // {ctor: NumberInputDemo, componentSpec: $numberInputDemo, name: 'Number input', path: Views.NUMBER_INPUT},
+  {registration: NUMBER_INPUT_DEMO, name: 'Number input', path: Views.NUMBER_INPUT},
   // {
   //   ctor: RadioInputDemo,
   //   componentSpec: $radioInputDemo,

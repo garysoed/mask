@@ -41,10 +41,10 @@ export interface TextInputDemoState {
 }
 
 export interface NumberInputDemoState {
-  readonly enabledNumberInputState: MutableState<number>;
-  readonly disabledNumberInputState: MutableState<number>;
-  readonly rangedNumberInputState: MutableState<number>;
-  readonly steppedNumberInputState: MutableState<number>;
+  readonly enabledNumberInputState: MutableState<number|null>;
+  readonly disabledNumberInputState: MutableState<number|null>;
+  readonly rangedNumberInputState: MutableState<number|null>;
+  readonly steppedNumberInputState: MutableState<number|null>;
 }
 
 export interface DemoState {
