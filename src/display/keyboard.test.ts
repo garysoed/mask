@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
 
 import {_p} from '../app/app';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
@@ -27,7 +27,7 @@ test('@mask/display/keyboard', init => {
     should('render the nodes correctly', () => {
       _.harness.host._.text('meta alt enter 3');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('keyboard');
+      assert(_.element).to.matchSnapshot('keyboard');
     });
   });
 });

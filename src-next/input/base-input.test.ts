@@ -4,7 +4,7 @@ import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {stringType} from 'gs-types';
 import {Context, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
-import {flattenNode, getEl} from 'persona/export/testing';
+import {getEl} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 import {fromEvent, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -73,14 +73,14 @@ test('@mask/src/input/base-input', init => {
       element.initValue = initValue;
       element.clearFn(undefined);
 
-      assert(flattenNode(element)).to.matchSnapshot('base-input__clear.html');
+      assert(element).to.matchSnapshot('base-input__clear.html');
       assert(element.value).to.equal(initValue);
     });
 
     should('set the DOM value and output values to the init value at the start', () => {
       const element = _.tester.createElement(TEST);
 
-      assert(flattenNode(element)).to.matchSnapshot('base-input__init.html');
+      assert(element).to.matchSnapshot('base-input__init.html');
       assert(element.value).to.equal('');
     });
   });

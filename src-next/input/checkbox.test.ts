@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, getEl} from 'persona/export/testing';
+import {getEl} from 'persona/export/testing';
 
 import {CHECKBOX} from '../input/checkbox';
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -28,7 +28,7 @@ test('@mask/src/input/checkbox', init => {
       const element = _.tester.createElement(CHECKBOX);
       element.textContent = 'Label';
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__default.html');
+      assert(element).to.matchSnapshot('checkbox__default.html');
     });
 
     should('render disabled checkbox correctly', () => {
@@ -36,7 +36,7 @@ test('@mask/src/input/checkbox', init => {
       element.textContent = 'Label';
       element.setAttribute('mk-disabled', '');
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__disabled.html');
+      assert(element).to.matchSnapshot('checkbox__disabled.html');
     });
   });
 
@@ -47,7 +47,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = true;
       element.clearFn(undefined);
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__checked.html');
+      assert(element).to.matchSnapshot('checkbox__checked.html');
     });
 
     should('set the classlist to display_unchecked if unchecked', () => {
@@ -56,7 +56,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = false;
       element.clearFn(undefined);
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__unchecked.html');
+      assert(element).to.matchSnapshot('checkbox__unchecked.html');
     });
 
     should('set the classlist to display_unknown if unknown', () => {
@@ -65,7 +65,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = null;
       element.clearFn(undefined);
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__unknown.html');
+      assert(element).to.matchSnapshot('checkbox__unknown.html');
     });
   });
 
@@ -80,7 +80,7 @@ test('@mask/src/input/checkbox', init => {
         el.checked = true;
       });
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__change-to-checked.html');
+      assert(element).to.matchSnapshot('checkbox__change-to-checked.html');
       assert(element.value).to.equal(true);
     });
 
@@ -90,7 +90,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = true;
       element.clearFn(undefined);
 
-      assert(flattenNode(element)).to.matchSnapshot('checkbox__clear-to-checked.html');
+      assert(element).to.matchSnapshot('checkbox__clear-to-checked.html');
       assert(element.value).to.equal(true);
     });
   });

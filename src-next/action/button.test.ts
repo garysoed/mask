@@ -1,6 +1,6 @@
 import {anyThat, assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, getEl} from 'persona/export/testing';
+import {getEl} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 
 import {ActionEvent} from '../event/action-event';
@@ -27,7 +27,7 @@ test('@mask/src/action/button', init => {
     element.textContent = 'Button';
     element.setAttribute('mk-disabled', '');
 
-    assert(flattenNode(element)).to.matchSnapshot('button__disabled.html');
+    assert(element).to.matchSnapshot('button__disabled.html');
   });
 
   test('onAction$', _, init => {
@@ -70,7 +70,7 @@ test('@mask/src/action/button', init => {
       const element = _.tester.createElement(BUTTON);
       element.textContent = 'Button';
 
-      assert(flattenNode(element)).to.matchSnapshot('button__enabled.html');
+      assert(element).to.matchSnapshot('button__enabled.html');
     });
   });
 });

@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, getEl} from 'persona/export/testing';
+import {getEl} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -55,7 +55,7 @@ test('@mask/src/core/overlay', init => {
 
       dispatchResize();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__start-start.html');
+      assert(_.element).to.matchSnapshot('overlay__start-start.html');
     });
 
     should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
@@ -66,7 +66,7 @@ test('@mask/src/core/overlay', init => {
 
       dispatchResize();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__middle-middle.html');
+      assert(_.element).to.matchSnapshot('overlay__middle-middle.html');
     });
 
     should('set the left and top correctly if content and target anchors are END - END', () => {
@@ -77,7 +77,7 @@ test('@mask/src/core/overlay', init => {
 
       dispatchResize();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__end-end.html');
+      assert(_.element).to.matchSnapshot('overlay__end-end.html');
     });
   });
 
@@ -100,7 +100,7 @@ test('@mask/src/core/overlay', init => {
       };
       $overlayService.get(_.tester.vine).show(event);
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__content.html');
+      assert(_.element).to.matchSnapshot('overlay__content.html');
     });
   });
 
@@ -120,7 +120,7 @@ test('@mask/src/core/overlay', init => {
       };
       $overlayService.get(_.tester.vine).show(event);
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__show.html');
+      assert(_.element).to.matchSnapshot('overlay__show.html');
     });
 
     should('hide the overlay on clicking root element', () => {
@@ -139,7 +139,7 @@ test('@mask/src/core/overlay', init => {
       $overlayService.get(_.tester.vine).show(event);
       getEl(_.element, 'root')!.simulateClick();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__click-root.html');
+      assert(_.element).to.matchSnapshot('overlay__click-root.html');
     });
 
     should('not hide the overlay when clicking something other than the root element', () => {
@@ -158,7 +158,7 @@ test('@mask/src/core/overlay', init => {
       $overlayService.get(_.tester.vine).show(event);
       getEl(_.element, 'content')!.simulateClick();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('overlay__click-content.html');
+      assert(_.element).to.matchSnapshot('overlay__click-content.html');
     });
   });
 });

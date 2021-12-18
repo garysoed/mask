@@ -8,6 +8,7 @@ import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
 import {LINE_LAYOUT} from '../layout/line-layout';
+import {renderTheme} from '../theme/render-theme';
 
 import {BaseInput, create$baseInput} from './base-input';
 import template from './text-input.html';
@@ -47,6 +48,7 @@ export class TextInput extends BaseInput<string> {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
+      renderTheme(this.$),
       this.$.host.type.pipe(
           filterByType(enumType<InputType>(InputType)),
           this.$.shadow.input.type(),

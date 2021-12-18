@@ -1,7 +1,7 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {RenderSpecType} from 'persona';
-import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
 import {EMPTY, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -55,7 +55,7 @@ test('@mask/display/annotated-text', init => {
       _.harness.host._.annotations(['atob', 'btoc']);
       _.harness.host._.text('banana');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('annotated-text');
+      assert(_.element).to.matchSnapshot('annotated-text');
     });
   });
 });

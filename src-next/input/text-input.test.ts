@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {flattenNode, getEl} from 'persona/export/testing';
+import {getEl} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
@@ -26,7 +26,7 @@ test('@mask/src/input/text-input', init => {
       element.initValue = 'initValue';
       element.clearFn(undefined);
 
-      assert(flattenNode(element)).to.matchSnapshot('text-input__init_value.html');
+      assert(element).to.matchSnapshot('text-input__init_value.html');
     });
   });
 
@@ -59,7 +59,7 @@ test('@mask/src/input/text-input', init => {
       const inputEl = getEl(element, 'input')! as any as HTMLInputElement;
       assert(inputEl.value).to.equal(value);
 
-      assert(flattenNode(element)).to.matchSnapshot('text-input__update.html');
+      assert(element).to.matchSnapshot('text-input__update.html');
     });
   });
 });

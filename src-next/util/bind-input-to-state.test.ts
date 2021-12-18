@@ -6,7 +6,7 @@ import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {mutableState} from 'gs-tools/export/state';
 import {stringType} from 'gs-types';
 import {Context, Ctrl, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
-import {flattenNode, getEl} from 'persona/export/testing';
+import {getEl} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 import {Observable, of, OperatorFunction} from 'rxjs';
 
@@ -100,14 +100,14 @@ test('@mask/src/util/bind-input-to-state', init => {
   should('sync only the initial value of the state to the DOM correctly', () => {
     const element = _.tester.createElement(PARENT);
 
-    assert(flattenNode(element)).to.matchSnapshot('bind-input-to-state__init.html');
+    assert(element).to.matchSnapshot('bind-input-to-state__init.html');
 
     of('newValue')
         .pipe($stateService.get(_.tester.vine).$($valueId.get(_.tester.vine)).set())
         .subscribe();
 
     // There should be no change.
-    assert(flattenNode(element)).to.matchSnapshot('bind-input-to-state__init.html');
+    assert(element).to.matchSnapshot('bind-input-to-state__init.html');
   });
 
   should('sync values from DOM to state correctly', () => {

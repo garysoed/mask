@@ -2,7 +2,7 @@ import {$stateService} from 'grapevine';
 import {assert, run, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService, mutableState} from 'gs-tools/export/state';
-import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
 import {of} from 'rxjs';
 
 import {_p} from '../../app/app';
@@ -55,14 +55,14 @@ test('@mask/input/number-input', init => {
     should('show stepper icon when hovered', () => {
       _.harness.root._.onMouseEnter();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('number-input__stepper');
+      assert(_.element).to.matchSnapshot('number-input__stepper');
     });
 
     should('hide stepper icon on mouseleave', () => {
       _.harness.root._.onMouseEnter();
       _.harness.root._.onMouseLeave();
 
-      assert(flattenNode(_.element)).to.matchSnapshot('number-input__hide-stepper');
+      assert(_.element).to.matchSnapshot('number-input__hide-stepper');
     });
   });
 

@@ -2,7 +2,7 @@ import {$stateService} from 'grapevine';
 import {assert, createSpySubject, objectThat, run, runEnvironment, setThat, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {fakeStateService, immutablePathOf, mutableState, ObjectPath} from 'gs-tools/export/state';
-import {flattenNode, PersonaTesterFactory} from 'persona/export/testing';
+import {PersonaTesterFactory} from 'persona/export/testing';
 import {of} from 'rxjs';
 
 import {_p} from '../../app/app';
@@ -46,7 +46,7 @@ test('@mask/action/input/radio-input', init => {
     should('render default config correctly', () => {
       _.harness.host._.label('label');
 
-      assert(flattenNode(_.element)).to.matchSnapshot('radio-input__default');
+      assert(_.element).to.matchSnapshot('radio-input__default');
     });
   });
 
@@ -58,7 +58,7 @@ test('@mask/action/input/radio-input', init => {
       _.harness.input._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_checked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('radio-input__checked');
+      assert(_.element).to.matchSnapshot('radio-input__checked');
     });
 
     should('set the slot to display_unchecked if unchecked', () => {
@@ -68,7 +68,7 @@ test('@mask/action/input/radio-input', init => {
       _.harness.input._.onInput('');
 
       assert(_.harness.container._.checkMode).to.emitWith(setThat<string>().haveExactElements(new Set(['display_unchecked'])));
-      assert(flattenNode(_.element)).to.matchSnapshot('radio-input__unchecked');
+      assert(_.element).to.matchSnapshot('radio-input__unchecked');
     });
   });
 
