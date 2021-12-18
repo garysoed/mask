@@ -2,6 +2,7 @@ import {Registration} from 'persona';
 
 import {BUTTON_DEMO} from '../action/button';
 import {CHECKBOX_DEMO} from '../action/checkbox';
+import {TEXT_INPUT_DEMO} from '../action/text-input';
 import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
@@ -26,7 +27,7 @@ export const ACTION_SPECS: readonly PageSpec[] = [
   //   name: 'Radio input',
   //   path: Views.RADIO_INPUT,
   // },
-  // {ctor: TextInputDemo, componentSpec: $textInputDemo, name: 'Text input', path: Views.TEXT_INPUT},
+  {registration: TEXT_INPUT_DEMO, name: 'Text input', path: Views.TEXT_INPUT},
 ];
 
 export const DISPLAY_SPECS: readonly PageSpec[] = [
