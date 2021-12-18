@@ -4,7 +4,6 @@ import {getEl} from 'persona/export/testing';
 
 import {CHECKBOX} from '../input/checkbox';
 import {setupThemedTest} from '../testing/setup-themed-test';
-import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
 
@@ -13,12 +12,7 @@ test('@mask/src/input/checkbox', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
 
-    const tester = setupThemedTest({
-      roots: [CHECKBOX],
-      overrides: [
-        THEME_LOADER_TEST_OVERRIDE,
-      ],
-    });
+    const tester = setupThemedTest({roots: [CHECKBOX]});
 
     return {tester};
   });

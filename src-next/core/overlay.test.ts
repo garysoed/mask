@@ -4,7 +4,6 @@ import {getEl} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
-import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
 import {OVERLAY} from './overlay';
@@ -18,10 +17,7 @@ test('@mask/src/core/overlay', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/core/goldens', goldens));
 
-    const tester = setupThemedTest({
-      roots: [OVERLAY],
-      overrides: [THEME_LOADER_TEST_OVERRIDE],
-    });
+    const tester = setupThemedTest({roots: [OVERLAY]});
     const element = tester.createElement(OVERLAY);
     document.body.appendChild(element);
 

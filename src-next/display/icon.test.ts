@@ -4,7 +4,6 @@ import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import maskSvg from '../../demo-next/asset/mask.svg';
 import {registerSvg} from '../core/svg-service';
 import {setupThemedTest} from '../testing/setup-themed-test';
-import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
 import {FitTo, ICON} from './icon';
@@ -16,10 +15,7 @@ const SVG_NAME = 'svgName';
 test('@mask/src/display/icon', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
-    const tester = setupThemedTest({
-      roots: [ICON],
-      overrides: [THEME_LOADER_TEST_OVERRIDE],
-    });
+    const tester = setupThemedTest({roots: [ICON]});
     registerSvg(tester.vine, SVG_NAME, {type: 'embed', content: maskSvg});
 
     return {tester};

@@ -2,7 +2,6 @@ import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
-import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import {DrawerMode, DRAWER_LAYOUT} from './drawer-layout';
 import goldens from './goldens/goldens.json';
@@ -13,7 +12,6 @@ test('@mask/src/layout/drawer-layout', init => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/layout/goldens', goldens));
     const tester = setupThemedTest({
       roots: [DRAWER_LAYOUT],
-      overrides: [THEME_LOADER_TEST_OVERRIDE],
     });
     const element = tester.createElement(DRAWER_LAYOUT);
     element.textContent = 'content';

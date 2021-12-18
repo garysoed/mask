@@ -5,7 +5,6 @@ import {fromEvent} from 'rxjs';
 
 import {ActionEvent} from '../event/action-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
-import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import {BUTTON} from './button';
 import goldens from './goldens/goldens.json';
@@ -14,10 +13,7 @@ import goldens from './goldens/goldens.json';
 test('@mask/src/action/button', init => {
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
-    const tester = setupThemedTest({
-      roots: [BUTTON],
-      overrides: [THEME_LOADER_TEST_OVERRIDE],
-    });
+    const tester = setupThemedTest({roots: [BUTTON]});
 
     return {tester};
   });

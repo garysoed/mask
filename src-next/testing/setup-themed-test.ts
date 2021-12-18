@@ -3,6 +3,8 @@ import {FakeTime} from 'gs-testing';
 import {ElementSpec, Registration} from 'persona';
 import {TestSpec, Tester, setupTest} from 'persona/export/testing';
 
+import {THEME_LOADER_TEST_OVERRIDE} from './theme-loader-test-override';
+
 
 class ThemedTester implements Omit<Tester, 'createElement'> {
   constructor(private readonly baseTester: Tester) { }
@@ -31,7 +33,13 @@ class ThemedTester implements Omit<Tester, 'createElement'> {
 }
 
 export function setupThemedTest(spec: TestSpec): ThemedTester {
-  const baseTester = setupTest(spec);
+  const baseTester = setupTest({
+    ...spec,
+    overrides: [
+      THEME_LOADER_TEST_OVERRIDE,
+      ...(spec.overrides ?? []),
+    ],
+  });
   const tester = new ThemedTester(baseTester);
   return tester;
 }
