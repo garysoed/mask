@@ -29,7 +29,7 @@
 </style>
 
 <label id="container" mk-body-2="" aria-disabled="true" mk-action-1="" mk-disabled="">
-  <input id="input" type="checkbox" disabled="">
+  <input id="input" type="checkbox" disabled="" gst-input-value="on">
   <mk-list-item-layout>
     <div id="iconContainer" slot="bullet">
       <mk-icon id="icon" icon="mk.checkbox_unchecked"><gst-fake-shadow><style>
@@ -58,7 +58,9 @@
 </svg></span>
 <link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-icon>
     </div>
-    <slot slot="label"></slot>
+    <p slot="label">
+      <slot></slot>
+    </p>
   <gst-fake-shadow><style>
   #bulletContainer {
     overflow: hidden;

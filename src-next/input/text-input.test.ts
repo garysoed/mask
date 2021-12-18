@@ -43,7 +43,7 @@ test('@mask/src/input/text-input', init => {
         el.value = value;
       });
 
-      assert(element.value).to.equal(value);
+      assert(element).to.matchSnapshot('text-input__value.html');
     });
   });
 
@@ -55,9 +55,6 @@ test('@mask/src/input/text-input', init => {
       element.textContent = 'Label';
       element.initValue = value;
       element.clearFn(undefined);
-
-      const inputEl = getEl(element, 'input')! as any as HTMLInputElement;
-      assert(inputEl.value).to.equal(value);
 
       assert(element).to.matchSnapshot('text-input__update.html');
     });
