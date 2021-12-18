@@ -43,6 +43,7 @@ test('@mask/src/input/text-input', init => {
         el.value = value;
       });
 
+      assert(element.value).to.equal(value);
       assert(element).to.matchSnapshot('text-input__value.html');
     });
   });
