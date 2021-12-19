@@ -25,7 +25,7 @@ const $overlay = {
     root: id('root', DIV, {
       hidden: oclass('hidden'),
       onClick: ievent('click'),
-      target: itarget(),
+      element: itarget(),
     }),
   },
 };
@@ -123,7 +123,7 @@ class Overlay implements Ctrl {
     const onShow$ = $overlayService.get(this.$.vine).onShow$;
 
     const onClick$ = this.$.shadow.root.onClick.pipe(
-        withLatestFrom(this.$.shadow.root.target),
+        withLatestFrom(this.$.shadow.root.element),
         filter(([event, rootEl]) => event.target === rootEl),
         mapTo(null),
     );
