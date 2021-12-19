@@ -3,6 +3,7 @@ import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getEl} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
+import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
 import goldens from './goldens/goldens.json';
 import {NUMBER_INPUT} from './number-input';
@@ -13,6 +14,7 @@ test('@mask/src/input/number-input', init => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
     const tester = setupThemedTest({
       roots: [NUMBER_INPUT],
+      overrides: [THEME_LOADER_TEST_OVERRIDE],
     });
 
     return {tester};

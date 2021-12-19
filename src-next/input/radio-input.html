@@ -57,16 +57,12 @@
 
 <label id="container" mk-body-2>
   <input id="input" type="radio">
-  <slot id="display_checked" name="display_checked">
-    <mk-list-item-layout>
-      <div class="iconContainer" slot="bullet"><mk-icon icon="mk.radio_checked"></mk-icon></div>
-      <p id="checkedLabel" slot="label"></p>
-    </mk-list-item-layout>
-  </slot>
-  <slot id="display_unchecked" name="display_unchecked">
-    <mk-list-item-layout>
-      <div class="iconContainer" slot="bullet"><mk-icon icon="mk.radio_unchecked"></mk-icon></div>
-      <p id="uncheckedLabel" slot="label"></p>
-    </mk-list-item-layout>
-  </slot>
+  <mk-list-item-layout>
+    <div class="iconContainer" slot="bullet">
+      <mk-icon id="icon"></mk-icon>
+    </div>
+    <p id="label" slot="label">
+      <slot></slot>
+    </p>
+  </mk-list-item-layout>
 </label>
