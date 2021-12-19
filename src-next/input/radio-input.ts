@@ -1,8 +1,10 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
+import {MutableResolver} from 'gs-tools/export/state';
 import {nullType, numberType, unionType} from 'gs-types';
-import {Context, iattr, id, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, registerCustomElement} from 'persona';
+import {Bindings, Context, iattr, id, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, registerCustomElement} from 'persona';
+import {ReversedSpec} from 'persona/export/internal';
 import {oflag} from 'persona/src-next/output/flag';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
@@ -207,3 +209,36 @@ export const RADIO_INPUT = registerCustomElement({
   tag: 'mk-radio-input',
   template,
 });
+
+export function bindRadioInputToState(
+    resolver: MutableResolver<number|null>,
+    bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
+): Observable<unknown> {
+  return concat(
+      bindOutput(resolver, bindings),
+      bindInput(resolver, bindings),
+  );
+}
+
+function bindInput(
+    resolver: MutableResolver<number|null>,
+    bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
+): Observable<unknown> {
+  const obs$List = bindings.map(binding => binding.value.pipe(
+      filterNonNullable(),
+      resolver.set(),
+  ));
+  return merge(...obs$List);
+}
+
+function bindOutput(
+    resolver: MutableResolver<number|null>,
+    bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
+): Observable<unknown> {
+  const obs$List = bindings.map(binding => resolver.pipe(
+      take(1),
+      binding.initValue(),
+      binding.clearFn(),
+  ));
+  return merge(...obs$List);
+}

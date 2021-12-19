@@ -37,7 +37,7 @@ test('@mask/src/action/input/radio-input', init => {
   });
 
   test('checkMode$', () => {
-    should('set the slot to display_checked if checked', () => {
+    should('set the icon to checked if checked', () => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
@@ -48,7 +48,7 @@ test('@mask/src/action/input/radio-input', init => {
       assert(element).to.matchSnapshot('radio-input__checked.html');
     });
 
-    should('set the slot to display_unchecked if unchecked', () => {
+    should('set the icon to unchecked if unchecked', () => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
@@ -57,6 +57,17 @@ test('@mask/src/action/input/radio-input', init => {
       element.clearFn(undefined);
 
       assert(element).to.matchSnapshot('radio-input__unchecked.html');
+    });
+
+    should('set the icon to unchecked if the index doesn\'t match', () => {
+      const element = _.tester.createElement(RADIO_INPUT);
+      element.textContent = 'Label';
+      element.setAttribute('index', '6');
+      element.setAttribute('namespace', NAMESPACE);
+      element.initValue = null;
+      element.clearFn(undefined);
+
+      assert(element).to.matchSnapshot('radio-input__unmatched.html');
     });
   });
 

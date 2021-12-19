@@ -3,6 +3,7 @@ import {Registration} from 'persona';
 import {BUTTON_DEMO} from '../action/button';
 import {CHECKBOX_DEMO} from '../action/checkbox';
 import {NUMBER_INPUT_DEMO} from '../action/number-input';
+import {RADIO_INPUT_DEMO} from '../action/radio-input';
 import {TEXT_INPUT_DEMO} from '../action/text-input';
 import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
@@ -22,12 +23,7 @@ export const ACTION_SPECS: readonly PageSpec[] = [
   {registration: BUTTON_DEMO, name: 'Button', path: Views.BUTTON},
   {registration: CHECKBOX_DEMO, name: 'Checkbox', path: Views.CHECKBOX},
   {registration: NUMBER_INPUT_DEMO, name: 'Number input', path: Views.NUMBER_INPUT},
-  // {
-  //   ctor: RadioInputDemo,
-  //   componentSpec: $radioInputDemo,
-  //   name: 'Radio input',
-  //   path: Views.RADIO_INPUT,
-  // },
+  {registration: RADIO_INPUT_DEMO, name: 'Radio input', path: Views.RADIO_INPUT},
   {registration: TEXT_INPUT_DEMO, name: 'Text input', path: Views.TEXT_INPUT},
 ];
 
