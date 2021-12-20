@@ -29,7 +29,7 @@ export interface OverlayLayoutDemoState {
 }
 
 export interface RadioInputDemoState {
-  readonly selectedIndex: MutableState<number|null>;
+  readonly selectedKey: MutableState<string|null>;
 }
 
 export interface TextInputDemoState {
@@ -94,7 +94,7 @@ export const $demoStateId: Source<RootStateId<DemoState>> = source(
         overlayVerticalIndex: mutableState(0),
       },
       radioInputDemo: {
-        selectedIndex: mutableState(null),
+        selectedKey: mutableState(null),
       },
       textInputDemo: {
         disabledTextInputState: mutableState('Disabled text input value'),

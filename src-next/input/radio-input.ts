@@ -2,7 +2,7 @@ import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
 import {MutableResolver} from 'gs-tools/export/state';
-import {nullType, numberType, unionType} from 'gs-types';
+import {nullType, stringType, unionType} from 'gs-types';
 import {Bindings, Context, iattr, id, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, registerCustomElement} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
 import {oflag} from 'persona/src-next/output/flag';
@@ -26,8 +26,8 @@ import template from './radio-input.html';
 
 const $radioInput = {
   host: {
-    ...create$baseInput(unionType([numberType, nullType]), null).host,
-    index: iattr('index'),
+    ...create$baseInput(unionType([stringType, nullType]), null).host,
+    key: iattr('key'),
     label: iattr('label'),
     group: iattr('group'),
     onChange: oevent(CHANGE_EVENT),
@@ -49,7 +49,7 @@ const $radioInput = {
   },
 };
 
-export class RadioInput extends BaseInput<number|null, OnRadioInput> {
+export class RadioInput extends BaseInput<string|null, OnRadioInput> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $radioInput>) {
@@ -59,21 +59,21 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
   @cache()
   get onAction$(): Observable<ActionEvent<OnRadioInput>> {
     return combineLatest([
-      this.index$,
+      this.$.host.key,
       this.$.host.group,
       this.domValue$,
     ])
         .pipe(
-            map(([index, group, value]) => {
-              if (index !== value) {
+            map(([key, group, value]) => {
+              if (key !== value) {
                 return null;
               }
 
-              if (!group || index === null) {
+              if (!group || !key) {
                 return null;
               }
 
-              return new ActionEvent({group, index});
+              return new ActionEvent({group, key});
             }),
             filterNonNullable(),
         );
@@ -83,7 +83,7 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
   private get checkIcon$(): Observable<string> {
     return combineLatest([
       this.domValue$,
-      this.index$,
+      this.$.host.key,
     ])
         .pipe(
             map(([checkState, index]) => {
@@ -105,16 +105,16 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
   }
 
   @cache()
-  protected get domValue$(): Observable<number|null> {
+  protected get domValue$(): Observable<string|null> {
     return merge(
         this.$.shadow.input.onChange,
         this.onDomValueUpdated$,
     )
         .pipe(
             startWith({}),
-            withLatestFrom(this.$.shadow.input.element, this.index$),
-            map(([, element, index]) => {
-              if (index === null) {
+            withLatestFrom(this.$.shadow.input.element, this.$.host.key),
+            map(([, element, key]) => {
+              if (!key) {
                 return null;
               }
 
@@ -122,7 +122,7 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
                 throw new Error('Element is not an HTMLInputElement');
               }
 
-              return element.checked ? index : null;
+              return element.checked ? key : null;
             }),
             shareReplay({bufferSize: 1, refCount: true}),
         );
@@ -131,9 +131,9 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
   @cache()
   private get handleOnGlobalRadioInput$(): Observable<unknown> {
     return $onRadioInput$.get(this.$.vine).pipe(
-        withLatestFrom(this.$.host.group, this.index$),
-        filter(([event, namespace, index]) => {
-          return event.index !== index && event.group === namespace;
+        withLatestFrom(this.$.host.group, this.$.host.key),
+        filter(([event, namespace, key]) => {
+          return event.key !== key && event.group === namespace;
         }),
         withLatestFrom(this.domValue$),
         filter(([, domValue]) => domValue !== null),
@@ -149,9 +149,9 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
   private get handleOnRadioInput$(): Observable<unknown> {
     return this.domValue$
         .pipe(
-            withLatestFrom(this.$.host.group, this.index$),
-            tap(([currentValue, namespace, index]) => {
-              if (!namespace || index === null) {
+            withLatestFrom(this.$.host.group, this.$.host.key),
+            tap(([currentValue, group, key]) => {
+              if (!group || !key) {
                 return;
               }
 
@@ -159,27 +159,13 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
                 return;
               }
 
-              $onRadioInput$.get(this.$.vine).next({index, group: namespace});
+              $onRadioInput$.get(this.$.vine).next({key, group});
             }),
         );
   }
 
   @cache()
-  private get index$(): Observable<number|null> {
-    return this.$.host.index.pipe(
-        map(index => {
-          if (index === null) {
-            return null;
-          }
-
-          const result = Number.parseInt(index, 10);
-          return Number.isNaN(result) ? null : result;
-        }),
-    );
-  }
-
-  @cache()
-  protected get onChange$(): Observable<ChangeEvent<number|null>> {
+  protected get onChange$(): Observable<ChangeEvent<string|null>> {
     const onChange$ = this.domValue$.pipe(
         pairwise(),
         filter(([oldValue, newValue]) => oldValue !== newValue),
@@ -192,10 +178,10 @@ export class RadioInput extends BaseInput<number|null, OnRadioInput> {
     );
   }
 
-  protected updateDomValue(): OperatorFunction<number|null, unknown> {
+  protected updateDomValue(): OperatorFunction<string|null, unknown> {
     return pipe(
         switchMap(value => {
-          return this.index$.pipe(
+          return this.$.host.key.pipe(
               withLatestFrom(this.$.shadow.input.element),
               tap(([index, element]) => {
                 if (!(element instanceof HTMLInputElement)) {
@@ -235,7 +221,7 @@ export const RADIO_INPUT = registerCustomElement({
 });
 
 export function bindRadioInputToState(
-    resolver: MutableResolver<number|null>,
+    resolver: MutableResolver<string|null>,
     bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
 ): Observable<unknown> {
   return concat(
@@ -245,7 +231,7 @@ export function bindRadioInputToState(
 }
 
 function bindInput(
-    resolver: MutableResolver<number|null>,
+    resolver: MutableResolver<string|null>,
     bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
 ): Observable<unknown> {
   const obs$List = bindings.map(binding => binding.value.pipe(
@@ -256,7 +242,7 @@ function bindInput(
 }
 
 function bindOutput(
-    resolver: MutableResolver<number|null>,
+    resolver: MutableResolver<string|null>,
     bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
 ): Observable<unknown> {
   const obs$List = bindings.map(binding => resolver.pipe(

@@ -2,7 +2,7 @@ import {source} from 'grapevine';
 import {Subject} from 'rxjs';
 
 export interface OnRadioInput {
-  readonly index: number;
+  readonly key: string;
   readonly group: string;
 }
 

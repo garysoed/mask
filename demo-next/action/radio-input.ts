@@ -33,7 +33,7 @@ export class RadioInputDemo implements Ctrl {
     return [
       renderTheme(this.$),
       bindRadioInputToState(
-          this.$state.$('selectedIndex'),
+          this.$state.$('selectedKey'),
           [
             this.$.shadow.optionA,
             this.$.shadow.optionB,
