@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 
 export interface OnRadioInput {
   readonly index: number;
-  readonly namespace: string;
+  readonly group: string;
 }
 
 export const $onRadioInput$ = source<Subject<OnRadioInput>>(() => new Subject<OnRadioInput>());

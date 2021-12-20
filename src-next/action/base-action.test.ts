@@ -1,13 +1,17 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {source} from 'grapevine';
+import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {Context, DIV, id, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src-next/output/flag';
+import {fromEvent, Observable, Subject} from 'rxjs';
 
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import {$baseRootOutputs, BaseAction, create$baseAction} from './base-action';
 import goldens from './goldens/goldens.json';
 
+const $trigger = source(() => new Subject<ActionEvent<number>>());
 
 const $test = {
   host: {
@@ -21,9 +25,13 @@ const $test = {
   },
 };
 
-class TestAction extends BaseAction {
-  constructor($: Context<typeof $test>) {
+class TestAction extends BaseAction<number> {
+  constructor(private readonly $: Context<typeof $test>) {
     super($, $.shadow.div.disabled, $.shadow.div);
+  }
+
+  get onAction$(): Observable<ActionEvent<number>> {
+    return $trigger.get(this.$.vine);
   }
 }
 
@@ -64,6 +72,17 @@ test('@mask/src/action/base-action', init => {
 
       element.setAttribute('is-secondary', '');
       assert(element).to.matchSnapshot('base-action__is-secondary_true.html');
+    });
+  });
+
+  test('action', () => {
+    should('emit the event correctly', () => {
+      const element = _.tester.createElement(TEST);
+      const event$ = createSpySubject(fromEvent(element, ACTION_EVENT));
+      const event = new ActionEvent(123);
+      $trigger.get(_.tester.vine).next(event);
+
+      assert(event$).to.emitSequence([event]);
     });
   });
 });

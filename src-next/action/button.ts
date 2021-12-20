@@ -1,13 +1,13 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, id, ievent, oattr, oevent, registerCustomElement, BUTTON as HTML_BUTTON, ikeydown} from 'persona';
+import {BUTTON as HTML_BUTTON, Context, id, ievent, ikeydown, oattr, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src-next/output/flag';
 import {merge, Observable} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
-import {ActionEvent, ACTION_EVENT} from '../event/action-event';
+import {ActionEvent} from '../event/action-event';
 import {renderTheme} from '../theme/render-theme';
 
-import {create$baseAction, $baseRootOutputs, BaseAction} from './base-action';
+import {$baseRootOutputs, BaseAction, create$baseAction} from './base-action';
 import template from './button.html';
 
 
@@ -16,7 +16,6 @@ const THROTTLE_MS = 500;
 const $button = {
   host: {
     ...create$baseAction().host,
-    actionEvent: oevent(ACTION_EVENT),
   },
   shadow: {
     rootEl: id('root', HTML_BUTTON, {
@@ -32,7 +31,7 @@ const $button = {
 };
 
 
-class Button extends BaseAction {
+class Button extends BaseAction<undefined> {
   constructor(protected readonly actionContext: Context<typeof $button>) {
     super(
         actionContext,
@@ -55,7 +54,7 @@ class Button extends BaseAction {
   }
 
   @cache()
-  private get onAction$(): Observable<ActionEvent<void>> {
+  get onAction$(): Observable<ActionEvent<undefined>> {
     return merge(
         this.actionContext.shadow.rootEl.onClick,
         this.actionContext.shadow.rootEl.onEnterDown,

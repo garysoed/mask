@@ -35,7 +35,7 @@ export function create$baseInput<T>(valueType: Type<T>, defaultValue: T): BaseIn
 }
 
 
-export abstract class BaseInput<T> extends BaseAction implements Ctrl {
+export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
   constructor(
       protected readonly inputContext: Context<BaseInputSpecType<T>>,
       renderDisabled: () => OperatorFunction<boolean, unknown>,

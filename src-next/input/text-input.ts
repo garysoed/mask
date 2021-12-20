@@ -7,6 +7,7 @@ import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
+import {ActionEvent} from '../event/action-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
@@ -33,7 +34,7 @@ const $textInput = {
   },
 };
 
-export class TextInput extends BaseInput<string> {
+export class TextInput extends BaseInput<string, string> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $textInput>) {
@@ -42,6 +43,11 @@ export class TextInput extends BaseInput<string> {
         $.shadow.input.disabled,
         $.shadow.root,
     );
+  }
+
+  @cache()
+  get onAction$(): Observable<ActionEvent<string>> {
+    return this.domValue$.pipe(map(value => new ActionEvent(value)));
   }
 
   @cache()

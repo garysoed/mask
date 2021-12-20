@@ -14,12 +14,13 @@ import radioUnchecked from '../asset/checkbox_empty.svg';
 import radioChecked from '../asset/radio_checked.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
+import {ActionEvent} from '../event/action-event';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {BaseInput, create$baseInput} from '../input/base-input';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {$onRadioInput$} from './on-radio-input';
+import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import template from './radio-input.html';
 
 
@@ -48,11 +49,34 @@ const $radioInput = {
   },
 };
 
-export class RadioInput extends BaseInput<number|null> {
+export class RadioInput extends BaseInput<number|null, OnRadioInput> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $radioInput>) {
     super($, $.shadow.input.disabled, $.shadow.container);
+  }
+
+  @cache()
+  get onAction$(): Observable<ActionEvent<OnRadioInput>> {
+    return combineLatest([
+      this.index$,
+      this.$.host.group,
+      this.domValue$,
+    ])
+        .pipe(
+            map(([index, group, value]) => {
+              if (index !== value) {
+                return null;
+              }
+
+              if (!group || index === null) {
+                return null;
+              }
+
+              return new ActionEvent({group, index});
+            }),
+            filterNonNullable(),
+        );
   }
 
   @cache()
@@ -109,7 +133,7 @@ export class RadioInput extends BaseInput<number|null> {
     return $onRadioInput$.get(this.$.vine).pipe(
         withLatestFrom(this.$.host.group, this.index$),
         filter(([event, namespace, index]) => {
-          return event.index !== index && event.namespace === namespace;
+          return event.index !== index && event.group === namespace;
         }),
         withLatestFrom(this.domValue$),
         filter(([, domValue]) => domValue !== null),
@@ -135,7 +159,7 @@ export class RadioInput extends BaseInput<number|null> {
                 return;
               }
 
-              $onRadioInput$.get(this.$.vine).next({index, namespace});
+              $onRadioInput$.get(this.$.vine).next({index, group: namespace});
             }),
         );
   }

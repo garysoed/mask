@@ -12,6 +12,7 @@ import checkboxEmpty from '../asset/checkbox_empty.svg';
 import checkboxUnknown from '../asset/checkbox_unknown.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
+import {ActionEvent} from '../event/action-event';
 import {BaseInput, create$baseInput} from '../input/base-input';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
@@ -42,7 +43,7 @@ const $checkbox = {
   },
 };
 
-export class Checkbox extends BaseInput<CheckedValue> {
+export class Checkbox extends BaseInput<CheckedValue, CheckedValue> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $checkbox>) {
@@ -51,6 +52,11 @@ export class Checkbox extends BaseInput<CheckedValue> {
         $.shadow.input.disabled,
         $.shadow.container,
     );
+  }
+
+  @cache()
+  get onAction$(): Observable<ActionEvent<CheckedValue>> {
+    return this.domValue$.pipe(map(value => new ActionEvent(value)));
   }
 
   @cache()

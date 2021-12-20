@@ -1,7 +1,10 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getEl} from 'persona/export/testing';
+import {fromEvent} from 'rxjs';
+import {map} from 'rxjs/operators';
 
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
@@ -28,6 +31,12 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
+      const event$ = createSpySubject(
+          fromEvent<ActionEvent<number|null>>(element, ACTION_EVENT).pipe(
+              map(event => event.payload),
+          ),
+      );
+
       const inputEl = getEl(element, 'input')!;
       inputEl.simulateChange(el => {
         el.value = `${value}`;
@@ -35,6 +44,7 @@ test('@mask/src/input/number-input', init => {
 
       assert(element.value).to.equal(value);
       assert(element).to.matchSnapshot('number-input__value.html');
+      assert(event$).to.emitSequence([value]);
     });
   });
 

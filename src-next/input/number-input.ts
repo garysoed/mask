@@ -10,6 +10,7 @@ import {$baseRootOutputs} from '../action/base-action';
 import stepper from '../asset/stepper.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
+import {ActionEvent} from '../event/action-event';
 import {CHANGE_EVENT} from '../event/change-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
@@ -44,11 +45,16 @@ const $numberInput = {
 };
 
 
-export class NumberInput extends BaseInput<number|null> {
+export class NumberInput extends BaseInput<number|null, number|null> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $numberInput>) {
     super($, $.shadow.input.disabled, $.shadow.root);
+  }
+
+  @cache()
+  get onAction$(): Observable<ActionEvent<number|null>> {
+    return this.domValue$.pipe(map(value => new ActionEvent(value)));
   }
 
   @cache()

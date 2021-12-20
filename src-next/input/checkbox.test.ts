@@ -1,8 +1,11 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getEl} from 'persona/export/testing';
+import {fromEvent} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-import {CHECKBOX} from '../input/checkbox';
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
+import {CHECKBOX, CheckedValue} from '../input/checkbox';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import goldens from './goldens/goldens.json';
@@ -68,6 +71,12 @@ test('@mask/src/input/checkbox', init => {
       const element = _.tester.createElement(CHECKBOX);
       element.textContent = 'Label';
 
+      const event$ = createSpySubject(
+          fromEvent<ActionEvent<CheckedValue>>(element, ACTION_EVENT).pipe(
+              map(event => event.payload),
+          ),
+      );
+
       const inputEl = getEl(element, 'input')!;
       inputEl.simulateChange(el => {
         el.indeterminate = false;
@@ -76,6 +85,7 @@ test('@mask/src/input/checkbox', init => {
 
       assert(element).to.matchSnapshot('checkbox__change-to-checked.html');
       assert(element.value).to.equal(true);
+      assert(event$).to.emitSequence([true]);
     });
 
     should('react to clear function', () => {

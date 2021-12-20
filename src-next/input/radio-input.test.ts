@@ -1,7 +1,10 @@
 import {assert, createSpySubject, objectThat, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getEl} from 'persona/export/testing';
+import {fromEvent} from 'rxjs';
+import {map} from 'rxjs/operators';
 
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
@@ -88,6 +91,16 @@ test('@mask/src/action/input/radio-input', init => {
       element3.setAttribute('index', '3');
       element3.setAttribute('group', GROUP);
 
+      const rootEl = document.createElement('div');
+      rootEl.appendChild(element1);
+      rootEl.appendChild(element2);
+      rootEl.appendChild(element3);
+      const event$ = createSpySubject(
+          fromEvent<ActionEvent<OnRadioInput>>(rootEl, ACTION_EVENT).pipe(
+              map(event => event.payload),
+          ),
+      );
+
       // Change the third element.
       getEl(element3, 'input')!.simulateChange(el => {
         el.checked = true;
@@ -96,6 +109,9 @@ test('@mask/src/action/input/radio-input', init => {
       assert(element1.value).to.beNull();
       assert(element2.value).to.beNull();
       assert(element3.value).to.equal(3);
+      assert(event$).to.emitSequence([
+        objectThat<OnRadioInput>().haveProperties({group: GROUP, index: 3}),
+      ]);
 
       // Then the second one.
       getEl(element2, 'input')!.simulateChange(el => {
@@ -105,6 +121,10 @@ test('@mask/src/action/input/radio-input', init => {
       assert(element1.value).to.beNull();
       assert(element2.value).to.equal(2);
       assert(element3.value).to.beNull();
+      assert(event$).to.emitSequence([
+        objectThat<OnRadioInput>().haveProperties({group: GROUP, index: 3}),
+        objectThat<OnRadioInput>().haveProperties({group: GROUP, index: 2}),
+      ]);
 
       // Click on the third one again.
       getEl(element3, 'input')!.simulateChange(el => {
@@ -114,6 +134,11 @@ test('@mask/src/action/input/radio-input', init => {
       assert(element1.value).to.beNull();
       assert(element2.value).to.beNull();
       assert(element3.value).to.equal(3);
+      assert(event$).to.emitSequence([
+        objectThat<OnRadioInput>().haveProperties({group: GROUP, index: 3}),
+        objectThat<OnRadioInput>().haveProperties({group: GROUP, index: 2}),
+        objectThat<OnRadioInput>().haveProperties({group: GROUP, index: 3}),
+      ]);
     });
   });
 
@@ -126,7 +151,7 @@ test('@mask/src/action/input/radio-input', init => {
       element.initValue = INDEX;
       element.clearFn(undefined);
 
-      $onRadioInput$.get(_.tester.vine).next({index: 1, namespace: GROUP});
+      $onRadioInput$.get(_.tester.vine).next({index: 1, group: GROUP});
 
       assert(element).to.matchSnapshot('radio-input__global-other-index.html');
     });
@@ -139,7 +164,7 @@ test('@mask/src/action/input/radio-input', init => {
       element.initValue = INDEX;
       element.clearFn(undefined);
 
-      $onRadioInput$.get(_.tester.vine).next({index: INDEX, namespace: GROUP});
+      $onRadioInput$.get(_.tester.vine).next({index: INDEX, group: GROUP});
 
       assert(element).to.matchSnapshot('radio-input__global-same-index.html');
     });
@@ -152,7 +177,7 @@ test('@mask/src/action/input/radio-input', init => {
       element.initValue = INDEX;
       element.clearFn(undefined);
 
-      $onRadioInput$.get(_.tester.vine).next({index: 1, namespace: 'other'});
+      $onRadioInput$.get(_.tester.vine).next({index: 1, group: 'other'});
 
       assert(element).to.matchSnapshot('radio-input__global-unmatch-namespace.html');
     });
@@ -173,7 +198,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       assert(onRadioInput$).to.emitWith(objectThat<OnRadioInput>().haveProperties({
         index: INDEX,
-        namespace: GROUP,
+        group: GROUP,
       }));
     });
 

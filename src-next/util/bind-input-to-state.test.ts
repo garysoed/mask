@@ -9,8 +9,10 @@ import {Context, Ctrl, DIV, iattr, id, oattr, registerCustomElement} from 'perso
 import {getEl} from 'persona/export/testing';
 import {oflag} from 'persona/src-next/output/flag';
 import {Observable, of, OperatorFunction} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
+import {ActionEvent} from '../event/action-event';
 import {BaseInput, create$baseInput} from '../input/base-input';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
@@ -35,13 +37,18 @@ const $test = {
   },
 };
 
-class TestInput extends BaseInput<string> {
+class TestInput extends BaseInput<string, string> {
   constructor(private readonly $: Context<typeof $test>) {
     super(
         $,
         $.shadow.div.disabled,
         $.shadow.div,
     );
+  }
+
+  @cache()
+  get onAction$(): Observable<ActionEvent<string>> {
+    return this.domValue$.pipe(map(value => new ActionEvent(value)));
   }
 
   @cache()
