@@ -28,20 +28,20 @@
 
 <mkd-demo-layout label="Radio inputs">
   <div id="play" slot="play" layout="row">
-    <div layout="column" flex>
-      <mk-radio-input id="optionA" namespace="test" index="0">
+    <div layout="column" id="radioGroup" flex>
+      <mk-radio-input id="optionA" group="test" key="0">
         Option A
       </mk-radio-input>
 
-      <mk-radio-input id="optionB" namespace="test" index="1" is-secondary>
+      <mk-radio-input id="optionB" group="test" key="1" is-secondary>
         Option B (secondary)
       </mk-radio-input>
 
-      <mk-radio-input id="optionC" namespace="test" index="2">
+      <mk-radio-input id="optionC" group="test" key="2">
         Option C
       </mk-radio-input>
 
-      <mk-radio-input id="optionD" namespace="test" index="3">
+      <mk-radio-input id="optionD" group="test" key="3">
         Simple radio input
       </mk=radio-input>
     </div>
