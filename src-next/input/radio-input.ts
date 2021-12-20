@@ -28,7 +28,7 @@ const $radioInput = {
     ...create$baseInput(unionType([numberType, nullType]), null).host,
     index: iattr('index'),
     label: iattr('label'),
-    namespace: iattr('namespace'),
+    group: iattr('group'),
     onChange: oevent(CHANGE_EVENT),
   },
   shadow: {
@@ -107,7 +107,7 @@ export class RadioInput extends BaseInput<number|null> {
   @cache()
   private get handleOnGlobalRadioInput$(): Observable<unknown> {
     return $onRadioInput$.get(this.$.vine).pipe(
-        withLatestFrom(this.$.host.namespace, this.index$),
+        withLatestFrom(this.$.host.group, this.index$),
         filter(([event, namespace, index]) => {
           return event.index !== index && event.namespace === namespace;
         }),
@@ -125,7 +125,7 @@ export class RadioInput extends BaseInput<number|null> {
   private get handleOnRadioInput$(): Observable<unknown> {
     return this.domValue$
         .pipe(
-            withLatestFrom(this.$.host.namespace, this.index$),
+            withLatestFrom(this.$.host.group, this.index$),
             tap(([currentValue, namespace, index]) => {
               if (!namespace || index === null) {
                 return;

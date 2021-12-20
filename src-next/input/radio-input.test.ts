@@ -12,7 +12,7 @@ import {RADIO_INPUT} from './radio-input';
 
 test('@mask/src/action/input/radio-input', init => {
   const INDEX = 3;
-  const NAMESPACE = 'test-namespace';
+  const GROUP = 'test-group';
 
   const _ = init(() => {
     runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
@@ -30,7 +30,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
 
       assert(element).to.matchSnapshot('radio-input__default.html');
     });
@@ -41,7 +41,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
       element.initValue = INDEX;
       element.clearFn(undefined);
 
@@ -52,7 +52,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
       element.initValue = null;
       element.clearFn(undefined);
 
@@ -63,7 +63,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', '6');
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
       element.initValue = null;
       element.clearFn(undefined);
 
@@ -76,17 +76,17 @@ test('@mask/src/action/input/radio-input', init => {
       const element1 = _.tester.createElement(RADIO_INPUT);
       element1.textContent = 'Label';
       element1.setAttribute('index', '1');
-      element1.setAttribute('namespace', NAMESPACE);
+      element1.setAttribute('group', GROUP);
 
       const element2 = _.tester.createElement(RADIO_INPUT);
       element2.textContent = 'Label';
       element2.setAttribute('index', '2');
-      element2.setAttribute('namespace', NAMESPACE);
+      element2.setAttribute('group', GROUP);
 
       const element3 = _.tester.createElement(RADIO_INPUT);
       element3.textContent = 'Label';
       element3.setAttribute('index', '3');
-      element3.setAttribute('namespace', NAMESPACE);
+      element3.setAttribute('group', GROUP);
 
       // Change the third element.
       getEl(element3, 'input')!.simulateChange(el => {
@@ -122,11 +122,11 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
       element.initValue = INDEX;
       element.clearFn(undefined);
 
-      $onRadioInput$.get(_.tester.vine).next({index: 1, namespace: NAMESPACE});
+      $onRadioInput$.get(_.tester.vine).next({index: 1, namespace: GROUP});
 
       assert(element).to.matchSnapshot('radio-input__global-other-index.html');
     });
@@ -135,11 +135,11 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
       element.initValue = INDEX;
       element.clearFn(undefined);
 
-      $onRadioInput$.get(_.tester.vine).next({index: INDEX, namespace: NAMESPACE});
+      $onRadioInput$.get(_.tester.vine).next({index: INDEX, namespace: GROUP});
 
       assert(element).to.matchSnapshot('radio-input__global-same-index.html');
     });
@@ -148,7 +148,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
       element.initValue = INDEX;
       element.clearFn(undefined);
 
@@ -163,7 +163,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
@@ -173,7 +173,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       assert(onRadioInput$).to.emitWith(objectThat<OnRadioInput>().haveProperties({
         index: INDEX,
-        namespace: NAMESPACE,
+        namespace: GROUP,
       }));
     });
 
@@ -181,7 +181,7 @@ test('@mask/src/action/input/radio-input', init => {
       const element = _.tester.createElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('index', `${INDEX}`);
-      element.setAttribute('namespace', NAMESPACE);
+      element.setAttribute('group', GROUP);
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
