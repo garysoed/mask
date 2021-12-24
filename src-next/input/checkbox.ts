@@ -4,7 +4,7 @@ import {booleanType, nullType, Type, unionType} from 'gs-types';
 import {Context, id, ievent, INPUT, itarget, LABEL, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src-next/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
-import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
+import {distinctUntilChanged, map, skip, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
 import checkboxChecked from '../asset/checkbox_checked.svg';
@@ -56,7 +56,7 @@ export class Checkbox extends BaseInput<CheckedValue, CheckedValue> {
 
   @cache()
   get onAction$(): Observable<ActionEvent<CheckedValue>> {
-    return this.domValue$.pipe(map(value => new ActionEvent(value)));
+    return this.domValue$.pipe(distinctUntilChanged(), skip(1), map(value => new ActionEvent(value)));
   }
 
   @cache()

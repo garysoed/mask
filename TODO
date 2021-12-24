@@ -1,6 +1,5 @@
 2.0:
   bugs:
-    ☐ Demo don't keep the view on refresh
     ☐ Overlay Layout demo doesn't position the anchor correctly
 
   improvements:

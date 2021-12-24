@@ -66,6 +66,50 @@ test('@mask/src/input/checkbox', init => {
     });
   });
 
+  test('onAction$', () => {
+    should('emit the action on value change', () => {
+      const element = _.tester.createElement(CHECKBOX);
+      element.textContent = 'Label';
+
+      const event$ = createSpySubject(
+          fromEvent<ActionEvent<CheckedValue>>(element, ACTION_EVENT).pipe(
+              map(event => event.payload),
+          ),
+      );
+
+      const inputEl = getEl(element, 'input')!;
+      inputEl.simulateChange(el => {
+        el.indeterminate = false;
+        el.checked = true;
+      });
+
+      assert(event$).to.emitSequence([true]);
+    });
+
+    should('not emit if the value does not change', () => {
+      const element = _.tester.createElement(CHECKBOX);
+      element.textContent = 'Label';
+
+      const event$ = createSpySubject(
+          fromEvent<ActionEvent<CheckedValue>>(element, ACTION_EVENT).pipe(
+              map(event => event.payload),
+          ),
+      );
+
+      const inputEl = getEl(element, 'input')!;
+      inputEl.simulateChange(el => {
+        el.indeterminate = false;
+        el.checked = true;
+      });
+      inputEl.simulateChange(el => {
+        el.indeterminate = false;
+        el.checked = true;
+      });
+
+      assert(event$).to.emitSequence([true]);
+    });
+  });
+
   test('domValue$', () => {
     should('react to change events', () => {
       const element = _.tester.createElement(CHECKBOX);
