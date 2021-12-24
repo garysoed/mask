@@ -45,7 +45,6 @@ class Button extends BaseAction<undefined> {
     return [
       ...super.runs,
       renderTheme(this.actionContext),
-      this.onAction$.pipe(this.actionContext.host.actionEvent()),
       this.tabIndex$.pipe(
           map(index => `${index}`),
           this.actionContext.shadow.rootEl.tabindex(),

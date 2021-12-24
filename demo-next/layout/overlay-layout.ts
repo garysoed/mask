@@ -1,6 +1,6 @@
 import {$asArray, $asMap, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {debug, forwardTo} from 'gs-tools/export/rxjs';
+import {forwardTo} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, id, omulti, registerCustomElement, renderCustomElement, RenderSpec} from 'persona';
 import {Observable, of, Subject} from 'rxjs';
@@ -15,6 +15,7 @@ import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
 
 import template from './overlay-layout.html';
+
 
 const $overlayLayoutDemo = {
   shadow: {
@@ -81,7 +82,7 @@ export class OverlayLayoutDemo implements Ctrl {
       this.getAnchor('overlayVerticalIndex').pipe(this.$.shadow.overlay.contentVertical()),
       this.getAnchor('targetHorizontalIndex').pipe(this.$.shadow.overlay.targetHorizontal()),
       this.getAnchor('targetVerticalIndex').pipe(this.$.shadow.overlay.targetVertical()),
-      this.$.shadow.showButton.actionEvent.pipe(debug(null, 'action'), mapTo(undefined), this.$.shadow.overlay.showFn()),
+      this.$.shadow.showButton.actionEvent.pipe(mapTo(undefined), this.$.shadow.overlay.showFn()),
     ];
   }
 

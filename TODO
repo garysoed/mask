@@ -1,6 +1,5 @@
 2.0:
   bugs:
-    ☐ Demo drawer buttons don't work
     ☐ Demo don't keep the view on refresh
     ☐ Overlay Layout demo doesn't position the anchor correctly
 

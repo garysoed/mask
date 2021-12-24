@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, iattr, id, otext, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
-import {map, scan, startWith} from 'rxjs/operators';
+import {map, scan, shareReplay, startWith} from 'rxjs/operators';
 
 import {BUTTON} from '../../src-next/action/button';
 import {ICON} from '../../src-next/display/icon';
@@ -63,6 +63,7 @@ export class DemoLayout implements Ctrl {
         .pipe(
             scan(acc => !acc, false),
             startWith(false),
+            shareReplay({bufferSize: 1, refCount: false}),
         );
   }
 }

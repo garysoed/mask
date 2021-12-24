@@ -1,5 +1,4 @@
 import {cache} from 'gs-tools/export/data';
-import {debug} from 'gs-tools/export/rxjs';
 import {enumType, instanceofType, nullType, undefinedType, unionType} from 'gs-types';
 import {Context, Ctrl, iattr, icall, id, registerCustomElement, SLOT} from 'persona';
 import {ivalue} from 'persona/src-next/input/value';
@@ -58,7 +57,7 @@ export class OverlayLayout implements Ctrl {
     return this.$.host.showFn.pipe(
         withLatestFrom(
             this.$.host.target,
-            contentNode$.pipe(debug(null, 'content')),
+            contentNode$,
             anchors$,
         ),
         tap(([, targetEl, contentNode, anchors]) => {

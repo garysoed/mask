@@ -36,21 +36,21 @@ test('@mask/src/action/button', init => {
 
     should('fire the action event if clicked', () => {
       _.root.simulateClick();
-      assert(_.onAction$).to.emitWith(
-          anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent),
-      );
+      assert(_.onAction$).to.emitSequence([
+        anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent),
+      ]);
     });
 
     should('fire the action event on pressing Enter', () => {
       _.root.simulateKeydown('Enter');
       assert(_.onAction$).to
-          .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
+          .emitSequence([anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent)]);
     });
 
     should('fire the action event on pressing space', () => {
       _.root.simulateKeydown(' ');
       assert(_.onAction$).to
-          .emitWith(anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent));
+          .emitSequence([anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent)]);
     });
 
     should('not fire the action event if disabled', () => {
