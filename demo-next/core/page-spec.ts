@@ -9,6 +9,7 @@ import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
 import {DRAWER_LAYOUT_DEMO} from '../layout/drawer-layout';
+import {OVERLAY_LAYOUT_DEMO} from '../layout/overlay-layout';
 
 import {Views} from './location-service';
 
@@ -46,12 +47,7 @@ export const GENERAL_SPECS: readonly PageSpec[] = [
 
 export const LAYOUT_SPECS: readonly PageSpec[] = [
   {registration: DRAWER_LAYOUT_DEMO, name: 'Drawer Layout', path: Views.DRAWER_LAYOUT},
-  // {
-  //   ctor: OverlayLayoutDemo,
-  //   componentSpec: $overlayLayoutDemo,
-  //   name: 'Overlay Layout',
-  //   path: Views.OVERLAY_LAYOUT,
-  // },
+  {registration: OVERLAY_LAYOUT_DEMO, name: 'Overlay Layout', path: Views.OVERLAY_LAYOUT},
 ];
 
 export const ALL_SPECS = [

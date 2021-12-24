@@ -1,4 +1,5 @@
 import {cache} from 'gs-tools/export/data';
+import {debug} from 'gs-tools/export/rxjs';
 import {enumType, instanceofType, nullType, undefinedType, unionType} from 'gs-types';
 import {Context, Ctrl, iattr, icall, id, registerCustomElement, SLOT} from 'persona';
 import {ivalue} from 'persona/src-next/input/value';
@@ -15,7 +16,7 @@ const $overlayLayout = {
   host: {
     contentHorizontal: iattr('content-horizontal'),
     contentVertical: iattr('content-vertical'),
-    showFn: icall('show', undefinedType),
+    showFn: icall('showFn', undefinedType),
     target: ivalue('target', unionType([instanceofType(Element), nullType]), null),
     targetHorizontal: iattr('target-horizontal'),
     targetVertical: iattr('target-vertical'),
@@ -35,15 +36,6 @@ export class OverlayLayout implements Ctrl {
       renderTheme(this.$),
       this.handleOnShow$,
     ];
-  }
-
-  private getTargetEl(hostEl: Element, targetId: string): Element|null {
-    const rootNode = hostEl.getRootNode();
-    if (!(rootNode instanceof ShadowRoot) && !(rootNode instanceof Document)) {
-      return null;
-    }
-
-    return rootNode.getElementById(targetId);
   }
 
   @cache()
@@ -66,11 +58,11 @@ export class OverlayLayout implements Ctrl {
     return this.$.host.showFn.pipe(
         withLatestFrom(
             this.$.host.target,
-            contentNode$,
+            contentNode$.pipe(debug(null, 'content')),
             anchors$,
         ),
         tap(([, targetEl, contentNode, anchors]) => {
-          if (!targetEl || !contentNode) {
+          if (!contentNode) {
             return;
           }
 
@@ -81,7 +73,7 @@ export class OverlayLayout implements Ctrl {
               vertical: anchors.contentVertical ?? Anchor.START,
             },
             target: {
-              node: targetEl,
+              node: targetEl ?? document.body,
               horizontal: anchors.targetHorizontal,
               vertical: anchors.targetVertical,
             },

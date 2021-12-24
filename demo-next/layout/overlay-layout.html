@@ -53,7 +53,16 @@
     </div>
 
     <mk-overlay-layout id="overlay" target-id="target">
-      <mk-line-layout mk-body-1>Overlay content</mk-line-layout>
+      <style>
+        #content {
+          background-color: var(--mkThemeBG);
+        }
+      </style>
+      <div id="content">
+        <mk-line-layout mk-body-1>
+          Overlay content
+        </mk-line-layout>
+      </div>
     </mk-overlay-layout>
   </div>
   <div slot="docs">

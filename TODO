@@ -1,29 +1,12 @@
-1.1:
-  general:
-    ☐ Update all the docs.
-    ☐ `onInput` should not compile if given to non `HTMLInputElement` selector.
-
+2.0:
   bugs:
-    ✔ A lot of actions are missing the style element.
+    ☐ Demo drawer buttons don't work
+    ☐ Demo don't keep the view on refresh
+    ☐ Overlay Layout demo doesn't position the anchor correctly
 
-  cleanup:
-    ✔ Clean up old components.
-    ✔ Delete `ThemedCustomElementCtrl`.
-    ✘ ESLint to sort members.
-
-  demo:
-    ☐ Add selected states to sidebar
-
-  general:
-    ✔ Changed the interface of `BaseCtrl` and `BaseThemedCtrl`.
-
-  optimize:
-    ☐ Add worker.
-    ☐ Cache theme CSS in worker.
-    ☐ Preload SVGs in worker.
-    ☐ Retry SVG remote loading with exponential backoff.
-    ☐ General `onRender$` event, dispatched after rendering.
-
+  improvements:
+    ☐ Call function name should follow the string, not the key name.
+    ☐ Value property name should follow the string, not the key name.
 
 # Future
 

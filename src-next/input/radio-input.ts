@@ -220,9 +220,14 @@ export const RADIO_INPUT = registerCustomElement({
   template,
 });
 
+export type RadioBindingLike = Pick<
+    Bindings<ReversedSpec<(typeof $radioInput)['host']> >,
+    'clearFn'|'initValue'|'value'
+>;
+
 export function bindRadioInputToState(
     resolver: MutableResolver<string|null>,
-    bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
+    bindings: readonly RadioBindingLike[],
 ): Observable<unknown> {
   return concat(
       bindOutput(resolver, bindings),
@@ -232,7 +237,7 @@ export function bindRadioInputToState(
 
 function bindInput(
     resolver: MutableResolver<string|null>,
-    bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
+    bindings: readonly RadioBindingLike[],
 ): Observable<unknown> {
   const obs$List = bindings.map(binding => binding.value.pipe(
       filterNonNullable(),
@@ -243,7 +248,7 @@ function bindInput(
 
 function bindOutput(
     resolver: MutableResolver<string|null>,
-    bindings: ReadonlyArray<Bindings<ReversedSpec<(typeof $radioInput)['host']>>>,
+    bindings: readonly RadioBindingLike[],
 ): Observable<unknown> {
   const obs$List = bindings.map(binding => resolver.pipe(
       take(1),
