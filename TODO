@@ -2,10 +2,6 @@
   bugs:
     ☐ Overlay Layout demo doesn't position the anchor correctly
 
-  improvements:
-    ☐ Call function name should follow the string, not the key name.
-    ☐ Value property name should follow the string, not the key name.
-
 # Future
 
 # History

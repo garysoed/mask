@@ -14,10 +14,10 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 export interface BaseInputSpecType<T> extends BaseActionSpecType {
   host: BaseActionSpecType['host'] & {
-    readonly clearFn: UnresolvedIO<ICall<unknown>>;
-    readonly initValue: UnresolvedIO<IValue<T>>;
+    readonly clearFn: UnresolvedIO<ICall<unknown, 'clearFn'>>;
+    readonly initValue: UnresolvedIO<IValue<T, 'initValue'>>;
     readonly onChange: UnresolvedIO<OEvent>;
-    readonly value: UnresolvedIO<OValue<T>>;
+    readonly value: UnresolvedIO<OValue<T, 'value'>>;
   }
 }
 
