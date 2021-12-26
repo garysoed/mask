@@ -23,7 +23,7 @@ const $annotatedText = {
   },
 };
 
-export class AnnotatedText implements Ctrl {
+class AnnotatedText implements Ctrl {
   constructor(private readonly $: Context<typeof $annotatedText>) { }
 
   @cache()
