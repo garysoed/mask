@@ -5,7 +5,7 @@ import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {stringType} from 'gs-types';
 import {Context, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
 import {getEl} from 'persona/export/testing';
-import {oflag} from 'persona/src-next/output/flag';
+import {oflag} from 'persona/src/output/flag';
 import {fromEvent, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 

@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, DIV, id, ievent, irect, itarget, osingle, ostyle, registerCustomElement, renderNode, RenderSpec} from 'persona';
-import {oclass} from 'persona/src-next/output/class';
+import {oclass} from 'persona/src/output/class';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, withLatestFrom} from 'rxjs/operators';
 

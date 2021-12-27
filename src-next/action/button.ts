@@ -1,6 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {BUTTON as HTML_BUTTON, Context, id, ievent, ikeydown, oattr, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src-next/output/flag';
+import {BUTTON as HTML_BUTTON, Context, id, ievent, ikeydown, oattr, oflag, registerCustomElement} from 'persona';
 import {merge, Observable} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 

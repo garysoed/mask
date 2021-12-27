@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, DIV, id, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src-next/output/flag';
+import {oflag} from 'persona/src/output/flag';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 

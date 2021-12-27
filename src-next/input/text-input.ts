@@ -2,7 +2,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterByType} from 'gs-tools/export/rxjs';
 import {enumType, stringType} from 'gs-types';
 import {AutocompleteType, Context, iattr, id, ievent, INPUT, InputType, itarget, LABEL, oattr, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src-next/output/flag';
+import {oflag} from 'persona/src/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
 

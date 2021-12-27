@@ -1,8 +1,7 @@
 import {source} from 'grapevine';
 import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {Context, DIV, id, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src-next/output/flag';
+import {Context, DIV, id, oflag, registerCustomElement} from 'persona';
 import {fromEvent, Observable, Subject} from 'rxjs';
 
 import {ActionEvent, ACTION_EVENT} from '../event/action-event';

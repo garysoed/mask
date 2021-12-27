@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {triggerFakeMutation} from 'persona/src-next/testing/fake-mutation-observer';
+import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 

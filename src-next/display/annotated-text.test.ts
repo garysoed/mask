@@ -1,7 +1,7 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {RenderSpecType} from 'persona';
-import {triggerFakeMutation} from 'persona/src-next/testing/fake-mutation-observer';
+import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
 import {EMPTY, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 

@@ -1,10 +1,10 @@
 import {cache} from 'gs-tools/export/data';
 import {Type, unknownType} from 'gs-types';
 import {icall, oevent} from 'persona';
-import {ivalue} from 'persona/src-next/input/value';
-import {ovalue} from 'persona/src-next/output/value';
-import {Bindings, Context, Ctrl, UnresolvedIO} from 'persona/src-next/types/ctrl';
-import {ICall, IValue, OEvent, OValue} from 'persona/src-next/types/io';
+import {ivalue} from 'persona/src/input/value';
+import {ovalue} from 'persona/src/output/value';
+import {Bindings, Context, Ctrl, UnresolvedIO} from 'persona/src/types/ctrl';
+import {ICall, IValue, OEvent, OValue} from 'persona/src/types/io';
 import {Observable, OperatorFunction} from 'rxjs';
 import {filter, map, pairwise, startWith, withLatestFrom} from 'rxjs/operators';
 

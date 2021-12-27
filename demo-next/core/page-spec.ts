@@ -8,6 +8,7 @@ import {TEXT_INPUT_DEMO} from '../action/text-input';
 import {ANNOTATED_TEXT_DEMO} from '../display/annotated-text';
 import {CODE_BLOCK_DEMO} from '../display/code-block';
 import {ICON_DEMO} from '../display/icon';
+import {KEYBOARD_DEMO} from '../display/keyboard';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
 import {DRAWER_LAYOUT_DEMO} from '../layout/drawer-layout';
@@ -34,7 +35,7 @@ export const DISPLAY_SPECS: readonly PageSpec[] = [
   {registration: ANNOTATED_TEXT_DEMO, name: 'Annotated Text', path: Views.ANNOTATED_TEXT},
   {registration: CODE_BLOCK_DEMO, name: 'Code Block', path: Views.CODE_BLOCK},
   {registration: ICON_DEMO, name: 'Icon', path: Views.ICON},
-  // {ctor: KeyboardDemo, componentSpec: $keyboardDemo, name: 'Keyboard', path: Views.KEYBOARD},
+  {registration: KEYBOARD_DEMO, name: 'Keyboard', path: Views.KEYBOARD},
 ];
 
 export const GENERAL_SPECS: readonly PageSpec[] = [

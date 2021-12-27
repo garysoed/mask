@@ -2,7 +2,7 @@ import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {booleanType, nullType, Type, unionType} from 'gs-types';
 import {Context, id, ievent, INPUT, itarget, LABEL, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src-next/output/flag';
+import {oflag} from 'persona/src/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {distinctUntilChanged, map, skip, startWith, tap, withLatestFrom} from 'rxjs/operators';
 

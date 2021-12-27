@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {Context, Ctrl, iattr, id, ievent, mediaQueryObservable, oevent, otext, P, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src-next/output/flag';
+import {oflag} from 'persona/src/output/flag';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, startWith} from 'rxjs/operators';
 

@@ -5,7 +5,7 @@ import {MutableResolver} from 'gs-tools/export/state';
 import {nullType, stringType, unionType} from 'gs-types';
 import {Bindings, Context, iattr, id, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, registerCustomElement} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
-import {oflag} from 'persona/src-next/output/flag';
+import {oflag} from 'persona/src/output/flag';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 

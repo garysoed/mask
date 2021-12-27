@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {arrayOfType, instanceofType, Type} from 'gs-types';
 import {Context, Ctrl, itext, omulti, registerCustomElement, RenderSpec, renderTextNode, root} from 'persona';
-import {ivalue} from 'persona/src-next/input/value';
+import {ivalue} from 'persona/src/input/value';
 import {combineLatest, concat, Observable, of, OperatorFunction, pipe} from 'rxjs';
 import {bufferCount, map, switchMap} from 'rxjs/operators';
 
