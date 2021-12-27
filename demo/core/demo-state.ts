@@ -1,6 +1,7 @@
 import {$stateService, Source, source} from 'grapevine';
 import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
 
+import {Anchor} from '../../src-next/core/overlay-service';
 import {CheckedValue} from '../../src-next/input/checkbox';
 import {Palette} from '../../src-next/theme/palette';
 
@@ -22,14 +23,14 @@ export interface IconDemoState {
 }
 
 export interface OverlayLayoutDemoState {
-  readonly targetHorizontalIndex: MutableState<number|null>;
-  readonly targetVerticalIndex: MutableState<number|null>;
-  readonly overlayHorizontalIndex: MutableState<number|null>;
-  readonly overlayVerticalIndex: MutableState<number|null>;
+  readonly targetHorizontalIndex: MutableState<string|null>;
+  readonly targetVerticalIndex: MutableState<string|null>;
+  readonly overlayHorizontalIndex: MutableState<string|null>;
+  readonly overlayVerticalIndex: MutableState<string|null>;
 }
 
 export interface RadioInputDemoState {
-  readonly selectedIndex: MutableState<number|null>;
+  readonly selectedKey: MutableState<string|null>;
 }
 
 export interface TextInputDemoState {
@@ -41,10 +42,10 @@ export interface TextInputDemoState {
 }
 
 export interface NumberInputDemoState {
-  readonly enabledNumberInputState: MutableState<number>;
-  readonly disabledNumberInputState: MutableState<number>;
-  readonly rangedNumberInputState: MutableState<number>;
-  readonly steppedNumberInputState: MutableState<number>;
+  readonly enabledNumberInputState: MutableState<number|null>;
+  readonly disabledNumberInputState: MutableState<number|null>;
+  readonly rangedNumberInputState: MutableState<number|null>;
+  readonly steppedNumberInputState: MutableState<number|null>;
 }
 
 export interface DemoState {
@@ -69,7 +70,7 @@ export const $demoStateId: Source<RootStateId<DemoState>> = source(
       baseColorName: mutableState(BASE_COLOR_NAME),
       isDarkMode: mutableState(true),
       checkboxDemo: {
-        unknownCheckboxState: mutableState('unknown'),
+        unknownCheckboxState: mutableState(null),
         disabledCheckboxState: mutableState(true),
         labelCheckboxState: mutableState(false),
       },
@@ -88,13 +89,13 @@ export const $demoStateId: Source<RootStateId<DemoState>> = source(
         steppedNumberInputState: mutableState(2),
       },
       overlayLayoutDemo: {
-        targetHorizontalIndex: mutableState(0),
-        targetVerticalIndex: mutableState(0),
-        overlayHorizontalIndex: mutableState(0),
-        overlayVerticalIndex: mutableState(0),
+        targetHorizontalIndex: mutableState(Anchor.START),
+        targetVerticalIndex: mutableState(Anchor.START),
+        overlayHorizontalIndex: mutableState(Anchor.START),
+        overlayVerticalIndex: mutableState(Anchor.START),
       },
       radioInputDemo: {
-        selectedIndex: mutableState(null),
+        selectedKey: mutableState(null),
       },
       textInputDemo: {
         disabledTextInputState: mutableState('Disabled text input value'),

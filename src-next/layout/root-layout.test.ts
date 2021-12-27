@@ -2,7 +2,7 @@ import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getEl} from 'persona/export/testing';
 
-import maskSvg from '../../demo-next/asset/mask.svg';
+import maskSvg from '../asset/mask.svg';
 import {registerSvg} from '../core/svg-service';
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {MEDIA_QUERY} from '../theme/media-query';

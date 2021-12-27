@@ -41,7 +41,7 @@ declare({
       shell({
         bin: 'simpleserver',
         flags: [
-          'demo-next/static.conf.json',
+          'demo/static.conf.json',
         ],
       }),
     ],

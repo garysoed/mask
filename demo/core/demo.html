@@ -6,8 +6,8 @@
     transition: height var(--mkAnimationTime);
   }
 
-  #settingsDrawer[expanded="T"] #accentPalette,
-  #settingsDrawer[expanded="T"] #basePalette {
+  #settingsDrawer[expanded] #accentPalette,
+  #settingsDrawer[expanded] #basePalette {
     height: 16rem;
     transition: height var(--mkAnimationTime);
   }
@@ -16,7 +16,7 @@
     overflow: auto;
   }
 
-  #rootLayout[drawer-expanded="F"] #drawerRoot {
+  #rootLayout:not([drawer-expanded]) #drawerRoot {
     display: none;
   }
 
@@ -62,7 +62,7 @@
 
     <div id="main" layout="row" slot="main">
       <div flex id="content">
-        <!-- content -->
+        <!-- #content -->
       </div>
       <mk-drawer-layout
           id="settingsDrawer"
@@ -87,7 +87,7 @@
               <p slot="label">Base Palette</p>
             </mk-list-item-layout>
             <div id="basePalette" shadow="down">
-              <!-- content -->
+              <!-- #content -->
             </div>
           </div>
 
@@ -99,23 +99,12 @@
               <p slot="label">Accent Palette</p>
             </mk-list-item-layout>
             <div id="accentPalette" shadow="down">
-              <!-- content -->
+              <!-- #content -->
             </div>
           </div>
 
           <mk-checkbox id="darkMode" is-secondary>
-            <mk-list-item-layout slot="display_checked">
-              <div class="iconContainer" slot="bullet">
-                <mk-icon icon="mk.checkbox_checked"></mk-icon>
-              </div>
-              <p slot="label">Dark mode</p>
-            </mk-list-item-layout>
-            <mk-list-item-layout slot="display_unchecked">
-              <div class="iconContainer" slot="bullet">
-                <mk-icon icon="mk.checkbox_unchecked"></mk-icon>
-              </div>
-              <p slot="label">Light mode</p>
-            </mk-list-item-layout>
+            <p>Dark mode</p>
           </mk-checkbox>
         </div>
       </mk-drawer-layout>

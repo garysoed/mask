@@ -1,113 +1,97 @@
-import {mutablePathSource} from 'grapevine';
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {elementWithTagType, enumType} from 'gs-types';
-import {$div, attributeOut, element, multi, onDom, PersonaContext, renderCustomElement, renderElement, RenderSpec, single, stringParser} from 'persona';
-import {combineLatest, merge, Observable, of as observableOf, of} from 'rxjs';
+import {enumType} from 'gs-types';
+import {Context, Ctrl, DIV, id, ievent, oattr, omulti, osingle, registerCustomElement, renderCustomElement, renderElement, RenderSpec, SECTION} from 'persona';
+import {combineLatest, merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
-import {$button, Button} from '../../src/action/button';
-import {$checkbox, Checkbox} from '../../src/action/input/checkbox';
-import {_p} from '../../src/app/app';
-import {Overlay} from '../../src/core/overlay';
-import {ACTION_EVENT} from '../../src/event/action-event';
-import {$drawerLayout, DrawerLayout} from '../../src/layout/drawer-layout';
-import {$lineLayout, LineLayout} from '../../src/layout/line-layout';
-import {ListItemLayout} from '../../src/layout/list-item-layout';
-import {$rootLayout, RootLayout} from '../../src/layout/root-layout';
-import {LayoutOverlay} from '../../src/layout/util/layout-overlay';
-import {BaseThemedCtrl} from '../../src/theme/base-themed-ctrl';
-import {PALETTE, Palette} from '../../src/theme/palette';
+import {BUTTON} from '../../src-next/action/button';
+import {OVERLAY} from '../../src-next/core/overlay';
+import {ACTION_EVENT} from '../../src-next/event/action-event';
+import {CHECKBOX} from '../../src-next/input/checkbox';
+import {DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
+import {LINE_LAYOUT} from '../../src-next/layout/line-layout';
+import {LIST_ITEM_LAYOUT} from '../../src-next/layout/list-item-layout';
+import {ROOT_LAYOUT} from '../../src-next/layout/root-layout';
+import {PALETTE, Palette} from '../../src-next/theme/palette';
+import {renderTheme} from '../../src-next/theme/render-theme';
 
-import {$demoState, $demoStateId} from './demo-state';
+import {$demoState} from './demo-state';
 import template from './demo.html';
 import {$locationService, Views} from './location-service';
 import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec} from './page-spec';
 
 
-const $ = {
-  accentPalette: element('accentPalette', elementWithTagType('div'), {
-    content: multi('content'),
-    onClick: onDom<MouseEvent>('click'),
-  }),
-  basePalette: element('basePalette', elementWithTagType('div'), {
-    content: multi('content'),
-    onClick: onDom<MouseEvent>('click'),
-  }),
-  content: element('content', elementWithTagType('div'), {
-    content: single('content'),
-  }),
-  drawerRoot: element('drawerRoot', $div, {
-    actionContents: multi('#actionContents'),
-    displayContents: multi('#displayContents'),
-    generalContents: multi('#generalContents'),
-    layoutContents: multi('#layoutContents'),
-    onAction: onDom(ACTION_EVENT),
-  }),
-  darkMode: element('darkMode', $checkbox, {}),
-  root: element('root', elementWithTagType('section'), {
-    theme: attributeOut('mk-theme', stringParser()),
-  }),
-  rootLayout: element('rootLayout', $rootLayout, {
-    onAction: onDom(ACTION_EVENT),
-  }),
-  settingsDrawer: element('settingsDrawer', $drawerLayout, {
-    onMouseEnter: onDom('mouseenter'),
-    onMouseLeave: onDom('mouseleave'),
-  }),
+const $demo = {
+  host: {},
+  shadow: {
+    accentPalette: id('accentPalette', DIV, {
+      content: omulti('#content'),
+      onClick: ievent('click'),
+    }),
+    basePalette: id('basePalette', DIV, {
+      content: omulti('#content'),
+      onClick: ievent('click'),
+    }),
+    content: id('content', DIV, {
+      content: osingle('#content'),
+    }),
+    drawerRoot: id('drawerRoot', DIV, {
+      actionContents: omulti('#actionContents'),
+      displayContents: omulti('#displayContents'),
+      generalContents: omulti('#generalContents'),
+      layoutContents: omulti('#layoutContents'),
+      onAction: ievent(ACTION_EVENT),
+    }),
+    darkMode: id('darkMode', CHECKBOX),
+    root: id('root', SECTION, {
+      theme: oattr('mk-theme'),
+    }),
+    rootLayout: id('rootLayout', ROOT_LAYOUT, {
+      onAction: ievent(ACTION_EVENT),
+    }),
+    settingsDrawer: id('settingsDrawer', DRAWER_LAYOUT, {
+      onMouseEnter: ievent('mouseenter'),
+      onMouseLeave: ievent('mouseleave'),
+    }),
+  },
 };
 
-const PAGE_CTORS = ALL_SPECS.map(({ctor}) => ctor);
+const PAGE_REGISTRATIONS = ALL_SPECS.map(({registration}) => registration);
 const COMPONENT_PATH_ATTR = 'path';
 
-const darkModePath = mutablePathSource($demoStateId, demo => demo._('isDarkMode'));
-
-@_p.customElement({
-  dependencies: [
-    ...PAGE_CTORS,
-    Button,
-    Checkbox,
-    DrawerLayout,
-    Overlay,
-    LayoutOverlay,
-    LineLayout,
-    ListItemLayout,
-    RootLayout,
-  ],
-  tag: 'mkd-demo',
-  template,
-  api: {},
-})
-export class Demo extends BaseThemedCtrl<typeof $> {
-  constructor(context: PersonaContext) {
-    super(context, $);
-
-    this.addSetup(this.onAccentPaletteClick$);
-    this.addSetup(this.onBasePaletteClick$);
-    this.addSetup(this.onDrawerRootClick$);
-    this.addSetup(this.setupOnRootLayoutAction());
+class DemoCtrl implements Ctrl {
+  constructor(private readonly $: Context<typeof $demo>) {
   }
 
   @cache()
-  protected get renders(): ReadonlyArray<Observable<unknown>> {
+  get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.accentPalette.content(this.accentPaletteContents$),
-      this.renderers.basePalette.content(this.basePaletteContents$),
-      this.renderers.darkMode.stateId(of(darkModePath.get(this.vine))),
-      this.renderers.content.content(this.mainContent$),
-      this.renderers.drawerRoot.actionContents(this.renderPageButtons(ACTION_SPECS)),
-      this.renderers.drawerRoot.displayContents(this.renderPageButtons(DISPLAY_SPECS)),
-      this.renderers.drawerRoot.generalContents(this.renderPageButtons(GENERAL_SPECS)),
-      this.renderers.drawerRoot.layoutContents(this.renderPageButtons(LAYOUT_SPECS)),
-      this.renderers.settingsDrawer.expanded(this.renderSettingsDrawerExpanded()),
-      this.renderers.root.theme(this.renderRootTheme()),
+      renderTheme(this.$),
+      this.onAccentPaletteClick$,
+      this.onBasePaletteClick$,
+      this.onDrawerRootClick$,
+      this.setupOnRootLayoutAction(),
+      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content()),
+      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content()),
+      this.$.shadow.darkMode.value.pipe(
+          map(value => value === true),
+          $demoState.get(this.$.vine).$('isDarkMode').set(),
+      ),
+      this.mainContent$.pipe(this.$.shadow.content.content()),
+      this.renderPageButtons(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents()),
+      this.renderPageButtons(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents()),
+      this.renderPageButtons(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents()),
+      this.renderPageButtons(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents()),
+      this.isDrawerExpanded$.pipe(this.$.shadow.settingsDrawer.expanded()),
+      this.rootTheme$.pipe(this.$.shadow.root.theme()),
     ];
   }
 
   @cache()
   private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = $demoState.get(this.vine).$('accentColorName');
+    const selectedColor$ = $demoState.get(this.$.vine).$('accentColorName');
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
@@ -118,12 +102,12 @@ export class Demo extends BaseThemedCtrl<typeof $> {
           );
         });
 
-    return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
+    return paletteNode$List.length <= 0 ? of([]) : combineLatest(paletteNode$List);
   }
 
   @cache()
   private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = $demoState.get(this.vine).$('baseColorName');
+    const selectedColor$ = $demoState.get(this.$.vine).$('baseColorName');
     const paletteNode$List = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
@@ -134,12 +118,12 @@ export class Demo extends BaseThemedCtrl<typeof $> {
           );
         });
 
-    return paletteNode$List.length <= 0 ? observableOf([]) : combineLatest(paletteNode$List);
+    return paletteNode$List.length <= 0 ? of([]) : combineLatest(paletteNode$List);
   }
 
   @cache()
   private get onDrawerRootClick$(): Observable<unknown> {
-    return this.inputs.drawerRoot.onAction.pipe(
+    return this.$.shadow.drawerRoot.onAction.pipe(
         tap(event => {
           const target = event.target;
           if (!(target instanceof HTMLElement)) {
@@ -152,14 +136,14 @@ export class Demo extends BaseThemedCtrl<typeof $> {
           }
 
           event.stopPropagation();
-          $locationService.get(this.vine).goToPath(path, {});
+          $locationService.get(this.$.vine).goToPath(path, {});
         }),
     );
   }
 
   @cache()
   private get mainContent$(): Observable<RenderSpec|null> {
-    return $locationService.get(this.vine).location$.pipe(
+    return $locationService.get(this.$.vine).location$.pipe(
         map(location => getPageSpec(location.type)),
         map(spec => {
           if (!spec) {
@@ -167,7 +151,7 @@ export class Demo extends BaseThemedCtrl<typeof $> {
           }
 
           return renderCustomElement({
-            spec: spec.componentSpec,
+            registration: spec.registration,
             inputs: {},
             id: {},
           });
@@ -179,11 +163,11 @@ export class Demo extends BaseThemedCtrl<typeof $> {
     const node$List = pageSpecs
         .map(({path, name}) => {
           return renderCustomElement({
-            spec: $button,
+            registration: BUTTON,
             attrs: new Map([[COMPONENT_PATH_ATTR, `${path}`]]),
             children: [
               renderCustomElement({
-                spec: $lineLayout,
+                registration: LINE_LAYOUT,
                 attrs: new Map([['mk-body-1', '']]),
                 textContent: name,
                 inputs: {},
@@ -191,25 +175,27 @@ export class Demo extends BaseThemedCtrl<typeof $> {
               }),
             ],
             inputs: {
-              isSecondary: observableOf(true),
+              isSecondary: of(true),
             },
             id: name,
           });
         });
 
-    return observableOf(node$List);
+    return of(node$List);
   }
 
-  private renderRootTheme(): Observable<'light'|'dark'> {
-    return $demoState.get(this.vine).$('isDarkMode').pipe(
+  @cache()
+  private get rootTheme$(): Observable<'light'|'dark'> {
+    return $demoState.get(this.$.vine).$('isDarkMode').pipe(
         map(isDarkMode => isDarkMode ? 'dark' : 'light'),
     );
   }
 
-  private renderSettingsDrawerExpanded(): Observable<boolean> {
+  @cache()
+  private get isDrawerExpanded$(): Observable<boolean> {
     return merge(
-        this.inputs.settingsDrawer.onMouseLeave.pipe(mapTo(false)),
-        this.inputs.settingsDrawer.onMouseEnter.pipe(mapTo(true)),
+        this.$.shadow.settingsDrawer.onMouseLeave.pipe(mapTo(false)),
+        this.$.shadow.settingsDrawer.onMouseEnter.pipe(mapTo(true)),
     )
         .pipe(
             distinctUntilChanged(),
@@ -218,33 +204,51 @@ export class Demo extends BaseThemedCtrl<typeof $> {
 
   @cache()
   private get onAccentPaletteClick$(): Observable<unknown> {
-    return this.inputs.accentPalette.onClick
+    return this.$.shadow.accentPalette.onClick
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            $demoState.get(this.vine).$('accentColorName').set(),
+            $demoState.get(this.$.vine).$('accentColorName').set(),
         );
   }
 
   @cache()
   private get onBasePaletteClick$(): Observable<unknown> {
-    return this.inputs.basePalette.onClick
+    return this.$.shadow.basePalette.onClick
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            $demoState.get(this.vine).$('baseColorName').set(),
+            $demoState.get(this.$.vine).$('baseColorName').set(),
         );
   }
 
   private setupOnRootLayoutAction(): Observable<unknown> {
-    return this.inputs.rootLayout.onAction
+    return this.$.shadow.rootLayout.onAction
         .pipe(
             tap(() => {
-              $locationService.get(this.vine).goToPath(Views.MAIN, {});
+              $locationService.get(this.$.vine).goToPath(Views.MAIN, {});
             }),
         );
   }
 }
+export const DEMO = registerCustomElement({
+  deps: [
+    ...PAGE_REGISTRATIONS,
+    BUTTON,
+    CHECKBOX,
+    DRAWER_LAYOUT,
+    OVERLAY,
+    // LayoutOverlay,
+    LINE_LAYOUT,
+    LIST_ITEM_LAYOUT,
+    ROOT_LAYOUT,
+  ],
+  tag: 'mkd-demo',
+  template,
+  ctrl: DemoCtrl,
+  spec: $demo,
+});
+
 
 const ORDERED_PALETTES: ReadonlyArray<[keyof Palette, Color]> = [
   ['RED', PALETTE.RED],
@@ -279,7 +283,7 @@ function renderPaletteData(
       map(classes => classes.join(' ')),
   );
 
-  return observableOf(renderElement({
+  return of(renderElement({
     tag: 'div',
     attrs: new Map<string, string|Observable<string>>([
       ['class', classes$],
@@ -290,7 +294,7 @@ function renderPaletteData(
   }));
 }
 
-function getColor(event: MouseEvent): keyof Palette|null {
+function getColor(event: Event): keyof Palette|null {
   const target = event.target;
   if (!(target instanceof HTMLElement)) {
     return null;
