@@ -1,27 +1,23 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, Type} from 'gs-types';
-import {host, multi, PersonaContext, renderElement, RenderSpec, renderTextNode, root, textIn} from 'persona';
+import {Context, Ctrl, itext, omulti, registerCustomElement, renderElement, RenderSpec, renderTextNode, root} from 'persona';
 import {Observable, of as observableOf} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {_p} from '../app/app';
-import {BaseThemedCtrl} from '../theme/base-themed-ctrl';
+import {renderTheme} from '../theme/render-theme';
 
 import template from './keyboard.html';
 
 
-export const $keyboard = {
-  tag: 'mk-keyboard',
-  api: {
-    text: textIn(),
+const $keyboard = {
+  host: {
+    text: itext(),
   },
-};
-
-export const $ = {
-  host: host($keyboard.api),
-  root: root({
-    content: multi('#content'),
-  }),
+  shadow: {
+    root: root({
+      content: omulti('#content'),
+    }),
+  },
 };
 
 export enum SpecialKeys {
@@ -38,25 +34,21 @@ export enum SpecialKeys {
 
 const SPECIAL_KEYS_TYPE: Type<SpecialKeys> = enumType(SpecialKeys);
 
-@_p.customElement({
-  ...$keyboard,
-  template,
-})
-export class Keyboard extends BaseThemedCtrl<typeof $> {
-  constructor(context: PersonaContext) {
-    super(context, $);
+export class Keyboard implements Ctrl {
+  constructor(private readonly $: Context<typeof $keyboard>) {
   }
 
   @cache()
-  protected get renders(): ReadonlyArray<Observable<unknown>> {
+  get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      this.renderers.root.content(this.keyboardSegments$),
+      renderTheme(this.$),
+      this.keyboardSegments$.pipe(this.$.shadow.root.content()),
     ];
   }
 
   @cache()
   private get keyboardSegments$(): Observable<readonly RenderSpec[]> {
-    const children$ = this.inputs.host.text.pipe(
+    const children$ = this.$.host.text.pipe(
         map(keyStr => keyStr.split(' ')),
         map(keys => {
           if (keys.length <= 0) {
@@ -122,3 +114,10 @@ function keyToString(key: string): string {
       return '↹ Tab';
   }
 }
+
+export const KEYBOARD = registerCustomElement({
+  ctrl: Keyboard,
+  spec: $keyboard,
+  tag: 'mk-keyboard',
+  template,
+});
