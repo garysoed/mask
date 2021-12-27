@@ -6,6 +6,7 @@ import {NUMBER_INPUT_DEMO} from '../action/number-input';
 import {RADIO_INPUT_DEMO} from '../action/radio-input';
 import {TEXT_INPUT_DEMO} from '../action/text-input';
 import {ANNOTATED_TEXT_DEMO} from '../display/annotated-text';
+import {CODE_BLOCK_DEMO} from '../display/code-block';
 import {ICON_DEMO} from '../display/icon';
 import {COLORS_DEMO} from '../general/colors';
 import {TEXTS_DEMO} from '../general/texts';
@@ -31,7 +32,7 @@ export const ACTION_SPECS: readonly PageSpec[] = [
 
 export const DISPLAY_SPECS: readonly PageSpec[] = [
   {registration: ANNOTATED_TEXT_DEMO, name: 'Annotated Text', path: Views.ANNOTATED_TEXT},
-  // {ctor: CodeBlockDemo, componentSpec: $codeBlockDemo, name: 'Code Block', path: Views.CODE_BLOCK},
+  {registration: CODE_BLOCK_DEMO, name: 'Code Block', path: Views.CODE_BLOCK},
   {registration: ICON_DEMO, name: 'Icon', path: Views.ICON},
   // {ctor: KeyboardDemo, componentSpec: $keyboardDemo, name: 'Keyboard', path: Views.KEYBOARD},
 ];
