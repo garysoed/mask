@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {mapUndefinedTo} from 'gs-tools/export/rxjs';
+import {debug, mapUndefinedTo} from 'gs-tools/export/rxjs';
 import {Context, Ctrl, id, otext, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
@@ -73,6 +73,7 @@ export class CheckboxDemo implements Ctrl {
               return 'Initially unknown';
           }
         }),
+        debug(null, 'unknown label'),
     );
   }
 
