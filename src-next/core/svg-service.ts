@@ -3,7 +3,7 @@ import {$asArray, $map, $pipe} from 'gs-tools/export/collect';
 import {combineLatest, defer, from as observableFrom, Observable, of, ReplaySubject, Subject} from 'rxjs';
 import {map, retry, shareReplay, switchMap, scan, distinctUntilChanged, startWith} from 'rxjs/operators';
 
-import {SvgConfig} from '../../src/core/svg-config';
+import {SvgConfig} from './svg-config';
 
 
 const __run = Symbol('SvgService.run');
