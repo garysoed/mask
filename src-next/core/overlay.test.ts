@@ -102,6 +102,10 @@ test('@mask/src/core/overlay', init => {
 
   test('showStatus', () => {
     should('display the overlay onShow', () => {
+      const content = document.createDocumentFragment();
+      content.appendChild(document.createElement('div'));
+      content.appendChild(document.createElement('span'));
+
       const event = {
         target: {
           node: document.createElement('div'),
@@ -109,7 +113,7 @@ test('@mask/src/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: document.createDocumentFragment(),
+          node: content,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -120,6 +124,10 @@ test('@mask/src/core/overlay', init => {
     });
 
     should('hide the overlay on clicking root element', () => {
+      const content = document.createDocumentFragment();
+      content.appendChild(document.createElement('div'));
+      content.appendChild(document.createElement('span'));
+
       const event = {
         target: {
           node: document.createElement('div'),
@@ -127,7 +135,7 @@ test('@mask/src/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: document.createDocumentFragment(),
+          node: content,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -138,7 +146,11 @@ test('@mask/src/core/overlay', init => {
       assert(_.element).to.matchSnapshot('overlay__click-root.html');
     });
 
-    should('not hide the overlay when clicking something other than the root element', () => {
+    should('not hide the overlay when clicking the content element', () => {
+      const content = document.createDocumentFragment();
+      content.appendChild(document.createElement('div'));
+      content.appendChild(document.createElement('span'));
+
       const event = {
         target: {
           node: document.createElement('div'),
@@ -146,7 +158,7 @@ test('@mask/src/core/overlay', init => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: document.createDocumentFragment(),
+          node: content,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },

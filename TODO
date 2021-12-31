@@ -1,6 +1,6 @@
 2.0:
   bugs:
-    ☐ Overlay Layout demo doesn't position the anchor correctly
+    ✔ Overlay Layout demo doesn't position the anchor correctly
     ☐ Checkboxes in demo are not vertically center aligned
     ☐ Clicking on dark mode checkbox goes to homescreen (add option for ievent to match target)
     ☐ Code block has some contrast issues
