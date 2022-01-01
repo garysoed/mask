@@ -3,9 +3,9 @@ import {Context, Ctrl, id, registerCustomElement} from 'persona';
 import {merge, Observable, of, OperatorFunction, pipe} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
-import {BUTTON} from '../../src-next/action/button';
-import {bindRadioInputToState, RADIO_INPUT} from '../../src-next/input/radio-input';
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {BUTTON} from '../../src/action/button';
+import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
+import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
 

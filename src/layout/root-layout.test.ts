@@ -13,7 +13,7 @@ import {ROOT_LAYOUT} from './root-layout';
 
 test('@mask/src/layout/root-layout', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/layout/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/layout/goldens', goldens));
     const tester = setupThemedTest({
       roots: [ROOT_LAYOUT],
     });

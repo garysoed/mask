@@ -4,11 +4,11 @@ import {oflag} from 'persona/src/output/flag';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {registerSvg} from '../../src-next/core/svg-service';
-import {FitTo, ICON} from '../../src-next/display/icon';
-import {CHECKBOX} from '../../src-next/input/checkbox';
-import {renderTheme} from '../../src-next/theme/render-theme';
-import {bindInputToState} from '../../src-next/util/bind-input-to-state';
+import {registerSvg} from '../../src/core/svg-service';
+import {FitTo, ICON} from '../../src/display/icon';
+import {CHECKBOX} from '../../src/input/checkbox';
+import {renderTheme} from '../../src/theme/render-theme';
+import {bindInputToState} from '../../src/util/bind-input-to-state';
 import fitToHeightSvg from '../asset/fit_to_height.svg';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';

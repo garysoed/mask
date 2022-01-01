@@ -14,7 +14,7 @@ const SVG_NAME = 'svgName';
 
 test('@mask/src/display/icon', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = setupThemedTest({roots: [ICON]});
     registerSvg(tester.vine, SVG_NAME, {type: 'embed', content: maskSvg});
 

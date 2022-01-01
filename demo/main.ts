@@ -3,11 +3,11 @@ import {combineLatest} from 'rxjs';
 import {startWith, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
-import {$themeLoader, start} from '../src-next/app/app';
-import {registerSvg} from '../src-next/core/svg-service';
-import {ClassThemeLoader} from '../src-next/theme/loader/class-theme-loader';
-import {PALETTE, Palette} from '../src-next/theme/palette';
-import {Theme} from '../src-next/theme/theme';
+import {$themeLoader, start} from '../src/app/app';
+import {registerSvg} from '../src/core/svg-service';
+import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
+import {PALETTE, Palette} from '../src/theme/palette';
+import {Theme} from '../src/theme/theme';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';

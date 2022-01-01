@@ -18,7 +18,7 @@ test('@mask/src/action/input/radio-input', init => {
   const GROUP = 'test-group';
 
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
 
     const tester = setupThemedTest({
       roots: [RADIO_INPUT],

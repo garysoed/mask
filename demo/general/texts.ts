@@ -1,6 +1,6 @@
 import {Context, Ctrl, registerCustomElement} from 'persona';
 
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 
 import template from './texts.html';

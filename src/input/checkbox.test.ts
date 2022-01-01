@@ -13,7 +13,7 @@ import goldens from './goldens/goldens.json';
 
 test('@mask/src/input/checkbox', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
 
     const tester = setupThemedTest({roots: [CHECKBOX]});
 

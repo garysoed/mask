@@ -10,7 +10,7 @@ import goldens from './goldens/goldens.json';
 
 test('@mask/src/display/code-block', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = setupThemedTest({roots: [CODE_BLOCK]});
     (window as any).hljs = {
       highlightBlock: () => undefined,

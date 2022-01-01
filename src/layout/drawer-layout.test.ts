@@ -9,7 +9,7 @@ import goldens from './goldens/goldens.json';
 
 test('@mask/src/layout/drawer-layout', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/layout/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/layout/goldens', goldens));
     const tester = setupThemedTest({
       roots: [DRAWER_LAYOUT],
     });

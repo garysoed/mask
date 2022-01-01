@@ -29,8 +29,8 @@
   },
   "include": [
     "demo/**/*.ts",
-    "src-next/**/*.test.ts",
-    "src-next/cli/*.ts",
+    "src/**/*.test.ts",
+    "src/cli/*.ts",
     "node_modules/devbase/ts/typings/*.d.ts",
   ]
 }

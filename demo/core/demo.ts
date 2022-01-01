@@ -6,16 +6,16 @@ import {Context, Ctrl, DIV, id, ievent, oattr, omulti, osingle, registerCustomEl
 import {combineLatest, merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
-import {BUTTON} from '../../src-next/action/button';
-import {OVERLAY} from '../../src-next/core/overlay';
-import {ACTION_EVENT} from '../../src-next/event/action-event';
-import {CHECKBOX} from '../../src-next/input/checkbox';
-import {DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
-import {LINE_LAYOUT} from '../../src-next/layout/line-layout';
-import {LIST_ITEM_LAYOUT} from '../../src-next/layout/list-item-layout';
-import {ROOT_LAYOUT} from '../../src-next/layout/root-layout';
-import {PALETTE, Palette} from '../../src-next/theme/palette';
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {BUTTON} from '../../src/action/button';
+import {OVERLAY} from '../../src/core/overlay';
+import {ACTION_EVENT} from '../../src/event/action-event';
+import {CHECKBOX} from '../../src/input/checkbox';
+import {DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
+import {LINE_LAYOUT} from '../../src/layout/line-layout';
+import {LIST_ITEM_LAYOUT} from '../../src/layout/list-item-layout';
+import {ROOT_LAYOUT} from '../../src/layout/root-layout';
+import {PALETTE, Palette} from '../../src/theme/palette';
+import {renderTheme} from '../../src/theme/render-theme';
 
 import {$demoState} from './demo-state';
 import template from './demo.html';

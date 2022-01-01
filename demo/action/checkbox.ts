@@ -4,10 +4,10 @@ import {Context, Ctrl, id, otext, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
-import {BUTTON} from '../../src-next/action/button';
-import {CHECKBOX, CheckedValue} from '../../src-next/input/checkbox';
-import {LINE_LAYOUT} from '../../src-next/layout/line-layout';
-import {bindInputToState} from '../../src-next/util/bind-input-to-state';
+import {BUTTON} from '../../src/action/button';
+import {CHECKBOX, CheckedValue} from '../../src/input/checkbox';
+import {LINE_LAYOUT} from '../../src/layout/line-layout';
+import {bindInputToState} from '../../src/util/bind-input-to-state';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
 

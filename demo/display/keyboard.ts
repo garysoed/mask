@@ -2,8 +2,8 @@ import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 
-import {KEYBOARD} from '../../src-next/display/keyboard';
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {KEYBOARD} from '../../src/display/keyboard';
+import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 
 import template from './keyboard.html';

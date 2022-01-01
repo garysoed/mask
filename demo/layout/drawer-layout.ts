@@ -3,10 +3,10 @@ import {Context, Ctrl, id, oattr, registerCustomElement, SECTION} from 'persona'
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {CHECKBOX} from '../../src-next/input/checkbox';
-import {DrawerMode, DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
-import {renderTheme} from '../../src-next/theme/render-theme';
-import {bindInputToState} from '../../src-next/util/bind-input-to-state';
+import {CHECKBOX} from '../../src/input/checkbox';
+import {DrawerMode, DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
+import {renderTheme} from '../../src/theme/render-theme';
+import {bindInputToState} from '../../src/util/bind-input-to-state';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
 

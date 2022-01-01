@@ -10,7 +10,7 @@ import {TEXT_INPUT} from './text-input';
 
 test('@mask/src/input/text-input', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
     const tester = setupThemedTest({
       roots: [TEXT_INPUT],
     });

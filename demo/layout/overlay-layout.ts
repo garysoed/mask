@@ -6,11 +6,11 @@ import {Context, Ctrl, DIV, id, omulti, registerCustomElement, renderCustomEleme
 import {Observable, of, Subject} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
-import {BUTTON} from '../../src-next/action/button';
-import {Anchor} from '../../src-next/core/overlay-service';
-import {bindRadioInputToState, RADIO_INPUT} from '../../src-next/input/radio-input';
-import {OVERLAY_LAYOUT} from '../../src-next/layout/overlay-layout';
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {BUTTON} from '../../src/action/button';
+import {Anchor} from '../../src/core/overlay-service';
+import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
+import {OVERLAY_LAYOUT} from '../../src/layout/overlay-layout';
+import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
 

@@ -99,7 +99,7 @@ const PARENT = registerCustomElement({
 
 test('@mask/src/util/bind-input-to-state', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/util/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/util/goldens', goldens));
     const tester = setupThemedTest({roots: [PARENT]});
     return {tester};
   });

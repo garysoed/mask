@@ -15,7 +15,7 @@ ON_LOG_$.subscribe(event => dest.log(event));
 
 test('@mask/src/core/overlay', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/core/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/core/goldens', goldens));
 
     const tester = setupThemedTest({roots: [OVERLAY]});
     const element = tester.createElement(OVERLAY);

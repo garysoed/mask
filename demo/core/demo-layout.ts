@@ -3,12 +3,12 @@ import {Context, Ctrl, iattr, id, otext, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 import {map, scan, shareReplay, startWith} from 'rxjs/operators';
 
-import {BUTTON} from '../../src-next/action/button';
-import {ICON} from '../../src-next/display/icon';
-import {DRAWER_LAYOUT} from '../../src-next/layout/drawer-layout';
-import {LINE_LAYOUT} from '../../src-next/layout/line-layout';
-import {LIST_ITEM_LAYOUT} from '../../src-next/layout/list-item-layout';
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {BUTTON} from '../../src/action/button';
+import {ICON} from '../../src/display/icon';
+import {DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
+import {LINE_LAYOUT} from '../../src/layout/line-layout';
+import {LIST_ITEM_LAYOUT} from '../../src/layout/list-item-layout';
+import {renderTheme} from '../../src/theme/render-theme';
 
 import template from './demo-layout.html';
 

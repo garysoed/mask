@@ -43,7 +43,7 @@ const TEST = registerCustomElement({
 
 test('@mask/src/action/base-action', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/action/goldens', goldens));
     const tester = setupThemedTest({roots: [TEST]});
     return {tester};
   });

@@ -66,7 +66,7 @@ const TEST = registerCustomElement({
 
 test('@mask/src/input/base-input', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
     const tester = setupThemedTest({roots: [TEST]});
     return {tester};
   });

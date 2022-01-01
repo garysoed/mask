@@ -11,7 +11,7 @@ import {KEYBOARD} from './keyboard';
 
 test('@mask/src/display/keyboard', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = setupThemedTest({
       roots: [KEYBOARD],
       overrides: [THEME_LOADER_TEST_OVERRIDE],

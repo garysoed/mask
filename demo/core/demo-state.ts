@@ -1,9 +1,9 @@
 import {$stateService, Source, source} from 'grapevine';
 import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
 
-import {Anchor} from '../../src-next/core/overlay-service';
-import {CheckedValue} from '../../src-next/input/checkbox';
-import {Palette} from '../../src-next/theme/palette';
+import {Anchor} from '../../src/core/overlay-service';
+import {CheckedValue} from '../../src/input/checkbox';
+import {Palette} from '../../src/theme/palette';
 
 
 export interface CheckboxDemoState {

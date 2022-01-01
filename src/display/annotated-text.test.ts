@@ -14,7 +14,7 @@ import goldens from './goldens/goldens.json';
 
 test('@mask/src/display/annotated-text', init => {
   setup(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/display/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
   });
 
   const _ = init(() => {

@@ -14,7 +14,7 @@ import {NUMBER_INPUT} from './number-input';
 
 test('@mask/src/input/number-input', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/input/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
     const tester = setupThemedTest({
       roots: [NUMBER_INPUT],
       overrides: [THEME_LOADER_TEST_OVERRIDE],

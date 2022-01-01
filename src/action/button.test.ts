@@ -12,7 +12,7 @@ import goldens from './goldens/goldens.json';
 
 test('@mask/src/action/button', init => {
   const _ = init(() => {
-    runEnvironment(new BrowserSnapshotsEnv('src-next/action/goldens', goldens));
+    runEnvironment(new BrowserSnapshotsEnv('src/action/goldens', goldens));
     const tester = setupThemedTest({roots: [BUTTON]});
 
     return {tester};

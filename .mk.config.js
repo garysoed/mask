@@ -1,13 +1,13 @@
 set_vars({
   vars: {
     goldens: [
-      'src-next/action/goldens',
-      'src-next/core/goldens',
-      'src-next/display/goldens',
-      'src-next/input/goldens',
-      'src-next/layout/goldens',
-      'src-next/theme/goldens',
-      'src-next/util/goldens',
+      'src/action/goldens',
+      'src/core/goldens',
+      'src/display/goldens',
+      'src/input/goldens',
+      'src/layout/goldens',
+      'src/theme/goldens',
+      'src/util/goldens',
     ],
   },
 });

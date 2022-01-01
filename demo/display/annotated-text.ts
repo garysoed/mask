@@ -3,10 +3,10 @@ import {Context, Ctrl, id, registerCustomElement, renderCustomElement, RenderSpe
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {registerSvg} from '../../src-next/core/svg-service';
-import {ANNOTATED_TEXT} from '../../src-next/display/annotated-text';
-import {ICON} from '../../src-next/display/icon';
-import {renderTheme} from '../../src-next/theme/render-theme';
+import {registerSvg} from '../../src/core/svg-service';
+import {ANNOTATED_TEXT} from '../../src/display/annotated-text';
+import {ICON} from '../../src/display/icon';
+import {renderTheme} from '../../src/theme/render-theme';
 import smileySvg from '../asset/smiley.svg';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 
