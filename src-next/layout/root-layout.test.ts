@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {ElementHarness, getHarness} from 'persona/export/testing';
 
 import maskSvg from '../asset/mask.svg';
 import {registerSvg} from '../core/svg-service';
@@ -38,16 +38,16 @@ test('@mask/src/layout/root-layout', init => {
 
   test('handleDrawerExpandCollapse', () => {
     should('open the drawer if hovered', () => {
-      const drawer = getEl(_.element, 'drawer')!;
-      drawer.simulateMouseOver();
+      const harness = getHarness(_.element, 'drawer', ElementHarness);
+      harness.simulateMouseOver();
 
       assert(_.element).to.matchSnapshot('root-layout__mouseover.html');
     });
 
     should('collapse the drawer if not hovered and is not desktop', () => {
-      const drawer = getEl(_.element, 'drawer')!;
-      drawer.simulateMouseOver();
-      drawer.simulateMouseOut();
+      const harness = getHarness(_.element, 'drawer', ElementHarness);
+      harness.simulateMouseOver();
+      harness.simulateMouseOut();
 
       assert(_.element).to.matchSnapshot('root-layout__mouseout.html');
     });

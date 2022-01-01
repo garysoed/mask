@@ -1,6 +1,6 @@
 import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {getEl, getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -77,7 +77,7 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getEl(element, 'input')!;
+      const inputEl = getHarness(element, 'input', InputHarness);
       inputEl.simulateChange(el => {
         el.indeterminate = false;
         el.checked = true;
@@ -96,7 +96,7 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getEl(element, 'input')!;
+      const inputEl = getHarness(element, 'input', InputHarness);
       inputEl.simulateChange(el => {
         el.indeterminate = false;
         el.checked = true;
@@ -121,7 +121,7 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getEl(element, 'input')!;
+      const inputEl = getHarness(element, 'input', InputHarness);
       inputEl.simulateChange(el => {
         el.indeterminate = false;
         el.checked = true;

@@ -1,6 +1,6 @@
 import {anyThat, assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {ElementHarness, getHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 
 import {ActionEvent} from '../event/action-event';
@@ -29,26 +29,26 @@ test('@mask/src/action/button', init => {
   test('onAction$', _, init => {
     const _ = init(_ => {
       const element = _.tester.createElement(BUTTON);
-      const root = getEl(element, 'root')!;
+      const harness = getHarness(element, 'root', ElementHarness);
       const onAction$ = createSpySubject(fromEvent(element, 'mk-action'));
-      return {..._, element, onAction$, root};
+      return {..._, element, onAction$, harness};
     });
 
     should('fire the action event if clicked', () => {
-      _.root.simulateClick();
+      _.harness.simulateClick();
       assert(_.onAction$).to.emitSequence([
         anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent),
       ]);
     });
 
     should('fire the action event on pressing Enter', () => {
-      _.root.simulateKeydown('Enter');
+      _.harness.simulateKeydown('Enter');
       assert(_.onAction$).to
           .emitSequence([anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent)]);
     });
 
     should('fire the action event on pressing space', () => {
-      _.root.simulateKeydown(' ');
+      _.harness.simulateKeydown(' ');
       assert(_.onAction$).to
           .emitSequence([anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent)]);
     });
@@ -56,7 +56,7 @@ test('@mask/src/action/button', init => {
     should('not fire the action event if disabled', () => {
       _.element.setAttribute('mk-disabled', '');
 
-      _.root.simulateClick();
+      _.harness.simulateClick();
       assert(_.onAction$).toNot.emit();
     });
   });

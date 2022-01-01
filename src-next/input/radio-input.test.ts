@@ -1,6 +1,6 @@
 import {assert, createSpySubject, objectThat, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -102,7 +102,7 @@ test('@mask/src/action/input/radio-input', init => {
       );
 
       // Change the third element.
-      getEl(element3, 'input')!.simulateChange(el => {
+      getHarness(element3, 'input', InputHarness).simulateChange(el => {
         el.checked = true;
       });
 
@@ -114,7 +114,7 @@ test('@mask/src/action/input/radio-input', init => {
       ]);
 
       // Then the second one.
-      getEl(element2, 'input')!.simulateChange(el => {
+      getHarness(element2, 'input', InputHarness).simulateChange(el => {
         el.checked = true;
       });
 
@@ -127,7 +127,7 @@ test('@mask/src/action/input/radio-input', init => {
       ]);
 
       // Click on the third one again.
-      getEl(element3, 'input')!.simulateChange(el => {
+      getHarness(element3, 'input', InputHarness).simulateChange(el => {
         el.checked = true;
       });
 
@@ -192,7 +192,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
-      getEl(element, 'input')!.simulateChange(el => {
+      getHarness(element, 'input', InputHarness).simulateChange(el => {
         el.checked = true;
       });
 
@@ -210,7 +210,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
-      getEl(element, 'input')!.simulateChange(el => {
+      getHarness(element, 'input', InputHarness).simulateChange(el => {
         el.checked = false;
       });
 

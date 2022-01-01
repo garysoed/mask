@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {ElementHarness, getHarness} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -39,7 +39,7 @@ test('@mask/src/core/overlay', init => {
     });
 
     function dispatchResize(): void {
-      const contentEl = getEl(_.element, 'content')!;
+      const contentEl = getHarness(_.element, 'content', ElementHarness);
       contentEl.simulateResize(new DOMRect(0, 0, 80, 60));
     }
 
@@ -141,7 +141,7 @@ test('@mask/src/core/overlay', init => {
         },
       };
       $overlayService.get(_.tester.vine).show(event);
-      getEl(_.element, 'root')!.simulateClick();
+      getHarness(_.element, 'root', ElementHarness).simulateClick();
 
       assert(_.element).to.matchSnapshot('overlay__click-root.html');
     });
@@ -164,7 +164,7 @@ test('@mask/src/core/overlay', init => {
         },
       };
       $overlayService.get(_.tester.vine).show(event);
-      getEl(_.element, 'content')!.simulateClick();
+      getHarness(_.element, 'content', ElementHarness).simulateClick();
 
       assert(_.element).to.matchSnapshot('overlay__click-content.html');
     });

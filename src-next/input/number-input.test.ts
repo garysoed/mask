@@ -1,6 +1,6 @@
 import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -37,8 +37,8 @@ test('@mask/src/input/number-input', init => {
           ),
       );
 
-      const inputEl = getEl(element, 'input')!;
-      inputEl.simulateChange(el => {
+      const harness = getHarness(element, 'input', InputHarness);
+      harness.simulateChange(el => {
         el.value = `${value}`;
       });
 
@@ -54,8 +54,8 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
-      const inputEl = getEl(element, 'input')!;
-      inputEl.simulateMouseOver();
+      const harness = getHarness(element, 'input', InputHarness);
+      harness.simulateMouseOver();
 
       assert(element).to.matchSnapshot('number-input__show-stepper.html');
     });
@@ -65,9 +65,9 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
-      const inputEl = getEl(element, 'input')!;
-      inputEl.simulateMouseOver();
-      inputEl.simulateMouseOut();
+      const harness = getHarness(element, 'input', InputHarness);
+      harness.simulateMouseOver();
+      harness.simulateMouseOut();
 
       assert(element).to.matchSnapshot('number-input__hide-stepper.html');
     });

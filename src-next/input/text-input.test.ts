@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl} from 'persona/export/testing';
+import {getHarness, InputHarness} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 
@@ -36,8 +36,8 @@ test('@mask/src/input/text-input', init => {
       element.textContent = 'Label';
       element.initValue = 'initValue';
 
-      const inputEl = getEl(element, 'input')!;
-      inputEl.simulateChange(el => {
+      const harness = getHarness(element, 'input', InputHarness);
+      harness.simulateChange(el => {
         el.value = value;
       });
 
