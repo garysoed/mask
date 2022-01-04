@@ -27,7 +27,7 @@ const $overlay = {
     }),
     root: id('root', DIV, {
       hidden: oclass('hidden'),
-      onClick: ievent('click'),
+      onClick: ievent('click', MouseEvent),
       element: itarget(),
     }),
   },

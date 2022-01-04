@@ -20,7 +20,7 @@ import goldens from './goldens/goldens.json';
 
 const $test = {
   host: {
-    ...create$baseInput(stringType, '').host,
+    ...create$baseInput<string, string>(stringType, '').host,
   },
   shadow: {
     div: id('div', DIV, {

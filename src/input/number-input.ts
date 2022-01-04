@@ -1,8 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {nullType, numberType, unionType} from 'gs-types';
-import {Context, DIV, iattr, id, ievent, INPUT, itarget, oclass, oevent, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src/output/flag';
+import {Context, DIV, iattr, id, ievent, INPUT, itarget, oclass, oevent, oflag, registerCustomElement} from 'persona';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, mapTo, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -11,7 +10,7 @@ import stepper from '../asset/stepper.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
 import {ActionEvent} from '../event/action-event';
-import {CHANGE_EVENT} from '../event/change-event';
+import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
@@ -21,10 +20,10 @@ import template from './number-input.html';
 
 const $numberInput = {
   host: {
-    ...create$baseInput(unionType([numberType, nullType]), null).host,
+    ...create$baseInput<number|null, number|null>(unionType([numberType, nullType]), null).host,
     max: iattr('max'),
     min: iattr('min'),
-    onChange: oevent(CHANGE_EVENT),
+    onChange: oevent(CHANGE_EVENT, ChangeEvent),
     step: iattr('step'),
   },
   shadow: {
@@ -34,12 +33,12 @@ const $numberInput = {
     input: id('input', INPUT, {
       disabled: oflag('disabled'),
       element: itarget(),
-      onChange: ievent('change'),
+      onChange: ievent('change', Event),
     }),
     root: id('root', DIV, {
       ...$baseRootOutputs,
-      onMouseEnter: ievent('mouseenter'),
-      onMouseLeave: ievent('mouseleave'),
+      onMouseEnter: ievent('mouseenter', MouseEvent),
+      onMouseLeave: ievent('mouseleave', MouseEvent),
     }),
   },
 };

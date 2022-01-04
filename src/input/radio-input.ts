@@ -26,11 +26,11 @@ import template from './radio-input.html';
 
 const $radioInput = {
   host: {
-    ...create$baseInput(unionType([stringType, nullType]), null).host,
+    ...create$baseInput<string|null, OnRadioInput>(unionType([stringType, nullType]), null).host,
     key: iattr('key'),
     label: iattr('label'),
     group: iattr('group'),
-    onChange: oevent(CHANGE_EVENT),
+    onChange: oevent(CHANGE_EVENT, ChangeEvent),
   },
   shadow: {
     container: id('container', LABEL, {
@@ -40,7 +40,7 @@ const $radioInput = {
     input: id('input', INPUT, {
       element: itarget(),
       name: oattr('name'),
-      onChange: ievent('change'),
+      onChange: ievent('change', Event),
       disabled: oflag('disabled'),
     }),
     label: id('label', P, {

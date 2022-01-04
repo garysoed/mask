@@ -28,7 +28,7 @@ const CHECKED_VALUE_TYPE: Type<CheckedValue> = unionType([
 
 const $checkbox = {
   host: {
-    ...create$baseInput(CHECKED_VALUE_TYPE, false).host,
+    ...create$baseInput<CheckedValue, CheckedValue>(CHECKED_VALUE_TYPE, false).host,
   },
   shadow: {
     container: id('container', LABEL, {
@@ -38,7 +38,7 @@ const $checkbox = {
     icon: id('icon', ICON),
     input: id('input', INPUT, {
       element: itarget(),
-      onChange: ievent('change'),
+      onChange: ievent('change', Event),
     }),
   },
 };

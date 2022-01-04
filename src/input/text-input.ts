@@ -17,7 +17,7 @@ import template from './text-input.html';
 
 const $textInput = {
   host: {
-    ...create$baseInput(stringType, '').host,
+    ...create$baseInput<string, string>(stringType, '').host,
     autocomplete: iattr('autocomplete'),
     type: iattr('type'),
   },
@@ -26,7 +26,7 @@ const $textInput = {
       autocomplete: oattr('autocomplete'),
       disabled: oflag('disabled'),
       element: itarget(),
-      onChange: ievent('change'),
+      onChange: ievent('change', Event),
     }),
     root: id('root', LABEL, {
       ...$baseRootOutputs,

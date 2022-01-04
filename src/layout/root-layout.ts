@@ -21,12 +21,12 @@ const $rootLayout = {
     drawerExpanded: oflag('drawer-expanded'),
     icon: iattr('icon'),
     label: iattr('label'),
-    onTitleClick: oevent(ACTION_EVENT),
+    onTitleClick: oevent(ACTION_EVENT, ActionEvent),
   },
   shadow: {
     drawer: id('drawer', DRAWER_LAYOUT, {
-      onMouseLeave: ievent('mouseleave'),
-      onMouseEnter: ievent('mouseenter'),
+      onMouseLeave: ievent('mouseleave', MouseEvent),
+      onMouseEnter: ievent('mouseenter', MouseEvent),
     }),
     mainIcon: id('mainIcon', ICON),
     title: id('title', P, {

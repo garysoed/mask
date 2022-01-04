@@ -12,23 +12,23 @@ import {$baseRootOutputs, BaseAction, BaseActionSpecType, create$baseAction} fro
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 
-export interface BaseInputSpecType<T> extends BaseActionSpecType {
-  host: BaseActionSpecType['host'] & {
+export interface BaseInputSpecType<T, A> extends BaseActionSpecType<A> {
+  host: BaseActionSpecType<A>['host'] & {
     readonly clearFn: UnresolvedIO<ICall<unknown, 'clearFn'>>;
     readonly initValue: UnresolvedIO<IValue<T, 'initValue'>>;
-    readonly onChange: UnresolvedIO<OEvent>;
+    readonly onChange: UnresolvedIO<OEvent<ChangeEvent<T>>>;
     readonly value: UnresolvedIO<OValue<T, 'value'>>;
   }
 }
 
 
-export function create$baseInput<T>(valueType: Type<T>, defaultValue: T): BaseInputSpecType<T> {
+export function create$baseInput<T, A>(valueType: Type<T>, defaultValue: T): BaseInputSpecType<T, A> {
   return {
     host: {
-      ...create$baseAction().host,
+      ...create$baseAction<A>().host,
       clearFn: icall('clearFn', unknownType),
       initValue: ivalue('initValue', valueType, defaultValue),
-      onChange: oevent(CHANGE_EVENT),
+      onChange: oevent(CHANGE_EVENT, ChangeEvent),
       value: ovalue('value', valueType, defaultValue),
     },
   };
@@ -37,7 +37,7 @@ export function create$baseInput<T>(valueType: Type<T>, defaultValue: T): BaseIn
 
 export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
   constructor(
-      protected readonly inputContext: Context<BaseInputSpecType<T>>,
+      protected readonly inputContext: Context<BaseInputSpecType<T, A>>,
       renderDisabled: () => OperatorFunction<boolean, unknown>,
       rootBindings: Bindings<typeof $baseRootOutputs>,
   ) {

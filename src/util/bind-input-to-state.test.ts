@@ -25,7 +25,7 @@ const $valueId = source(vine => $stateService.get(vine).addRoot(mutableState(DEF
 
 const $test = {
   host: {
-    ...create$baseInput(stringType, '').host,
+    ...create$baseInput<string, string>(stringType, '').host,
   },
   shadow: {
     div: id('div', DIV, {

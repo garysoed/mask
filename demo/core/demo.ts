@@ -8,7 +8,7 @@ import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
 import {OVERLAY} from '../../src/core/overlay';
-import {ACTION_EVENT} from '../../src/event/action-event';
+import {ActionEvent, ACTION_EVENT} from '../../src/event/action-event';
 import {CHECKBOX} from '../../src/input/checkbox';
 import {DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
 import {LINE_LAYOUT} from '../../src/layout/line-layout';
@@ -28,11 +28,11 @@ const $demo = {
   shadow: {
     accentPalette: id('accentPalette', DIV, {
       content: omulti('#content'),
-      onClick: ievent('click'),
+      onClick: ievent('click', MouseEvent),
     }),
     basePalette: id('basePalette', DIV, {
       content: omulti('#content'),
-      onClick: ievent('click'),
+      onClick: ievent('click', MouseEvent),
     }),
     content: id('content', DIV, {
       content: osingle('#content'),
@@ -42,18 +42,18 @@ const $demo = {
       displayContents: omulti('#displayContents'),
       generalContents: omulti('#generalContents'),
       layoutContents: omulti('#layoutContents'),
-      onAction: ievent(ACTION_EVENT),
+      onAction: ievent(ACTION_EVENT, ActionEvent),
     }),
     darkMode: id('darkMode', CHECKBOX),
     root: id('root', SECTION, {
       theme: oattr('mk-theme'),
     }),
     rootLayout: id('rootLayout', ROOT_LAYOUT, {
-      onAction: ievent(ACTION_EVENT),
+      onAction: ievent(ACTION_EVENT, ActionEvent),
     }),
     settingsDrawer: id('settingsDrawer', DRAWER_LAYOUT, {
-      onMouseEnter: ievent('mouseenter'),
-      onMouseLeave: ievent('mouseleave'),
+      onMouseEnter: ievent('mouseenter', MouseEvent),
+      onMouseLeave: ievent('mouseleave', MouseEvent),
     }),
   },
 };

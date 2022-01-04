@@ -14,7 +14,7 @@ const $trigger = source(() => new Subject<ActionEvent<number>>());
 
 const $test = {
   host: {
-    ...create$baseAction().host,
+    ...create$baseAction<number>().host,
   },
   shadow: {
     div: id('el', DIV, {

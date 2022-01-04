@@ -14,13 +14,13 @@ const THROTTLE_MS = 500;
 
 const $button = {
   host: {
-    ...create$baseAction().host,
+    ...create$baseAction<undefined>().host,
   },
   shadow: {
     rootEl: id('root', HTML_BUTTON, {
       ...$baseRootOutputs,
       disabled: oflag('disabled'),
-      onClick: ievent('click'),
+      onClick: ievent('click', MouseEvent),
       onEnterDown: ikeydown('Enter'),
       onSpaceDown: ikeydown(' '),
       role: oattr('role'),

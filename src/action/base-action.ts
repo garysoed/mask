@@ -7,20 +7,20 @@ import {map} from 'rxjs/operators';
 import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 
 
-export interface BaseActionSpecType extends Spec {
+export interface BaseActionSpecType<T> extends Spec {
   host: {
     readonly disabled: UnresolvedIO<IFlag>;
     readonly isSecondary: UnresolvedIO<IFlag>;
-    readonly actionEvent: UnresolvedIO<OEvent>;
+    readonly actionEvent: UnresolvedIO<OEvent<ActionEvent<T>>>;
   };
 }
 
-export function create$baseAction(): BaseActionSpecType {
+export function create$baseAction<T>(): BaseActionSpecType<T> {
   return {
     host: {
       disabled: iflag('mk-disabled'),
       isSecondary: iflag('is-secondary'),
-      actionEvent: oevent(ACTION_EVENT),
+      actionEvent: oevent(ACTION_EVENT, ActionEvent),
     },
   };
 }
@@ -35,7 +35,7 @@ export const $baseRootOutputs = {
 
 export abstract class BaseAction<T> implements Ctrl {
   constructor(
-      protected readonly actionContext: Context<BaseActionSpecType>,
+      protected readonly actionContext: Context<BaseActionSpecType<T>>,
       protected readonly renderDomDisabled: () => OperatorFunction<boolean, unknown>,
       protected readonly rootBindings: Bindings<typeof $baseRootOutputs>,
   ) {
