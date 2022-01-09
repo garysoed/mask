@@ -150,7 +150,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = true;
       element.clearFn(undefined);
 
-      const inputEl = getEl(element, 'input')! as unknown as HTMLInputElement;
+      const inputEl = getEl(element, '#input')! as unknown as HTMLInputElement;
       assert(inputEl.indeterminate).to.beFalse();
       assert(inputEl.checked).to.beTrue();
     });
@@ -161,7 +161,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = false;
       element.clearFn(undefined);
 
-      const inputEl = getEl(element, 'input')! as unknown as HTMLInputElement;
+      const inputEl = getEl(element, '#input')! as unknown as HTMLInputElement;
       assert(inputEl.indeterminate).to.beFalse();
       assert(inputEl.checked).to.beFalse();
     });
@@ -172,7 +172,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = null;
       element.clearFn(undefined);
 
-      const inputEl = getEl(element, 'input')! as unknown as HTMLInputElement;
+      const inputEl = getEl(element, '#input')! as unknown as HTMLInputElement;
       assert(inputEl.indeterminate).to.beTrue();
       assert(inputEl.checked).to.beFalse();
     });

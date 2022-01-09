@@ -118,7 +118,7 @@ test('@mask/src/util/bind-input-to-state', init => {
     const element = _.tester.createElement(PARENT);
     const newValue = 'newValue';
 
-    getEl(getEl(element, 'test')!, 'div')!.setAttribute('value', newValue);
+    getEl(getEl(element, '#test')!, '#div')!.setAttribute('value', newValue);
 
     assert($value.get(_.tester.vine)).to.emitSequence([newValue]);
   });

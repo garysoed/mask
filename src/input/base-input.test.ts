@@ -96,7 +96,7 @@ test('@mask/src/input/base-input', init => {
       const element = _.tester.createElement(TEST);
       const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
 
-      getEl(element, 'div')!.setAttribute('value', newValue);
+      getEl(element, '#div')!.setAttribute('value', newValue);
 
       assert(element.value).to.equal(newValue);
       assert(event$.pipe(map(event => event.oldValue))).to.emitSequence(['']);
@@ -106,9 +106,9 @@ test('@mask/src/input/base-input', init => {
       const newValue = 'newValue';
       const element = _.tester.createElement(TEST);
 
-      getEl(element, 'div')!.setAttribute('value', newValue);
+      getEl(element, '#div')!.setAttribute('value', newValue);
       const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
-      getEl(element, 'div')!.setAttribute('value', newValue);
+      getEl(element, '#div')!.setAttribute('value', newValue);
 
       assert(element.value).to.equal(newValue);
       assert(event$.pipe(map(event => event.oldValue))).to.emitSequence([]);
