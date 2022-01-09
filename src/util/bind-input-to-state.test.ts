@@ -21,7 +21,7 @@ import goldens from './goldens/goldens.json';
 
 
 const DEFAULT = 'default';
-const $valueId = source(vine => $stateService.get(vine).addRoot(mutableState(DEFAULT)));
+const $value = source(vine => $stateService.get(vine).addRoot(mutableState(DEFAULT)).$());
 
 const $test = {
   host: {
@@ -80,10 +80,7 @@ class Parent implements Ctrl {
   @cache()
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      bindInputToState(
-          $stateService.get(this.$.vine).$($valueId.get(this.$.vine)),
-          this.$.shadow.test,
-      ),
+      bindInputToState($value.get(this.$.vine), this.$.shadow.test),
     ];
   }
 }
@@ -110,7 +107,7 @@ test('@mask/src/util/bind-input-to-state', init => {
     assert(element).to.matchSnapshot('bind-input-to-state__init.html');
 
     of('newValue')
-        .pipe($stateService.get(_.tester.vine).$($valueId.get(_.tester.vine)).set())
+        .pipe($value.get(_.tester.vine).set())
         .subscribe();
 
     // There should be no change.
@@ -123,7 +120,6 @@ test('@mask/src/util/bind-input-to-state', init => {
 
     getEl(getEl(element, 'test')!, 'div')!.setAttribute('value', newValue);
 
-    assert($stateService.get(_.tester.vine).$($valueId.get(_.tester.vine)))
-        .to.emitSequence([newValue]);
+    assert($value.get(_.tester.vine)).to.emitSequence([newValue]);
   });
 });

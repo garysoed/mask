@@ -1,5 +1,5 @@
 import {$stateService, Source, source} from 'grapevine';
-import {mutableState, MutableState, RootStateId} from 'gs-tools/export/state';
+import {ImmutableResolver, mutableState, MutableState} from 'gs-tools/export/state';
 
 import {Anchor} from '../../src/core/overlay-service';
 import {CheckedValue} from '../../src/input/checkbox';
@@ -61,10 +61,10 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const BASE_COLOR_NAME = 'TEAL';
-export const ACCENT_COLOR_NAME = 'PURPLE';
+export const BASE_COLOR_NAME: keyof Palette = 'TEAL';
+export const ACCENT_COLOR_NAME: keyof Palette = 'PURPLE';
 
-export const $demoStateId: Source<RootStateId<DemoState>> = source(
+export const $demoState: Source<ImmutableResolver<DemoState>> = source(
     vine => $stateService.get(vine).addRoot({
       accentColorName: mutableState(ACCENT_COLOR_NAME),
       baseColorName: mutableState(BASE_COLOR_NAME),
@@ -104,7 +104,5 @@ export const $demoStateId: Source<RootStateId<DemoState>> = source(
         telTextInputState: mutableState('1 (845) 949 1234'),
         urlTextInputState: mutableState('www.url.com'),
       },
-    }),
+    })._(),
 );
-
-export const $demoState = source(vine => $stateService.get(vine)._($demoStateId.get(vine)));
