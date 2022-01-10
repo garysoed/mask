@@ -29,7 +29,7 @@ test('@mask/src/action/button', init => {
   test('onAction$', _, init => {
     const _ = init(_ => {
       const element = _.tester.createElement(BUTTON);
-      const harness = getHarness(element, 'root', ElementHarness);
+      const harness = getHarness(element, '#root', ElementHarness);
       const onAction$ = createSpySubject(fromEvent(element, 'mk-action'));
       return {..._, element, onAction$, harness};
     });

@@ -37,7 +37,7 @@ test('@mask/src/input/number-input', init => {
           ),
       );
 
-      const harness = getHarness(element, 'input', InputHarness);
+      const harness = getHarness(element, '#input', InputHarness);
       harness.simulateChange(el => {
         el.value = `${value}`;
       });
@@ -54,7 +54,7 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
-      const harness = getHarness(element, 'input', InputHarness);
+      const harness = getHarness(element, '#input', InputHarness);
       harness.simulateMouseOver();
 
       assert(element).to.matchSnapshot('number-input__show-stepper.html');
@@ -65,7 +65,7 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
-      const harness = getHarness(element, 'input', InputHarness);
+      const harness = getHarness(element, '#input', InputHarness);
       harness.simulateMouseOver();
       harness.simulateMouseOut();
 

@@ -5,9 +5,8 @@ import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {mutableState} from 'gs-tools/export/state';
 import {stringType} from 'gs-types';
-import {Context, Ctrl, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
-import {getEl} from 'persona/export/testing';
-import {oflag} from 'persona/src/output/flag';
+import {Context, Ctrl, DIV, iattr, id, oattr, oflag, registerCustomElement} from 'persona';
+import {ElementHarness, getHarness} from 'persona/export/testing';
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -118,7 +117,11 @@ test('@mask/src/util/bind-input-to-state', init => {
     const element = _.tester.createElement(PARENT);
     const newValue = 'newValue';
 
-    getEl(getEl(element, '#test')!, '#div')!.setAttribute('value', newValue);
+    getHarness(
+        getHarness(element, '#test', ElementHarness).target,
+        '#div',
+        ElementHarness,
+    ).target.setAttribute('value', newValue);
 
     assert($value.get(_.tester.vine)).to.emitSequence([newValue]);
   });

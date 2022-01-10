@@ -192,7 +192,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
-      getHarness(element, 'input', InputHarness).simulateChange(el => {
+      getHarness(element, '#input', InputHarness).simulateChange(el => {
         el.checked = true;
       });
 
@@ -210,7 +210,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
-      getHarness(element, 'input', InputHarness).simulateChange(el => {
+      getHarness(element, '#input', InputHarness).simulateChange(el => {
         el.checked = false;
       });
 

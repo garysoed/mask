@@ -3,9 +3,8 @@ import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {stringType} from 'gs-types';
-import {Context, DIV, iattr, id, oattr, registerCustomElement} from 'persona';
-import {getEl} from 'persona/export/testing';
-import {oflag} from 'persona/src/output/flag';
+import {Context, DIV, iattr, id, oattr, oflag, registerCustomElement} from 'persona';
+import {ElementHarness, getHarness} from 'persona/export/testing';
 import {fromEvent, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -96,7 +95,7 @@ test('@mask/src/input/base-input', init => {
       const element = _.tester.createElement(TEST);
       const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
 
-      getEl(element, '#div')!.setAttribute('value', newValue);
+      getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
 
       assert(element.value).to.equal(newValue);
       assert(event$.pipe(map(event => event.oldValue))).to.emitSequence(['']);
@@ -106,9 +105,9 @@ test('@mask/src/input/base-input', init => {
       const newValue = 'newValue';
       const element = _.tester.createElement(TEST);
 
-      getEl(element, '#div')!.setAttribute('value', newValue);
+      getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
       const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
-      getEl(element, '#div')!.setAttribute('value', newValue);
+      getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
 
       assert(element.value).to.equal(newValue);
       assert(event$.pipe(map(event => event.oldValue))).to.emitSequence([]);

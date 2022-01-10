@@ -36,7 +36,7 @@ test('@mask/src/input/text-input', init => {
       element.textContent = 'Label';
       element.initValue = 'initValue';
 
-      const harness = getHarness(element, 'input', InputHarness);
+      const harness = getHarness(element, '#input', InputHarness);
       harness.simulateChange(el => {
         el.value = value;
       });

@@ -1,6 +1,6 @@
 import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getEl, getHarness, InputHarness} from 'persona/export/testing';
+import {getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -77,7 +77,7 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getHarness(element, 'input', InputHarness);
+      const inputEl = getHarness(element, '#input', InputHarness);
       inputEl.simulateChange(el => {
         el.indeterminate = false;
         el.checked = true;
@@ -96,7 +96,7 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getHarness(element, 'input', InputHarness);
+      const inputEl = getHarness(element, '#input', InputHarness);
       inputEl.simulateChange(el => {
         el.indeterminate = false;
         el.checked = true;
@@ -121,7 +121,7 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getHarness(element, 'input', InputHarness);
+      const inputEl = getHarness(element, '#input', InputHarness);
       inputEl.simulateChange(el => {
         el.indeterminate = false;
         el.checked = true;
@@ -150,7 +150,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = true;
       element.clearFn(undefined);
 
-      const inputEl = getEl(element, '#input')! as unknown as HTMLInputElement;
+      const inputEl = getHarness(element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beFalse();
       assert(inputEl.checked).to.beTrue();
     });
@@ -161,7 +161,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = false;
       element.clearFn(undefined);
 
-      const inputEl = getEl(element, '#input')! as unknown as HTMLInputElement;
+      const inputEl = getHarness(element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beFalse();
       assert(inputEl.checked).to.beFalse();
     });
@@ -172,7 +172,7 @@ test('@mask/src/input/checkbox', init => {
       element.initValue = null;
       element.clearFn(undefined);
 
-      const inputEl = getEl(element, '#input')! as unknown as HTMLInputElement;
+      const inputEl = getHarness(element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beTrue();
       assert(inputEl.checked).to.beFalse();
     });

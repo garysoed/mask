@@ -29,7 +29,7 @@ test('@mask/src/layout/overlay-layout', init => {
 
       const contentNode = document.createElement('div');
       contentNode.id = 'content';
-      getHarness(element, 'slot', SlotHarness).simulateSlotChange(rootEl => {
+      getHarness(element, '#slot', SlotHarness).simulateSlotChange(rootEl => {
         rootEl.appendChild(contentNode);
       });
       const contentHorizontal = Anchor.MIDDLE;

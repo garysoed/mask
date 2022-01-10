@@ -39,7 +39,7 @@ test('@mask/src/core/overlay', init => {
     });
 
     function dispatchResize(): void {
-      const contentEl = getHarness(_.element, 'content', ElementHarness);
+      const contentEl = getHarness(_.element, '#content', ElementHarness);
       contentEl.simulateResize(new DOMRect(0, 0, 80, 60));
     }
 
@@ -141,7 +141,7 @@ test('@mask/src/core/overlay', init => {
         },
       };
       $overlayService.get(_.tester.vine).show(event);
-      getHarness(_.element, 'root', ElementHarness).simulateClick();
+      getHarness(_.element, '#root', ElementHarness).simulateClick();
 
       assert(_.element).to.matchSnapshot('overlay__click-root.html');
     });
@@ -164,7 +164,7 @@ test('@mask/src/core/overlay', init => {
         },
       };
       $overlayService.get(_.tester.vine).show(event);
-      getHarness(_.element, 'content', ElementHarness).simulateClick();
+      getHarness(_.element, '#content', ElementHarness).simulateClick();
 
       assert(_.element).to.matchSnapshot('overlay__click-content.html');
     });

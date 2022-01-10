@@ -38,14 +38,14 @@ test('@mask/src/layout/root-layout', init => {
 
   test('handleDrawerExpandCollapse', () => {
     should('open the drawer if hovered', () => {
-      const harness = getHarness(_.element, 'drawer', ElementHarness);
+      const harness = getHarness(_.element, '#drawer', ElementHarness);
       harness.simulateMouseOver();
 
       assert(_.element).to.matchSnapshot('root-layout__mouseover.html');
     });
 
     should('collapse the drawer if not hovered and is not desktop', () => {
-      const harness = getHarness(_.element, 'drawer', ElementHarness);
+      const harness = getHarness(_.element, '#drawer', ElementHarness);
       harness.simulateMouseOver();
       harness.simulateMouseOut();
 
