@@ -11,6 +11,7 @@ import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override'
 import goldens from './goldens/goldens.json';
 import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import {RADIO_INPUT} from './radio-input';
+import {RadioInputHarness} from './testing/radio-input-harness';
 
 
 test('@mask/src/action/input/radio-input', init => {
@@ -192,9 +193,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
-      getHarness(element, '#input', InputHarness).simulateChange(el => {
-        el.checked = true;
-      });
+      getHarness(element, RadioInputHarness).simulateCheck();
 
       assert(onRadioInput$).to.emitWith(objectThat<OnRadioInput>().haveProperties({
         key: KEY,
@@ -210,9 +209,7 @@ test('@mask/src/action/input/radio-input', init => {
 
       const onRadioInput$ = createSpySubject($onRadioInput$.get(_.tester.vine));
 
-      getHarness(element, '#input', InputHarness).simulateChange(el => {
-        el.checked = false;
-      });
+      getHarness(element, RadioInputHarness).simulateUncheck();
 
       assert(onRadioInput$).toNot.emit();
     });

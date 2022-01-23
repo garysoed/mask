@@ -1,6 +1,6 @@
 import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getHarness, InputHarness} from 'persona/export/testing';
+import {getHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -10,6 +10,7 @@ import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override'
 
 import goldens from './goldens/goldens.json';
 import {NUMBER_INPUT} from './number-input';
+import {NumberInputHarness} from './testing/number-input-harness';
 
 
 test('@mask/src/input/number-input', init => {
@@ -37,10 +38,8 @@ test('@mask/src/input/number-input', init => {
           ),
       );
 
-      const harness = getHarness(element, '#input', InputHarness);
-      harness.simulateChange(el => {
-        el.value = `${value}`;
-      });
+      const harness = getHarness(element, NumberInputHarness);
+      harness.simulateNumberInput(value);
 
       assert(element.value).to.equal(value);
       assert(element).to.matchSnapshot('number-input__value.html');
@@ -54,7 +53,7 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
-      const harness = getHarness(element, '#input', InputHarness);
+      const harness = getHarness(element, NumberInputHarness);
       harness.simulateMouseOver();
 
       assert(element).to.matchSnapshot('number-input__show-stepper.html');
@@ -65,7 +64,7 @@ test('@mask/src/input/number-input', init => {
       element.textContent = 'Label';
       element.initValue = 98;
 
-      const harness = getHarness(element, '#input', InputHarness);
+      const harness = getHarness(element, NumberInputHarness);
       harness.simulateMouseOver();
       harness.simulateMouseOut();
 

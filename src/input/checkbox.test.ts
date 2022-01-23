@@ -9,6 +9,7 @@ import {CHECKBOX, CheckedValue} from '../input/checkbox';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import goldens from './goldens/goldens.json';
+import {CheckboxHarness} from './testing/checkbox-harness';
 
 
 test('@mask/src/input/checkbox', init => {
@@ -77,11 +78,8 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getHarness(element, '#input', InputHarness);
-      inputEl.simulateChange(el => {
-        el.indeterminate = false;
-        el.checked = true;
-      });
+      const harness = getHarness(element, CheckboxHarness);
+      harness.simulateCheck();
 
       assert(event$).to.emitSequence([true]);
     });
@@ -96,15 +94,9 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getHarness(element, '#input', InputHarness);
-      inputEl.simulateChange(el => {
-        el.indeterminate = false;
-        el.checked = true;
-      });
-      inputEl.simulateChange(el => {
-        el.indeterminate = false;
-        el.checked = true;
-      });
+      const harness = getHarness(element, CheckboxHarness);
+      harness.simulateCheck();
+      harness.simulateCheck();
 
       assert(event$).to.emitSequence([true]);
     });
@@ -121,11 +113,8 @@ test('@mask/src/input/checkbox', init => {
           ),
       );
 
-      const inputEl = getHarness(element, '#input', InputHarness);
-      inputEl.simulateChange(el => {
-        el.indeterminate = false;
-        el.checked = true;
-      });
+      const harness = getHarness(element, CheckboxHarness);
+      harness.simulateCheck();
 
       assert(element).to.matchSnapshot('checkbox__change-to-checked.html');
       assert(element.value).to.equal(true);

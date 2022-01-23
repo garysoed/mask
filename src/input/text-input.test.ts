@@ -1,10 +1,11 @@
 import {assert, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {getHarness, InputHarness} from 'persona/export/testing';
+import {getHarness} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import goldens from './goldens/goldens.json';
+import {TextInputHarness} from './testing/text-input-harness';
 import {TEXT_INPUT} from './text-input';
 
 
@@ -36,10 +37,8 @@ test('@mask/src/input/text-input', init => {
       element.textContent = 'Label';
       element.initValue = 'initValue';
 
-      const harness = getHarness(element, '#input', InputHarness);
-      harness.simulateChange(el => {
-        el.value = value;
-      });
+      const harness = getHarness(element, TextInputHarness);
+      harness.simulateTextInput(value);
 
       assert(element.value).to.equal(value);
       assert(element).to.matchSnapshot('text-input__value.html');

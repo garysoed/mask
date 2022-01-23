@@ -1,6 +1,6 @@
 import {anyThat, assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {ElementHarness, getHarness} from 'persona/export/testing';
+import {getHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
 
 import {ActionEvent} from '../event/action-event';
@@ -8,6 +8,7 @@ import {setupThemedTest} from '../testing/setup-themed-test';
 
 import {BUTTON} from './button';
 import goldens from './goldens/goldens.json';
+import {ButtonHarness} from './testing/button-harness';
 
 
 test('@mask/src/action/button', init => {
@@ -29,7 +30,7 @@ test('@mask/src/action/button', init => {
   test('onAction$', _, init => {
     const _ = init(_ => {
       const element = _.tester.createElement(BUTTON);
-      const harness = getHarness(element, '#root', ElementHarness);
+      const harness = getHarness(element, ButtonHarness);
       const onAction$ = createSpySubject(fromEvent(element, 'mk-action'));
       return {..._, element, onAction$, harness};
     });
@@ -42,13 +43,13 @@ test('@mask/src/action/button', init => {
     });
 
     should('fire the action event on pressing Enter', () => {
-      _.harness.simulateKeydown('Enter');
+      _.harness.simulateEnter();
       assert(_.onAction$).to
           .emitSequence([anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent)]);
     });
 
     should('fire the action event on pressing space', () => {
-      _.harness.simulateKeydown(' ');
+      _.harness.simulateEnter();
       assert(_.onAction$).to
           .emitSequence([anyThat<ActionEvent<unknown>>().beAnInstanceOf(ActionEvent)]);
     });
