@@ -115,12 +115,12 @@ export class OverlayLayoutDemo implements Ctrl {
           return renderCustomElement({
             registration: RADIO_INPUT,
             inputs: {
-              key: anchor,
-              label: getAnchorLabel(anchor),
-              group: spec.group,
+              key: of(anchor),
+              label: of(getAnchorLabel(anchor)),
+              group: of(spec.group),
               initValue: subjects.onInitValue$,
               clearFn: subjects.onClear$,
-              isSecondary: true,
+              isSecondary: of(true),
             },
             id: anchor,
             onOutputs: {value: subjects.onValue$},

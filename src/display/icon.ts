@@ -74,7 +74,7 @@ class Icon implements Ctrl {
                           map(([element]) => element),
                       ),
                 ],
-                raw: svg,
+                raw: of(svg),
                 parseType: 'image/svg+xml' as const,
                 id: svg,
               });

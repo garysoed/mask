@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, Type} from 'gs-types';
-import {Context, Ctrl, itext, omulti, registerCustomElement, renderElement, RenderSpec, renderTextNode, root} from 'persona';
-import {Observable, of as observableOf} from 'rxjs';
+import {Context, Ctrl, iattr, omulti, registerCustomElement, renderElement, RenderSpec, renderTextNode, root} from 'persona';
+import {Observable, of as observableOf, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {renderTheme} from '../theme/render-theme';
@@ -11,7 +11,7 @@ import template from './keyboard.html';
 
 const $keyboard = {
   host: {
-    text: itext(),
+    text: iattr('text'),
   },
   shadow: {
     root: root({
@@ -49,8 +49,12 @@ export class Keyboard implements Ctrl {
   @cache()
   private get keyboardSegments$(): Observable<readonly RenderSpec[]> {
     const children$ = this.$.host.text.pipe(
-        map(keyStr => keyStr.split(' ')),
-        map(keys => {
+        map(keyStr => {
+          if (!keyStr) {
+            return [];
+          }
+
+          const keys = keyStr.split(' ');
           if (keys.length <= 0) {
             return [];
           }
@@ -61,7 +65,7 @@ export class Keyboard implements Ctrl {
           ];
 
           for (const key of rest) {
-            keyNode$list.push(renderTextNode({textContent: '+', id: {}}));
+            keyNode$list.push(renderTextNode({textContent: of('+'), id: {}}));
             keyNode$list.push(this.renderKey(key));
           }
 
@@ -80,9 +84,9 @@ export class Keyboard implements Ctrl {
     return renderElement({
       tag: 'kbd',
       attrs: new Map([
-        ['mk-theme-highlight', ''],
+        ['mk-theme-highlight', of('')],
       ]),
-      textContent: keyToString(key),
+      textContent: of(keyToString(key)),
       id: {},
     });
   }

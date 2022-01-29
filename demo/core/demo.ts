@@ -164,16 +164,16 @@ class DemoCtrl implements Ctrl {
         .map(({path, name}) => {
           return renderCustomElement({
             registration: BUTTON,
-            attrs: new Map([[COMPONENT_PATH_ATTR, `${path}`]]),
-            children: [
+            attrs: new Map([[COMPONENT_PATH_ATTR, of(`${path}`)]]),
+            children: of([
               renderCustomElement({
                 registration: LINE_LAYOUT,
-                attrs: new Map([['mk-body-1', '']]),
-                textContent: name,
+                attrs: new Map([['mk-body-1', of('')]]),
+                textContent: of(name),
                 inputs: {},
                 id: name,
               }),
-            ],
+            ]),
             inputs: {
               isSecondary: of(true),
             },
@@ -285,10 +285,10 @@ function renderPaletteData(
 
   return of(renderElement({
     tag: 'div',
-    attrs: new Map<string, string|Observable<string>>([
+    attrs: new Map<string, Observable<string>>([
       ['class', classes$],
-      ['color', colorName],
-      ['style', `background-color: ${colorCss};`],
+      ['color', of(colorName)],
+      ['style', of(`background-color: ${colorCss};`)],
     ]),
     id: colorName,
   }));

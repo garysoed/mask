@@ -22,7 +22,7 @@ test('@mask/src/display/keyboard', init => {
   test('render', () => {
     should('render the nodes correctly', () => {
       const element = _.tester.createElement(KEYBOARD);
-      element.textContent = 'meta alt enter 3';
+      element.setAttribute('text', 'meta alt enter 3');
       triggerFakeMutation(element, {});
 
       assert(element).to.matchSnapshot('keyboard.html');

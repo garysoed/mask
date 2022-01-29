@@ -46,23 +46,23 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
         }
 
         const firstNode = renderTextNode({
-          textContent: text.substring(0, match.index ?? 0),
+          textContent: of(text.substring(0, match.index ?? 0)),
           id: {},
         });
 
         const imgNode = renderCustomElement({
           registration: ICON,
           attrs: new Map([
-            ['style', 'display: inline-block;height: 2rem;'],
+            ['style', of('display: inline-block;height: 2rem;')],
           ]),
           inputs: {
-            icon: match[1],
+            icon: of(match[1]),
           },
           id: {},
         });
 
         const lastNode = renderTextNode({
-          textContent: text.substring((match.index ?? 0) + match[0].length),
+          textContent: of(text.substring((match.index ?? 0) + match[0].length)),
           id: {},
         });
 
