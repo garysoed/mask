@@ -1,11 +1,13 @@
 import {cache} from 'gs-tools/export/data';
 import {arrayOfType, instanceofType, Type} from 'gs-types';
-import {Context, Ctrl, itext, omulti, registerCustomElement, RenderSpec, renderTextNode, root} from 'persona';
+import {Context, Ctrl, itext, omulti, osingle, registerCustomElement, RenderSpec, renderTextNode, root} from 'persona';
 import {ivalue} from 'persona/src/input/value';
 import {combineLatest, concat, Observable, of, OperatorFunction, pipe} from 'rxjs';
 import {bufferCount, map, switchMap} from 'rxjs/operators';
 
 import {renderTheme} from '../theme/render-theme';
+
+import template from './annotated-text.html';
 
 
 export type AnnotationSpec = (node: RenderSpec) => Observable<readonly RenderSpec[]>;
@@ -19,6 +21,7 @@ const $annotatedText = {
   shadow: {
     root: root({
       content: omulti('#contents'),
+      theme: osingle('#theme'),
     }),
   },
 };
@@ -29,7 +32,7 @@ class AnnotatedText implements Ctrl {
   @cache()
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      renderTheme(this.$),
+      renderTheme(this.$, this.$.shadow.root.theme()),
       this.content$.pipe(this.$.shadow.root.content()),
     ];
   }
@@ -79,5 +82,5 @@ export const ANNOTATED_TEXT = registerCustomElement({
   ctrl: AnnotatedText,
   spec: $annotatedText,
   tag: 'mk-annotated-text',
-  template: '<!-- #contents -->',
+  template,
 });

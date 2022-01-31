@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, Type} from 'gs-types';
-import {Context, Ctrl, iattr, omulti, registerCustomElement, renderElement, RenderSpec, renderTextNode, root} from 'persona';
+import {Context, Ctrl, iattr, omulti, osingle, registerCustomElement, renderElement, RenderSpec, renderTextNode, root} from 'persona';
 import {Observable, of as observableOf, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -16,6 +16,7 @@ const $keyboard = {
   shadow: {
     root: root({
       content: omulti('#content'),
+      theme: osingle('#theme'),
     }),
   },
 };
@@ -41,7 +42,7 @@ export class Keyboard implements Ctrl {
   @cache()
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      renderTheme(this.$),
+      renderTheme(this.$, this.$.shadow.root.theme()),
       this.keyboardSegments$.pipe(this.$.shadow.root.content()),
     ];
   }
