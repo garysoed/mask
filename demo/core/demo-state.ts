@@ -3,7 +3,7 @@ import {ImmutableResolver, mutableState, MutableState} from 'gs-tools/export/sta
 
 import {Anchor} from '../../src/core/overlay-service';
 import {CheckedValue} from '../../src/input/checkbox';
-import {Palette} from '../../src/theme/palette';
+import {ThemeSeed} from '../../src/theme/theme-seed';
 
 
 export interface CheckboxDemoState {
@@ -49,8 +49,8 @@ export interface NumberInputDemoState {
 }
 
 export interface DemoState {
-  readonly accentColorName: MutableState<keyof Palette>;
-  readonly baseColorName: MutableState<keyof Palette>;
+  readonly accentColorName: MutableState<keyof ThemeSeed>;
+  readonly baseColorName: MutableState<keyof ThemeSeed>;
   readonly isDarkMode: MutableState<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
   readonly drawerLayoutDemo: DrawerLayoutDemoState;
@@ -61,8 +61,8 @@ export interface DemoState {
   readonly textInputDemo: TextInputDemoState;
 }
 
-export const BASE_COLOR_NAME: keyof Palette = 'TEAL';
-export const ACCENT_COLOR_NAME: keyof Palette = 'PURPLE';
+export const BASE_COLOR_NAME: keyof ThemeSeed = 'TEAL';
+export const ACCENT_COLOR_NAME: keyof ThemeSeed = 'PURPLE';
 
 export const $demoState: Source<ImmutableResolver<DemoState>> = source(
     vine => $stateService.get(vine).addRoot({

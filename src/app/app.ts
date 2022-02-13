@@ -5,8 +5,8 @@ import {map, pairwise, startWith} from 'rxjs/operators';
 
 import {ClassThemeLoader} from '../theme/loader/class-theme-loader';
 import {ThemeLoader} from '../theme/loader/theme-loader';
-import {PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
+import {PALETTE} from '../theme/theme-seed';
 
 
 export const $themeLoader = source(

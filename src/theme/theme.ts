@@ -2,9 +2,9 @@ import {$asArray, $flat, $map, $pipe} from 'gs-tools/export/collect';
 import {Color} from 'gs-tools/export/color';
 
 import generalCss from './general.css';
-import {PALETTE} from './palette';
 import {PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, PRIMARY_DARK_SECTION_SPECS, PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, PRIMARY_LIGHT_SECTION_SPECS, SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS, SECONDARY_DARK_SECTION_SPECS, SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS, SECONDARY_LIGHT_SECTION_SPECS, SectionSpec, ShadeType} from './section-spec';
 import {ColorWithAlpha, createColor} from './shade';
+import {PALETTE} from './theme-seed';
 
 
 export class Theme {

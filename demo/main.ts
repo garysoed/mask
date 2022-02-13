@@ -6,8 +6,8 @@ import {ON_LOG_$, WebConsoleDestination} from 'santa';
 import {$themeLoader, start} from '../src/app/app';
 import {registerSvg} from '../src/core/svg-service';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
-import {PALETTE, Palette} from '../src/theme/palette';
 import {Theme} from '../src/theme/theme';
+import {PALETTE, ThemeSeed} from '../src/theme/theme-seed';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -56,11 +56,11 @@ window.addEventListener('load', () => {
   combineLatest([
     $demoState.get(vine).$('baseColorName').pipe(
         filterNonNullable(),
-        startWith<keyof Palette>(BASE_COLOR_NAME),
+        startWith<keyof ThemeSeed>(BASE_COLOR_NAME),
     ),
     $demoState.get(vine).$('accentColorName').pipe(
         filterNonNullable(),
-        startWith<keyof Palette>(ACCENT_COLOR_NAME),
+        startWith<keyof ThemeSeed>(ACCENT_COLOR_NAME),
     ),
   ])
       .pipe(

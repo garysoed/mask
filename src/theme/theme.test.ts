@@ -2,8 +2,8 @@ import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 
 import goldens from './goldens/goldens.json';
-import {PALETTE} from './palette';
 import {Theme} from './theme';
+import {PALETTE} from './theme-seed';
 import template from './theme.html';
 
 

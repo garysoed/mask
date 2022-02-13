@@ -7,8 +7,8 @@ import {catchError, takeUntil} from 'rxjs/operators';
 import {Logger, ON_LOG_$} from 'santa';
 import {CliDestination} from 'santa/export/cli';
 
-import {Palette, PALETTE} from '../theme/palette';
 import {Theme} from '../theme/theme';
+import {ThemeSeed, PALETTE} from '../theme/theme-seed';
 
 
 const LOGGER = new Logger('@hive/main');
@@ -52,7 +52,7 @@ function run(): Observable<unknown> {
 }
 
 function findColor(colorStr: string): Color {
-  const existingColor: Color|undefined = PALETTE[colorStr.toUpperCase() as keyof Palette];
+  const existingColor: Color|undefined = PALETTE[colorStr.toUpperCase() as keyof ThemeSeed];
   if (existingColor) {
     return existingColor;
   }

@@ -14,8 +14,8 @@ import {DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
 import {LINE_LAYOUT} from '../../src/layout/line-layout';
 import {LIST_ITEM_LAYOUT} from '../../src/layout/list-item-layout';
 import {ROOT_LAYOUT} from '../../src/layout/root-layout';
-import {PALETTE, Palette} from '../../src/theme/palette';
 import {renderTheme} from '../../src/theme/render-theme';
+import {PALETTE, ThemeSeed} from '../../src/theme/theme-seed';
 
 import {$demoState} from './demo-state';
 import template from './demo.html';
@@ -250,7 +250,7 @@ export const DEMO = registerCustomElement({
 });
 
 
-const ORDERED_PALETTES: ReadonlyArray<[keyof Palette, Color]> = [
+const ORDERED_PALETTES: ReadonlyArray<[keyof ThemeSeed, Color]> = [
   ['RED', PALETTE.RED],
   ['ORANGE', PALETTE.ORANGE],
   ['AMBER', PALETTE.AMBER],
@@ -294,7 +294,7 @@ function renderPaletteData(
   }));
 }
 
-function getColor(event: Event): keyof Palette|null {
+function getColor(event: Event): keyof ThemeSeed|null {
   const target = event.target;
   if (!(target instanceof HTMLElement)) {
     return null;
@@ -305,5 +305,5 @@ function getColor(event: Event): keyof Palette|null {
     return null;
   }
 
-  return colorName as keyof Palette;
+  return colorName as keyof ThemeSeed;
 }

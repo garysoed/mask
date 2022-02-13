@@ -17,7 +17,7 @@ const MAGENTA = new RgbColor(167, 29, 197);
 const PINK = new RgbColor(220, 0, 131);
 const BROWN = new RgbColor(136, 64, 0);
 
-export interface Palette {
+export interface ThemeSeed {
   readonly AMBER: Color;
   readonly AZURE: Color;
   readonly BLUE: Color;
