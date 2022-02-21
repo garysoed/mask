@@ -16,6 +16,14 @@
     overflow: auto;
   }
 
+  #drawerRoot h5 {
+    padding-inline-start: 1rem;
+  }
+
+  #drawerRoot mk-line-layout > span {
+    padding-inline-start: 2rem;
+  }
+
   #rootLayout:not([drawer-expanded]) #drawerRoot {
     display: none;
   }
@@ -47,20 +55,20 @@
 </style>
 <style id="globalStyle"></style>
 
-<section id="root" layout="row" mk-theme="dark" fill-parent>
+<section id="root" layout="row" fill-parent>
   <mk-root-layout icon="logo" id="rootLayout" label="Mask: Demo">
-    <div id="drawerRoot" slot="drawer">
-      <mk-line-layout mk-body-2>General</mk-line-layout>
+    <div id="drawerRoot" mk-theme-context="side" slot="drawer">
+      <h5>General</h5>
       <!-- #generalContents -->
-      <mk-line-layout mk-body-2>Displays</mk-line-layout>
+      <h5>Displays</h5>
       <!-- #displayContents -->
-      <mk-line-layout mk-body-2>Actions</mk-line-layout>
+      <h5>Actions</h5>
       <!-- #actionContents -->
-      <mk-line-layout mk-body-2>Layouts</mk-line-layout>
+      <h5>Layouts</h5>
       <!-- #layoutContents -->
     </div>
 
-    <div id="main" layout="row" slot="main">
+    <div id="main" layout="row" mk-theme-context="main" slot="main">
       <div flex id="content">
         <!-- #content -->
       </div>
@@ -68,7 +76,7 @@
           id="settingsDrawer"
           max-size="16rem"
           min-size="4rem"
-          mk-theme-highlight
+          mk-theme-context="side"
           mode="vertical"
           shadow="down"
       >
@@ -111,3 +119,11 @@
   </mk-root-layout>
   <mk-overlay></mk-overlay>
 </section>
+
+<template id="_pageButton">
+  <mk-button is-secondary>
+    <mk-line-layout mk-body-1>
+      <span></span>
+    </mk-line-layout>
+  </mk-button>
+</template>

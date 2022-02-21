@@ -1,3 +1,4 @@
+import {enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
 import {Registration} from 'persona';
 
 import {BUTTON_DEMO} from '../action/button';
@@ -22,6 +23,12 @@ export interface PageSpec {
   readonly name: string;
   readonly path: Views;
 }
+
+export const PAGE_SPEC_TYPE = hasPropertiesType({
+  registration: instanceofType<Registration<HTMLElement, any>>(Object),
+  name: stringType,
+  path: enumType<Views>(Views),
+});
 
 export const ACTION_SPECS: readonly PageSpec[] = [
   {registration: BUTTON_DEMO, name: 'Button', path: Views.BUTTON},

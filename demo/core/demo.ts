@@ -2,7 +2,7 @@ import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
-import {Context, Ctrl, DIV, id, ievent, oattr, omulti, osingle, registerCustomElement, renderCustomElement, renderElement, RenderSpec, SECTION} from 'persona';
+import {Context, Ctrl, DIV, id, ievent, itarget, oattr, oforeach, omulti, osingle, otext, query, registerCustomElement, renderCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
@@ -20,12 +20,15 @@ import {ThemeSeed, THEME_SEEDS} from '../../src/theme/theme-seed';
 import {$demoState} from './demo-state';
 import template from './demo.html';
 import {$locationService, Views} from './location-service';
-import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec} from './page-spec';
+import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec, PAGE_SPEC_TYPE} from './page-spec';
 
 
 const $demo = {
   host: {},
   shadow: {
+    _pageButton: id('_pageButton', TEMPLATE, {
+      target: itarget(),
+    }),
     accentPalette: id('accentPalette', DIV, {
       content: omulti('#content'),
       onClick: ievent('click', MouseEvent),
@@ -38,16 +41,13 @@ const $demo = {
       content: osingle('#content'),
     }),
     drawerRoot: id('drawerRoot', DIV, {
-      actionContents: omulti('#actionContents'),
-      displayContents: omulti('#displayContents'),
-      generalContents: omulti('#generalContents'),
-      layoutContents: omulti('#layoutContents'),
+      actionContents: oforeach('#actionContents', PAGE_SPEC_TYPE),
+      displayContents: oforeach('#displayContents', PAGE_SPEC_TYPE),
+      generalContents: oforeach('#generalContents', PAGE_SPEC_TYPE),
+      layoutContents: oforeach('#layoutContents', PAGE_SPEC_TYPE),
       onAction: ievent(ACTION_EVENT, ActionEvent),
     }),
     darkMode: id('darkMode', CHECKBOX),
-    root: id('root', SECTION, {
-      theme: oattr('mk-theme'),
-    }),
     rootLayout: id('rootLayout', ROOT_LAYOUT, {
       onAction: ievent(ACTION_EVENT, ActionEvent),
     }),
@@ -80,12 +80,11 @@ class DemoCtrl implements Ctrl {
           $demoState.get(this.$.vine).$('isDarkMode').set(),
       ),
       this.mainContent$.pipe(this.$.shadow.content.content()),
-      this.renderPageButtons(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents()),
-      this.renderPageButtons(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents()),
-      this.renderPageButtons(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents()),
-      this.renderPageButtons(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents()),
+      of(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents({render: value => this.renderPageButtons(value)})),
+      of(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents({render: value => this.renderPageButtons(value)})),
+      of(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents({render: value => this.renderPageButtons(value)})),
+      of(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents({render: value => this.renderPageButtons(value)})),
       this.isDrawerExpanded$.pipe(this.$.shadow.settingsDrawer.expanded()),
-      this.rootTheme$.pipe(this.$.shadow.root.theme()),
     ];
   }
 
@@ -159,36 +158,24 @@ class DemoCtrl implements Ctrl {
     );
   }
 
-  private renderPageButtons(pageSpecs: readonly PageSpec[]): Observable<readonly RenderSpec[]> {
-    const node$List = pageSpecs
-        .map(({path, name}) => {
-          return renderCustomElement({
-            registration: BUTTON,
-            attrs: new Map([[COMPONENT_PATH_ATTR, of(`${path}`)]]),
-            children: of([
-              renderCustomElement({
-                registration: LINE_LAYOUT,
-                attrs: new Map([['mk-body-1', of('')]]),
-                textContent: of(name),
-                inputs: {},
-                id: name,
-              }),
-            ]),
-            inputs: {
-              isSecondary: of(true),
-            },
-            id: name,
-          });
-        });
-
-    return of(node$List);
-  }
-
-  @cache()
-  private get rootTheme$(): Observable<'light'|'dark'> {
-    return $demoState.get(this.$.vine).$('isDarkMode').pipe(
-        map(isDarkMode => isDarkMode ? 'dark' : 'light'),
-    );
+  private renderPageButtons({path, name}: PageSpec): RenderSpec {
+    return renderTemplate({
+      // TODO: Do not cast
+      template$: this.$.shadow._pageButton.target as Observable<HTMLTemplateElement>,
+      spec: {
+        button: query('mk-button', BUTTON, {
+          path: oattr(COMPONENT_PATH_ATTR),
+        }),
+        div: query('span', SPAN, {
+          text: otext(),
+        }),
+      },
+      runs: $ => [
+        of(path).pipe($.button.path()),
+        of(name).pipe($.div.text()),
+      ],
+      id: name,
+    });
   }
 
   @cache()

@@ -8,7 +8,7 @@ import {registerSvg} from '../src/core/svg-service';
 import {ThemeMode} from '../src/theme/const';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {Theme} from '../src/theme/theme';
-import {THEME_SEEDS, ThemeSeed} from '../src/theme/theme-seed';
+import {ThemeSeed, THEME_SEEDS} from '../src/theme/theme-seed';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -67,13 +67,17 @@ window.addEventListener('load', () => {
         filterNonNullable(),
         startWith<keyof ThemeSeed>(ACCENT_COLOR_NAME),
     ),
+    $demoState.get(vine).$('isDarkMode').pipe(
+        filterNonNullable(),
+        startWith(false),
+    ),
   ])
       .pipe(
-          tap(([base, accent]) => {
+          tap(([base, accent, isDarkMode]) => {
             themeLoader$.next(new ClassThemeLoader(new Theme({
               baseSeed: THEME_SEEDS[base],
               accentSeed: THEME_SEEDS[accent],
-              mode: ThemeMode.DARK,
+              mode: isDarkMode ? ThemeMode.DARK : ThemeMode.LIGHT,
             })));
           }),
       )
