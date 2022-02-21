@@ -129,6 +129,47 @@
 
 <mkd-demo-layout label="Colors">
   <div slot="play">
+    <p>
+      Colors in Mask start with two seed colors: "base" color and "accent" color.
+    </p>
+
+    <p layout="row">
+      <div>
+        <div></div>
+        <div>Base seed</div>
+      </div>
+      <div>
+        <div></div>
+        <div>Accent seed</div>
+      </div>
+    </p>
+
+    <p>
+      Based on the seeds, Mask will generate three palettes:
+      <ol>
+        <li>
+          Passive (P): The most commonly used palette. This is used for any non interactable
+          components.
+        </li>
+        <li>Action (A): Used for any actionable elements.</li>
+        <li>
+          Highlight (H): Used for feedback for player's actions, such as hover and focus effects.
+        </li>
+      </ol>
+    </p>
+
+    <p layout="column">
+      <div>
+        <div>Passive</div>
+      </div>
+      <div>
+        <div>Action</div>
+      </div>
+      <div>
+        <div>Highlight</div>
+      </div>
+    </p>
+
     <table id="table">
       <colgroup>
         <col id="col1">

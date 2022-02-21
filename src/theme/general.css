@@ -21,151 +21,75 @@
 /*****************
  * Theme variables
  *****************/
-[mk-theme="light"],
-[mk-theme="dark"],
-[mk-theme-highlight],
-[mk-passive-1] {
-  --mkThemeBG: var(--mkThemePassiveBG1B);
-  --mkThemeFG: var(--mkThemePassiveFG1B);
+[mk-passive-1],
+:root {
+  --mkThemeBG: var(--mkThemePassiveBG1);
+  --mkThemeFG: var(--mkThemePassiveFG1);
 }
 
-[mk-theme="light"] [mk-passive-2],
-[mk-theme="light"][mk-passive-2],
-[mk-theme="dark"] [mk-passive-2],
-[mk-theme="dark"][mk-passive-2],
-[mk-theme-highlight] [mk-passive-2],
-[mk-theme-highlight][mk-passive-2],
 [mk-passive-2] {
-  --mkThemeBG: var(--mkThemePassiveBG2B);
-  --mkThemeFG: var(--mkThemePassiveFG2B);
+  --mkThemeBG: var(--mkThemePassiveBG2);
+  --mkThemeFG: var(--mkThemePassiveFG2);
 }
 
-[mk-theme="light"] [mk-action-1],
-[mk-theme="light"][mk-action-1],
-[mk-theme="dark"] [mk-action-1],
-[mk-theme="dark"][mk-action-1],
-[mk-theme-highlight] [mk-action-1],
-[mk-theme-highlight][mk-action-1],
 [mk-action-1] {
-  --mkThemeBG: var(--mkThemeActionBG1B);
-  --mkThemeFG: var(--mkThemeActionFG1B);
+  --mkThemeBG: var(--mkThemeActionBG1);
+  --mkThemeFG: var(--mkThemeActionFG1);
 }
 
-[mk-theme="light"] [mk-action-2],
-[mk-theme="light"][mk-action-2],
-[mk-theme="dark"] [mk-action-2],
-[mk-theme="dark"][mk-action-2],
-[mk-theme-highlight] [mk-action-2],
-[mk-theme-highlight][mk-action-2],
 [mk-action-2] {
-  --mkThemeBG: var(--mkThemeActionBG2B);
-  --mkThemeFG: var(--mkThemeActionFG2B);
+  --mkThemeBG: var(--mkThemeActionBG2);
+  --mkThemeFG: var(--mkThemeActionFG2);
 }
 
-[mk-theme="light"] a,
-a[mk-theme="light"],
-[mk-theme="dark"] a,
-a[mk-theme="dark"],
-[mk-theme-highlight] a,
-a[mk-theme-highlight],
 a {
-  --mkThemeBG: var(--mkThemeActionBG2B);
-  --mkThemeFG: var(--mkThemeActionFG2B);
+  --mkThemeBG: var(--mkThemeActionBG2);
+  --mkThemeFG: var(--mkThemeActionFG2);
 }
 
-[mk-theme="light"] [mk-action-1]:focus-within,
-[mk-theme="light"][mk-action-1]:focus-within,
-[mk-theme="dark"] [mk-action-1]:focus-within,
-[mk-theme="dark"][mk-action-1]:focus-within,
-[mk-theme-highlight] [mk-action-1]:focus-within,
-[mk-theme-highlight][mk-action-1]:focus-within,
 [mk-action-1]:focus-within {
-  --mkThemeBG: var(--mkThemeFocusBG1B);
-  --mkThemeFG: var(--mkThemeFocusFG1B);
+  --mkThemeBG: var(--mkThemeFocusBG1);
+  --mkThemeFG: var(--mkThemeFocusFG1);
 }
 
-[mk-theme="light"] [mk-action-2]:focus-within,
-[mk-theme="light"][mk-action-2]:focus-within,
-[mk-theme="dark"] [mk-action-2]:focus-within,
-[mk-theme="dark"][mk-action-2]:focus-within,
-[mk-theme-highlight] [mk-action-2]:focus-within,
-[mk-theme-highlight][mk-action-2]:focus-within,
 [mk-action-2]:focus-within {
-  --mkThemeBG: var(--mkThemeFocusBG2B);
-  --mkThemeFG: var(--mkThemeFocusFG2B);
+  --mkThemeBG: var(--mkThemeFocusBG2);
+  --mkThemeFG: var(--mkThemeFocusFG2);
 }
 
-[mk-theme="light"] a:focus-within,
-a[mk-theme="light"]:focus-within,
-[mk-theme="dark"] a:focus-within,
-a[mk-theme="dark"]:focus-within,
-[mk-theme-highlight] a:focus-within,
-a[mk-theme-highlight]:focus-within,
 a:focus-within {
-  --mkThemeBG: var(--mkThemeFocusBG2B);
-  --mkThemeFG: var(--mkThemeFocusFG2B);
+  --mkThemeBG: var(--mkThemeFocusBG2);
+  --mkThemeFG: var(--mkThemeFocusFG2);
 }
 
-[mk-theme="light"] [mk-action-1]:hover,
-[mk-theme="light"][mk-action-1]:hover,
-[mk-theme="dark"] [mk-action-1]:hover,
-[mk-theme="dark"][mk-action-1]:hover,
-[mk-theme-highlight] [mk-action-1]:hover,
-[mk-theme-highlight][mk-action-1]:hover,
 [mk-action-1]:hover {
-  --mkThemeBG: var(--mkThemeHoverBG1B);
-  --mkThemeFG: var(--mkThemeHoverFG1B);
+  --mkThemeBG: var(--mkThemeHoverBG1);
+  --mkThemeFG: var(--mkThemeHoverFG1);
 }
 
-[mk-theme="light"] [mk-action-2]:hover,
-[mk-theme="light"][mk-action-2]:hover,
-[mk-theme="dark"] [mk-action-2]:hover,
-[mk-theme="dark"][mk-action-2]:hover,
-[mk-theme-highlight] [mk-action-2]:hover,
-[mk-theme-highlight][mk-action-2]:hover,
 [mk-action-2]:hover {
-  --mkThemeBG: var(--mkThemeHoverBG2B);
-  --mkThemeFG: var(--mkThemeHoverFG2B);
+  --mkThemeBG: var(--mkThemeHoverBG2);
+  --mkThemeFG: var(--mkThemeHoverFG2);
 }
 
-[mk-theme="light"] a:hover,
-a[mk-theme="light"]:hover,
-[mk-theme="dark"] a:hover,
-a[mk-theme="dark"]:hover,
-[mk-theme-highlight] a:hover,
-a[mk-theme-highlight]:hover,
 a:hover {
-  --mkThemeBG: var(--mkThemeHoverBG2B);
-  --mkThemeFG: var(--mkThemeHoverFG2B);
+  --mkThemeBG: var(--mkThemeHoverBG2);
+  --mkThemeFG: var(--mkThemeHoverFG2);
 }
 
-[mk-theme="light"] [mk-action-1][mk-disabled],
-[mk-theme="light"][mk-action-1][mk-disabled],
-[mk-theme="dark"] [mk-action-1][mk-disabled],
-[mk-theme="dark"][mk-action-1][mk-disabled],
-[mk-theme-highlight] [mk-action-1][mk-disabled],
-[mk-theme-highlight][mk-action-1][mk-disabled],
 [mk-action-1][mk-disabled] {
-  --mkThemeBG: var(--mkThemeDisabledBG1B);
-  --mkThemeFG: var(--mkThemeDisabledFG1B);
+  --mkThemeBG: var(--mkThemeDisabledBG1);
+  --mkThemeFG: var(--mkThemeDisabledFG1);
 }
 
-[mk-theme="light"] [mk-action-2][mk-disabled],
-[mk-theme="light"][mk-action-2][mk-disabled],
-[mk-theme="dark"] [mk-action-2][mk-disabled],
-[mk-theme="dark"][mk-action-2][mk-disabled],
-[mk-theme-highlight] [mk-action-2][mk-disabled],
-[mk-theme-highlight][mk-action-2][mk-disabled],
 [mk-action-2][mk-disabled] {
-  --mkThemeBG: var(--mkThemeDisabledBG2B);
-  --mkThemeFG: var(--mkThemeDisabledFG2B);
+  --mkThemeBG: var(--mkThemeDisabledBG2);
+  --mkThemeFG: var(--mkThemeDisabledFG2);
 }
 
 /****************
  * Applied themes
  ****************/
-[mk-theme-highlight],
-[mk-theme],
 [mk-action-1], [mk-action-2],
 [mk-passive-1], [mk-passive-2],
 [mk-body-1], [mk-body-2],

@@ -1,110 +1,108 @@
-import {$asArray, $flat, $map, $pipe} from 'gs-tools/export/collect';
-import {Color} from 'gs-tools/export/color';
+import {Color, HslColor} from 'gs-tools/export/color';
+import {cache} from 'gs-tools/export/data';
+import {Cases} from 'gs-tools/export/string';
+import {getAllValues} from 'gs-tools/export/typescript';
 
+import {ColorLocation, ColorSection, Palette, ThemeSubtype, ThemeMode, ThemeContext} from './const';
 import generalCss from './general.css';
-import {PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, PRIMARY_DARK_SECTION_SPECS, PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, PRIMARY_LIGHT_SECTION_SPECS, SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS, SECONDARY_DARK_SECTION_SPECS, SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS, SECONDARY_LIGHT_SECTION_SPECS, SectionSpec, ShadeType} from './section-spec';
-import {ColorWithAlpha, createColor} from './shade';
-import {PALETTE} from './theme-seed';
+import {getShade} from './section-spec';
+import {ColorWithAlpha, getColors} from './shade';
 
+
+interface ThemeInput {
+  readonly baseSeed: Color;
+  readonly accentSeed: Color;
+  readonly mode: ThemeMode;
+}
 
 export class Theme {
-  constructor(
-      readonly baseColor: Color,
-      readonly accentColor: Color,
-  ) { }
-
-  setBaseColor(color: Color): Theme {
-    return new Theme(color, this.accentColor);
-  }
-
-  setHighlightColor(color: Color): Theme {
-    return new Theme(this.baseColor, color);
-  }
+  constructor(private readonly input: ThemeInput) { }
 
   generateCss(): string {
     const cssDeclarations = [
-      this.generateSectionThemeCss(false),
-      this.generateSectionThemeCss(true),
-      this.generateHighlightThemeCss(),
+      this.generateRootThemeCss(),
+      ...getAllValues<ThemeContext>(ThemeContext).map(context => this.generateContextCss(context)),
     ];
 
     return `${cssDeclarations.join('\n\n')}\n${generalCss}`;
   }
 
-  private generateHighlightThemeCss(): string {
-    // Just use the light ones. The dark ones will be the same.
-    const cssVariables = $pipe(
-        [...PRIMARY_LIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_SECTION_SPECS],
-        $map(spec => {
-          const cssNormalFgVar = getSectionVariableName(spec, true);
-          const cssNormalBgVar = getSectionVariableName(spec, false);
+  private generateRootThemeCss(): string {
+    const variables = [];
+    for (const context of getAllValues<ThemeContext>(ThemeContext)) {
+      for (const subtype of getAllValues<ThemeSubtype>(ThemeSubtype)) {
+        for (const section of getAllValues<ColorSection>(ColorSection)) {
+          const fgName = getSectionVariableName(subtype, section, ColorLocation.FOREGROUND, context);
+          const bgName = getSectionVariableName(subtype, section, ColorLocation.BACKGROUND, context);
+          const {foreground, background} = getColors(
+              getShade(this.input.mode, subtype, context, section, ColorLocation.FOREGROUND),
+              getShade(this.input.mode, subtype, context, section, ColorLocation.BACKGROUND),
+              this.getPalettes(),
+          );
 
-          const highlightSpec = {...spec, isHighlight: true};
-          const cssHighlightFgVar = getSectionVariableName(highlightSpec, true);
-          const cssHighlightBgVar = getSectionVariableName(highlightSpec, false);
-
-          return [
-            `${cssNormalBgVar}: var(${cssHighlightBgVar});`,
-            `${cssNormalFgVar}: var(${cssHighlightFgVar});`,
-          ];
-        }),
-        $flat(),
-        $asArray(),
-    )
-        .join('\n');
-
-    return `[mk-theme-highlight] { ${cssVariables} }`;
-  }
-
-  private generateSectionThemeCss(isDark: boolean): string {
-    const normalSectionSpecs = isDark
-      ? [...PRIMARY_DARK_SECTION_SPECS, ...SECONDARY_DARK_SECTION_SPECS]
-      : [...PRIMARY_LIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_SECTION_SPECS];
-    const highlightSectionSpecs = isDark
-      ? [...PRIMARY_DARK_HIGHLIGHT_SECTION_SPECS, ...SECONDARY_DARK_HIGHLIGHT_SECTION_SPECS]
-      : [...PRIMARY_LIGHT_HIGHLIGHT_SECTION_SPECS, ...SECONDARY_LIGHT_HIGHLIGHT_SECTION_SPECS];
-
-    const cssVariables = $pipe(
-        [...normalSectionSpecs, ...highlightSectionSpecs],
-        $map(spec => {
-          const cssFgVar = getSectionVariableName(spec, true);
-          const cssBgVar = getSectionVariableName(spec, false);
-          const cssFgColor = generateCssColor(createColor(spec.fg, this.getMixBaseColor(spec.fgType)));
-          const cssBgColor = generateCssColor(createColor(spec.bg, this.getMixBaseColor(spec.bgType)));
-          return [
-            `${cssFgVar}: ${cssFgColor};`,
-            `${cssBgVar}: ${cssBgColor};`,
-          ];
-        }),
-        $flat(),
-        $asArray(),
-    )
-        .join('\n');
-
-    const theme = isDark ? 'dark' : 'light';
-    return `[mk-theme="${theme}"] { ${cssVariables} }`;
-  }
-
-  private getMixBaseColor(shadeType: ShadeType): Color {
-    switch (shadeType) {
-      case ShadeType.ACCENT:
-        return this.accentColor;
-      case ShadeType.BASE:
-        return this.baseColor;
-      case ShadeType.GREYSCALE:
-        return PALETTE.GREY;
+          variables.push(
+              `${fgName}: ${generateCssColor(foreground)};`,
+              `${bgName}: ${generateCssColor(background)};`,
+          );
+        }
+      }
     }
+
+    return `:root { ${variables.join('\n')} }`;
+  }
+
+  private generateContextCss(context: ThemeContext): string {
+    const variables = [];
+    for (const subtype of getAllValues<ThemeSubtype>(ThemeSubtype)) {
+      for (const section of getAllValues<ColorSection>(ColorSection)) {
+        const fgName = getSectionVariableName(subtype, section, ColorLocation.FOREGROUND);
+        const fgNameLevel = getSectionVariableName(subtype, section, ColorLocation.FOREGROUND, context);
+        const bgName = getSectionVariableName(subtype, section, ColorLocation.BACKGROUND);
+        const bgNameLevel = getSectionVariableName(subtype, section, ColorLocation.BACKGROUND, context);
+
+        variables.push(
+            `${fgName}: var(${fgNameLevel});`,
+            `${bgName}: var(${bgNameLevel});`,
+        );
+      }
+    }
+
+    return `[mk-theme-context="${context}"] { ${variables.join('\n')} }`;
+  }
+
+  @cache()
+  private getPalettes(): ReadonlyMap<Palette, Color> {
+    const passive = new HslColor(
+        this.input.baseSeed.hue,
+        this.input.baseSeed.saturation * 0.2,
+        this.input.baseSeed.lightness,
+    );
+
+    return new Map([
+      [Palette.PASSIVE, passive],
+      [Palette.HIGHLIGHT, this.input.accentSeed],
+      [Palette.ACTION, this.input.baseSeed],
+    ]);
   }
 }
 
-function getSectionVariableName(sectionSpec: SectionSpec, isForeground: boolean): string {
-  return [
-    '--mkTheme',
-    sectionSpec.section,
-    isForeground ? 'FG' : 'BG',
-    sectionSpec.isSecondary ? '2' : '1',
-    sectionSpec.isHighlight ? 'H' : 'B',
-  ].join('');
+function getSectionVariableName(
+    subtype: ThemeSubtype,
+    section: ColorSection,
+    location: ColorLocation,
+    context?: ThemeContext,
+): string {
+  const segments = [ '--mkTheme'];
+  if (context) {
+    segments.push(Cases.of(context).toPascalCase());
+  }
+
+  segments.push(
+      Cases.of(section).toPascalCase(),
+      location.toUpperCase(),
+      subtype,
+  );
+  return segments.join('');
 }
 
 function generateCssColor({color, alpha}: ColorWithAlpha): string {

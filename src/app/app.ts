@@ -3,15 +3,20 @@ import {installCustomElements, Registration} from 'persona';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
+import {ThemeMode} from '../theme/const';
 import {ClassThemeLoader} from '../theme/loader/class-theme-loader';
 import {ThemeLoader} from '../theme/loader/theme-loader';
 import {Theme} from '../theme/theme';
-import {PALETTE} from '../theme/theme-seed';
+import {THEME_SEEDS} from '../theme/theme-seed';
 
 
 export const $themeLoader = source(
     () => new BehaviorSubject<ThemeLoader>(
-        new ClassThemeLoader(new Theme(PALETTE.ORANGE, PALETTE.GREEN)),
+        new ClassThemeLoader(new Theme({
+          baseSeed: THEME_SEEDS.ORANGE,
+          accentSeed: THEME_SEEDS.GREEN,
+          mode: ThemeMode.LIGHT,
+        })),
     ),
 );
 export const $window = source(() => window);

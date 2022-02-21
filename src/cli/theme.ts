@@ -2,13 +2,15 @@ import * as fs from 'fs';
 
 import commandLineArgs from 'command-line-args';
 import {Color, fromCssColor} from 'gs-tools/export/color';
+import {enumType} from 'gs-types';
 import {EMPTY, Observable, Subject} from 'rxjs';
 import {catchError, takeUntil} from 'rxjs/operators';
 import {Logger, ON_LOG_$} from 'santa';
 import {CliDestination} from 'santa/export/cli';
 
+import {ThemeMode} from '../theme/const';
 import {Theme} from '../theme/theme';
-import {ThemeSeed, PALETTE} from '../theme/theme-seed';
+import {ThemeSeed, THEME_SEEDS} from '../theme/theme-seed';
 
 
 const LOGGER = new Logger('@hive/main');
@@ -20,6 +22,10 @@ const OPTIONS = [
   },
   {
     name: 'acc',
+    type: String,
+  },
+  {
+    name: 'mode',
     type: String,
   },
   {
@@ -37,7 +43,11 @@ function run(): Observable<unknown> {
   const base = findColor(options.base);
   const acc = findColor(options.acc);
   const outStr = options.out;
-  const theme = new Theme(base, acc);
+  const mode = options.mode;
+  if (!enumType<ThemeMode>(ThemeMode).check(mode)) {
+    throw new Error(`Unsupported mode: ${mode}`);
+  }
+  const theme = new Theme({baseSeed: base, accentSeed: acc, mode});
 
   return new Observable(subscriber => {
     fs.writeFile(outStr, theme.generateCss(), {encoding: 'utf8'}, err => {
@@ -52,7 +62,7 @@ function run(): Observable<unknown> {
 }
 
 function findColor(colorStr: string): Color {
-  const existingColor: Color|undefined = PALETTE[colorStr.toUpperCase() as keyof ThemeSeed];
+  const existingColor: Color|undefined = THEME_SEEDS[colorStr.toUpperCase() as keyof ThemeSeed];
   if (existingColor) {
     return existingColor;
   }

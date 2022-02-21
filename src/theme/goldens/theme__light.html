@@ -8,7 +8,7 @@
     width: 16rem;
   }
 
-  #col2, #col3, #col4, #col5 {
+  #col2, #col3, #col4, #col5, #col6, #col7 {
     width: 12rem;
   }
 
@@ -20,97 +20,25 @@
     text-align: center;
   }
 
-  .action-1 {
-    --mkThemeFG: var(--mkThemeActionFG1B);
-    --mkThemeBG: var(--mkThemeActionBG1B);
+  [mk-action-1].focus {
+    --mkThemeBG: var(--mkThemeFocusBG1);
+    --mkThemeFG: var(--mkThemeFocusFG1);
   }
 
-  .action-2 {
-    --mkThemeFG: var(--mkThemeActionFG2B);
-    --mkThemeBG: var(--mkThemeActionBG2B);
+  [mk-action-2].focus {
+    --mkThemeBG: var(--mkThemeFocusBG2);
+    --mkThemeFG: var(--mkThemeFocusFG2);
   }
 
-  .action-1h {
-    --mkThemeFG: var(--mkThemeActionFG1H);
-    --mkThemeBG: var(--mkThemeActionBG1H);
-  }
+[mk-action-1].hover {
+  --mkThemeBG: var(--mkThemeHoverBG1);
+  --mkThemeFG: var(--mkThemeHoverFG1);
+}
 
-  .action-2h {
-    --mkThemeFG: var(--mkThemeActionFG2H);
-    --mkThemeBG: var(--mkThemeActionBG2H);
-  }
-
-  .focus-1 {
-    --mkThemeFG: var(--mkThemeFocusFG1B);
-    --mkThemeBG: var(--mkThemeFocusBG1B);
-  }
-
-  .focus-2 {
-    --mkThemeFG: var(--mkThemeFocusFG2B);
-    --mkThemeBG: var(--mkThemeFocusBG2B);
-  }
-
-  .focus-1h {
-    --mkThemeFG: var(--mkThemeFocusFG1H);
-    --mkThemeBG: var(--mkThemeFocusBG1H);
-  }
-
-  .focus-2h {
-    --mkThemeFG: var(--mkThemeFocusFG2H);
-    --mkThemeBG: var(--mkThemeFocusBG2H);
-  }
-
-  .hover-1 {
-    --mkThemeFG: var(--mkThemeHoverFG1B);
-    --mkThemeBG: var(--mkThemeHoverBG1B);
-  }
-
-  .hover-2 {
-    --mkThemeFG: var(--mkThemeHoverFG2B);
-    --mkThemeBG: var(--mkThemeHoverBG2B);
-  }
-
-  .hover-1h {
-    --mkThemeFG: var(--mkThemeHoverFG1H);
-    --mkThemeBG: var(--mkThemeHoverBG1H);
-  }
-
-  .hover-2h {
-    --mkThemeFG: var(--mkThemeHoverFG2H);
-    --mkThemeBG: var(--mkThemeHoverBG2H);
-  }
-
-  .disabled-1 {
-    --mkThemeFG: var(--mkThemeDisabledFG1B);
-    --mkThemeBG: var(--mkThemeDisabledBG1B);
-  }
-
-  .disabled-2 {
-    --mkThemeFG: var(--mkThemeDisabledFG2B);
-    --mkThemeBG: var(--mkThemeDisabledBG2B);
-  }
-
-  .disabled-1h {
-    --mkThemeFG: var(--mkThemeDisabledFG1H);
-    --mkThemeBG: var(--mkThemeDisabledBG1H);
-  }
-
-  .disabled-2h {
-    --mkThemeFG: var(--mkThemeDisabledFG2H);
-    --mkThemeBG: var(--mkThemeDisabledBG2H);
-  }
-
-  .action-1, .action-2,
-  .action-1h, .action-2h,
-  .focus-1, .focus-2,
-  .focus-1h, .focus-2h,
-  .hover-1, .hover-2,
-  .hover-1h, .hover-2h,
-  .disabled-1, .disabled-2,
-  .disabled-1h, .disabled-2h {
-    background-color: var(--mkThemeBG);
-    color: var(--mkThemeFG);
-  }
+[mk-action-2].hover {
+  --mkThemeBG: var(--mkThemeHoverBG2);
+  --mkThemeFG: var(--mkThemeHoverFG2);
+}
 
   .label {
     font-size: 1rem;
@@ -127,305 +55,398 @@
   }
 </style>
 
-<table id="table" mk-theme="light">
+<table id="table" mk-theme-level="0">
   <colgroup>
     <col id="col1">
     <col id="col2">
     <col id="col3">
     <col id="col4">
     <col id="col5">
+    <col id="col6">
+    <col id="col7">
   </colgroup>
   <thead mk-body-2="">
     <tr>
       <th></th>
-      <th colspan="2">normal</th>
-      <th colspan="2">highlight</th>
+      <th colspan="2">Main</th>
+      <th colspan="2">Side</th>
+      <th colspan="2">Highlight</th>
     </tr>
   </thead>
   <tbody>
     <!-- Passive -->
-    <tr>
+    <tr id="passiveRow">
       <td mk-body-2="">passive</td>
-      <td mk-passive-1="">
+      <td mk-passive-1="" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">B010-G200</code>
-          <code class="label dark">G200-G050</code>
+          <code class="label light">P010-P200</code>
+          <code class="label dark">P200-P035</code>
         </div>
       </td>
-      <td mk-passive-2="">
+      <td mk-passive-2="" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">B010ml-G200</code>
-          <code class="label dark">G200mh-G050</code>
+          <code class="label light">P010ml-P200</code>
+          <code class="label dark">P200mh-P035</code>
         </div>
       </td>
 
-
-      <td mk-passive-1="" mk-theme-highlight="">
+      <td mk-passive-1="" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">B010-B175</code>
-          <code class="label dark">G200-B050</code>
+          <code class="label light">P010-P185</code>
+          <code class="label dark">P200-P050</code>
         </div>
       </td>
-      <td mk-passive-2="" mk-theme-highlight="">
+      <td mk-passive-2="" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">B010ml-B175</code>
-          <code class="label dark">G200mh-B050</code>
+          <code class="label light">P010ml-P185</code>
+          <code class="label dark">P200mh-P050</code>
+        </div>
+      </td>
+
+      <td mk-passive-1="" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">A</h3>
+          <code class="label light">P010-A175</code>
+          <code class="label dark">P200-A045</code>
+        </div>
+      </td>
+      <td mk-passive-2="" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">a</h3>
+          <code class="label light">P010ml-A175</code>
+          <code class="label dark">P200mh-A045</code>
         </div>
       </td>
     </tr>
 
 
     <!-- Action -->
-    <tr>
+    <tr id="actionRow">
       <td mk-body-2="">action</td>
-      <td class="action-1">
+      <td mk-action-1="" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">Bk-B100</code>
-          <code class="label dark">Bk-B100</code>
+          <code class="label light">Pk-A100</code>
+          <code class="label dark">Pk-A100</code>
         </div>
       </td>
-      <td class="action-2">
+      <td mk-action-2="" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">B050-G200</code>
-          <code class="label dark">B175-G050</code>
+          <code class="label light">A050-P200</code>
+          <code class="label dark">A175-P035</code>
         </div>
       </td>
 
-
-      <td class="action-1h">
+      <td mk-action-1="" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">Bk-B100</code>
-          <code class="label dark">Bk-B100</code>
+          <code class="label light">Pk-A100</code>
+          <code class="label dark">Pk-A100</code>
         </div>
       </td>
-      <td class="action-2h">
+      <td mk-action-2="" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">B050-B175</code>
-          <code class="label dark">B175-B050</code>
+          <code class="label light">A050-P185</code>
+          <code class="label dark">A175-P050</code>
+        </div>
+      </td>
+
+      <td mk-action-1="" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">A</h3>
+          <code class="label light">Pk-A100</code>
+          <code class="label dark">Pk-A100</code>
+        </div>
+      </td>
+      <td mk-action-2="" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">a</h3>
+          <code class="label light">A050-A175</code>
+          <code class="label dark">A175-A045</code>
         </div>
       </td>
     </tr>
 
 
     <!-- Focus -->
-    <tr>
+    <tr id="focusRow">
       <td mk-body-2="">action (focus)</td>
-      <td class="focus-1">
+      <td mk-action-1="" class="focus" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">A050-A175</code>
-          <code class="label dark">A050-A175</code>
+          <code class="label light">H050-H175</code>
+          <code class="label dark">H050-H175</code>
         </div>
       </td>
-      <td class="focus-2">
+      <td mk-action-2="" class="focus" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">A050ml-A175</code>
-          <code class="label dark">A050ml-A175</code>
+          <code class="label light">H050ml-H175</code>
+          <code class="label dark">H050ml-H175</code>
         </div>
       </td>
 
-
-      <td class="focus-1h">
+      <td mk-action-1="" class="focus" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">A050-A175</code>
-          <code class="label dark">A050-A175</code>
+          <code class="label light">H050-H175</code>
+          <code class="label dark">H050-H175</code>
         </div>
       </td>
-      <td class="focus-2h">
+      <td mk-action-2="" class="focus" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">A050ml-A175</code>
-          <code class="label dark">A050ml-A175</code>
+          <code class="label light">H050ml-H175</code>
+          <code class="label dark">H050ml-H175</code>
+        </div>
+      </td>
+
+      <td mk-action-1="" class="focus" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">A</h3>
+          <code class="label light">H050-H175</code>
+          <code class="label dark">H050-H175</code>
+        </div>
+      </td>
+      <td mk-action-2="" class="focus" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">a</h3>
+          <code class="label light">H050ml-H175</code>
+          <code class="label dark">H050ml-H175</code>
         </div>
       </td>
     </tr>
 
 
     <!-- Hover -->
-    <tr>
+    <tr id="hoverRow">
       <td mk-body-2="">action (hover)</td>
-      <td class="hover-1">
+      <td mk-action-1="" class="hover" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">Ak-A100</code>
-          <code class="label dark">Ak-A100</code>
+          <code class="label light">Hk-H100</code>
+          <code class="label dark">Hk-H100</code>
         </div>
       </td>
-      <td class="hover-2">
+      <td mk-action-2="" class="hover" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">Ac-A100</code>
-          <code class="label dark">Ac-A100</code>
+          <code class="label light">Hc-H100</code>
+          <code class="label dark">Hc-H100</code>
         </div>
       </td>
 
-
-      <td class="hover-1h">
+      <td mk-action-1="" class="hover" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">Ak-A100</code>
-          <code class="label dark">Ak-A100</code>
+          <code class="label light">Hk-H100</code>
+          <code class="label dark">Hk-H100</code>
         </div>
       </td>
-      <td class="hover-2h">
+      <td mk-action-2="" class="hover" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">Ac-A100</code>
-          <code class="label dark">Ac-A100</code>
+          <code class="label light">Hc-H100</code>
+          <code class="label dark">Hc-H100</code>
+        </div>
+      </td>
+
+      <td mk-action-1="" class="hover" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">A</h3>
+          <code class="label light">Hk-H100</code>
+          <code class="label dark">Hk-H100</code>
+        </div>
+      </td>
+      <td mk-action-2="" class="hover" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">a</h3>
+          <code class="label light">Hc-H100</code>
+          <code class="label dark">Hc-H100</code>
         </div>
       </td>
     </tr>
 
 
     <!-- Disabled -->
-    <tr>
+    <tr id="disabledRow">
       <td mk-body-2="">action (disabled)</td>
-      <td class="disabled-1">
+      <td mk-action-1="" mk-disabled="" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">B010vl-G200</code>
-          <code class="label dark">G200lo-G050</code>
+          <code class="label light">P010vl-P200</code>
+          <code class="label dark">P200lo-P035</code>
         </div>
       </td>
-      <td class="disabled-2">
+      <td mk-action-2="" mk-disabled="" mk-theme-context="main">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">B010vl-G200</code>
-          <code class="label dark">G200lo-G050</code>
+          <code class="label light">P010vl-P200</code>
+          <code class="label dark">P200lo-P035</code>
         </div>
       </td>
 
-
-      <td class="disabled-1h">
+      <td mk-action-1="" mk-disabled="" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">A</h3>
-          <code class="label light">B010vl-B175</code>
-          <code class="label dark">G200lo-B050</code>
+          <code class="label light">P010vl-P185</code>
+          <code class="label dark">P200lo-P050</code>
         </div>
       </td>
-      <td class="disabled-2h">
+      <td mk-action-2="" mk-disabled="" mk-theme-context="side">
         <div flex-align="center" layout="column">
           <h3 flex="" mk-display="">a</h3>
-          <code class="label light">B010vl-B175</code>
-          <code class="label dark">G200lo-B050</code>
+          <code class="label light">P010vl-P185</code>
+          <code class="label dark">P200lo-P050</code>
+        </div>
+      </td>
+
+      <td mk-action-1="" mk-disabled="" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">A</h3>
+          <code class="label light">P010vl-A175</code>
+          <code class="label dark">P200lo-A045</code>
+        </div>
+      </td>
+      <td mk-action-2="" mk-disabled="" mk-theme-context="highlight">
+        <div flex-align="center" layout="column">
+          <h3 flex="" mk-display="">a</h3>
+          <code class="label light">P010vl-A175</code>
+          <code class="label dark">P200lo-A045</code>
         </div>
       </td>
     </tr>
   </tbody>
 </table>
+<style>:root { --mkThemeMainPassiveFG1: rgba(15,14,10,1);
+--mkThemeMainPassiveBG1: rgba(255,255,255,1);
+--mkThemeMainActionFG1: rgba(15,14,10,1);
+--mkThemeMainActionBG1: rgba(255,193,1,1);
+--mkThemeMainHoverFG1: rgba(0,19,2,1);
+--mkThemeMainHoverBG1: rgba(0,192,22,1);
+--mkThemeMainFocusFG1: rgba(0,96,11,1);
+--mkThemeMainFocusBG1: rgba(191,239,197,1);
+--mkThemeMainDisabledFG1: rgba(15,14,10,0.35);
+--mkThemeMainDisabledBG1: rgba(255,255,255,1);
+--mkThemeMainPassiveFG2: rgba(15,14,10,0.65);
+--mkThemeMainPassiveBG2: rgba(255,255,255,1);
+--mkThemeMainActionFG2: rgba(128,97,1,1);
+--mkThemeMainActionBG2: rgba(255,255,255,1);
+--mkThemeMainHoverFG2: rgba(0,19,2,0.65);
+--mkThemeMainHoverBG2: rgba(0,192,22,1);
+--mkThemeMainFocusFG2: rgba(0,96,11,0.65);
+--mkThemeMainFocusBG2: rgba(191,239,197,1);
+--mkThemeMainDisabledFG2: rgba(15,14,10,0.35);
+--mkThemeMainDisabledBG2: rgba(255,255,255,1);
+--mkThemeSidePassiveFG1: rgba(15,14,10,1);
+--mkThemeSidePassiveBG1: rgba(240,238,232,1);
+--mkThemeSideActionFG1: rgba(15,14,10,1);
+--mkThemeSideActionBG1: rgba(255,193,1,1);
+--mkThemeSideHoverFG1: rgba(0,19,2,1);
+--mkThemeSideHoverBG1: rgba(0,192,22,1);
+--mkThemeSideFocusFG1: rgba(0,96,11,1);
+--mkThemeSideFocusBG1: rgba(191,239,197,1);
+--mkThemeSideDisabledFG1: rgba(15,14,10,0.35);
+--mkThemeSideDisabledBG1: rgba(240,238,232,1);
+--mkThemeSidePassiveFG2: rgba(15,14,10,0.65);
+--mkThemeSidePassiveBG2: rgba(240,238,232,1);
+--mkThemeSideActionFG2: rgba(128,97,1,1);
+--mkThemeSideActionBG2: rgba(240,238,232,1);
+--mkThemeSideHoverFG2: rgba(0,19,2,0.65);
+--mkThemeSideHoverBG2: rgba(0,192,22,1);
+--mkThemeSideFocusFG2: rgba(0,96,11,0.65);
+--mkThemeSideFocusBG2: rgba(191,239,197,1);
+--mkThemeSideDisabledFG2: rgba(15,14,10,0.35);
+--mkThemeSideDisabledBG2: rgba(240,238,232,1);
+--mkThemeHighlightPassiveFG1: rgba(15,14,10,1);
+--mkThemeHighlightPassiveBG1: rgba(255,240,192,1);
+--mkThemeHighlightActionFG1: rgba(15,14,10,1);
+--mkThemeHighlightActionBG1: rgba(255,193,1,1);
+--mkThemeHighlightHoverFG1: rgba(0,19,2,1);
+--mkThemeHighlightHoverBG1: rgba(0,192,22,1);
+--mkThemeHighlightFocusFG1: rgba(0,96,11,1);
+--mkThemeHighlightFocusBG1: rgba(191,239,197,1);
+--mkThemeHighlightDisabledFG1: rgba(15,14,10,0.35);
+--mkThemeHighlightDisabledBG1: rgba(255,240,192,1);
+--mkThemeHighlightPassiveFG2: rgba(15,14,10,0.65);
+--mkThemeHighlightPassiveBG2: rgba(255,240,192,1);
+--mkThemeHighlightActionFG2: rgba(128,97,1,1);
+--mkThemeHighlightActionBG2: rgba(255,240,192,1);
+--mkThemeHighlightHoverFG2: rgba(0,19,2,0.65);
+--mkThemeHighlightHoverBG2: rgba(0,192,22,1);
+--mkThemeHighlightFocusFG2: rgba(0,96,11,0.65);
+--mkThemeHighlightFocusBG2: rgba(191,239,197,1);
+--mkThemeHighlightDisabledFG2: rgba(15,14,10,0.35);
+--mkThemeHighlightDisabledBG2: rgba(255,240,192,1); }
 
-<style>[mk-theme="light"] { --mkThemePassiveFG1B: rgba(26,19,0,1);
---mkThemePassiveBG1B: rgba(255,255,255,1);
---mkThemeActionFG1B: rgba(26,19,0,1);
---mkThemeActionBG1B: rgba(255,193,1,1);
---mkThemeFocusFG1B: rgba(0,96,11,1);
---mkThemeFocusBG1B: rgba(191,239,197,1);
---mkThemeHoverFG1B: rgba(0,19,2,1);
---mkThemeHoverBG1B: rgba(0,192,22,1);
---mkThemeDisabledFG1B: rgba(26,19,0,0.35);
---mkThemeDisabledBG1B: rgba(255,255,255,1);
---mkThemePassiveFG2B: rgba(26,19,0,0.65);
---mkThemePassiveBG2B: rgba(255,255,255,1);
---mkThemeActionFG2B: rgba(128,97,1,1);
---mkThemeActionBG2B: rgba(255,255,255,1);
---mkThemeFocusFG2B: rgba(0,96,11,0.65);
---mkThemeFocusBG2B: rgba(191,239,197,1);
---mkThemeHoverFG2B: rgba(0,19,2,0.65);
---mkThemeHoverBG2B: rgba(0,192,22,1);
---mkThemeDisabledFG2B: rgba(26,19,0,0.35);
---mkThemeDisabledBG2B: rgba(255,255,255,1);
---mkThemePassiveFG1H: rgba(26,19,0,1);
---mkThemePassiveBG1H: rgba(255,240,192,1);
---mkThemeActionFG1H: rgba(26,19,0,1);
---mkThemeActionBG1H: rgba(255,193,1,1);
---mkThemeFocusFG1H: rgba(0,96,11,1);
---mkThemeFocusBG1H: rgba(191,239,197,1);
---mkThemeHoverFG1H: rgba(0,19,2,1);
---mkThemeHoverBG1H: rgba(0,192,22,1);
---mkThemeDisabledFG1H: rgba(26,19,0,0.35);
---mkThemeDisabledBG1H: rgba(255,240,192,1);
---mkThemePassiveFG2H: rgba(26,19,0,0.65);
---mkThemePassiveBG2H: rgba(255,240,192,1);
---mkThemeActionFG2H: rgba(128,97,1,1);
---mkThemeActionBG2H: rgba(255,240,192,1);
---mkThemeFocusFG2H: rgba(0,96,11,0.65);
---mkThemeFocusBG2H: rgba(191,239,197,1);
---mkThemeHoverFG2H: rgba(0,19,2,0.65);
---mkThemeHoverBG2H: rgba(0,192,22,1);
---mkThemeDisabledFG2H: rgba(26,19,0,0.35);
---mkThemeDisabledBG2H: rgba(255,240,192,1); }
+[mk-theme-context="main"] { --mkThemePassiveFG1: var(--mkThemeMainPassiveFG1);
+--mkThemePassiveBG1: var(--mkThemeMainPassiveBG1);
+--mkThemeActionFG1: var(--mkThemeMainActionFG1);
+--mkThemeActionBG1: var(--mkThemeMainActionBG1);
+--mkThemeHoverFG1: var(--mkThemeMainHoverFG1);
+--mkThemeHoverBG1: var(--mkThemeMainHoverBG1);
+--mkThemeFocusFG1: var(--mkThemeMainFocusFG1);
+--mkThemeFocusBG1: var(--mkThemeMainFocusBG1);
+--mkThemeDisabledFG1: var(--mkThemeMainDisabledFG1);
+--mkThemeDisabledBG1: var(--mkThemeMainDisabledBG1);
+--mkThemePassiveFG2: var(--mkThemeMainPassiveFG2);
+--mkThemePassiveBG2: var(--mkThemeMainPassiveBG2);
+--mkThemeActionFG2: var(--mkThemeMainActionFG2);
+--mkThemeActionBG2: var(--mkThemeMainActionBG2);
+--mkThemeHoverFG2: var(--mkThemeMainHoverFG2);
+--mkThemeHoverBG2: var(--mkThemeMainHoverBG2);
+--mkThemeFocusFG2: var(--mkThemeMainFocusFG2);
+--mkThemeFocusBG2: var(--mkThemeMainFocusBG2);
+--mkThemeDisabledFG2: var(--mkThemeMainDisabledFG2);
+--mkThemeDisabledBG2: var(--mkThemeMainDisabledBG2); }
 
-[mk-theme="dark"] { --mkThemePassiveFG1B: rgba(255,255,255,1);
---mkThemePassiveBG1B: rgba(38,43,46,1);
---mkThemeActionFG1B: rgba(26,19,0,1);
---mkThemeActionBG1B: rgba(255,193,1,1);
---mkThemeFocusFG1B: rgba(0,96,11,1);
---mkThemeFocusBG1B: rgba(191,239,197,1);
---mkThemeHoverFG1B: rgba(0,19,2,1);
---mkThemeHoverBG1B: rgba(0,192,22,1);
---mkThemeDisabledFG1B: rgba(255,255,255,0.45);
---mkThemeDisabledBG1B: rgba(38,43,46,1);
---mkThemePassiveFG2B: rgba(255,255,255,0.75);
---mkThemePassiveBG2B: rgba(38,43,46,1);
---mkThemeActionFG2B: rgba(255,240,192,1);
---mkThemeActionBG2B: rgba(38,43,46,1);
---mkThemeFocusFG2B: rgba(0,96,11,0.65);
---mkThemeFocusBG2B: rgba(191,239,197,1);
---mkThemeHoverFG2B: rgba(0,19,2,0.65);
---mkThemeHoverBG2B: rgba(0,192,22,1);
---mkThemeDisabledFG2B: rgba(255,255,255,0.45);
---mkThemeDisabledBG2B: rgba(38,43,46,1);
---mkThemePassiveFG1H: rgba(255,255,255,1);
---mkThemePassiveBG1H: rgba(128,97,1,1);
---mkThemeActionFG1H: rgba(26,19,0,1);
---mkThemeActionBG1H: rgba(255,193,1,1);
---mkThemeFocusFG1H: rgba(0,96,11,1);
---mkThemeFocusBG1H: rgba(191,239,197,1);
---mkThemeHoverFG1H: rgba(0,19,2,1);
---mkThemeHoverBG1H: rgba(0,192,22,1);
---mkThemeDisabledFG1H: rgba(255,255,255,0.45);
---mkThemeDisabledBG1H: rgba(128,97,1,1);
---mkThemePassiveFG2H: rgba(255,255,255,0.75);
---mkThemePassiveBG2H: rgba(128,97,1,1);
---mkThemeActionFG2H: rgba(255,240,192,1);
---mkThemeActionBG2H: rgba(128,97,1,1);
---mkThemeFocusFG2H: rgba(0,96,11,0.65);
---mkThemeFocusBG2H: rgba(191,239,197,1);
---mkThemeHoverFG2H: rgba(0,19,2,0.65);
---mkThemeHoverBG2H: rgba(0,192,22,1);
---mkThemeDisabledFG2H: rgba(255,255,255,0.45);
---mkThemeDisabledBG2H: rgba(128,97,1,1); }
+[mk-theme-context="side"] { --mkThemePassiveFG1: var(--mkThemeSidePassiveFG1);
+--mkThemePassiveBG1: var(--mkThemeSidePassiveBG1);
+--mkThemeActionFG1: var(--mkThemeSideActionFG1);
+--mkThemeActionBG1: var(--mkThemeSideActionBG1);
+--mkThemeHoverFG1: var(--mkThemeSideHoverFG1);
+--mkThemeHoverBG1: var(--mkThemeSideHoverBG1);
+--mkThemeFocusFG1: var(--mkThemeSideFocusFG1);
+--mkThemeFocusBG1: var(--mkThemeSideFocusBG1);
+--mkThemeDisabledFG1: var(--mkThemeSideDisabledFG1);
+--mkThemeDisabledBG1: var(--mkThemeSideDisabledBG1);
+--mkThemePassiveFG2: var(--mkThemeSidePassiveFG2);
+--mkThemePassiveBG2: var(--mkThemeSidePassiveBG2);
+--mkThemeActionFG2: var(--mkThemeSideActionFG2);
+--mkThemeActionBG2: var(--mkThemeSideActionBG2);
+--mkThemeHoverFG2: var(--mkThemeSideHoverFG2);
+--mkThemeHoverBG2: var(--mkThemeSideHoverBG2);
+--mkThemeFocusFG2: var(--mkThemeSideFocusFG2);
+--mkThemeFocusBG2: var(--mkThemeSideFocusBG2);
+--mkThemeDisabledFG2: var(--mkThemeSideDisabledFG2);
+--mkThemeDisabledBG2: var(--mkThemeSideDisabledBG2); }
 
-[mk-theme-highlight] { --mkThemePassiveBG1B: var(--mkThemePassiveBG1H);
---mkThemePassiveFG1B: var(--mkThemePassiveFG1H);
---mkThemeActionBG1B: var(--mkThemeActionBG1H);
---mkThemeActionFG1B: var(--mkThemeActionFG1H);
---mkThemeFocusBG1B: var(--mkThemeFocusBG1H);
---mkThemeFocusFG1B: var(--mkThemeFocusFG1H);
---mkThemeHoverBG1B: var(--mkThemeHoverBG1H);
---mkThemeHoverFG1B: var(--mkThemeHoverFG1H);
---mkThemeDisabledBG1B: var(--mkThemeDisabledBG1H);
---mkThemeDisabledFG1B: var(--mkThemeDisabledFG1H);
---mkThemePassiveBG2B: var(--mkThemePassiveBG2H);
---mkThemePassiveFG2B: var(--mkThemePassiveFG2H);
---mkThemeActionBG2B: var(--mkThemeActionBG2H);
---mkThemeActionFG2B: var(--mkThemeActionFG2H);
---mkThemeFocusBG2B: var(--mkThemeFocusBG2H);
---mkThemeFocusFG2B: var(--mkThemeFocusFG2H);
---mkThemeHoverBG2B: var(--mkThemeHoverBG2H);
---mkThemeHoverFG2B: var(--mkThemeHoverFG2H);
---mkThemeDisabledBG2B: var(--mkThemeDisabledBG2H);
---mkThemeDisabledFG2B: var(--mkThemeDisabledFG2H); }
+[mk-theme-context="highlight"] { --mkThemePassiveFG1: var(--mkThemeHighlightPassiveFG1);
+--mkThemePassiveBG1: var(--mkThemeHighlightPassiveBG1);
+--mkThemeActionFG1: var(--mkThemeHighlightActionFG1);
+--mkThemeActionBG1: var(--mkThemeHighlightActionBG1);
+--mkThemeHoverFG1: var(--mkThemeHighlightHoverFG1);
+--mkThemeHoverBG1: var(--mkThemeHighlightHoverBG1);
+--mkThemeFocusFG1: var(--mkThemeHighlightFocusFG1);
+--mkThemeFocusBG1: var(--mkThemeHighlightFocusBG1);
+--mkThemeDisabledFG1: var(--mkThemeHighlightDisabledFG1);
+--mkThemeDisabledBG1: var(--mkThemeHighlightDisabledBG1);
+--mkThemePassiveFG2: var(--mkThemeHighlightPassiveFG2);
+--mkThemePassiveBG2: var(--mkThemeHighlightPassiveBG2);
+--mkThemeActionFG2: var(--mkThemeHighlightActionFG2);
+--mkThemeActionBG2: var(--mkThemeHighlightActionBG2);
+--mkThemeHoverFG2: var(--mkThemeHighlightHoverFG2);
+--mkThemeHoverBG2: var(--mkThemeHighlightHoverBG2);
+--mkThemeFocusFG2: var(--mkThemeHighlightFocusFG2);
+--mkThemeFocusBG2: var(--mkThemeHighlightFocusBG2);
+--mkThemeDisabledFG2: var(--mkThemeHighlightDisabledFG2);
+--mkThemeDisabledBG2: var(--mkThemeHighlightDisabledBG2); }
 /***********
  * Variables
  ***********/
@@ -449,151 +470,75 @@
 /*****************
  * Theme variables
  *****************/
-[mk-theme="light"],
-[mk-theme="dark"],
-[mk-theme-highlight],
-[mk-passive-1] {
-  --mkThemeBG: var(--mkThemePassiveBG1B);
-  --mkThemeFG: var(--mkThemePassiveFG1B);
+[mk-passive-1],
+:root {
+  --mkThemeBG: var(--mkThemePassiveBG1);
+  --mkThemeFG: var(--mkThemePassiveFG1);
 }
 
-[mk-theme="light"] [mk-passive-2],
-[mk-theme="light"][mk-passive-2],
-[mk-theme="dark"] [mk-passive-2],
-[mk-theme="dark"][mk-passive-2],
-[mk-theme-highlight] [mk-passive-2],
-[mk-theme-highlight][mk-passive-2],
 [mk-passive-2] {
-  --mkThemeBG: var(--mkThemePassiveBG2B);
-  --mkThemeFG: var(--mkThemePassiveFG2B);
+  --mkThemeBG: var(--mkThemePassiveBG2);
+  --mkThemeFG: var(--mkThemePassiveFG2);
 }
 
-[mk-theme="light"] [mk-action-1],
-[mk-theme="light"][mk-action-1],
-[mk-theme="dark"] [mk-action-1],
-[mk-theme="dark"][mk-action-1],
-[mk-theme-highlight] [mk-action-1],
-[mk-theme-highlight][mk-action-1],
 [mk-action-1] {
-  --mkThemeBG: var(--mkThemeActionBG1B);
-  --mkThemeFG: var(--mkThemeActionFG1B);
+  --mkThemeBG: var(--mkThemeActionBG1);
+  --mkThemeFG: var(--mkThemeActionFG1);
 }
 
-[mk-theme="light"] [mk-action-2],
-[mk-theme="light"][mk-action-2],
-[mk-theme="dark"] [mk-action-2],
-[mk-theme="dark"][mk-action-2],
-[mk-theme-highlight] [mk-action-2],
-[mk-theme-highlight][mk-action-2],
 [mk-action-2] {
-  --mkThemeBG: var(--mkThemeActionBG2B);
-  --mkThemeFG: var(--mkThemeActionFG2B);
+  --mkThemeBG: var(--mkThemeActionBG2);
+  --mkThemeFG: var(--mkThemeActionFG2);
 }
 
-[mk-theme="light"] a,
-a[mk-theme="light"],
-[mk-theme="dark"] a,
-a[mk-theme="dark"],
-[mk-theme-highlight] a,
-a[mk-theme-highlight],
 a {
-  --mkThemeBG: var(--mkThemeActionBG2B);
-  --mkThemeFG: var(--mkThemeActionFG2B);
+  --mkThemeBG: var(--mkThemeActionBG2);
+  --mkThemeFG: var(--mkThemeActionFG2);
 }
 
-[mk-theme="light"] [mk-action-1]:focus-within,
-[mk-theme="light"][mk-action-1]:focus-within,
-[mk-theme="dark"] [mk-action-1]:focus-within,
-[mk-theme="dark"][mk-action-1]:focus-within,
-[mk-theme-highlight] [mk-action-1]:focus-within,
-[mk-theme-highlight][mk-action-1]:focus-within,
 [mk-action-1]:focus-within {
-  --mkThemeBG: var(--mkThemeFocusBG1B);
-  --mkThemeFG: var(--mkThemeFocusFG1B);
+  --mkThemeBG: var(--mkThemeFocusBG1);
+  --mkThemeFG: var(--mkThemeFocusFG1);
 }
 
-[mk-theme="light"] [mk-action-2]:focus-within,
-[mk-theme="light"][mk-action-2]:focus-within,
-[mk-theme="dark"] [mk-action-2]:focus-within,
-[mk-theme="dark"][mk-action-2]:focus-within,
-[mk-theme-highlight] [mk-action-2]:focus-within,
-[mk-theme-highlight][mk-action-2]:focus-within,
 [mk-action-2]:focus-within {
-  --mkThemeBG: var(--mkThemeFocusBG2B);
-  --mkThemeFG: var(--mkThemeFocusFG2B);
+  --mkThemeBG: var(--mkThemeFocusBG2);
+  --mkThemeFG: var(--mkThemeFocusFG2);
 }
 
-[mk-theme="light"] a:focus-within,
-a[mk-theme="light"]:focus-within,
-[mk-theme="dark"] a:focus-within,
-a[mk-theme="dark"]:focus-within,
-[mk-theme-highlight] a:focus-within,
-a[mk-theme-highlight]:focus-within,
 a:focus-within {
-  --mkThemeBG: var(--mkThemeFocusBG2B);
-  --mkThemeFG: var(--mkThemeFocusFG2B);
+  --mkThemeBG: var(--mkThemeFocusBG2);
+  --mkThemeFG: var(--mkThemeFocusFG2);
 }
 
-[mk-theme="light"] [mk-action-1]:hover,
-[mk-theme="light"][mk-action-1]:hover,
-[mk-theme="dark"] [mk-action-1]:hover,
-[mk-theme="dark"][mk-action-1]:hover,
-[mk-theme-highlight] [mk-action-1]:hover,
-[mk-theme-highlight][mk-action-1]:hover,
 [mk-action-1]:hover {
-  --mkThemeBG: var(--mkThemeHoverBG1B);
-  --mkThemeFG: var(--mkThemeHoverFG1B);
+  --mkThemeBG: var(--mkThemeHoverBG1);
+  --mkThemeFG: var(--mkThemeHoverFG1);
 }
 
-[mk-theme="light"] [mk-action-2]:hover,
-[mk-theme="light"][mk-action-2]:hover,
-[mk-theme="dark"] [mk-action-2]:hover,
-[mk-theme="dark"][mk-action-2]:hover,
-[mk-theme-highlight] [mk-action-2]:hover,
-[mk-theme-highlight][mk-action-2]:hover,
 [mk-action-2]:hover {
-  --mkThemeBG: var(--mkThemeHoverBG2B);
-  --mkThemeFG: var(--mkThemeHoverFG2B);
+  --mkThemeBG: var(--mkThemeHoverBG2);
+  --mkThemeFG: var(--mkThemeHoverFG2);
 }
 
-[mk-theme="light"] a:hover,
-a[mk-theme="light"]:hover,
-[mk-theme="dark"] a:hover,
-a[mk-theme="dark"]:hover,
-[mk-theme-highlight] a:hover,
-a[mk-theme-highlight]:hover,
 a:hover {
-  --mkThemeBG: var(--mkThemeHoverBG2B);
-  --mkThemeFG: var(--mkThemeHoverFG2B);
+  --mkThemeBG: var(--mkThemeHoverBG2);
+  --mkThemeFG: var(--mkThemeHoverFG2);
 }
 
-[mk-theme="light"] [mk-action-1][mk-disabled],
-[mk-theme="light"][mk-action-1][mk-disabled],
-[mk-theme="dark"] [mk-action-1][mk-disabled],
-[mk-theme="dark"][mk-action-1][mk-disabled],
-[mk-theme-highlight] [mk-action-1][mk-disabled],
-[mk-theme-highlight][mk-action-1][mk-disabled],
 [mk-action-1][mk-disabled] {
-  --mkThemeBG: var(--mkThemeDisabledBG1B);
-  --mkThemeFG: var(--mkThemeDisabledFG1B);
+  --mkThemeBG: var(--mkThemeDisabledBG1);
+  --mkThemeFG: var(--mkThemeDisabledFG1);
 }
 
-[mk-theme="light"] [mk-action-2][mk-disabled],
-[mk-theme="light"][mk-action-2][mk-disabled],
-[mk-theme="dark"] [mk-action-2][mk-disabled],
-[mk-theme="dark"][mk-action-2][mk-disabled],
-[mk-theme-highlight] [mk-action-2][mk-disabled],
-[mk-theme-highlight][mk-action-2][mk-disabled],
 [mk-action-2][mk-disabled] {
-  --mkThemeBG: var(--mkThemeDisabledBG2B);
-  --mkThemeFG: var(--mkThemeDisabledFG2B);
+  --mkThemeBG: var(--mkThemeDisabledBG2);
+  --mkThemeFG: var(--mkThemeDisabledFG2);
 }
 
 /****************
  * Applied themes
  ****************/
-[mk-theme-highlight],
-[mk-theme],
 [mk-action-1], [mk-action-2],
 [mk-passive-1], [mk-passive-2],
 [mk-body-1], [mk-body-2],

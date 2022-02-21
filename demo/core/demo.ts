@@ -3,7 +3,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, id, ievent, oattr, omulti, osingle, registerCustomElement, renderCustomElement, renderElement, RenderSpec, SECTION} from 'persona';
-import {combineLatest, merge, Observable, of} from 'rxjs';
+import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
@@ -15,7 +15,7 @@ import {LINE_LAYOUT} from '../../src/layout/line-layout';
 import {LIST_ITEM_LAYOUT} from '../../src/layout/list-item-layout';
 import {ROOT_LAYOUT} from '../../src/layout/root-layout';
 import {renderTheme} from '../../src/theme/render-theme';
-import {PALETTE, ThemeSeed} from '../../src/theme/theme-seed';
+import {ThemeSeed, THEME_SEEDS} from '../../src/theme/theme-seed';
 
 import {$demoState} from './demo-state';
 import template from './demo.html';
@@ -92,7 +92,7 @@ class DemoCtrl implements Ctrl {
   @cache()
   private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
     const selectedColor$ = $demoState.get(this.$.vine).$('accentColorName');
-    const paletteNode$List = ORDERED_PALETTES
+    const paletteNodes = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
           return renderPaletteData(
@@ -102,13 +102,13 @@ class DemoCtrl implements Ctrl {
           );
         });
 
-    return paletteNode$List.length <= 0 ? of([]) : combineLatest(paletteNode$List);
+    return of(paletteNodes);
   }
 
   @cache()
   private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
     const selectedColor$ = $demoState.get(this.$.vine).$('baseColorName');
-    const paletteNode$List = ORDERED_PALETTES
+    const paletteNodes = ORDERED_PALETTES
         .map(([colorName, color]) => {
           const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
           return renderPaletteData(
@@ -118,7 +118,7 @@ class DemoCtrl implements Ctrl {
           );
         });
 
-    return paletteNode$List.length <= 0 ? of([]) : combineLatest(paletteNode$List);
+    return of(paletteNodes);
   }
 
   @cache()
@@ -251,29 +251,29 @@ export const DEMO = registerCustomElement({
 
 
 const ORDERED_PALETTES: ReadonlyArray<[keyof ThemeSeed, Color]> = [
-  ['RED', PALETTE.RED],
-  ['ORANGE', PALETTE.ORANGE],
-  ['AMBER', PALETTE.AMBER],
-  ['YELLOW', PALETTE.YELLOW],
-  ['LIME', PALETTE.LIME],
-  ['GREEN', PALETTE.GREEN],
-  ['TEAL', PALETTE.TEAL],
-  ['CYAN', PALETTE.CYAN],
-  ['AZURE', PALETTE.AZURE],
-  ['BLUE', PALETTE.BLUE],
-  ['VIOLET', PALETTE.VIOLET],
-  ['PURPLE', PALETTE.PURPLE],
-  ['MAGENTA', PALETTE.MAGENTA],
-  ['PINK', PALETTE.PINK],
-  ['BROWN', PALETTE.BROWN],
-  ['GREY', PALETTE.GREY],
+  ['RED', THEME_SEEDS.RED],
+  ['ORANGE', THEME_SEEDS.ORANGE],
+  ['AMBER', THEME_SEEDS.AMBER],
+  ['YELLOW', THEME_SEEDS.YELLOW],
+  ['LIME', THEME_SEEDS.LIME],
+  ['GREEN', THEME_SEEDS.GREEN],
+  ['TEAL', THEME_SEEDS.TEAL],
+  ['CYAN', THEME_SEEDS.CYAN],
+  ['AZURE', THEME_SEEDS.AZURE],
+  ['BLUE', THEME_SEEDS.BLUE],
+  ['VIOLET', THEME_SEEDS.VIOLET],
+  ['PURPLE', THEME_SEEDS.PURPLE],
+  ['MAGENTA', THEME_SEEDS.MAGENTA],
+  ['PINK', THEME_SEEDS.PINK],
+  ['BROWN', THEME_SEEDS.BROWN],
+  ['GREY', THEME_SEEDS.GREY],
 ];
 
 function renderPaletteData(
     colorName: string,
     color: Color,
     selected$: Observable<boolean>,
-): Observable<RenderSpec> {
+): RenderSpec {
   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
   const classes$ = selected$.pipe(
@@ -283,7 +283,7 @@ function renderPaletteData(
       map(classes => classes.join(' ')),
   );
 
-  return of(renderElement({
+  return renderElement({
     tag: 'div',
     attrs: new Map<string, Observable<string>>([
       ['class', classes$],
@@ -291,7 +291,7 @@ function renderPaletteData(
       ['style', of(`background-color: ${colorCss};`)],
     ]),
     id: colorName,
-  }));
+  });
 }
 
 function getColor(event: Event): keyof ThemeSeed|null {

@@ -5,9 +5,10 @@ import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {$themeLoader, start} from '../src/app/app';
 import {registerSvg} from '../src/core/svg-service';
+import {ThemeMode} from '../src/theme/const';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {Theme} from '../src/theme/theme';
-import {PALETTE, ThemeSeed} from '../src/theme/theme-seed';
+import {THEME_SEEDS, ThemeSeed} from '../src/theme/theme-seed';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -20,7 +21,11 @@ import {$demoState, ACCENT_COLOR_NAME, BASE_COLOR_NAME} from './core/demo-state'
 import {$locationService} from './core/location-service';
 
 
-const theme = new Theme(PALETTE[BASE_COLOR_NAME], PALETTE[ACCENT_COLOR_NAME]);
+const theme = new Theme({
+  baseSeed: THEME_SEEDS[BASE_COLOR_NAME],
+  accentSeed: THEME_SEEDS[ACCENT_COLOR_NAME],
+  mode: ThemeMode.DARK,
+});
 
 const consoleDestination = new WebConsoleDestination({installTrigger: true});
 ON_LOG_$.subscribe(entry => {
@@ -65,10 +70,11 @@ window.addEventListener('load', () => {
   ])
       .pipe(
           tap(([base, accent]) => {
-            themeLoader$.next(new ClassThemeLoader(new Theme(
-                PALETTE[base],
-                PALETTE[accent],
-            )));
+            themeLoader$.next(new ClassThemeLoader(new Theme({
+              baseSeed: THEME_SEEDS[base],
+              accentSeed: THEME_SEEDS[accent],
+              mode: ThemeMode.DARK,
+            })));
           }),
       )
       .subscribe();
