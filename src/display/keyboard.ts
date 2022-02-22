@@ -1,9 +1,10 @@
 import {cache} from 'gs-tools/export/data';
-import {enumType, Type} from 'gs-types';
-import {Context, Ctrl, iattr, omulti, osingle, registerCustomElement, renderElement, RenderSpec, renderTextNode, root} from 'persona';
-import {Observable, of as observableOf, of} from 'rxjs';
+import {enumType, stringType, Type} from 'gs-types';
+import {Context, Ctrl, iattr, id, KBD, ocase, oforeach, registerCustomElement, renderElement, renderFragment, RenderSpec, renderTextNode, root} from 'persona';
+import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
+import {THEME_LOADER_TYPE} from '../theme/loader/theme-loader';
 import {renderTheme} from '../theme/render-theme';
 
 import template from './keyboard.html';
@@ -15,8 +16,10 @@ const $keyboard = {
   },
   shadow: {
     root: root({
-      content: omulti('#content'),
-      theme: osingle('#theme'),
+      theme: ocase('#theme', THEME_LOADER_TYPE),
+    }),
+    description: id('description', KBD, {
+      content: oforeach('#content', stringType),
     }),
   },
 };
@@ -42,43 +45,11 @@ export class Keyboard implements Ctrl {
   @cache()
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      renderTheme(this.$, this.$.shadow.root.theme()),
-      this.keyboardSegments$.pipe(this.$.shadow.root.content()),
+      renderTheme(this.$, this.$.shadow.root.theme),
+      this.$.host.text.pipe(
+          map(keyStr => (keyStr ?? '').split(' ')),
+          this.$.shadow.description.content((value, index) => this.renderSegment(value, index))),
     ];
-  }
-
-  @cache()
-  private get keyboardSegments$(): Observable<readonly RenderSpec[]> {
-    const children$ = this.$.host.text.pipe(
-        map(keyStr => {
-          if (!keyStr) {
-            return [];
-          }
-
-          const keys = keyStr.split(' ');
-          if (keys.length <= 0) {
-            return [];
-          }
-
-          const [firstKey, ...rest] = keys;
-          const keyNode$list: RenderSpec[] = [
-            this.renderKey(firstKey),
-          ];
-
-          for (const key of rest) {
-            keyNode$list.push(renderTextNode({textContent: of('+'), id: {}}));
-            keyNode$list.push(this.renderKey(key));
-          }
-
-          return keyNode$list;
-        }),
-    );
-
-    return observableOf([renderElement({
-      tag: 'kbd',
-      children: children$,
-      id: {},
-    })]);
   }
 
   private renderKey(key: string): RenderSpec {
@@ -90,6 +61,19 @@ export class Keyboard implements Ctrl {
       textContent: of(keyToString(key)),
       id: {},
     });
+  }
+
+  private renderSegment(keyStr: string, index: number): Observable<RenderSpec> {
+    if (index <= 0) {
+      return of(this.renderKey(keyStr));
+    }
+    return of(renderFragment({
+      nodes: [
+        renderTextNode({textContent: of('+'), id: {}}),
+        this.renderKey(keyStr),
+      ],
+      id: keyStr,
+    }));
   }
 }
 

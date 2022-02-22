@@ -1,8 +1,8 @@
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {enumType} from 'gs-types';
-import {Context, Ctrl, DIV, id, ievent, itarget, oattr, oforeach, omulti, osingle, otext, query, registerCustomElement, renderCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
+import {enumType, hasPropertiesType, instanceofType, nullableType, stringType} from 'gs-types';
+import {Context, Ctrl, DIV, id, ievent, itarget, oattr, ocase, oforeach, otext, query, registerCustomElement, renderCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
@@ -23,6 +23,18 @@ import {$locationService, Views} from './location-service';
 import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec, PAGE_SPEC_TYPE} from './page-spec';
 
 
+interface PaletteEntry {
+  readonly colorName: string;
+  readonly color: Color;
+  readonly isSelected$: Observable<boolean>;
+}
+
+const PALETTE_ENTRY_TYPE = hasPropertiesType<PaletteEntry>({
+  colorName: stringType,
+  color: instanceofType(Color),
+  isSelected$: instanceofType<Observable<boolean>>(Observable),
+});
+
 const $demo = {
   host: {},
   shadow: {
@@ -30,15 +42,15 @@ const $demo = {
       target: itarget(),
     }),
     accentPalette: id('accentPalette', DIV, {
-      content: omulti('#content'),
+      content: oforeach('#content', PALETTE_ENTRY_TYPE),
       onClick: ievent('click', MouseEvent),
     }),
     basePalette: id('basePalette', DIV, {
-      content: omulti('#content'),
+      content: oforeach('#content', PALETTE_ENTRY_TYPE),
       onClick: ievent('click', MouseEvent),
     }),
     content: id('content', DIV, {
-      content: osingle('#content'),
+      content: ocase('#content', nullableType(PAGE_SPEC_TYPE)),
     }),
     drawerRoot: id('drawerRoot', DIV, {
       actionContents: oforeach('#actionContents', PAGE_SPEC_TYPE),
@@ -73,48 +85,49 @@ class DemoCtrl implements Ctrl {
       this.onBasePaletteClick$,
       this.onDrawerRootClick$,
       this.setupOnRootLayoutAction(),
-      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content()),
-      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content()),
+      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content(value => renderPaletteData(value))),
+      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(value => renderPaletteData(value))),
       this.$.shadow.darkMode.value.pipe(
           map(value => value === true),
           $demoState.get(this.$.vine).$('isDarkMode').set(),
       ),
-      this.mainContent$.pipe(this.$.shadow.content.content()),
-      of(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents({render: value => this.renderPageButtons(value)})),
-      of(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents({render: value => this.renderPageButtons(value)})),
-      of(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents({render: value => this.renderPageButtons(value)})),
-      of(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents({render: value => this.renderPageButtons(value)})),
+      $locationService.get(this.$.vine).location$.pipe(
+          map(location => getPageSpec(location.type)),
+          this.$.shadow.content.content(value => this.renderMainContent(value)),
+      ),
+      of(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents(value => this.renderPageButtons(value))),
+      of(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents(value => this.renderPageButtons(value))),
+      of(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents(value => this.renderPageButtons(value))),
+      of(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents(value => this.renderPageButtons(value))),
       this.isDrawerExpanded$.pipe(this.$.shadow.settingsDrawer.expanded()),
     ];
   }
 
   @cache()
-  private get accentPaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = $demoState.get(this.$.vine).$('accentColorName');
+  private get accentPaletteContents$(): Observable<readonly PaletteEntry[]> {
     const paletteNodes = ORDERED_PALETTES
         .map(([colorName, color]) => {
-          const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
-          return renderPaletteData(
-              colorName,
-              color,
-              isSelected$,
-          );
+          return {
+            colorName,
+            color,
+            isSelected$: $demoState.get(this.$.vine).$('accentColorName')
+                .pipe(map(selectedName => selectedName === colorName)),
+          };
         });
 
     return of(paletteNodes);
   }
 
   @cache()
-  private get basePaletteContents$(): Observable<readonly RenderSpec[]> {
-    const selectedColor$ = $demoState.get(this.$.vine).$('baseColorName');
+  private get basePaletteContents$(): Observable<readonly PaletteEntry[]> {
     const paletteNodes = ORDERED_PALETTES
         .map(([colorName, color]) => {
-          const isSelected$ = selectedColor$.pipe(map(selectedName => selectedName === colorName));
-          return renderPaletteData(
-              colorName,
-              color,
-              isSelected$,
-          );
+          return {
+            colorName,
+            color,
+            isSelected$: $demoState.get(this.$.vine).$('baseColorName')
+                .pipe(map(selectedName => selectedName === colorName)),
+          };
         });
 
     return of(paletteNodes);
@@ -140,26 +153,20 @@ class DemoCtrl implements Ctrl {
     );
   }
 
-  @cache()
-  private get mainContent$(): Observable<RenderSpec|null> {
-    return $locationService.get(this.$.vine).location$.pipe(
-        map(location => getPageSpec(location.type)),
-        map(spec => {
-          if (!spec) {
-            return null;
-          }
+  private renderMainContent(spec: PageSpec|null): Observable<RenderSpec|null> {
+    if (!spec) {
+      return of(null);
+    }
 
-          return renderCustomElement({
-            registration: spec.registration,
-            inputs: {},
-            id: {},
-          });
-        }),
-    );
+    return of(renderCustomElement({
+      registration: spec.registration,
+      inputs: {},
+      id: {},
+    }));
   }
 
-  private renderPageButtons({path, name}: PageSpec): RenderSpec {
-    return renderTemplate({
+  private renderPageButtons({path, name}: PageSpec): Observable<RenderSpec> {
+    return of(renderTemplate({
       // TODO: Do not cast
       template$: this.$.shadow._pageButton.target as Observable<HTMLTemplateElement>,
       spec: {
@@ -175,7 +182,7 @@ class DemoCtrl implements Ctrl {
         of(name).pipe($.div.text()),
       ],
       id: name,
-    });
+    }));
   }
 
   @cache()
@@ -256,21 +263,17 @@ const ORDERED_PALETTES: ReadonlyArray<[keyof ThemeSeed, Color]> = [
   ['GREY', THEME_SEEDS.GREY],
 ];
 
-function renderPaletteData(
-    colorName: string,
-    color: Color,
-    selected$: Observable<boolean>,
-): RenderSpec {
+function renderPaletteData({color, colorName, isSelected$}: PaletteEntry): Observable<RenderSpec> {
   const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
-  const classes$ = selected$.pipe(
+  const classes$ = isSelected$.pipe(
       map(selected => {
         return selected ? ['palette', 'selected'] : ['palette'];
       }),
       map(classes => classes.join(' ')),
   );
 
-  return renderElement({
+  return of(renderElement({
     tag: 'div',
     attrs: new Map<string, Observable<string>>([
       ['class', classes$],
@@ -278,7 +281,7 @@ function renderPaletteData(
       ['style', of(`background-color: ${colorCss};`)],
     ]),
     id: colorName,
-  });
+  }));
 }
 
 function getColor(event: Event): keyof ThemeSeed|null {

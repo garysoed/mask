@@ -1,10 +1,10 @@
 import {cache} from 'gs-tools/export/data';
-import {arrayOfType, instanceofType, Type} from 'gs-types';
-import {Context, Ctrl, itext, omulti, osingle, registerCustomElement, RenderSpec, renderTextNode, root} from 'persona';
-import {ivalue} from 'persona/src/input/value';
+import {arrayOfType, instanceofType, stringType, tupleOfType, Type} from 'gs-types';
+import {Context, Ctrl, itext, ivalue, ocase, oforeach, registerCustomElement, renderFragment, RenderSpec, renderTextNode, root} from 'persona';
 import {combineLatest, concat, Observable, of, OperatorFunction, pipe} from 'rxjs';
 import {bufferCount, map, switchMap} from 'rxjs/operators';
 
+import {THEME_LOADER_TYPE} from '../theme/loader/theme-loader';
 import {renderTheme} from '../theme/render-theme';
 
 import template from './annotated-text.html';
@@ -20,8 +20,10 @@ const $annotatedText = {
   },
   shadow: {
     root: root({
-      content: omulti('#contents'),
-      theme: osingle('#theme'),
+      content: oforeach('#contents', tupleOfType<[string, readonly AnnotationSpec[]]>(
+          [stringType, arrayOfType(ANNOTATION_SPEC_TYPE)],
+      )),
+      theme: ocase('#theme', THEME_LOADER_TYPE),
     }),
   },
 };
@@ -32,8 +34,17 @@ class AnnotatedText implements Ctrl {
   @cache()
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
-      renderTheme(this.$, this.$.shadow.root.theme()),
-      this.content$.pipe(this.$.shadow.root.content()),
+      renderTheme(this.$, this.$.shadow.root.theme),
+      combineLatest([
+        this.$.host.text,
+        this.$.host.annotations,
+      ])
+          .pipe(
+              map(v => [v]),
+              this.$.shadow.root.content(
+                  ([textContent, annotations]) => this.renderAnnotations(textContent, annotations),
+              ),
+          ),
     ];
   }
 
@@ -50,20 +61,12 @@ class AnnotatedText implements Ctrl {
     return obs;
   }
 
-  @cache()
-  private get content$(): Observable<readonly RenderSpec[]> {
-    return combineLatest([
-      this.$.host.text,
-      this.$.host.annotations,
-    ])
-        .pipe(
-            switchMap(([textContent, annotations]) => {
-              return this.applyAnnotations(
-                  renderTextNode({textContent: of(textContent), id: textContent}),
-                  annotations,
-              );
-            }),
-        );
+  private renderAnnotations(textContent: string, annotations: readonly AnnotationSpec[]): Observable<RenderSpec> {
+    return this.applyAnnotations(
+        renderTextNode({textContent: of(textContent), id: textContent}),
+        annotations,
+    )
+        .pipe(map(children => renderFragment({nodes: children, id: textContent})));
   }
 
   private getOperator(spec: AnnotationSpec): OperatorFunction<readonly RenderSpec[], readonly RenderSpec[]> {

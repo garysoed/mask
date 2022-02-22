@@ -6,12 +6,11 @@
  *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
-import {cache} from 'gs-tools/export/data';
 import {filterByType} from 'gs-tools/export/rxjs';
-import {enumType} from 'gs-types';
-import {Context, Ctrl, iattr, id, osingle, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
-import {Observable, of} from 'rxjs';
-import {map, share, switchMap, tap} from 'rxjs/operators';
+import {enumType, nullableType, stringType} from 'gs-types';
+import {Context, Ctrl, iattr, id, ocase, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
+import {defer, Observable, of} from 'rxjs';
+import {map, share, tap} from 'rxjs/operators';
 
 import {$svgService} from '../core/svg-service';
 import {renderTheme} from '../theme/render-theme';
@@ -32,7 +31,7 @@ const $icon = {
   },
   shadow: {
     root: id('root', SPAN, {
-      content: osingle(),
+      content: ocase(nullableType(stringType)),
     }),
   },
 };
@@ -43,15 +42,13 @@ class Icon implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      this.rootSvg$.pipe(this.$.shadow.root.content()),
+      this.$.host.icon.pipe(this.$.shadow.root.content(svgName => this.renderSvg(svgName))),
     ];
   }
 
-  @cache()
-  private get rootSvg$(): Observable<RenderSpec|null> {
-    return this.$.host.icon
+  private renderSvg(svgName: string|null): Observable<RenderSpec|null> {
+    return defer(() => svgName ? $svgService.get(this.$.vine).getSvg(svgName) : of(null))
         .pipe(
-            switchMap(svgName => svgName ? $svgService.get(this.$.vine).getSvg(svgName) : of(null)),
             map(svg => {
               if (!svg) {
                 return null;

@@ -1,27 +1,40 @@
-import {Context, ElementSpec, osingle, renderNode, RenderSpec, root} from 'persona';
-import {Observable, OperatorFunction} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Context, ElementSpec, ocase, renderNode, RenderSpec, root} from 'persona';
+import {RenderValueFn} from 'persona/export/internal';
+import {Observable, of, OperatorFunction} from 'rxjs';
 
 import {$themeLoader} from '../app/app';
 
+import {ThemeLoader, THEME_LOADER_TYPE} from './loader/theme-loader';
+
+
 const SELECTOR = root({
-  styleEl: osingle(),
+  styleEl: ocase(THEME_LOADER_TYPE),
 });
 
 export function renderTheme(
     context: Context<ElementSpec>,
-    themeSelector?: OperatorFunction<RenderSpec, unknown>,
+    themeSelector?: (fn: RenderValueFn<ThemeLoader>) => OperatorFunction<ThemeLoader, ThemeLoader>,
 ): Observable<unknown> {
   const renderContext = {
     document: context.element.ownerDocument,
     vine: context.vine,
   };
-  const selector = themeSelector ?? SELECTOR.styleEl(context.shadowRoot, renderContext).update();
+
+  if (themeSelector) {
+    return $themeLoader.get(context.vine).pipe(
+        themeSelector(themeLoader => renderThemeLoader(themeLoader, context)),
+    );
+  }
+
   return $themeLoader.get(context.vine).pipe(
-      map(themeLoader => renderNode({
-        id: {},
-        node: themeLoader.createElement(context.shadowRoot.ownerDocument),
-      })),
-      selector,
+      SELECTOR.styleEl(context.shadowRoot, renderContext)
+          .update(themeLoader => renderThemeLoader(themeLoader, context)),
   );
+}
+
+function renderThemeLoader(themeLoader: ThemeLoader, context: Context<ElementSpec>): Observable<RenderSpec> {
+  return of(renderNode({
+    id: {},
+    node: themeLoader.createElement(context.shadowRoot.ownerDocument),
+  }));
 }

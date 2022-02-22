@@ -29,7 +29,7 @@ export {LINE_LAYOUT} from '../src/layout/line-layout';
 export {LIST_ITEM_LAYOUT} from '../src/layout/list-item-layout';
 export {OVERLAY} from '../src/core/overlay';
 export {OverlayService} from '../src/core/overlay-service';
-export {ThemeSeed, PALETTE} from '../src/theme/theme-seed';
+export {ThemeSeed, THEME_SEEDS} from '../src/theme/theme-seed';
 export {ROOT_LAYOUT} from '../src/layout/root-layout';
 export {UrlThemeLoader} from '../src/theme/loader/url-theme-loader';
 export {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
