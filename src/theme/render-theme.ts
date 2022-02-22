@@ -34,7 +34,6 @@ export function renderTheme(
 
 function renderThemeLoader(themeLoader: ThemeLoader, context: Context<ElementSpec>): Observable<RenderSpec> {
   return of(renderNode({
-    id: {},
     node: themeLoader.createElement(context.shadowRoot.ownerDocument),
   }));
 }

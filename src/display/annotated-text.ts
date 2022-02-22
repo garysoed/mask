@@ -63,10 +63,10 @@ class AnnotatedText implements Ctrl {
 
   private renderAnnotations(textContent: string, annotations: readonly AnnotationSpec[]): Observable<RenderSpec> {
     return this.applyAnnotations(
-        renderTextNode({textContent: of(textContent), id: textContent}),
+        renderTextNode({textContent: of(textContent)}),
         annotations,
     )
-        .pipe(map(children => renderFragment({nodes: children, id: textContent})));
+        .pipe(map(children => renderFragment({nodes: children})));
   }
 
   private getOperator(spec: AnnotationSpec): OperatorFunction<readonly RenderSpec[], readonly RenderSpec[]> {

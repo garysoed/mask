@@ -73,7 +73,6 @@ class Icon implements Ctrl {
                 ],
                 raw: of(svg),
                 parseType: 'image/svg+xml' as const,
-                id: svg,
               });
             }),
             share(),

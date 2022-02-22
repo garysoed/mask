@@ -59,7 +59,6 @@ export class Keyboard implements Ctrl {
         ['mk-theme-highlight', of('')],
       ]),
       textContent: of(keyToString(key)),
-      id: {},
     });
   }
 
@@ -69,10 +68,9 @@ export class Keyboard implements Ctrl {
     }
     return of(renderFragment({
       nodes: [
-        renderTextNode({textContent: of('+'), id: {}}),
+        renderTextNode({textContent: of('+')}),
         this.renderKey(keyStr),
       ],
-      id: keyStr,
     }));
   }
 }

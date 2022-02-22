@@ -47,7 +47,6 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
 
         const firstNode = renderTextNode({
           textContent: of(text.substring(0, match.index ?? 0)),
-          id: {},
         });
 
         const imgNode = renderCustomElement({
@@ -58,12 +57,10 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
           inputs: {
             icon: of(match[1]),
           },
-          id: {},
         });
 
         const lastNode = renderTextNode({
           textContent: of(text.substring((match.index ?? 0) + match[0].length)),
-          id: {},
         });
 
         return [firstNode, imgNode, lastNode];

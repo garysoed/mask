@@ -143,7 +143,6 @@ export class OverlayLayoutDemo implements Ctrl {
         clearFn: subjects.onClear$,
         isSecondary: of(true),
       },
-      id: anchor,
       onOutputs: {value: subjects.onValue$},
     }));
   }

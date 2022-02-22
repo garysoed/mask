@@ -161,7 +161,6 @@ class DemoCtrl implements Ctrl {
     return of(renderCustomElement({
       registration: spec.registration,
       inputs: {},
-      id: {},
     }));
   }
 
@@ -181,7 +180,6 @@ class DemoCtrl implements Ctrl {
         of(path).pipe($.button.path()),
         of(name).pipe($.div.text()),
       ],
-      id: name,
     }));
   }
 
@@ -280,7 +278,6 @@ function renderPaletteData({color, colorName, isSelected$}: PaletteEntry): Obser
       ['color', of(colorName)],
       ['style', of(`background-color: ${colorCss};`)],
     ]),
-    id: colorName,
   }));
 }
 
