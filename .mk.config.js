@@ -34,6 +34,17 @@ declare({
 });
 
 declare({
+  name: 'cli',
+  as: shell({
+    bin: 'webpack',
+    flags: [
+      '--config-name=cli'
+    ]
+  }),
+});
+
+
+declare({
   name: 'demo',
   as: parallel(({vars}) => ({
     cmds: [
