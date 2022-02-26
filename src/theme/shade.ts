@@ -77,7 +77,7 @@ function getContrastColorWithAlpha(
 
 const BLACK = new RgbColor(0, 0, 0);
 const WHITE = new RgbColor(255, 255, 255);
-function mixColor(base: Color, mixValue: number): Color {
+export function mixColor(base: Color, mixValue: number): Color {
   if (mixValue === 100) {
     return base;
   }

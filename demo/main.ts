@@ -1,6 +1,3 @@
-import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {combineLatest} from 'rxjs';
-import {startWith, tap} from 'rxjs/operators';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {$themeLoader, start} from '../src/app/app';
@@ -8,7 +5,7 @@ import {registerSvg} from '../src/core/svg-service';
 import {ThemeMode} from '../src/theme/const';
 import {ClassThemeLoader} from '../src/theme/loader/class-theme-loader';
 import {Theme} from '../src/theme/theme';
-import {ThemeSeed, THEME_SEEDS} from '../src/theme/theme-seed';
+import {THEME_SEEDS} from '../src/theme/theme-seed';
 
 import chevronDownSvg from './asset/chevron_down.svg';
 import chevronUpSvg from './asset/chevron_up.svg';
@@ -17,7 +14,7 @@ import maskSvg from './asset/mask.svg';
 import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import {DEMO} from './core/demo';
-import {$demoState, ACCENT_COLOR_NAME, BASE_COLOR_NAME} from './core/demo-state';
+import {$theme$, ACCENT_COLOR_NAME, BASE_COLOR_NAME} from './core/demo-state';
 import {$locationService} from './core/location-service';
 
 
@@ -58,29 +55,8 @@ window.addEventListener('load', () => {
   const themeLoader$ = $themeLoader.get(vine);
 
   // Update the theme based on the demo state.
-  combineLatest([
-    $demoState.get(vine).$('baseColorName').pipe(
-        filterNonNullable(),
-        startWith<keyof ThemeSeed>(BASE_COLOR_NAME),
-    ),
-    $demoState.get(vine).$('accentColorName').pipe(
-        filterNonNullable(),
-        startWith<keyof ThemeSeed>(ACCENT_COLOR_NAME),
-    ),
-    $demoState.get(vine).$('isDarkMode').pipe(
-        filterNonNullable(),
-        startWith(false),
-    ),
-  ])
-      .pipe(
-          tap(([base, accent, isDarkMode]) => {
-            themeLoader$.next(new ClassThemeLoader(new Theme({
-              baseSeed: THEME_SEEDS[base],
-              accentSeed: THEME_SEEDS[accent],
-              mode: isDarkMode ? ThemeMode.DARK : ThemeMode.LIGHT,
-            })));
-          }),
-      )
-      .subscribe();
+  $theme$.get(vine).subscribe(theme => {
+    themeLoader$.next(new ClassThemeLoader(theme));
+  });
 });
 

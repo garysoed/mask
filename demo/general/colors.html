@@ -1,129 +1,18 @@
 <style>
-  tr > td:first-child {
-    padding-right: 2rem;
-    text-align: end;
+  .paletteItem {
+    width: 4rem;
+    height: 4rem;
   }
 
-  #col1 {
-    width: 16rem;
-  }
-
-  #col2, #col3, #col4, #col5 {
-    width: 12rem;
-  }
-
-  tbody tr {
-    height: 8em;
-  }
-
-  thead th {
-    text-align: center;
-  }
-
-  .action-1 {
-    --mkThemeFG: var(--mkThemeActionFG1B);
-    --mkThemeBG: var(--mkThemeActionBG1B);
-  }
-
-  .action-2 {
-    --mkThemeFG: var(--mkThemeActionFG2B);
-    --mkThemeBG: var(--mkThemeActionBG2B);
-  }
-
-  .action-1h {
-    --mkThemeFG: var(--mkThemeActionFG1H);
-    --mkThemeBG: var(--mkThemeActionBG1H);
-  }
-
-  .action-2h {
-    --mkThemeFG: var(--mkThemeActionFG2H);
-    --mkThemeBG: var(--mkThemeActionBG2H);
-  }
-
-  .focus-1 {
-    --mkThemeFG: var(--mkThemeFocusFG1B);
-    --mkThemeBG: var(--mkThemeFocusBG1B);
-  }
-
-  .focus-2 {
-    --mkThemeFG: var(--mkThemeFocusFG2B);
-    --mkThemeBG: var(--mkThemeFocusBG2B);
-  }
-
-  .focus-1h {
-    --mkThemeFG: var(--mkThemeFocusFG1H);
-    --mkThemeBG: var(--mkThemeFocusBG1H);
-  }
-
-  .focus-2h {
-    --mkThemeFG: var(--mkThemeFocusFG2H);
-    --mkThemeBG: var(--mkThemeFocusBG2H);
-  }
-
-  .hover-1 {
-    --mkThemeFG: var(--mkThemeHoverFG1B);
-    --mkThemeBG: var(--mkThemeHoverBG1B);
-  }
-
-  .hover-2 {
-    --mkThemeFG: var(--mkThemeHoverFG2B);
-    --mkThemeBG: var(--mkThemeHoverBG2B);
-  }
-
-  .hover-1h {
-    --mkThemeFG: var(--mkThemeHoverFG1H);
-    --mkThemeBG: var(--mkThemeHoverBG1H);
-  }
-
-  .hover-2h {
-    --mkThemeFG: var(--mkThemeHoverFG2H);
-    --mkThemeBG: var(--mkThemeHoverBG2H);
-  }
-
-  .disabled-1 {
-    --mkThemeFG: var(--mkThemeDisabledFG1B);
-    --mkThemeBG: var(--mkThemeDisabledBG1B);
-  }
-
-  .disabled-2 {
-    --mkThemeFG: var(--mkThemeDisabledFG2B);
-    --mkThemeBG: var(--mkThemeDisabledBG2B);
-  }
-
-  .disabled-1h {
-    --mkThemeFG: var(--mkThemeDisabledFG1H);
-    --mkThemeBG: var(--mkThemeDisabledBG1H);
-  }
-
-  .disabled-2h {
-    --mkThemeFG: var(--mkThemeDisabledFG2H);
-    --mkThemeBG: var(--mkThemeDisabledBG2H);
-  }
-
-  .action-1, .action-2,
-  .action-1h, .action-2h,
-  .focus-1, .focus-2,
-  .focus-1h, .focus-2h,
-  .hover-1, .hover-2,
-  .hover-1h, .hover-2h,
-  .disabled-1, .disabled-2,
-  .disabled-1h, .disabled-2h {
-    background-color: var(--mkThemeBG);
-    color: var(--mkThemeFG);
-  }
-
-  .label {
+  .paletteItem code {
     font-size: 1rem;
+    line-height: 4rem;
   }
 
-  .label.dark,
-  #table.dark .label.light {
-    display: none;
-  }
-
-  #table.dark .label.dark,
-  .label.light {
-    display: block;
+  #accentSeedLabel,
+  #baseSeedLabel {
+    line-height: 4rem;
+    margin-inline-start: 1rem;
   }
 </style>
 
@@ -134,39 +23,47 @@
     </p>
 
     <p layout="row">
-      <div>
-        <div></div>
-        <div>Base seed</div>
-      </div>
-      <div>
-        <div></div>
-        <div>Accent seed</div>
-      </div>
+      <figure layout="row">
+        <div id="baseSeed" class="paletteItem"></div>
+        <figcaption id="baseSeedLabel">Base seed</figcaption>
+      </figure>
+      <figure layout="row">
+        <div id="accentSeed" class="paletteItem"></div>
+        <figcaption id="accentSeedLabel">Accent seed</figcaption>
+      </figure>
     </p>
 
     <p>
       Based on the seeds, Mask will generate three palettes:
-      <ol>
-        <li>
-          Passive (P): The most commonly used palette. This is used for any non interactable
-          components.
-        </li>
-        <li>Action (A): Used for any actionable elements.</li>
-        <li>
-          Highlight (H): Used for feedback for player's actions, such as hover and focus effects.
-        </li>
-      </ol>
-    </p>
 
-    <p layout="column">
       <div>
-        <div>Passive</div>
-      </div>
-      <div>
-        <div>Action</div>
-      </div>
-      <div>
-        <div>Highlight</div>
+        <figure>
+          <div id="passivePalette" layout="row">
+            <!-- #content -->
+          </div>
+          <figcaption>
+            Passive (P): The most commonly used palette. This is used for any non interactable
+            components.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div id="actionPalette" layout="row">
+            <!-- #content -->
+          </div>
+          <figcaption>
+            Action (A): Used for any actionable elements.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div id="highlightPalette" layout="row">
+            <!-- #content -->
+          </div>
+          <figcaption>
+            Highlight (H): Used for feedback for player's actions, such as hover and focus effects.
+          </figcaption>
+        </figure>
       </div>
     </p>
 
@@ -375,3 +272,8 @@
   </div>
 </mkd-demo-layout>
 
+<template id="_paletteItem">
+  <div class="paletteItem" flex-justify="center" layout="row">
+    <code></code>
+  </div>
+</template>

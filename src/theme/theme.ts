@@ -18,6 +18,14 @@ interface ThemeInput {
 export class Theme {
   constructor(private readonly input: ThemeInput) { }
 
+  get accentSeed(): Color {
+    return this.input.accentSeed;
+  }
+
+  get baseSeed(): Color {
+    return this.input.baseSeed;
+  }
+
   generateCss(): string {
     const cssDeclarations = [
       this.generateRootThemeCss(),
@@ -37,7 +45,7 @@ export class Theme {
           const {foreground, background} = getColors(
               getShade(this.input.mode, subtype, context, section, ColorLocation.FOREGROUND),
               getShade(this.input.mode, subtype, context, section, ColorLocation.BACKGROUND),
-              this.getPalettes(),
+              this.paletteBaseColorMap,
           );
 
           variables.push(
@@ -71,7 +79,7 @@ export class Theme {
   }
 
   @cache()
-  private getPalettes(): ReadonlyMap<Palette, Color> {
+  get paletteBaseColorMap(): ReadonlyMap<Palette, Color> {
     const passive = new HslColor(
         this.input.baseSeed.hue,
         this.input.baseSeed.saturation * 0.2,

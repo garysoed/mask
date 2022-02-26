@@ -1,9 +1,14 @@
 import {$stateService, Source, source} from 'grapevine';
+import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {ImmutableResolver, mutableState, MutableState} from 'gs-tools/export/state';
+import {combineLatest} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 import {Anchor} from '../../src/core/overlay-service';
 import {CheckedValue} from '../../src/input/checkbox';
-import {ThemeSeed} from '../../src/theme/theme-seed';
+import {ThemeMode} from '../../src/theme/const';
+import {Theme} from '../../src/theme/theme';
+import {ThemeSeed, THEME_SEEDS} from '../../src/theme/theme-seed';
 
 
 export interface CheckboxDemoState {
@@ -106,3 +111,27 @@ export const $demoState: Source<ImmutableResolver<DemoState>> = source(
       },
     })._(),
 );
+
+export const $theme$ = source(vine => {
+  return combineLatest([
+    $demoState.get(vine).$('baseColorName').pipe(
+        filterNonNullable(),
+        startWith<keyof ThemeSeed>(BASE_COLOR_NAME),
+    ),
+    $demoState.get(vine).$('accentColorName').pipe(
+        filterNonNullable(),
+        startWith<keyof ThemeSeed>(ACCENT_COLOR_NAME),
+    ),
+    $demoState.get(vine).$('isDarkMode').pipe(
+        filterNonNullable(),
+        startWith(false),
+    ),
+  ])
+      .pipe(map(([base, accent, isDarkMode]) => {
+        return new Theme({
+          baseSeed: THEME_SEEDS[base],
+          accentSeed: THEME_SEEDS[accent],
+          mode: isDarkMode ? ThemeMode.DARK : ThemeMode.LIGHT,
+        });
+      }));
+});

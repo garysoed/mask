@@ -208,9 +208,18 @@ hr {
   border-right: none;
 }
 
-code, pre, kbd {
+caption, code, figcaption, pre, kbd {
   color: var(--mkThemeFG);
   font-family: var(--mkFontFamilyMono);
+}
+
+caption, figcaption {
+  font-size: 1rem;
+}
+
+figure {
+  margin-inline-start: 4rem;
+  margin-inline-end: 4rem;
 }
 
 pre {
