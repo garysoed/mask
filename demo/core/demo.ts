@@ -61,7 +61,7 @@ const $demo = {
     }),
     darkMode: id('darkMode', CHECKBOX),
     rootLayout: id('rootLayout', ROOT_LAYOUT, {
-      onAction: ievent(ACTION_EVENT, ActionEvent),
+      onAction: ievent(ACTION_EVENT, ActionEvent, {matchTarget: true}),
     }),
     settingsDrawer: id('settingsDrawer', DRAWER_LAYOUT, {
       onMouseEnter: ievent('mouseenter', MouseEvent),
