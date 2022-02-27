@@ -11,7 +11,7 @@ const SPECS_RAW = new Map([
         ColorSection.PASSIVE,
         new Map([
           [ThemeContext.MAIN, ['P010-P195', 'P010ml-P195']],
-          [ThemeContext.SIDE, ['P010-P170', 'P010ml-P170']],
+          [ThemeContext.SIDE, ['P010-P180', 'P010ml-P180']],
           [ThemeContext.HIGHLIGHT, ['P010-A175', 'P010ml-A175']],
         ]),
       ],
@@ -19,7 +19,7 @@ const SPECS_RAW = new Map([
         ColorSection.ACTION,
         new Map([
           [ThemeContext.MAIN, ['Pk-A100', 'A050-P195']],
-          [ThemeContext.SIDE, ['Pk-A100', 'A050-P170']],
+          [ThemeContext.SIDE, ['Pk-A100', 'A050-P180']],
           [ThemeContext.HIGHLIGHT, ['Pk-A100', 'A050-A175']],
         ]),
       ],
@@ -43,7 +43,7 @@ const SPECS_RAW = new Map([
         ColorSection.DISABLED,
         new Map([
           [ThemeContext.MAIN, ['P010vl-P195', 'P010vl-P195']],
-          [ThemeContext.SIDE, ['P010vl-P170', 'P010vl-P170']],
+          [ThemeContext.SIDE, ['P010vl-P180', 'P010vl-P180']],
           [ThemeContext.HIGHLIGHT, ['P010vl-A175', 'P010vl-A175']],
         ]),
       ],
