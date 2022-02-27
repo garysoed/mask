@@ -3,7 +3,7 @@ import {enumType} from 'gs-types';
 import {ColorLocation, ColorSection, MixType, Palette, Shade, ThemeSubtype, ThemeMode, ThemeContext} from './const';
 
 
-const SPECS_RAW = new Map([
+export const SPECS_RAW = new Map([
   [
     ThemeMode.LIGHT,
     new Map([
