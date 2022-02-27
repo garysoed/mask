@@ -1,3 +1,4 @@
+import {$asArray, $map, $pipe, $take, countableIterable} from 'gs-tools/export/collect';
 import {Color, getContrast, RgbColor} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {hasPropertiesType, instanceofType, stringType} from 'gs-types';
@@ -14,19 +15,12 @@ import {$demoState, $theme$} from '../core/demo-state';
 import template from './colors.html';
 
 
-const PALETTE_MIX_VALUES = [
-  0,
-  20,
-  40,
-  60,
-  80,
-  100,
-  120,
-  140,
-  160,
-  180,
-  200,
-];
+const PALETTE_MIX_VALUES = $pipe(
+    countableIterable(),
+    $take(21),
+    $map(value => value * 10),
+    $asArray(),
+);
 
 const BLACK = new RgbColor(0, 0, 0);
 const WHITE = new RgbColor(255, 255, 255);

@@ -14,263 +14,401 @@
     line-height: 4rem;
     margin-inline-start: 1rem;
   }
+
+  tr > td:first-child {
+    padding-right: 2rem;
+    text-align: end;
+  }
+
+  #col1 {
+    width: 16rem;
+  }
+
+  #col2, #col3, #col4, #col5, #col6, #col7 {
+    width: 12rem;
+  }
+
+  tbody tr {
+    height: 8em;
+  }
+
+  thead th {
+    text-align: center;
+  }
+
+  [mk-action-1].focus {
+    --mkThemeBG: var(--mkThemeFocusBG1);
+    --mkThemeFG: var(--mkThemeFocusFG1);
+  }
+
+  [mk-action-2].focus {
+    --mkThemeBG: var(--mkThemeFocusBG2);
+    --mkThemeFG: var(--mkThemeFocusFG2);
+  }
+
+  [mk-action-1].hover {
+    --mkThemeBG: var(--mkThemeHoverBG1);
+    --mkThemeFG: var(--mkThemeHoverFG1);
+  }
+
+  [mk-action-2].hover {
+    --mkThemeBG: var(--mkThemeHoverBG2);
+    --mkThemeFG: var(--mkThemeHoverFG2);
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+
+  .label.dark,
+  #table.dark .label.light {
+    display: none;
+  }
+
+  #table.dark .label.dark,
+  .label.light {
+    display: block;
+  }
+
+  #root {
+    padding: 1rem;
+  }
 </style>
 
-<mkd-demo-layout label="Colors">
-  <div slot="play">
-    <p>
-      Colors in Mask start with two seed colors: "base" color and "accent" color.
-    </p>
+<div id="root" mk-body-1>
+  <p>
+    Colors in Mask start with two seed colors: "base" color and "accent" color.
+  </p>
 
-    <p layout="row">
-      <figure layout="row">
-        <div id="baseSeed" class="paletteItem"></div>
-        <figcaption id="baseSeedLabel">Base seed</figcaption>
+  <p layout="row">
+    <figure layout="row">
+      <div id="baseSeed" class="paletteItem"></div>
+      <figcaption id="baseSeedLabel">Base seed</figcaption>
+    </figure>
+    <figure layout="row">
+      <div id="accentSeed" class="paletteItem"></div>
+      <figcaption id="accentSeedLabel">Accent seed</figcaption>
+    </figure>
+  </p>
+
+  <p>
+    Based on the seeds, Mask will generate three palettes:
+
+    <div>
+      <figure>
+        <div id="passivePalette" layout="row">
+          <!-- #content -->
+        </div>
+        <figcaption>
+          Passive (P): The most commonly used palette. This is used for any non interactable
+          components.
+        </figcaption>
       </figure>
-      <figure layout="row">
-        <div id="accentSeed" class="paletteItem"></div>
-        <figcaption id="accentSeedLabel">Accent seed</figcaption>
+
+      <figure>
+        <div id="actionPalette" layout="row">
+          <!-- #content -->
+        </div>
+        <figcaption>
+          Action (A): Used for any actionable elements.
+        </figcaption>
       </figure>
-    </p>
 
-    <p>
-      Based on the seeds, Mask will generate three palettes:
+      <figure>
+        <div id="highlightPalette" layout="row">
+          <!-- #content -->
+        </div>
+        <figcaption>
+          Highlight (H): Used for feedback for player's actions, such as hover and focus effects.
+        </figcaption>
+      </figure>
+    </div>
+  </p>
 
-      <div>
-        <figure>
-          <div id="passivePalette" layout="row">
-            <!-- #content -->
+  <p>
+    You can also specify the context of a theme using the <code>mk-theme-context</code> attribute.
+    There are three contexts supported:
+  </p>
+
+  <ol>
+    <li><code>main</code>: This is the main content of the page.</li>
+    <li><code>side</code>: This is a side content, such as headers, footers, and sidebars.</li>
+    <li>
+      <code>highlight</code>: These are highlighted contents. Examples include banners and
+      tooltips.
+    </li>
+  </ol>
+
+  <table id="table" mk-theme-level="0">
+    <colgroup>
+      <col id="col1">
+      <col id="col2">
+      <col id="col3">
+      <col id="col4">
+      <col id="col5">
+      <col id="col6">
+      <col id="col7">
+    </colgroup>
+    <thead mk-body-2>
+      <tr>
+        <th></th>
+        <th colspan="2">Main</th>
+        <th colspan="2">Side</th>
+        <th colspan="2">Highlight</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Passive -->
+      <tr id="passiveRow">
+        <td mk-body-2>passive</td>
+        <td mk-passive-1 mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">P010-P200</code>
+            <code class="label dark">P200-P035</code>
           </div>
-          <figcaption>
-            Passive (P): The most commonly used palette. This is used for any non interactable
-            components.
-          </figcaption>
-        </figure>
-
-        <figure>
-          <div id="actionPalette" layout="row">
-            <!-- #content -->
+        </td>
+        <td mk-passive-2 mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">P010ml-P200</code>
+            <code class="label dark">P200mh-P035</code>
           </div>
-          <figcaption>
-            Action (A): Used for any actionable elements.
-          </figcaption>
-        </figure>
+        </td>
 
-        <figure>
-          <div id="highlightPalette" layout="row">
-            <!-- #content -->
+        <td mk-passive-1 mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">P010-P185</code>
+            <code class="label dark">P200-P050</code>
           </div>
-          <figcaption>
-            Highlight (H): Used for feedback for player's actions, such as hover and focus effects.
-          </figcaption>
-        </figure>
-      </div>
-    </p>
+        </td>
+        <td mk-passive-2 mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">P010ml-P185</code>
+            <code class="label dark">P200mh-P050</code>
+          </div>
+        </td>
 
-    <table id="table">
-      <colgroup>
-        <col id="col1">
-        <col id="col2">
-        <col id="col3">
-        <col id="col4">
-        <col id="col5">
-      </colgroup>
-      <thead mk-body-2>
-        <tr>
-          <th></th>
-          <th colspan="2">normal</th>
-          <th colspan="2">highlight</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Passive -->
-        <tr>
-          <td mk-body-2>passive</td>
-          <td mk-passive-1>
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">B010-G200</code>
-              <code class="label dark">G200-G050</code>
-            </div>
-          </td>
-          <td mk-passive-2>
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">B010ml-G200</code>
-              <code class="label dark">G200mh-G050</code>
-            </div>
-          </td>
+        <td mk-passive-1 mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">P010-A175</code>
+            <code class="label dark">P200-A045</code>
+          </div>
+        </td>
+        <td mk-passive-2 mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">P010ml-A175</code>
+            <code class="label dark">P200mh-A045</code>
+          </div>
+        </td>
+      </tr>
 
 
-          <td mk-passive-1 mk-theme-highlight>
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">B010-B175</code>
-              <code class="label dark">G200-B050</code>
-            </div>
-          </td>
-          <td mk-passive-2 mk-theme-highlight>
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">B010ml-B175</code>
-              <code class="label dark">G200mh-B050</code>
-            </div>
-          </td>
-        </tr>
+      <!-- Action -->
+      <tr id="actionRow">
+        <td mk-body-2>action</td>
+        <td mk-action-1 mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">Pk-A100</code>
+            <code class="label dark">Pk-A100</code>
+          </div>
+        </td>
+        <td mk-action-2 mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">A050-P200</code>
+            <code class="label dark">A175-P035</code>
+          </div>
+        </td>
+
+        <td mk-action-1 mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">Pk-A100</code>
+            <code class="label dark">Pk-A100</code>
+          </div>
+        </td>
+        <td mk-action-2 mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">A050-P185</code>
+            <code class="label dark">A175-P050</code>
+          </div>
+        </td>
+
+        <td mk-action-1 mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">Pk-A100</code>
+            <code class="label dark">Pk-A100</code>
+          </div>
+        </td>
+        <td mk-action-2 mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">A050-A175</code>
+            <code class="label dark">A175-A045</code>
+          </div>
+        </td>
+      </tr>
 
 
-        <!-- Action -->
-        <tr>
-          <td mk-body-2>action</td>
-          <td class="action-1">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">Bk-B100</code>
-              <code class="label dark">Bk-B100</code>
-            </div>
-          </td>
-          <td class="action-2">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">B050-G200</code>
-              <code class="label dark">B175-G050</code>
-            </div>
-          </td>
+      <!-- Focus -->
+      <tr id="focusRow">
+        <td mk-body-2>action (focus)</td>
+        <td mk-action-1 class="focus" mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">H050-H175</code>
+            <code class="label dark">H050-H175</code>
+          </div>
+        </td>
+        <td mk-action-2 class="focus" mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">H050ml-H175</code>
+            <code class="label dark">H050ml-H175</code>
+          </div>
+        </td>
+
+        <td mk-action-1 class="focus" mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">H050-H175</code>
+            <code class="label dark">H050-H175</code>
+          </div>
+        </td>
+        <td mk-action-2 class="focus" mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">H050ml-H175</code>
+            <code class="label dark">H050ml-H175</code>
+          </div>
+        </td>
+
+        <td mk-action-1 class="focus" mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">H050-H175</code>
+            <code class="label dark">H050-H175</code>
+          </div>
+        </td>
+        <td mk-action-2 class="focus" mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">H050ml-H175</code>
+            <code class="label dark">H050ml-H175</code>
+          </div>
+        </td>
+      </tr>
 
 
-          <td class="action-1h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">Bk-B100</code>
-              <code class="label dark">Bk-B100</code>
-            </div>
-          </td>
-          <td class="action-2h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">B050-B175</code>
-              <code class="label dark">B175-B050</code>
-            </div>
-          </td>
-        </tr>
+      <!-- Hover -->
+      <tr id="hoverRow">
+        <td mk-body-2>action (hover)</td>
+        <td mk-action-1 class="hover" mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">Hk-H100</code>
+            <code class="label dark">Hk-H100</code>
+          </div>
+        </td>
+        <td mk-action-2 class="hover" mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">Hc-H100</code>
+            <code class="label dark">Hc-H100</code>
+          </div>
+        </td>
+
+        <td mk-action-1 class="hover" mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">Hk-H100</code>
+            <code class="label dark">Hk-H100</code>
+          </div>
+        </td>
+        <td mk-action-2 class="hover" mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">Hc-H100</code>
+            <code class="label dark">Hc-H100</code>
+          </div>
+        </td>
+
+        <td mk-action-1 class="hover" mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">Hk-H100</code>
+            <code class="label dark">Hk-H100</code>
+          </div>
+        </td>
+        <td mk-action-2 class="hover" mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">Hc-H100</code>
+            <code class="label dark">Hc-H100</code>
+          </div>
+        </td>
+      </tr>
 
 
-        <!-- Focus -->
-        <tr>
-          <td mk-body-2>action (focus)</td>
-          <td class="focus-1">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">A050-A175</code>
-              <code class="label dark">A050-A175</code>
-            </div>
-          </td>
-          <td class="focus-2">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">A050ml-A175</code>
-              <code class="label dark">A050ml-A175</code>
-            </div>
-          </td>
+      <!-- Disabled -->
+      <tr id="disabledRow">
+        <td mk-body-2>action (disabled)</td>
+        <td mk-action-1 mk-disabled mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">P010vl-P200</code>
+            <code class="label dark">P200lo-P035</code>
+          </div>
+        </td>
+        <td mk-action-2 mk-disabled mk-theme-context="main">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">P010vl-P200</code>
+            <code class="label dark">P200lo-P035</code>
+          </div>
+        </td>
 
+        <td mk-action-1 mk-disabled mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">P010vl-P185</code>
+            <code class="label dark">P200lo-P050</code>
+          </div>
+        </td>
+        <td mk-action-2 mk-disabled mk-theme-context="side">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">P010vl-P185</code>
+            <code class="label dark">P200lo-P050</code>
+          </div>
+        </td>
 
-          <td class="focus-1h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">A050-A175</code>
-              <code class="label dark">A050-A175</code>
-            </div>
-          </td>
-          <td class="focus-2h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">A050ml-A175</code>
-              <code class="label dark">A050ml-A175</code>
-            </div>
-          </td>
-        </tr>
-
-
-        <!-- Hover -->
-        <tr>
-          <td mk-body-2>action (hover)</td>
-          <td class="hover-1">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">Ak-A100</code>
-              <code class="label dark">Ak-A100</code>
-            </div>
-          </td>
-          <td class="hover-2">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">Ac-A100</code>
-              <code class="label dark">Ac-A100</code>
-            </div>
-          </td>
-
-
-          <td class="hover-1h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">Ak-A100</code>
-              <code class="label dark">Ak-A100</code>
-            </div>
-          </td>
-          <td class="hover-2h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">Ac-A100</code>
-              <code class="label dark">Ac-A100</code>
-            </div>
-          </td>
-        </tr>
-
-
-        <!-- Disabled -->
-        <tr>
-          <td mk-body-2>action (disabled)</td>
-          <td class="disabled-1">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">B010vl-G200</code>
-              <code class="label dark">G200lo-G050</code>
-            </div>
-          </td>
-          <td class="disabled-2">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">B010vl-G200</code>
-              <code class="label dark">G200lo-G050</code>
-            </div>
-          </td>
-
-
-          <td class="disabled-1h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>A</h3>
-              <code class="label light">B010vl-B175</code>
-              <code class="label dark">G200lo-B050</code>
-            </div>
-          </td>
-          <td class="disabled-2h">
-            <div flex-align="center" layout="column">
-              <h3 flex mk-display>a</h3>
-              <code class="label light">B010vl-B175</code>
-              <code class="label dark">G200lo-B050</code>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div slot="docs">
-    <p mk-body-1>
-      Mask supports theming based on the modes outlined above. These modes are applicable in both
-      light mode and dark mode.
-    </p>
-  </div>
-</mkd-demo-layout>
+        <td mk-action-1 mk-disabled mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>A</h3>
+            <code class="label light">P010vl-A175</code>
+            <code class="label dark">P200lo-A045</code>
+          </div>
+        </td>
+        <td mk-action-2 mk-disabled mk-theme-context="highlight">
+          <div flex-align="center" layout="column">
+            <h3 flex mk-display>a</h3>
+            <code class="label light">P010vl-A175</code>
+            <code class="label dark">P200lo-A045</code>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <template id="_paletteItem">
   <div class="paletteItem" flex-justify="center" layout="row">
