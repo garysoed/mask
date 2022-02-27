@@ -56,6 +56,12 @@
     --mkThemeFG: var(--mkThemeHoverFG2);
   }
 
+  #passivePalette,
+  #actionPalette,
+  #highlightPalette {
+    flex-wrap: wrap;
+  }
+
   .primarySection h3 {
     text-transform: uppercase;
   }
@@ -79,13 +85,9 @@
     line-height: 4rem;
     text-align: center;
   }
-
-  #root {
-    padding: 1rem;
-  }
 </style>
 
-<div id="root" mk-body-1>
+<div mk-body-1>
   <p>
     Colors in Mask start with two seed colors: "base" color and "accent" color.
   </p>
@@ -171,31 +173,31 @@
       <tbody>
         <!-- Passive -->
         <tr id="passiveRow">
-          <td mk-body-2>passive</td>
+          <th mk-body-2>passive</th>
           <!-- #cells -->
         </tr>
 
         <!-- Action -->
         <tr id="actionRow">
-          <td mk-body-2>action</td>
+          <th mk-body-2>action</th>
           <!-- #cells -->
         </tr>
 
         <!-- Focus -->
         <tr id="focusRow">
-          <td mk-body-2>action (focus)</td>
+          <th mk-body-2>action (focus)</th>
           <!-- #cells -->
         </tr>
 
         <!-- Hover -->
         <tr id="hoverRow">
-          <td mk-body-2>action (hover)</td>
+          <th mk-body-2>action (hover)</th>
           <!-- #cells -->
         </tr>
 
         <!-- Disabled -->
         <tr id="disabledRow">
-          <td mk-body-2>action (disabled)</td>
+          <th mk-body-2>action (disabled)</th>
           <!-- #cells -->
         </tr>
       </tbody>
