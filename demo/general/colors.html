@@ -74,6 +74,12 @@
     display: block;
   }
 
+  #tableCaption {
+    height: 4rem;
+    line-height: 4rem;
+    text-align: center;
+  }
+
   #root {
     padding: 1rem;
   }
@@ -143,60 +149,61 @@
     </li>
   </ol>
 
-  <table id="table" mk-theme-level="0">
-    <colgroup>
-      <col id="col1">
-      <col id="col2">
-      <col id="col3">
-      <col id="col4">
-      <col id="col5">
-      <col id="col6">
-      <col id="col7">
-    </colgroup>
-    <thead mk-body-2>
-      <tr>
-        <th></th>
-        <th colspan="2">Main</th>
-        <th colspan="2">Side</th>
-        <th colspan="2">Highlight</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Passive -->
-      <tr id="passiveRow">
-        <td mk-body-2>passive</td>
-        <!-- #cells -->
-      </tr>
+  <figure>
+    <table id="table" mk-theme-level="0">
+      <colgroup>
+        <col id="col1">
+        <col id="col2">
+        <col id="col3">
+        <col id="col4">
+        <col id="col5">
+        <col id="col6">
+        <col id="col7">
+      </colgroup>
+      <thead mk-body-2>
+        <tr>
+          <th></th>
+          <th colspan="2">Main</th>
+          <th colspan="2">Side</th>
+          <th colspan="2">Highlight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Passive -->
+        <tr id="passiveRow">
+          <td mk-body-2>passive</td>
+          <!-- #cells -->
+        </tr>
 
+        <!-- Action -->
+        <tr id="actionRow">
+          <td mk-body-2>action</td>
+          <!-- #cells -->
+        </tr>
 
-      <!-- Action -->
-      <tr id="actionRow">
-        <td mk-body-2>action</td>
-        <!-- #cells -->
-      </tr>
+        <!-- Focus -->
+        <tr id="focusRow">
+          <td mk-body-2>action (focus)</td>
+          <!-- #cells -->
+        </tr>
 
+        <!-- Hover -->
+        <tr id="hoverRow">
+          <td mk-body-2>action (hover)</td>
+          <!-- #cells -->
+        </tr>
 
-      <!-- Focus -->
-      <tr id="focusRow">
-        <td mk-body-2>action (focus)</td>
-        <!-- #cells -->
-      </tr>
-
-
-      <!-- Hover -->
-      <tr id="hoverRow">
-        <td mk-body-2>action (hover)</td>
-        <!-- #cells -->
-      </tr>
-
-
-      <!-- Disabled -->
-      <tr id="disabledRow">
-        <td mk-body-2>action (disabled)</td>
-        <!-- #cells -->
-      </tr>
-    </tbody>
-  </table>
+        <!-- Disabled -->
+        <tr id="disabledRow">
+          <td mk-body-2>action (disabled)</td>
+          <!-- #cells -->
+        </tr>
+      </tbody>
+    </table>
+    <figcaption id="tableCaption">
+      Different background and foreground colors depending on the context and purpose.
+    </figcaption>
+  </figure>
 </div>
 
 <template id="_paletteItem">
