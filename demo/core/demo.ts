@@ -160,7 +160,6 @@ class DemoCtrl implements Ctrl {
 
     return of(renderCustomElement({
       registration: spec.registration,
-      inputs: {},
     }));
   }
 

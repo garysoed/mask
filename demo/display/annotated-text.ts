@@ -54,9 +54,7 @@ function renderEmoji(initSpec: RenderSpec): Observable<readonly RenderSpec[]> {
           attrs: new Map([
             ['style', of('display: inline-block;height: 2rem;')],
           ]),
-          inputs: {
-            icon: of(match[1]),
-          },
+          runs: $ => [of(match[1]).pipe($.icon())],
         });
 
         const lastNode = renderTextNode({

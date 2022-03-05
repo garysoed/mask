@@ -135,15 +135,15 @@ export class OverlayLayoutDemo implements Ctrl {
   ): Observable<RenderSpec> {
     return of(renderCustomElement({
       registration: RADIO_INPUT,
-      inputs: {
-        key: of(anchor),
-        label: of(getAnchorLabel(anchor)),
-        group: of(group),
-        initValue: subjects.onInitValue$,
-        clearFn: subjects.onClear$,
-        isSecondary: of(true),
-      },
-      onOutputs: {value: subjects.onValue$},
+      runs: $ => [
+        of(anchor).pipe($.key()),
+        of(getAnchorLabel(anchor)).pipe($.label()),
+        of(group).pipe($.group()),
+        subjects.onInitValue$.pipe($.initValue()),
+        subjects.onClear$.pipe($.clearFn()),
+        of(true).pipe($.isSecondary()),
+        $.value.pipe(forwardTo(subjects.onValue$)),
+      ],
     }));
   }
 }
