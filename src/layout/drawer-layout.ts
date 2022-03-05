@@ -11,7 +11,7 @@
 
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
-import {Context, Ctrl, DIV, iattr, id, iflag, ostyle, registerCustomElement} from 'persona';
+import {Context, Ctrl, DIV, iattr, query, iflag, ostyle, registerCustomElement} from 'persona';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ const $drawerLayout = {
     mode: iattr('mode'),
   },
   shadow: {
-    root: id('root', DIV, {
+    root: query('#root', DIV, {
       styleHeight: ostyle('height'),
       styleWidth: ostyle('width'),
     }),

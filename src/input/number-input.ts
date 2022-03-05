@@ -1,7 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {nullType, numberType, unionType} from 'gs-types';
-import {Context, DIV, iattr, id, ievent, INPUT, itarget, oclass, oevent, oflag, registerCustomElement} from 'persona';
+import {Context, DIV, iattr, query, ievent, INPUT, itarget, oclass, oevent, oflag, registerCustomElement} from 'persona';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, mapTo, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -27,15 +27,15 @@ const $numberInput = {
     step: iattr('step'),
   },
   shadow: {
-    icon: id('icon', ICON, {
+    icon: query('#icon', ICON, {
       hiddenClass: oclass('hidden'),
     }),
-    input: id('input', INPUT, {
+    input: query('#input', INPUT, {
       disabled: oflag('disabled'),
       element: itarget(),
       onChange: ievent('change', Event),
     }),
-    root: id('root', DIV, {
+    root: query('#root', DIV, {
       ...$baseRootOutputs,
       onMouseEnter: ievent('mouseenter', MouseEvent),
       onMouseLeave: ievent('mouseleave', MouseEvent),

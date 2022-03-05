@@ -3,7 +3,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
 import {MutableResolver} from 'gs-tools/export/state';
 import {nullType, stringType, unionType} from 'gs-types';
-import {Bindings, Context, iattr, id, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, registerCustomElement} from 'persona';
+import {Bindings, Context, iattr, query, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, registerCustomElement} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
 import {oflag} from 'persona/src/output/flag';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
@@ -33,17 +33,17 @@ const $radioInput = {
     onChange: oevent(CHANGE_EVENT, ChangeEvent),
   },
   shadow: {
-    container: id('container', LABEL, {
+    container: query('#container', LABEL, {
       ...$baseRootOutputs,
     }),
-    icon: id('icon', ICON),
-    input: id('input', INPUT, {
+    icon: query('#icon', ICON),
+    input: query('#input', INPUT, {
       element: itarget(),
       name: oattr('name'),
       onChange: ievent('change', Event),
       disabled: oflag('disabled'),
     }),
-    label: id('label', P, {
+    label: query('#label', P, {
       text: otext(),
     }),
   },

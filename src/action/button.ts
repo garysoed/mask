@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {BUTTON as HTML_BUTTON, Context, id, ievent, ikeydown, oattr, oflag, registerCustomElement} from 'persona';
+import {BUTTON as HTML_BUTTON, Context, query, ievent, ikeydown, oattr, oflag, registerCustomElement} from 'persona';
 import {merge, Observable} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ const $button = {
     ...create$baseAction<undefined>().host,
   },
   shadow: {
-    rootEl: id('root', HTML_BUTTON, {
+    rootEl: query('#root', HTML_BUTTON, {
       ...$baseRootOutputs,
       disabled: oflag('disabled'),
       onClick: ievent('click', MouseEvent),

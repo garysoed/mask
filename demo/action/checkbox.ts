@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {mapUndefinedTo} from 'gs-tools/export/rxjs';
-import {Context, Ctrl, id, otext, registerCustomElement} from 'persona';
+import {Context, Ctrl, query, otext, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
@@ -16,14 +16,14 @@ import template from './checkbox.html';
 
 const $checkboxDemo = {
   shadow: {
-    disabledCheckbox: id('disabledCheckbox', CHECKBOX),
-    labelCheckbox: id('labelCheckbox', CHECKBOX),
-    labelCheckboxContent: id('labelCheckboxContent', LINE_LAYOUT, {
+    disabledCheckbox: query('#disabledCheckbox', CHECKBOX),
+    labelCheckbox: query('#labelCheckbox', CHECKBOX),
+    labelCheckboxContent: query('#labelCheckboxContent', LINE_LAYOUT, {
       text: otext(),
     }),
-    resetButton: id('resetButton', BUTTON),
-    unknownCheckbox: id('unknownCheckbox', CHECKBOX),
-    unknownCheckboxContent: id('unknownCheckboxContent', LINE_LAYOUT, {
+    resetButton: query('#resetButton', BUTTON),
+    unknownCheckbox: query('#unknownCheckbox', CHECKBOX),
+    unknownCheckboxContent: query('#unknownCheckboxContent', LINE_LAYOUT, {
       text: otext(),
     }),
   },

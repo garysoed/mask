@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, DIV, id, registerCustomElement} from 'persona';
+import {Context, Ctrl, DIV, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -18,12 +18,12 @@ import template from './icon.html';
 
 const $iconDemo = {
   shadow: {
-    fitToWidthCheckbox: id('fitToWidthCheckbox', CHECKBOX),
-    icon: id('icon', ICON),
-    iconContainer: id('iconContainer', DIV, {
+    fitToWidthCheckbox: query('#fitToWidthCheckbox', CHECKBOX),
+    icon: query('#icon', ICON),
+    iconContainer: query('#iconContainer', DIV, {
       action: oflag('mk-action-2'),
     }),
-    isActionCheckbox: id('isActionCheckbox', CHECKBOX),
+    isActionCheckbox: query('#isActionCheckbox', CHECKBOX),
   },
 };
 

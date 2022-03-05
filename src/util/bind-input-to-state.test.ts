@@ -5,7 +5,7 @@ import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {mutableState} from 'gs-tools/export/state';
 import {stringType} from 'gs-types';
-import {Context, Ctrl, DIV, iattr, id, oattr, oflag, registerCustomElement} from 'persona';
+import {Context, Ctrl, DIV, iattr, query, oattr, oflag, registerCustomElement} from 'persona';
 import {ElementHarness, getHarness} from 'persona/export/testing';
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -27,7 +27,7 @@ const $test = {
     ...create$baseInput<string, string>(stringType, '').host,
   },
   shadow: {
-    div: id('div', DIV, {
+    div: query('#div', DIV, {
       ...$baseRootOutputs,
       disabled: oflag('disabled'),
       attrIn: iattr('value'),
@@ -69,7 +69,7 @@ const TEST = registerCustomElement({
 
 const $parent = {
   shadow: {
-    test: id('test', TEST),
+    test: query('#test', TEST),
   },
 };
 

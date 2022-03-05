@@ -1,7 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {booleanType, nullType, Type, unionType} from 'gs-types';
-import {Context, id, ievent, INPUT, itarget, LABEL, registerCustomElement} from 'persona';
+import {Context, query, ievent, INPUT, itarget, LABEL, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {distinctUntilChanged, map, skip, startWith, tap, withLatestFrom} from 'rxjs/operators';
@@ -31,12 +31,12 @@ const $checkbox = {
     ...create$baseInput<CheckedValue, CheckedValue>(CHECKED_VALUE_TYPE, false).host,
   },
   shadow: {
-    container: id('container', LABEL, {
+    container: query('#container', LABEL, {
       ...$baseRootOutputs,
       disabled: oflag('mk-disabled'),
     }),
-    icon: id('icon', ICON),
-    input: id('input', INPUT, {
+    icon: query('#icon', ICON),
+    input: query('#input', INPUT, {
       element: itarget(),
       onChange: ievent('change', Event),
     }),

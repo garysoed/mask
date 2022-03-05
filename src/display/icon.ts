@@ -8,7 +8,7 @@
  */
 import {filterByType} from 'gs-tools/export/rxjs';
 import {enumType, nullableType, stringType} from 'gs-types';
-import {Context, Ctrl, iattr, id, ocase, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
+import {Context, Ctrl, iattr, query, ocase, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
 import {defer, Observable, of} from 'rxjs';
 import {map, share, tap} from 'rxjs/operators';
 
@@ -30,7 +30,7 @@ const $icon = {
     fitTo: iattr('fit-to'),
   },
   shadow: {
-    root: id('root', SPAN, {
+    root: query('#root', SPAN, {
       content: ocase(nullableType(stringType)),
     }),
   },

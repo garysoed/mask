@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, id, registerCustomElement, renderCustomElement, RenderSpec, RenderSpecType, renderTextNode} from 'persona';
+import {Context, Ctrl, query, registerCustomElement, renderCustomElement, RenderSpec, RenderSpecType, renderTextNode} from 'persona';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import template from './annotated-text.html';
 
 const $annotatedTextDemo = {
   shadow: {
-    annotated: id('annotated', ANNOTATED_TEXT),
+    annotated: query('#annotated', ANNOTATED_TEXT),
   },
 };
 

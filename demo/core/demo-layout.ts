@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, iattr, id, otext, registerCustomElement} from 'persona';
+import {Context, Ctrl, iattr, query, otext, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 import {map, scan, shareReplay, startWith} from 'rxjs/operators';
 
@@ -18,10 +18,10 @@ const $demoLayout = {
     label: iattr('label'),
   },
   shadow: {
-    bulletIcon: id('bulletIcon', ICON),
-    detailsButton: id('detailsButton', BUTTON),
-    detailsDrawer: id('detailsDrawer', DRAWER_LAYOUT),
-    detailsLabel: id('detailsLabel', LINE_LAYOUT, {
+    bulletIcon: query('#bulletIcon', ICON),
+    detailsButton: query('#detailsButton', BUTTON),
+    detailsDrawer: query('#detailsDrawer', DRAWER_LAYOUT),
+    detailsLabel: query('#detailsLabel', LINE_LAYOUT, {
       textContent: otext(),
     }),
   },

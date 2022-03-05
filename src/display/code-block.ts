@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, id, itarget, itext, otext, PRE, registerCustomElement} from 'persona';
+import {Context, Ctrl, query, itarget, itext, otext, PRE, registerCustomElement} from 'persona';
 import {combineLatest, Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 
@@ -19,7 +19,7 @@ export const $codeBlock = {
     text: itext(),
   },
   shadow: {
-    root: id('root', PRE, {
+    root: query('#root', PRE, {
       target: itarget(),
       text: otext(),
     }),

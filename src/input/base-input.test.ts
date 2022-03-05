@@ -3,7 +3,7 @@ import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {stringType} from 'gs-types';
-import {Context, DIV, iattr, id, oattr, oflag, registerCustomElement} from 'persona';
+import {Context, DIV, iattr, query, oattr, oflag, registerCustomElement} from 'persona';
 import {ElementHarness, getHarness} from 'persona/export/testing';
 import {fromEvent, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -22,7 +22,7 @@ const $test = {
     ...create$baseInput<string, string>(stringType, '').host,
   },
   shadow: {
-    div: id('div', DIV, {
+    div: query('#div', DIV, {
       ...$baseRootOutputs,
       disabled: oflag('disabled'),
       label: oattr('label'),

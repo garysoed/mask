@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
-import {Context, Ctrl, iattr, id, ievent, mediaQueryObservable, oevent, otext, P, registerCustomElement} from 'persona';
+import {Context, Ctrl, iattr, query, ievent, mediaQueryObservable, oevent, otext, P, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, startWith} from 'rxjs/operators';
@@ -24,15 +24,15 @@ const $rootLayout = {
     onTitleClick: oevent(ACTION_EVENT, ActionEvent),
   },
   shadow: {
-    drawer: id('drawer', DRAWER_LAYOUT, {
+    drawer: query('#drawer', DRAWER_LAYOUT, {
       onMouseLeave: ievent('mouseleave', MouseEvent),
       onMouseEnter: ievent('mouseenter', MouseEvent),
     }),
-    mainIcon: id('mainIcon', ICON),
-    title: id('title', P, {
+    mainIcon: query('#mainIcon', ICON),
+    title: query('#title', P, {
       textContent: otext(),
     }),
-    titleButton: id('titleButton', BUTTON),
+    titleButton: query('#titleButton', BUTTON),
   },
 };
 const DESKTOP_QUERY = `(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`;

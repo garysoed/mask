@@ -1,6 +1,6 @@
 import {arrayFrom} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, DIV, id, ievent, irect, itarget, ostyle, registerCustomElement} from 'persona';
+import {Context, Ctrl, DIV, query, ievent, irect, itarget, ostyle, registerCustomElement} from 'persona';
 import {oclass} from 'persona/src/output/class';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, tap, withLatestFrom} from 'rxjs/operators';
@@ -19,12 +19,12 @@ interface Position {
 
 const $overlay = {
   shadow: {
-    content: id('content', DIV, {
+    content: query('#content', DIV, {
       rect: irect(),
       styleTop: ostyle('top'),
       styleLeft: ostyle('left'),
     }),
-    root: id('root', DIV, {
+    root: query('#root', DIV, {
       hidden: oclass('hidden'),
       onClick: ievent('click', MouseEvent),
       element: itarget(),

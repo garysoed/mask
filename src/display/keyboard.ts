@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, stringType, Type} from 'gs-types';
-import {Context, Ctrl, iattr, id, KBD, ocase, oforeach, registerCustomElement, renderElement, renderFragment, RenderSpec, renderTextNode, root} from 'persona';
+import {Context, Ctrl, iattr, query, KBD, ocase, oforeach, registerCustomElement, renderElement, renderFragment, RenderSpec, renderTextNode, root} from 'persona';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ const $keyboard = {
     root: root({
       theme: ocase('#theme', THEME_LOADER_TYPE),
     }),
-    description: id('description', KBD, {
+    description: query('#description', KBD, {
       content: oforeach('#content', stringType),
     }),
   },

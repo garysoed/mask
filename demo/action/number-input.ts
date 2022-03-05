@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, id, registerCustomElement} from 'persona';
+import {Context, Ctrl, query, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 
 import {NUMBER_INPUT} from '../../src/input/number-input';
@@ -13,10 +13,10 @@ import template from './number-input.html';
 
 export const $numberInputDemo = {
   shadow: {
-    disabledInput: id('disabledInput', NUMBER_INPUT),
-    enabledInput: id('enabledInput', NUMBER_INPUT),
-    rangedInput: id('rangedInput', NUMBER_INPUT),
-    steppedInput: id('steppedInput', NUMBER_INPUT),
+    disabledInput: query('#disabledInput', NUMBER_INPUT),
+    enabledInput: query('#enabledInput', NUMBER_INPUT),
+    rangedInput: query('#rangedInput', NUMBER_INPUT),
+    steppedInput: query('#steppedInput', NUMBER_INPUT),
   },
 };
 

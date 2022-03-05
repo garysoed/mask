@@ -2,7 +2,7 @@ import {$asArray, $asMap, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
 import {enumType, hasPropertiesType, instanceofType, tupleOfType} from 'gs-types';
-import {Context, Ctrl, DIV, id, oforeach, registerCustomElement, renderCustomElement, RenderSpec} from 'persona';
+import {Context, Ctrl, DIV, query, oforeach, registerCustomElement, renderCustomElement, RenderSpec} from 'persona';
 import {Observable, of, Subject} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
@@ -42,18 +42,18 @@ const ANCHOR_ENTRY_TYPE = tupleOfType<[Anchor, AnchorSubjects]>([
 
 const $overlayLayoutDemo = {
   shadow: {
-    overlay: id('overlay', OVERLAY_LAYOUT),
-    overlayHorizontal: id('overlayHorizontal', DIV, {
+    overlay: query('#overlay', OVERLAY_LAYOUT),
+    overlayHorizontal: query('#overlayHorizontal', DIV, {
       overlayHorizontalAnchors: oforeach('#overlayHorizontalAnchors', ANCHOR_ENTRY_TYPE),
     }),
-    overlayVertical: id('overlayVertical', DIV, {
+    overlayVertical: query('#overlayVertical', DIV, {
       overlayVerticalAnchors: oforeach('#overlayVerticalAnchors', ANCHOR_ENTRY_TYPE),
     }),
-    showButton: id('target', BUTTON),
-    targetHorizontal: id('targetHorizontal', DIV, {
+    showButton: query('#target', BUTTON),
+    targetHorizontal: query('#targetHorizontal', DIV, {
       targetHorizontalAnchors: oforeach('#targetHorizontalAnchors', ANCHOR_ENTRY_TYPE),
     }),
-    targetVertical: id('targetVertical', DIV, {
+    targetVertical: query('#targetVertical', DIV, {
       targetVerticalAnchors: oforeach('#targetVerticalAnchors', ANCHOR_ENTRY_TYPE),
     }),
   },

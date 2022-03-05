@@ -3,7 +3,7 @@ import {Color, getContrast, RgbColor} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {getAllValues} from 'gs-tools/export/typescript';
 import {booleanType, enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
-import {CODE, Context, Ctrl, DIV, FIGURE, id, itarget, oattr, oclass, oflag, oforeach, ostyle, otext, query, registerCustomElement, RenderSpec, renderTemplate, TABLE, TD, TEMPLATE, TR} from 'persona';
+import {CODE, Context, Ctrl, DIV, FIGURE, itarget, oattr, oclass, oflag, oforeach, ostyle, otext, query, registerCustomElement, RenderSpec, renderTemplate, TABLE, TD, TEMPLATE, TR} from 'persona';
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -57,46 +57,46 @@ const TABLE_CELL_TYPE = hasPropertiesType<TableCell>({
 
 const $colorsDemo = {
   shadow: {
-    _paletteItem: id('_paletteItem', TEMPLATE, {
+    _paletteItem: query('#_paletteItem', TEMPLATE, {
       target: itarget(),
     }),
-    _tableCell: id('_tableCell', TEMPLATE, {
+    _tableCell: query('#_tableCell', TEMPLATE, {
       target: itarget(),
     }),
-    accentSeed: id('accentSeed', FIGURE, {
+    accentSeed: query('#accentSeed', FIGURE, {
       backgroundColor: ostyle('backgroundColor'),
     }),
-    baseSeed: id('baseSeed', FIGURE, {
+    baseSeed: query('#baseSeed', FIGURE, {
       backgroundColor: ostyle('backgroundColor'),
     }),
 
-    actionPalette: id('actionPalette', DIV, {
+    actionPalette: query('#actionPalette', DIV, {
       content: oforeach('#content', PALETTE_ITEM_TYPE),
     }),
-    passivePalette: id('passivePalette', DIV, {
+    passivePalette: query('#passivePalette', DIV, {
       content: oforeach('#content', PALETTE_ITEM_TYPE),
     }),
-    highlightPalette: id('highlightPalette', DIV, {
+    highlightPalette: query('#highlightPalette', DIV, {
       content: oforeach('#content', PALETTE_ITEM_TYPE),
     }),
 
-    passiveRow: id('passiveRow', TR, {
+    passiveRow: query('#passiveRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    actionRow: id('actionRow', TR, {
+    actionRow: query('#actionRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    focusRow: id('focusRow', TR, {
+    focusRow: query('#focusRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    hoverRow: id('hoverRow', TR, {
+    hoverRow: query('#hoverRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    disabledRow: id('disabledRow', TR, {
+    disabledRow: query('#disabledRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
 
-    table: id('table', TABLE, {
+    table: query('#table', TABLE, {
       darkClass: oclass('dark'),
     }),
   },

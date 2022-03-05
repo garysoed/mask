@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, id, registerCustomElement} from 'persona';
+import {Context, Ctrl, query, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
 
 import {TEXT_INPUT} from '../../src/input/text-input';
@@ -13,11 +13,11 @@ import template from './text-input.html';
 
 const $textInputDemo = {
   shadow: {
-    disabledInput: id('disabledInput', TEXT_INPUT),
-    emailInput: id('emailInput', TEXT_INPUT),
-    enabledInput: id('enabledInput', TEXT_INPUT),
-    telInput: id('telInput', TEXT_INPUT),
-    urlInput: id('urlInput', TEXT_INPUT),
+    disabledInput: query('#disabledInput', TEXT_INPUT),
+    emailInput: query('#emailInput', TEXT_INPUT),
+    enabledInput: query('#enabledInput', TEXT_INPUT),
+    telInput: query('#telInput', TEXT_INPUT),
+    urlInput: query('#urlInput', TEXT_INPUT),
   },
 };
 

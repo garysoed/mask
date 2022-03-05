@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, instanceofType, nullType, undefinedType, unionType} from 'gs-types';
-import {Context, Ctrl, iattr, icall, id, ivalue, registerCustomElement, SLOT} from 'persona';
+import {Context, Ctrl, iattr, icall, query, ivalue, registerCustomElement, SLOT} from 'persona';
 import {combineLatest, Observable, OperatorFunction} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ const $overlayLayout = {
     targetVertical: iattr('target-vertical'),
   },
   shadow: {
-    slot: id('slot', SLOT),
+    slot: query('#slot', SLOT),
   },
 };
 

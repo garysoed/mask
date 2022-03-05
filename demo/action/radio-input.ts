@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, id, registerCustomElement} from 'persona';
+import {Context, Ctrl, query, registerCustomElement} from 'persona';
 import {merge, Observable, of, OperatorFunction, pipe} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
@@ -14,11 +14,11 @@ import template from './radio-input.html';
 
 const $radioInputDemo = {
   shadow: {
-    optionA: id('optionA', RADIO_INPUT),
-    optionB: id('optionB', RADIO_INPUT),
-    optionC: id('optionC', RADIO_INPUT),
-    optionD: id('optionD', RADIO_INPUT),
-    resetButton: id('resetButton', BUTTON),
+    optionA: query('#optionA', RADIO_INPUT),
+    optionB: query('#optionB', RADIO_INPUT),
+    optionC: query('#optionC', RADIO_INPUT),
+    optionD: query('#optionD', RADIO_INPUT),
+    resetButton: query('#resetButton', BUTTON),
   },
 };
 

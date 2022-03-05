@@ -2,7 +2,7 @@ import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {enumType, hasPropertiesType, instanceofType, nullableType, stringType} from 'gs-types';
-import {Context, Ctrl, DIV, id, ievent, itarget, oattr, ocase, oforeach, otext, query, registerCustomElement, renderCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
+import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, otext, query, registerCustomElement, renderCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
@@ -38,32 +38,32 @@ const PALETTE_ENTRY_TYPE = hasPropertiesType<PaletteEntry>({
 const $demo = {
   host: {},
   shadow: {
-    _pageButton: id('_pageButton', TEMPLATE, {
+    _pageButton: query('#_pageButton', TEMPLATE, {
       target: itarget(),
     }),
-    accentPalette: id('accentPalette', DIV, {
+    accentPalette: query('#accentPalette', DIV, {
       content: oforeach('#content', PALETTE_ENTRY_TYPE),
       onClick: ievent('click', MouseEvent),
     }),
-    basePalette: id('basePalette', DIV, {
+    basePalette: query('#basePalette', DIV, {
       content: oforeach('#content', PALETTE_ENTRY_TYPE),
       onClick: ievent('click', MouseEvent),
     }),
-    content: id('content', DIV, {
+    content: query('#content', DIV, {
       content: ocase('#content', nullableType(PAGE_SPEC_TYPE)),
     }),
-    drawerRoot: id('drawerRoot', DIV, {
+    drawerRoot: query('#drawerRoot', DIV, {
       actionContents: oforeach('#actionContents', PAGE_SPEC_TYPE),
       displayContents: oforeach('#displayContents', PAGE_SPEC_TYPE),
       generalContents: oforeach('#generalContents', PAGE_SPEC_TYPE),
       layoutContents: oforeach('#layoutContents', PAGE_SPEC_TYPE),
       onAction: ievent(ACTION_EVENT, ActionEvent),
     }),
-    darkMode: id('darkMode', CHECKBOX),
-    rootLayout: id('rootLayout', ROOT_LAYOUT, {
+    darkMode: query('#darkMode', CHECKBOX),
+    rootLayout: query('#rootLayout', ROOT_LAYOUT, {
       onAction: ievent(ACTION_EVENT, ActionEvent, {matchTarget: true}),
     }),
-    settingsDrawer: id('settingsDrawer', DRAWER_LAYOUT, {
+    settingsDrawer: query('#settingsDrawer', DRAWER_LAYOUT, {
       onMouseEnter: ievent('mouseenter', MouseEvent),
       onMouseLeave: ievent('mouseleave', MouseEvent),
     }),
