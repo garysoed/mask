@@ -2,7 +2,7 @@ import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {enumType, hasPropertiesType, instanceofType, nullableType, stringType} from 'gs-types';
-import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, otext, query, registerCustomElement, renderCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
+import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, ostyle, otext, query, registerCustomElement, renderCustomElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
@@ -39,6 +39,9 @@ const $demo = {
   host: {},
   shadow: {
     _pageButton: query('#_pageButton', TEMPLATE, {
+      target: itarget(),
+    }),
+    _paletteCell: query('#_paletteCell', TEMPLATE, {
       target: itarget(),
     }),
     accentPalette: query('#accentPalette', DIV, {
@@ -85,8 +88,8 @@ class DemoCtrl implements Ctrl {
       this.onBasePaletteClick$,
       this.onDrawerRootClick$,
       this.setupOnRootLayoutAction(),
-      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content(value => renderPaletteData(value))),
-      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(value => renderPaletteData(value))),
+      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content(value => this.renderPaletteData(value))),
+      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(value => this.renderPaletteData(value))),
       this.$.shadow.darkMode.value.pipe(
           map(value => value === true),
           $demoState.get(this.$.vine).$('isDarkMode').set(),
@@ -182,6 +185,33 @@ class DemoCtrl implements Ctrl {
     }));
   }
 
+  renderPaletteData({color, colorName, isSelected$}: PaletteEntry): Observable<RenderSpec> {
+    const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+
+    const classes$ = isSelected$.pipe(
+        map(selected => {
+          return selected ? ['palette', 'selected'] : ['palette'];
+        }),
+        map(classes => classes.join(' ')),
+    );
+
+    return of(renderTemplate({
+      template$: this.$.shadow._paletteCell.target as Observable<HTMLTemplateElement>,
+      spec: {
+        div: query('div', DIV, {
+          backgroundColor: ostyle('backgroundColor'),
+          class: oattr('class'),
+          color: oattr('color'),
+        }),
+      },
+      runs: $ => [
+        classes$.pipe($.div.class()),
+        of(colorName).pipe($.div.color()),
+        of(colorCss).pipe($.div.backgroundColor()),
+      ],
+    }));
+  }
+
   @cache()
   private get isDrawerExpanded$(): Observable<boolean> {
     return merge(
@@ -259,26 +289,6 @@ const ORDERED_PALETTES: ReadonlyArray<[keyof ThemeSeed, Color]> = [
   ['BROWN', THEME_SEEDS.BROWN],
   ['GREY', THEME_SEEDS.GREY],
 ];
-
-function renderPaletteData({color, colorName, isSelected$}: PaletteEntry): Observable<RenderSpec> {
-  const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
-
-  const classes$ = isSelected$.pipe(
-      map(selected => {
-        return selected ? ['palette', 'selected'] : ['palette'];
-      }),
-      map(classes => classes.join(' ')),
-  );
-
-  return of(renderElement({
-    tag: 'div',
-    attrs: new Map<string, Observable<string>>([
-      ['class', classes$],
-      ['color', of(colorName)],
-      ['style', of(`background-color: ${colorCss};`)],
-    ]),
-  }));
-}
 
 function getColor(event: Event): keyof ThemeSeed|null {
   const target = event.target;
