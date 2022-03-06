@@ -9,9 +9,9 @@ import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 
 export interface BaseActionSpecType<T> extends Spec {
   host: {
-    readonly disabled: UnresolvedIO<IFlag>;
-    readonly isSecondary: UnresolvedIO<IFlag>;
-    readonly actionEvent: UnresolvedIO<OEvent<ActionEvent<T>>>;
+    readonly disabled: UnresolvedIO<HTMLElement, IFlag>;
+    readonly isSecondary: UnresolvedIO<HTMLElement, IFlag>;
+    readonly actionEvent: UnresolvedIO<HTMLElement, OEvent<ActionEvent<T>>>;
   };
 }
 
