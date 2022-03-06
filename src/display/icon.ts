@@ -6,11 +6,10 @@
  *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
-import {filterByType} from 'gs-tools/export/rxjs';
 import {enumType, nullableType, stringType} from 'gs-types';
-import {Context, Ctrl, iattr, query, ocase, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
-import {defer, Observable, of} from 'rxjs';
-import {map, share, tap} from 'rxjs/operators';
+import {Context, Ctrl, iattr, ocase, query, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
+import {defer, Observable, of, pipe} from 'rxjs';
+import {map, share, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$svgService} from '../core/svg-service';
 import {renderTheme} from '../theme/render-theme';
@@ -55,22 +54,22 @@ class Icon implements Ctrl {
               }
 
               return renderHtml({
-                decorators: [
-                  element => this.$.host.fitTo
-                      .pipe(
-                          filterByType(enumType<FitTo>(FitTo)),
-                          tap(fitTo => {
-                            if (fitTo === FitTo.HEIGHT) {
-                              element.removeAttribute('width');
-                              element.setAttribute('height', '100%');
-                            } else {
-                              element.setAttribute('width', '100%');
-                              element.removeAttribute('height');
-                            }
-                          }),
-                          map(([element]) => element),
-                      ),
-                ],
+                decorator: pipe(
+                    withLatestFrom(this.$.host.fitTo),
+                    tap(([element, fitTo]) => {
+                      if (!enumType<FitTo>(FitTo).check(fitTo)) {
+                        return;
+                      }
+
+                      if (fitTo === FitTo.HEIGHT) {
+                        element.removeAttribute('width');
+                        element.setAttribute('height', '100%');
+                      } else {
+                        element.setAttribute('width', '100%');
+                        element.removeAttribute('height');
+                      }
+                    }),
+                ),
                 raw: of(svg),
                 parseType: 'image/svg+xml' as const,
               });
