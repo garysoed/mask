@@ -1,5 +1,5 @@
 import {enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
-import {Registration} from 'persona';
+import {CustomElementRegistration} from 'persona';
 
 import {BUTTON_DEMO} from '../action/button';
 import {CHECKBOX_DEMO} from '../action/checkbox';
@@ -19,13 +19,13 @@ import {Views} from './location-service';
 
 
 export interface PageSpec {
-  readonly registration: Registration<HTMLElement, any>;
+  readonly registration: CustomElementRegistration<HTMLElement, any>;
   readonly name: string;
   readonly path: Views;
 }
 
 export const PAGE_SPEC_TYPE = hasPropertiesType({
-  registration: instanceofType<Registration<HTMLElement, any>>(Object),
+  registration: instanceofType<CustomElementRegistration<HTMLElement, any>>(Object),
   name: stringType,
   path: enumType<Views>(Views),
 });

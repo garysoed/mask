@@ -1,5 +1,5 @@
 import {source, Vine} from 'grapevine';
-import {installCustomElements, Registration} from 'persona';
+import {CustomElementRegistration, installCustomElements} from 'persona';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export const $window = source(() => window);
 
 export function start(
     appName: string,
-    roots: ReadonlyArray<Registration<HTMLElement, any>>,
+    roots: ReadonlyArray<CustomElementRegistration<HTMLElement, any>>,
     rootDoc: Document,
     themeLoader: ThemeLoader,
     customElementRegistry: CustomElementRegistry = window.customElements,

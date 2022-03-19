@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, query, oattr, registerCustomElement, SECTION} from 'persona';
+import {Context, Ctrl, query, oattr, registerCustomElement, ELEMENT} from 'persona';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ const $drawerLayoutDemo = {
   shadow: {
     drawer: query('#drawer', DRAWER_LAYOUT, {}),
     expandCheckbox: query('#expandCheckbox', CHECKBOX, {}),
-    rootPlay: query('#rootPlay', SECTION, {
+    rootPlay: query('#rootPlay', ELEMENT, {
       layout: oattr('layout'),
     }),
     horizontalModeCheckbox: query('#horizontalModeCheckbox', CHECKBOX, {}),

@@ -3,7 +3,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
 import {MutableResolver} from 'gs-tools/export/state';
 import {nullType, stringType, unionType} from 'gs-types';
-import {Bindings, Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, query, registerCustomElement} from 'persona';
+import {Bindings, Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, PARAGRAPH, query, registerCustomElement} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
 import {oflag} from 'persona/src/output/flag';
 import {Target} from 'persona/src/types/target';
@@ -44,7 +44,7 @@ const $radioInput = {
       onChange: ievent('change', Event),
       disabled: oflag('disabled'),
     }),
-    label: query('#label', P, {
+    label: query('#label', PARAGRAPH, {
       text: otext(),
     }),
   },

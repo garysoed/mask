@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, stringType, Type} from 'gs-types';
-import {Context, Ctrl, iattr, itarget, KBD, ocase, oforeach, otext, query, registerCustomElement, renderFragment, RenderSpec, renderTemplate, renderTextNode, root, TEMPLATE} from 'persona';
+import {Context, Ctrl, ELEMENT, iattr, itarget, ocase, oforeach, otext, query, registerCustomElement, renderFragment, RenderSpec, renderTemplate, renderTextNode, root, TEMPLATE} from 'persona';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ const $keyboard = {
     root: root({
       theme: ocase('#theme', THEME_LOADER_TYPE),
     }),
-    description: query('#description', KBD, {
+    description: query('#description', ELEMENT, {
       content: oforeach('#content', stringType),
     }),
   },
@@ -59,7 +59,7 @@ export class Keyboard implements Ctrl {
     return renderTemplate({
       template$: this.$.shadow._key.target as Observable<HTMLTemplateElement>,
       spec: {
-        kbd: query('kbd', KBD, {
+        kbd: query('kbd', ELEMENT, {
           text: otext(),
         }),
       },

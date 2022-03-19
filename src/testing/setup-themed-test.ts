@@ -1,7 +1,7 @@
 import {Vine} from 'grapevine';
 import {FakeTime} from 'gs-testing';
-import {ElementSpec, Registration} from 'persona';
-import {TestSpec, Tester, setupTest} from 'persona/export/testing';
+import {CustomElementRegistration, ElementSpec} from 'persona';
+import {setupTest, Tester, TestSpec} from 'persona/export/testing';
 
 import {THEME_LOADER_TEST_OVERRIDE} from './theme-loader-test-override';
 
@@ -22,7 +22,7 @@ class ThemedTester implements Omit<Tester, 'createElement'> {
   }
 
   createElement<E extends HTMLElement, S extends ElementSpec>(
-      spec: Registration<E, S>,
+      spec: CustomElementRegistration<E, S>,
       darkMode = false,
   ): E {
     const el = this.baseTester.createElement(spec);
