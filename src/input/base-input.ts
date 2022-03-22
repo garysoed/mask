@@ -1,10 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {Type, unknownType} from 'gs-types';
-import {icall, oevent} from 'persona';
-import {ivalue} from 'persona/src/input/value';
-import {ovalue} from 'persona/src/output/value';
-import {Bindings, Context, Ctrl, UnresolvedIO} from 'persona/src/types/ctrl';
-import {ICall, IValue, OEvent, OValue} from 'persona/src/types/io';
+import {Bindings, Context, Ctrl, icall, ivalue, oevent, ovalue} from 'persona';
+import {ICall, IValue, OEvent, OValue, Resolved} from 'persona/export/internal';
 import {Observable, OperatorFunction} from 'rxjs';
 import {filter, map, pairwise, startWith, withLatestFrom} from 'rxjs/operators';
 
@@ -14,10 +11,10 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 export interface BaseInputSpecType<T, A> extends BaseActionSpecType<A> {
   host: BaseActionSpecType<A>['host'] & {
-    readonly clearFn: UnresolvedIO<HTMLElement, ICall<unknown, 'clearFn'>>;
-    readonly initValue: UnresolvedIO<HTMLElement, IValue<T, 'initValue'>>;
-    readonly onChange: UnresolvedIO<HTMLElement, OEvent<ChangeEvent<T>>>;
-    readonly value: UnresolvedIO<HTMLElement, OValue<T, 'value'>>;
+    readonly clearFn: Resolved<ICall<unknown, 'clearFn'>>;
+    readonly initValue: Resolved<IValue<T, 'initValue'>>;
+    readonly onChange: Resolved<OEvent<ChangeEvent<T>>>;
+    readonly value: Resolved<OValue<T, 'value'>>;
   }
 }
 

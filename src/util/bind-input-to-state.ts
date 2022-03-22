@@ -1,13 +1,13 @@
 import {MutableResolver} from 'gs-tools/export/state';
 import {Bindings} from 'persona';
-import {ReversedSpec, Target} from 'persona/export/internal';
+import {ReversedSpec} from 'persona/export/internal';
 import {concat, Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {BaseInputSpecType} from '../input/base-input';
 
 
-type InputBindings<T> = Bindings<ReversedSpec<Target, BaseInputSpecType<T, any>['host']>>;
+type InputBindings<T> = Bindings<ReversedSpec<BaseInputSpecType<T, any>['host']>>;
 
 export function bindInputToState<T>(
     resolver: MutableResolver<T>,

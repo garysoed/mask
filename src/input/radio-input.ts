@@ -6,7 +6,6 @@ import {nullType, stringType, unionType} from 'gs-types';
 import {Bindings, Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, PARAGRAPH, query, registerCustomElement} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
 import {oflag} from 'persona/src/output/flag';
-import {Target} from 'persona/src/types/target';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -222,7 +221,7 @@ export const RADIO_INPUT = registerCustomElement({
 });
 
 export type RadioBindingLike = Pick<
-    Bindings<ReversedSpec<Target, (typeof $radioInput)['host']> >,
+    Bindings<ReversedSpec<(typeof $radioInput)['host']> >,
     'clearFn'|'initValue'|'value'
 >;
 

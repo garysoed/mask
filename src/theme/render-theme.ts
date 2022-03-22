@@ -27,8 +27,9 @@ export function renderTheme(
   }
 
   return $themeLoader.get(context.vine).pipe(
-      SELECTOR.styleEl(context.shadowRoot, renderContext)
-          .update(themeLoader => renderThemeLoader(themeLoader, context)),
+      SELECTOR.styleEl(context.shadowRoot, renderContext)(
+          themeLoader => renderThemeLoader(themeLoader, context),
+      ),
   );
 }
 
