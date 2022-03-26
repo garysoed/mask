@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {Bindings, Context, Ctrl, iflag, oattr, oevent, oflag} from 'persona';
-import {IFlag, OEvent, Resolved, Spec} from 'persona/export/internal';
+import {IFlag, OEvent, Spec} from 'persona/export/internal';
 import {merge, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -9,9 +9,9 @@ import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 
 export interface BaseActionSpecType<T> extends Spec {
   host: {
-    readonly disabled: Resolved<IFlag>;
-    readonly isSecondary: Resolved<IFlag>;
-    readonly actionEvent: Resolved<OEvent<ActionEvent<T>>>;
+    readonly disabled: IFlag;
+    readonly isSecondary: IFlag;
+    readonly actionEvent: OEvent<ActionEvent<T>>;
   };
 }
 

@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {Type, unknownType} from 'gs-types';
 import {Bindings, Context, Ctrl, icall, ivalue, oevent, ovalue} from 'persona';
-import {ICall, IValue, OEvent, OValue, Resolved} from 'persona/export/internal';
+import {ICall, IValue, OEvent, OValue} from 'persona/export/internal';
 import {Observable, OperatorFunction} from 'rxjs';
 import {filter, map, pairwise, startWith, withLatestFrom} from 'rxjs/operators';
 
@@ -11,10 +11,10 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 export interface BaseInputSpecType<T, A> extends BaseActionSpecType<A> {
   host: BaseActionSpecType<A>['host'] & {
-    readonly clearFn: Resolved<ICall<unknown, 'clearFn'>>;
-    readonly initValue: Resolved<IValue<T, 'initValue'>>;
-    readonly onChange: Resolved<OEvent<ChangeEvent<T>>>;
-    readonly value: Resolved<OValue<T, 'value'>>;
+    readonly clearFn: ICall<unknown, 'clearFn'>;
+    readonly initValue: IValue<T, 'initValue'>;
+    readonly onChange: OEvent<ChangeEvent<T>>;
+    readonly value: OValue<T, 'value'>;
   }
 }
 
