@@ -169,7 +169,7 @@ class DemoCtrl implements Ctrl {
   private renderPageButtons({path, name}: PageSpec): Observable<RenderSpec> {
     return of(renderTemplate({
       // TODO: Do not cast
-      template$: this.$.shadow._pageButton.target as Observable<HTMLTemplateElement>,
+      template$: this.$.shadow._pageButton.target,
       spec: {
         button: query('mk-button', BUTTON, {
           path: oattr(COMPONENT_PATH_ATTR),
@@ -196,7 +196,7 @@ class DemoCtrl implements Ctrl {
     );
 
     return of(renderTemplate({
-      template$: this.$.shadow._paletteCell.target as Observable<HTMLTemplateElement>,
+      template$: this.$.shadow._paletteCell.target,
       spec: {
         div: query('div', DIV, {
           backgroundColor: ostyle('backgroundColor'),

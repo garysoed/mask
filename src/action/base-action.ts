@@ -37,7 +37,7 @@ export abstract class BaseAction<T> implements Ctrl {
   constructor(
       protected readonly actionContext: Context<BaseActionSpecType<T>>,
       protected readonly renderDomDisabled: () => OperatorFunction<boolean, unknown>,
-      protected readonly rootBindings: Bindings<typeof $baseRootOutputs>,
+      protected readonly rootBindings: Bindings<typeof $baseRootOutputs, any>,
   ) {
   }
 

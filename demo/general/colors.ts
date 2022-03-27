@@ -155,7 +155,7 @@ class ColorsDemo implements Ctrl {
   private renderPaletteItem(item: PaletteItem): Observable<RenderSpec> {
     return of(
         renderTemplate({
-          template$: this.$.shadow._paletteItem.target as Observable<HTMLTemplateElement>,
+          template$: this.$.shadow._paletteItem.target,
           spec: {
             box: query('.paletteItem', DIV, {
               backgroundColor: ostyle('backgroundColor'),
@@ -177,7 +177,7 @@ class ColorsDemo implements Ctrl {
   private renderTableCell(cell: TableCell): Observable<RenderSpec> {
     return of(
         renderTemplate({
-          template$: this.$.shadow._tableCell.target as Observable<HTMLTemplateElement>,
+          template$: this.$.shadow._tableCell.target,
           spec: {
             root: query('td', ELEMENT, {
               action1: oflag('mk-action-1'),

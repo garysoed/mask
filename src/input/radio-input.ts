@@ -221,7 +221,7 @@ export const RADIO_INPUT = registerCustomElement({
 });
 
 export type RadioBindingLike = Pick<
-    Bindings<ReversedSpec<(typeof $radioInput)['host']> >,
+    Bindings<ReversedSpec<(typeof $radioInput)['host']>, any>,
     'clearFn'|'initValue'|'value'
 >;
 

@@ -53,7 +53,7 @@ export class AnnotatedTextDemo implements Ctrl {
             });
 
             const imgNode = renderTemplate({
-              template$: this.$.shadow._icon.target as Observable<HTMLTemplateElement>,
+              template$: this.$.shadow._icon.target,
               spec: {
                 icon: query('mk-query', ICON),
               },

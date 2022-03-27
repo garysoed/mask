@@ -57,7 +57,7 @@ export class Keyboard implements Ctrl {
 
   private renderKey(key: string): RenderSpec {
     return renderTemplate({
-      template$: this.$.shadow._key.target as Observable<HTMLTemplateElement>,
+      template$: this.$.shadow._key.target,
       spec: {
         kbd: query('kbd', ELEMENT, {
           text: otext(),

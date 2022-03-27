@@ -36,7 +36,7 @@ export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
   constructor(
       protected readonly inputContext: Context<BaseInputSpecType<T, A>>,
       renderDisabled: () => OperatorFunction<boolean, unknown>,
-      rootBindings: Bindings<typeof $baseRootOutputs>,
+      rootBindings: Bindings<typeof $baseRootOutputs, any>,
   ) {
     super(inputContext, renderDisabled, rootBindings);
   }
