@@ -1,5 +1,5 @@
 import {cache} from 'gs-tools/export/data';
-import {Type, unknownType} from 'gs-types';
+import {Type} from 'gs-types';
 import {Bindings, Context, Ctrl, icall, ivalue, oevent, ovalue} from 'persona';
 import {ICall, IValue, OEvent, OValue} from 'persona/export/internal';
 import {Observable, OperatorFunction} from 'rxjs';
@@ -11,7 +11,7 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 export interface BaseInputSpecType<T, A> extends BaseActionSpecType<A> {
   host: BaseActionSpecType<A>['host'] & {
-    readonly clearFn: ICall<unknown, 'clearFn'>;
+    readonly clearFn: ICall<readonly unknown[], 'clearFn'>;
     readonly initValue: IValue<T, 'initValue'>;
     readonly onChange: OEvent<ChangeEvent<T>>;
     readonly value: OValue<T, 'value'>;
@@ -23,7 +23,7 @@ export function create$baseInput<T, A>(valueType: Type<T>, defaultValue: T): Bas
   return {
     host: {
       ...create$baseAction<A>().host,
-      clearFn: icall('clearFn', unknownType),
+      clearFn: icall('clearFn', []),
       initValue: ivalue('initValue', valueType, defaultValue),
       onChange: oevent(CHANGE_EVENT, ChangeEvent),
       value: ovalue('value', valueType, defaultValue),

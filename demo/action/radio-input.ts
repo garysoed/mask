@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, query, registerCustomElement} from 'persona';
 import {merge, Observable, of, OperatorFunction, pipe} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {mapTo, switchMap} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
 import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
@@ -57,6 +57,7 @@ export class RadioInputDemo implements Ctrl {
 
           const obs$List = bindings.map(binding => of(null).pipe(
               binding.initValue(),
+              mapTo([]),
               binding.clearFn(),
           ));
           return merge(...obs$List);

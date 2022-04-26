@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
-import {enumType, instanceofType, nullType, undefinedType, unionType} from 'gs-types';
-import {Context, Ctrl, iattr, icall, query, ivalue, registerCustomElement, SLOT} from 'persona';
+import {enumType, instanceofType, nullType, unionType} from 'gs-types';
+import {Context, Ctrl, iattr, icall, ivalue, query, registerCustomElement, SLOT} from 'persona';
 import {combineLatest, Observable, OperatorFunction} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ const $overlayLayout = {
   host: {
     contentHorizontal: iattr('content-horizontal'),
     contentVertical: iattr('content-vertical'),
-    showFn: icall('showFn', undefinedType),
+    showFn: icall('showFn', []),
     target: ivalue('target', unionType([instanceofType(Element), nullType]), null),
     targetHorizontal: iattr('target-horizontal'),
     targetVertical: iattr('target-vertical'),

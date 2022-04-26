@@ -253,6 +253,7 @@ function bindOutput(
   const obs$List = bindings.map(binding => resolver.pipe(
       take(1),
       binding.initValue(),
+      mapTo([]),
       binding.clearFn(),
   ));
   return merge(...obs$List);

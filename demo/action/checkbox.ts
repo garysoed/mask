@@ -54,6 +54,7 @@ export class CheckboxDemo implements Ctrl {
       this.$.shadow.resetButton.actionEvent.pipe(
           mapTo<unknown, CheckedValue>(null),
           this.$.shadow.unknownCheckbox.initValue(),
+          mapTo([]),
           this.$.shadow.unknownCheckbox.clearFn(),
       ),
     ];

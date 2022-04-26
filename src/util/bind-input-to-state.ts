@@ -2,7 +2,7 @@ import {MutableResolver} from 'gs-tools/export/state';
 import {Bindings} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
 import {concat, Observable} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {mapTo, take} from 'rxjs/operators';
 
 import {BaseInputSpecType} from '../input/base-input';
 
@@ -30,6 +30,7 @@ function bindOutput<T>(
   return resolver.pipe(
       take(1),
       bindings.initValue(),
+      mapTo([]),
       bindings.clearFn(),
   );
 }

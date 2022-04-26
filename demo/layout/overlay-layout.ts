@@ -3,7 +3,7 @@ import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
 import {enumType, hasPropertiesType, instanceofType, tupleOfType} from 'gs-types';
 import {Context, Ctrl, DIV, query, oforeach, registerCustomElement, renderCustomElement, RenderSpec} from 'persona';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, of, pipe, Subject} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
@@ -103,7 +103,7 @@ export class OverlayLayoutDemo implements Ctrl {
       this.getAnchor('overlayVerticalIndex').pipe(this.$.shadow.overlay.contentVertical()),
       this.getAnchor('targetHorizontalIndex').pipe(this.$.shadow.overlay.targetHorizontal()),
       this.getAnchor('targetVerticalIndex').pipe(this.$.shadow.overlay.targetVertical()),
-      this.$.shadow.showButton.actionEvent.pipe(mapTo(undefined), this.$.shadow.overlay.showFn()),
+      this.$.shadow.showButton.actionEvent.pipe(mapTo([]), this.$.shadow.overlay.showFn()),
     ];
   }
 
@@ -114,7 +114,7 @@ export class OverlayLayoutDemo implements Ctrl {
     const bindings = $pipe(
         spec.anchorSubjects,
         $map(([, subjects]) => ({
-          clearFn: () => forwardTo(subjects.onClear$),
+          clearFn: () => pipe(forwardTo(subjects.onClear$), mapTo([])),
           initValue: () => forwardTo(subjects.onInitValue$),
           value: subjects.onValue$,
         })),
@@ -140,7 +140,7 @@ export class OverlayLayoutDemo implements Ctrl {
         of(getAnchorLabel(anchor)).pipe($.label()),
         of(group).pipe($.group()),
         subjects.onInitValue$.pipe($.initValue()),
-        subjects.onClear$.pipe($.clearFn()),
+        subjects.onClear$.pipe(mapTo([]), $.clearFn()),
         of(true).pipe($.isSecondary()),
         $.value.pipe(forwardTo(subjects.onValue$)),
       ],
