@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
-import {Context, Ctrl, ELEMENT, iattr, ievent, mediaQueryObservable, oevent, otext, query, registerCustomElement} from 'persona';
+import {Context, Ctrl, iattr, ievent, mediaQueryObservable, oevent, otext, P, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {combineLatest, merge, Observable} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, startWith} from 'rxjs/operators';
@@ -29,7 +29,7 @@ const $rootLayout = {
       onMouseEnter: ievent('mouseenter', MouseEvent),
     }),
     mainIcon: query('#mainIcon', ICON),
-    title: query('#title', ELEMENT, {
+    title: query('#title', P, {
       textContent: otext(),
     }),
     titleButton: query('#titleButton', BUTTON),

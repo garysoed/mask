@@ -3,7 +3,7 @@ import {Color, getContrast, RgbColor} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {getAllValues} from 'gs-tools/export/typescript';
 import {booleanType, enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
-import {Context, Ctrl, DIV, ELEMENT, itarget, oattr, oclass, oflag, oforeach, ostyle, otext, query, registerCustomElement, RenderSpec, renderTemplate, TABLE, TEMPLATE} from 'persona';
+import {CODE, Context, Ctrl, DIV, itarget, oattr, oclass, oflag, oforeach, ostyle, otext, query, registerCustomElement, RenderSpec, renderTemplate, TABLE, TD, TEMPLATE, TR} from 'persona';
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -63,10 +63,10 @@ const $colorsDemo = {
     _tableCell: query('#_tableCell', TEMPLATE, {
       target: itarget(),
     }),
-    accentSeed: query('#accentSeed', ELEMENT, {
+    accentSeed: query('#accentSeed', DIV, {
       backgroundColor: ostyle('backgroundColor'),
     }),
-    baseSeed: query('#baseSeed', ELEMENT, {
+    baseSeed: query('#baseSeed', DIV, {
       backgroundColor: ostyle('backgroundColor'),
     }),
 
@@ -80,19 +80,19 @@ const $colorsDemo = {
       content: oforeach('#content', PALETTE_ITEM_TYPE),
     }),
 
-    passiveRow: query('#passiveRow', ELEMENT, {
+    passiveRow: query('#passiveRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    actionRow: query('#actionRow', ELEMENT, {
+    actionRow: query('#actionRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    focusRow: query('#focusRow', ELEMENT, {
+    focusRow: query('#focusRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    hoverRow: query('#hoverRow', ELEMENT, {
+    hoverRow: query('#hoverRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
-    disabledRow: query('#disabledRow', ELEMENT, {
+    disabledRow: query('#disabledRow', TR, {
       cells: oforeach('#cells', TABLE_CELL_TYPE),
     }),
 
@@ -160,7 +160,7 @@ class ColorsDemo implements Ctrl {
             box: query('.paletteItem', DIV, {
               backgroundColor: ostyle('backgroundColor'),
             }),
-            code: query('.paletteItem code', ELEMENT, {
+            code: query('.paletteItem code', CODE, {
               color: ostyle('color'),
               textContent: otext(),
             }),
@@ -179,7 +179,7 @@ class ColorsDemo implements Ctrl {
         renderTemplate({
           template$: this.$.shadow._tableCell.target,
           spec: {
-            root: query('td', ELEMENT, {
+            root: query('td', TD, {
               action1: oflag('mk-action-1'),
               action2: oflag('mk-action-2'),
               disabled: oflag('mk-disabled'),
@@ -190,10 +190,10 @@ class ColorsDemo implements Ctrl {
               primarySection: oclass('primarySection'),
               themeContext: oattr('mk-theme-context'),
             }),
-            light: query('code.light', ELEMENT, {
+            light: query('code.light', CODE, {
               text: otext(),
             }),
-            dark: query('code.dark', ELEMENT, {
+            dark: query('code.dark', CODE, {
               text: otext(),
             }),
           },
