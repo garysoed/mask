@@ -2,7 +2,7 @@ import {$asArray, $asMap, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
 import {enumType, hasPropertiesType, instanceofType, tupleOfType} from 'gs-types';
-import {Context, Ctrl, DIV, query, oforeach, registerCustomElement, renderCustomElement, RenderSpec} from 'persona';
+import {Context, Ctrl, DIV, query, oforeach, registerCustomElement, RenderSpec, renderElement} from 'persona';
 import {Observable, of, pipe, Subject} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
@@ -133,7 +133,7 @@ export class OverlayLayoutDemo implements Ctrl {
       group: string,
       [anchor, subjects]: [Anchor, AnchorSubjects],
   ): Observable<RenderSpec> {
-    return of(renderCustomElement({
+    return of(renderElement({
       registration: RADIO_INPUT,
       spec: {},
       runs: $ => [
