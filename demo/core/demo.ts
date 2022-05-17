@@ -162,6 +162,7 @@ class DemoCtrl implements Ctrl {
     }
 
     return of(renderCustomElement({
+      spec: {},
       registration: spec.registration,
     }));
   }
