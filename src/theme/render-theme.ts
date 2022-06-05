@@ -1,6 +1,6 @@
 import {Context, ElementSpec, ocase, renderNode, RenderSpec, root} from 'persona';
 import {RenderValueFn} from 'persona/export/internal';
-import {Observable, of, OperatorFunction} from 'rxjs';
+import {Observable, OperatorFunction} from 'rxjs';
 
 import {$themeLoader} from '../app/app';
 
@@ -33,8 +33,8 @@ export function renderTheme(
   );
 }
 
-function renderThemeLoader(themeLoader: ThemeLoader, context: Context<ElementSpec>): Observable<RenderSpec> {
-  return of(renderNode({
+function renderThemeLoader(themeLoader: ThemeLoader, context: Context<ElementSpec>): RenderSpec {
+  return renderNode({
     node: themeLoader.createElement(context.shadowRoot.ownerDocument),
-  }));
+  });
 }

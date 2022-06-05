@@ -156,15 +156,12 @@ class DemoCtrl implements Ctrl {
     );
   }
 
-  private renderMainContent(spec: PageSpec|null): Observable<RenderSpec|null> {
+  private renderMainContent(spec: PageSpec|null): RenderSpec|null {
     if (!spec) {
-      return of(null);
+      return null;
     }
 
-    return of(renderElement({
-      spec: {},
-      registration: spec.registration,
-    }));
+    return renderElement({spec: {}, registration: spec.registration});
   }
 
   private renderPageButtons({path, name}: PageSpec): Observable<RenderSpec> {
