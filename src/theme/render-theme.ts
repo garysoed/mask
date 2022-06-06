@@ -4,11 +4,11 @@ import {Observable, OperatorFunction} from 'rxjs';
 
 import {$themeLoader} from '../app/app';
 
-import {ThemeLoader, THEME_LOADER_TYPE} from './loader/theme-loader';
+import {ThemeLoader} from './loader/theme-loader';
 
 
 const SELECTOR = root({
-  styleEl: ocase(THEME_LOADER_TYPE),
+  styleEl: ocase<ThemeLoader>(),
 });
 
 export function renderTheme(

@@ -1,7 +1,7 @@
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {enumType, hasPropertiesType, instanceofType, nullableType, stringType} from 'gs-types';
+import {enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
 import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, ostyle, otext, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
@@ -53,7 +53,7 @@ const $demo = {
       onClick: ievent('click', MouseEvent),
     }),
     content: query('#content', DIV, {
-      content: ocase('#content', nullableType(PAGE_SPEC_TYPE)),
+      content: ocase<PageSpec|null>('#content'),
     }),
     drawerRoot: query('#drawerRoot', DIV, {
       actionContents: oforeach('#actionContents', PAGE_SPEC_TYPE),

@@ -6,7 +6,7 @@
  *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
-import {enumType, nullableType, stringType} from 'gs-types';
+import {enumType} from 'gs-types';
 import {Context, Ctrl, iattr, ocase, query, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
 import {Observable, of, pipe} from 'rxjs';
 import {switchMap, tap, withLatestFrom} from 'rxjs/operators';
@@ -30,7 +30,7 @@ const $icon = {
   },
   shadow: {
     root: query('#root', SPAN, {
-      content: ocase(nullableType(stringType)),
+      content: ocase(),
     }),
   },
 };

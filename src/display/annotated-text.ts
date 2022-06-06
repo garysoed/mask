@@ -4,7 +4,7 @@ import {Context, Ctrl, itext, ivalue, ocase, oforeach, registerCustomElement, re
 import {combineLatest, concat, Observable, of, OperatorFunction, pipe} from 'rxjs';
 import {bufferCount, map, switchMap} from 'rxjs/operators';
 
-import {THEME_LOADER_TYPE} from '../theme/loader/theme-loader';
+import {ThemeLoader} from '../theme/loader/theme-loader';
 import {renderTheme} from '../theme/render-theme';
 
 import template from './annotated-text.html';
@@ -23,7 +23,7 @@ const $annotatedText = {
       content: oforeach('#contents', tupleOfType<[string, readonly AnnotationSpec[]]>(
           [stringType, arrayOfType(ANNOTATION_SPEC_TYPE)],
       )),
-      theme: ocase('#theme', THEME_LOADER_TYPE),
+      theme: ocase<ThemeLoader>('#theme'),
     }),
   },
 };

@@ -4,7 +4,7 @@ import {Context, Ctrl, iattr, itarget, KBD, ocase, oforeach, otext, query, regis
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {THEME_LOADER_TYPE} from '../theme/loader/theme-loader';
+import {ThemeLoader} from '../theme/loader/theme-loader';
 import {renderTheme} from '../theme/render-theme';
 
 import template from './keyboard.html';
@@ -19,7 +19,7 @@ const $keyboard = {
       target: itarget(),
     }),
     root: root({
-      theme: ocase('#theme', THEME_LOADER_TYPE),
+      theme: ocase<ThemeLoader>('#theme'),
     }),
     description: query('#description', KBD, {
       content: oforeach('#content', stringType),
