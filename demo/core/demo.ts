@@ -1,7 +1,7 @@
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
+import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, ostyle, otext, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
@@ -20,7 +20,7 @@ import {ThemeSeed, THEME_SEEDS} from '../../src/theme/theme-seed';
 import {$demoState} from './demo-state';
 import template from './demo.html';
 import {$locationService, Views} from './location-service';
-import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec, PAGE_SPEC_TYPE} from './page-spec';
+import {ACTION_SPECS, ALL_SPECS, DISPLAY_SPECS, GENERAL_SPECS, getPageSpec, LAYOUT_SPECS, PageSpec} from './page-spec';
 
 
 interface PaletteEntry {
@@ -28,12 +28,6 @@ interface PaletteEntry {
   readonly color: Color;
   readonly isSelected$: Observable<boolean>;
 }
-
-const PALETTE_ENTRY_TYPE = hasPropertiesType<PaletteEntry>({
-  colorName: stringType,
-  color: instanceofType(Color),
-  isSelected$: instanceofType<Observable<boolean>>(Observable),
-});
 
 const $demo = {
   host: {},
@@ -45,21 +39,21 @@ const $demo = {
       target: itarget(),
     }),
     accentPalette: query('#accentPalette', DIV, {
-      content: oforeach('#content', PALETTE_ENTRY_TYPE),
+      content: oforeach<PaletteEntry>('#content'),
       onClick: ievent('click', MouseEvent),
     }),
     basePalette: query('#basePalette', DIV, {
-      content: oforeach('#content', PALETTE_ENTRY_TYPE),
+      content: oforeach<PaletteEntry>('#content'),
       onClick: ievent('click', MouseEvent),
     }),
     content: query('#content', DIV, {
       content: ocase<PageSpec|null>('#content'),
     }),
     drawerRoot: query('#drawerRoot', DIV, {
-      actionContents: oforeach('#actionContents', PAGE_SPEC_TYPE),
-      displayContents: oforeach('#displayContents', PAGE_SPEC_TYPE),
-      generalContents: oforeach('#generalContents', PAGE_SPEC_TYPE),
-      layoutContents: oforeach('#layoutContents', PAGE_SPEC_TYPE),
+      actionContents: oforeach<PageSpec>('#actionContents'),
+      displayContents: oforeach<PageSpec>('#displayContents'),
+      generalContents: oforeach<PageSpec>('#generalContents'),
+      layoutContents: oforeach<PageSpec>('#layoutContents'),
       onAction: ievent(ACTION_EVENT, ActionEvent),
     }),
     darkMode: query('#darkMode', CHECKBOX),
@@ -164,8 +158,8 @@ class DemoCtrl implements Ctrl {
     return renderElement({spec: {}, registration: spec.registration});
   }
 
-  private renderPageButtons({path, name}: PageSpec): Observable<RenderSpec> {
-    return of(renderTemplate({
+  private renderPageButtons({path, name}: PageSpec): RenderSpec {
+    return renderTemplate({
       // TODO: Do not cast
       template$: this.$.shadow._pageButton.target,
       spec: {
@@ -180,10 +174,10 @@ class DemoCtrl implements Ctrl {
         of(path).pipe($.button.path()),
         of(name).pipe($.div.text()),
       ],
-    }));
+    });
   }
 
-  renderPaletteData({color, colorName, isSelected$}: PaletteEntry): Observable<RenderSpec> {
+  renderPaletteData({color, colorName, isSelected$}: PaletteEntry): RenderSpec {
     const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
     const classes$ = isSelected$.pipe(
@@ -193,7 +187,7 @@ class DemoCtrl implements Ctrl {
         map(classes => classes.join(' ')),
     );
 
-    return of(renderTemplate({
+    return renderTemplate({
       template$: this.$.shadow._paletteCell.target,
       spec: {
         div: query('div', DIV, {
@@ -207,7 +201,7 @@ class DemoCtrl implements Ctrl {
         of(colorName).pipe($.div.color()),
         of(colorCss).pipe($.div.backgroundColor()),
       ],
-    }));
+    });
   }
 
   @cache()

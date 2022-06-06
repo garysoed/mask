@@ -1,8 +1,8 @@
 import {$asArray, $asMap, $map, $pipe} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
-import {enumType, hasPropertiesType, instanceofType, tupleOfType} from 'gs-types';
-import {Context, Ctrl, DIV, query, oforeach, registerCustomElement, RenderSpec, renderElement} from 'persona';
+import {enumType} from 'gs-types';
+import {Context, Ctrl, DIV, oforeach, query, registerCustomElement, renderElement, RenderSpec} from 'persona';
 import {Observable, of, pipe, Subject} from 'rxjs';
 import {map, mapTo} from 'rxjs/operators';
 
@@ -31,30 +31,21 @@ interface AnchorObsSpec {
   readonly anchorSubjects: ReadonlyMap<Anchor, AnchorSubjects>;
 }
 
-const ANCHOR_ENTRY_TYPE = tupleOfType<[Anchor, AnchorSubjects]>([
-  ANCHOR_TYPE,
-  hasPropertiesType<AnchorSubjects>({
-    onInitValue$: instanceofType<Subject<string|null>>(Subject),
-    onClear$: instanceofType(Subject),
-    onValue$: instanceofType<Subject<string|null>>(Subject),
-  }),
-]);
-
 const $overlayLayoutDemo = {
   shadow: {
     overlay: query('#overlay', OVERLAY_LAYOUT),
     overlayHorizontal: query('#overlayHorizontal', DIV, {
-      overlayHorizontalAnchors: oforeach('#overlayHorizontalAnchors', ANCHOR_ENTRY_TYPE),
+      overlayHorizontalAnchors: oforeach<[Anchor, AnchorSubjects]>('#overlayHorizontalAnchors'),
     }),
     overlayVertical: query('#overlayVertical', DIV, {
-      overlayVerticalAnchors: oforeach('#overlayVerticalAnchors', ANCHOR_ENTRY_TYPE),
+      overlayVerticalAnchors: oforeach<[Anchor, AnchorSubjects]>('#overlayVerticalAnchors'),
     }),
     showButton: query('#target', BUTTON),
     targetHorizontal: query('#targetHorizontal', DIV, {
-      targetHorizontalAnchors: oforeach('#targetHorizontalAnchors', ANCHOR_ENTRY_TYPE),
+      targetHorizontalAnchors: oforeach<[Anchor, AnchorSubjects]>('#targetHorizontalAnchors'),
     }),
     targetVertical: query('#targetVertical', DIV, {
-      targetVerticalAnchors: oforeach('#targetVerticalAnchors', ANCHOR_ENTRY_TYPE),
+      targetVerticalAnchors: oforeach<[Anchor, AnchorSubjects]>('#targetVerticalAnchors'),
     }),
   },
 };
@@ -132,8 +123,8 @@ export class OverlayLayoutDemo implements Ctrl {
   private renderAnchorNodes(
       group: string,
       [anchor, subjects]: [Anchor, AnchorSubjects],
-  ): Observable<RenderSpec> {
-    return of(renderElement({
+  ): RenderSpec {
+    return renderElement({
       registration: RADIO_INPUT,
       spec: {},
       runs: $ => [
@@ -145,7 +136,7 @@ export class OverlayLayoutDemo implements Ctrl {
         of(true).pipe($.isSecondary()),
         $.value.pipe(forwardTo(subjects.onValue$)),
       ],
-    }));
+    });
   }
 }
 

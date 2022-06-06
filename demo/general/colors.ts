@@ -2,7 +2,6 @@ import {$asArray, $map, $pipe, $take, countableIterable} from 'gs-tools/export/c
 import {Color, getContrast, RgbColor} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
 import {getAllValues} from 'gs-tools/export/typescript';
-import {booleanType, enumType, hasPropertiesType, instanceofType, stringType} from 'gs-types';
 import {CODE, Context, Ctrl, DIV, itarget, oattr, oclass, oflag, oforeach, ostyle, otext, query, registerCustomElement, RenderSpec, renderTemplate, TABLE, TD, TEMPLATE, TR} from 'persona';
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -33,12 +32,6 @@ interface PaletteItem {
   readonly textColor: Color;
 }
 
-const PALETTE_ITEM_TYPE = hasPropertiesType<PaletteItem>({
-  color: instanceofType(Color),
-  text: stringType,
-  textColor: instanceofType(Color),
-});
-
 interface TableCell {
   readonly context: ThemeContext;
   readonly section: ColorSection;
@@ -47,13 +40,6 @@ interface TableCell {
   readonly darkText: string;
 }
 
-const TABLE_CELL_TYPE = hasPropertiesType<TableCell>({
-  context: enumType<ThemeContext>(ThemeContext),
-  section: enumType<ColorSection>(ColorSection),
-  isPrimary: booleanType,
-  lightText: stringType,
-  darkText: stringType,
-});
 
 const $colorsDemo = {
   shadow: {
@@ -71,29 +57,29 @@ const $colorsDemo = {
     }),
 
     actionPalette: query('#actionPalette', DIV, {
-      content: oforeach('#content', PALETTE_ITEM_TYPE),
+      content: oforeach<PaletteItem>('#content'),
     }),
     passivePalette: query('#passivePalette', DIV, {
-      content: oforeach('#content', PALETTE_ITEM_TYPE),
+      content: oforeach<PaletteItem>('#content'),
     }),
     highlightPalette: query('#highlightPalette', DIV, {
-      content: oforeach('#content', PALETTE_ITEM_TYPE),
+      content: oforeach<PaletteItem>('#content'),
     }),
 
     passiveRow: query('#passiveRow', TR, {
-      cells: oforeach('#cells', TABLE_CELL_TYPE),
+      cells: oforeach<TableCell>('#cells'),
     }),
     actionRow: query('#actionRow', TR, {
-      cells: oforeach('#cells', TABLE_CELL_TYPE),
+      cells: oforeach<TableCell>('#cells'),
     }),
     focusRow: query('#focusRow', TR, {
-      cells: oforeach('#cells', TABLE_CELL_TYPE),
+      cells: oforeach<TableCell>('#cells'),
     }),
     hoverRow: query('#hoverRow', TR, {
-      cells: oforeach('#cells', TABLE_CELL_TYPE),
+      cells: oforeach<TableCell>('#cells'),
     }),
     disabledRow: query('#disabledRow', TR, {
-      cells: oforeach('#cells', TABLE_CELL_TYPE),
+      cells: oforeach<TableCell>('#cells'),
     }),
 
     table: query('#table', TABLE, {
@@ -152,70 +138,66 @@ class ColorsDemo implements Ctrl {
     return of(cells);
   }
 
-  private renderPaletteItem(item: PaletteItem): Observable<RenderSpec> {
-    return of(
-        renderTemplate({
-          template$: this.$.shadow._paletteItem.target,
-          spec: {
-            box: query('.paletteItem', DIV, {
-              backgroundColor: ostyle('backgroundColor'),
-            }),
-            code: query('.paletteItem code', CODE, {
-              color: ostyle('color'),
-              textContent: otext(),
-            }),
-          },
-          runs: $ => [
-            of(item.color).pipe(formatColor(), $.box.backgroundColor()),
-            of(item.text).pipe($.code.textContent()),
-            of(item.textColor).pipe(formatColor(), $.code.color()),
-          ],
+  private renderPaletteItem(item: PaletteItem): RenderSpec {
+    return renderTemplate({
+      template$: this.$.shadow._paletteItem.target,
+      spec: {
+        box: query('.paletteItem', DIV, {
+          backgroundColor: ostyle('backgroundColor'),
         }),
-    );
+        code: query('.paletteItem code', CODE, {
+          color: ostyle('color'),
+          textContent: otext(),
+        }),
+      },
+      runs: $ => [
+        of(item.color).pipe(formatColor(), $.box.backgroundColor()),
+        of(item.text).pipe($.code.textContent()),
+        of(item.textColor).pipe(formatColor(), $.code.color()),
+      ],
+    });
   }
 
-  private renderTableCell(cell: TableCell): Observable<RenderSpec> {
-    return of(
-        renderTemplate({
-          template$: this.$.shadow._tableCell.target,
-          spec: {
-            root: query('td', TD, {
-              action1: oflag('mk-action-1'),
-              action2: oflag('mk-action-2'),
-              disabled: oflag('mk-disabled'),
-              passive1: oflag('mk-passive-1'),
-              passive2: oflag('mk-passive-2'),
-              focus: oclass('focus'),
-              hover: oclass('hover'),
-              primarySection: oclass('primarySection'),
-              themeContext: oattr('mk-theme-context'),
-            }),
-            light: query('code.light', CODE, {
-              text: otext(),
-            }),
-            dark: query('code.dark', CODE, {
-              text: otext(),
-            }),
-          },
-          runs: $ => {
-            const isPassive = cell.section === ColorSection.PASSIVE;
-            const isPrimary = cell.isPrimary;
-            return [
-              of(!isPassive && isPrimary).pipe($.root.action1()),
-              of(!isPassive && !isPrimary).pipe($.root.action2()),
-              of(isPassive && isPrimary).pipe($.root.passive1()),
-              of(isPassive && !isPrimary).pipe($.root.passive2()),
-              of(cell.section === ColorSection.DISABLED).pipe($.root.disabled()),
-              of(cell.section === ColorSection.FOCUS).pipe($.root.focus()),
-              of(cell.section === ColorSection.HOVER).pipe($.root.hover()),
-              of(isPrimary).pipe($.root.primarySection()),
-              of(cell.context).pipe($.root.themeContext()),
-              of(cell.lightText).pipe($.light.text()),
-              of(cell.darkText).pipe($.dark.text()),
-            ];
-          },
+  private renderTableCell(cell: TableCell): RenderSpec {
+    return renderTemplate({
+      template$: this.$.shadow._tableCell.target,
+      spec: {
+        root: query('td', TD, {
+          action1: oflag('mk-action-1'),
+          action2: oflag('mk-action-2'),
+          disabled: oflag('mk-disabled'),
+          passive1: oflag('mk-passive-1'),
+          passive2: oflag('mk-passive-2'),
+          focus: oclass('focus'),
+          hover: oclass('hover'),
+          primarySection: oclass('primarySection'),
+          themeContext: oattr('mk-theme-context'),
         }),
-    );
+        light: query('code.light', CODE, {
+          text: otext(),
+        }),
+        dark: query('code.dark', CODE, {
+          text: otext(),
+        }),
+      },
+      runs: $ => {
+        const isPassive = cell.section === ColorSection.PASSIVE;
+        const isPrimary = cell.isPrimary;
+        return [
+          of(!isPassive && isPrimary).pipe($.root.action1()),
+          of(!isPassive && !isPrimary).pipe($.root.action2()),
+          of(isPassive && isPrimary).pipe($.root.passive1()),
+          of(isPassive && !isPrimary).pipe($.root.passive2()),
+          of(cell.section === ColorSection.DISABLED).pipe($.root.disabled()),
+          of(cell.section === ColorSection.FOCUS).pipe($.root.focus()),
+          of(cell.section === ColorSection.HOVER).pipe($.root.hover()),
+          of(isPrimary).pipe($.root.primarySection()),
+          of(cell.context).pipe($.root.themeContext()),
+          of(cell.lightText).pipe($.light.text()),
+          of(cell.darkText).pipe($.dark.text()),
+        ];
+      },
+    });
   }
 
   @cache()
