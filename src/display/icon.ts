@@ -6,10 +6,11 @@
  *     in $registeredIcons.
  * @slot The glyph of the icon to display.
  */
+import {filterByType} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
-import {Context, Ctrl, iattr, ocase, query, registerCustomElement, renderHtml, RenderSpec, SPAN} from 'persona';
-import {Observable, of, pipe} from 'rxjs';
-import {switchMap, tap, withLatestFrom} from 'rxjs/operators';
+import {Context, Ctrl, iattr, oattr, ocase, query, registerCustomElement, RenderSpec, renderString, SPAN, SVG} from 'persona';
+import {Observable, of} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 
 import {$svgService} from '../core/svg-service';
 import {renderTheme} from '../theme/render-theme';
@@ -57,25 +58,26 @@ class Icon implements Ctrl {
       return null;
     }
 
-    return renderHtml({
-      decorator: pipe(
-          withLatestFrom(this.$.host.fitTo),
-          tap(([element, fitTo]) => {
-            if (!enumType<FitTo>(FitTo).check(fitTo)) {
-              return;
-            }
-
-            if (fitTo === FitTo.HEIGHT) {
-              element.removeAttribute('width');
-              element.setAttribute('height', '100%');
-            } else {
-              element.setAttribute('width', '100%');
-              element.removeAttribute('height');
-            }
-          }),
-      ),
+    return renderString({
       raw: of(svgContent),
       parseType: 'image/svg+xml' as const,
+      spec: {
+        root: query(null, SVG, {
+          height: oattr('height'),
+          width: oattr('width'),
+        }),
+      },
+      runs: $ => {
+        const fitTo$ = this.$.host.fitTo.pipe(
+            filterByType(enumType<FitTo>(FitTo)),
+        );
+        const width$ = fitTo$.pipe(map(fitTo => fitTo === FitTo.HEIGHT ? null : '100%'));
+        const height$ = fitTo$.pipe(map(fitTo => fitTo === FitTo.HEIGHT ? '100%' : null));
+        return [
+          width$.pipe($.root.width()),
+          height$.pipe($.root.height()),
+        ];
+      },
     });
   }
 }
