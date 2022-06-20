@@ -8,7 +8,7 @@
  */
 import {filterByType} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
-import {Context, Ctrl, iattr, oattr, ocase, query, registerCustomElement, RenderSpec, renderString, SPAN, SVG} from 'persona';
+import {Context, Ctrl, iattr, oattr, ocase, ParseType, query, registerCustomElement, RenderSpec, renderString, SPAN, SVG} from 'persona';
 import {Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
@@ -60,7 +60,7 @@ class Icon implements Ctrl {
 
     return renderString({
       raw: of(svgContent),
-      parseType: 'image/svg+xml' as const,
+      parseType: ParseType.SVG,
       spec: {
         root: query(null, SVG, {
           height: oattr('height'),
