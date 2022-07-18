@@ -23,14 +23,14 @@ test('@mask/src/input/checkbox', init => {
 
   test('render', () => {
     should('render default config correctly', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
 
       assert(element).to.matchSnapshot('checkbox__default.html');
     });
 
     should('render disabled checkbox correctly', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.setAttribute('mk-disabled', '');
 
@@ -40,7 +40,7 @@ test('@mask/src/input/checkbox', init => {
 
   test('checkMode$', () => {
     should('set the classlist to display_checked if checked', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = true;
       element.clearFn(undefined);
@@ -49,7 +49,7 @@ test('@mask/src/input/checkbox', init => {
     });
 
     should('set the classlist to display_unchecked if unchecked', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = false;
       element.clearFn(undefined);
@@ -58,7 +58,7 @@ test('@mask/src/input/checkbox', init => {
     });
 
     should('set the classlist to display_unknown if unknown', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = null;
       element.clearFn(undefined);
@@ -69,7 +69,7 @@ test('@mask/src/input/checkbox', init => {
 
   test('onAction$', () => {
     should('emit the action on value change', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
 
       const event$ = createSpySubject(
@@ -85,7 +85,7 @@ test('@mask/src/input/checkbox', init => {
     });
 
     should('not emit if the value does not change', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
 
       const event$ = createSpySubject(
@@ -104,7 +104,7 @@ test('@mask/src/input/checkbox', init => {
 
   test('domValue$', () => {
     should('react to change events', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
 
       const event$ = createSpySubject(
@@ -122,7 +122,7 @@ test('@mask/src/input/checkbox', init => {
     });
 
     should('react to clear function', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = true;
       element.clearFn(undefined);
@@ -134,7 +134,7 @@ test('@mask/src/input/checkbox', init => {
 
   test('updateDomValue', () => {
     should('set update the DOM value correctly when checked', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = true;
       element.clearFn(undefined);
@@ -145,7 +145,7 @@ test('@mask/src/input/checkbox', init => {
     });
 
     should('set update the DOM value correctly when unchecked', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = false;
       element.clearFn(undefined);
@@ -156,7 +156,7 @@ test('@mask/src/input/checkbox', init => {
     });
 
     should('set unknown value correctly', () => {
-      const element = _.tester.createElement(CHECKBOX);
+      const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
       element.initValue = null;
       element.clearFn(undefined);

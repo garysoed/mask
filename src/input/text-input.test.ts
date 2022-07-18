@@ -20,7 +20,7 @@ test('@mask/src/input/text-input', init => {
 
   test('render', () => {
     should('render the value correctly', () => {
-      const element = _.tester.createElement(TEXT_INPUT);
+      const element = _.tester.bootstrapElement(TEXT_INPUT);
       element.textContent = 'Label';
       element.initValue = 'initValue';
       element.clearFn(undefined);
@@ -33,7 +33,7 @@ test('@mask/src/input/text-input', init => {
     should('emit the correct value', () => {
       const value = 'value';
 
-      const element = _.tester.createElement(TEXT_INPUT);
+      const element = _.tester.bootstrapElement(TEXT_INPUT);
       element.textContent = 'Label';
       element.initValue = 'initValue';
 
@@ -49,7 +49,7 @@ test('@mask/src/input/text-input', init => {
     should('set the value correctly', () => {
       const value = 'value';
 
-      const element = _.tester.createElement(TEXT_INPUT);
+      const element = _.tester.bootstrapElement(TEXT_INPUT);
       element.textContent = 'Label';
       element.initValue = value;
       element.clearFn(undefined);

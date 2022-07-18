@@ -13,7 +13,7 @@ test('@mask/src/layout/drawer-layout', init => {
     const tester = setupThemedTest({
       roots: [DRAWER_LAYOUT],
     });
-    const element = tester.createElement(DRAWER_LAYOUT);
+    const element = tester.bootstrapElement(DRAWER_LAYOUT);
     element.textContent = 'content';
 
     return {element, tester};

@@ -49,7 +49,7 @@ test('@mask/src/action/base-action', init => {
   });
 
   should('render disabled correctly', () => {
-    const element = _.tester.createElement(TEST);
+    const element = _.tester.bootstrapElement(TEST);
     element.setAttribute('mk-disabled', '');
 
     assert(element).to.matchSnapshot('base-action__aria_disabled_true.html');
@@ -61,13 +61,13 @@ test('@mask/src/action/base-action', init => {
 
   test('isSecondary', () => {
     should('render mk-action-1 if primary', () => {
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
 
       assert(element).to.matchSnapshot('base-action__is-secondary_false.html');
     });
 
     should('render mk-action-2 if secondary', () => {
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
 
       element.setAttribute('is-secondary', '');
       assert(element).to.matchSnapshot('base-action__is-secondary_true.html');
@@ -76,7 +76,7 @@ test('@mask/src/action/base-action', init => {
 
   test('action', () => {
     should('emit the event correctly', () => {
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
       const event$ = createSpySubject(fromEvent(element, ACTION_EVENT));
       const event = new ActionEvent(123);
       $trigger.get(_.tester.vine).next(event);

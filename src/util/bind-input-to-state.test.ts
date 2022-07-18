@@ -101,7 +101,7 @@ test('@mask/src/util/bind-input-to-state', init => {
   });
 
   should('sync only the initial value of the state to the DOM correctly', () => {
-    const element = _.tester.createElement(PARENT);
+    const element = _.tester.bootstrapElement(PARENT);
 
     assert(element).to.matchSnapshot('bind-input-to-state__init.html');
 
@@ -114,7 +114,7 @@ test('@mask/src/util/bind-input-to-state', init => {
   });
 
   should('sync values from DOM to state correctly', () => {
-    const element = _.tester.createElement(PARENT);
+    const element = _.tester.bootstrapElement(PARENT);
     const newValue = 'newValue';
 
     getHarness(

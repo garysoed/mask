@@ -27,7 +27,7 @@ test('@mask/src/layout/root-layout', init => {
     mainEl.textContent = 'Main';
     mainEl.setAttribute('slot', 'main');
 
-    const element = tester.createElement(ROOT_LAYOUT);
+    const element = tester.bootstrapElement(ROOT_LAYOUT);
     element.appendChild(drawerEl);
     element.appendChild(mainEl);
     element.setAttribute('icon', 'icon');

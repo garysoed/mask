@@ -20,7 +20,7 @@ test('@mask/src/action/button', init => {
   });
 
   should('render disabled button correctly', () => {
-    const element = _.tester.createElement(BUTTON);
+    const element = _.tester.bootstrapElement(BUTTON);
     element.textContent = 'Button';
     element.setAttribute('mk-disabled', '');
 
@@ -29,7 +29,7 @@ test('@mask/src/action/button', init => {
 
   test('onAction$', _, init => {
     const _ = init(_ => {
-      const element = _.tester.createElement(BUTTON);
+      const element = _.tester.bootstrapElement(BUTTON);
       const harness = getHarness(element, ButtonHarness);
       const onAction$ = createSpySubject(fromEvent(element, 'mk-action'));
       return {..._, element, onAction$, harness};
@@ -64,7 +64,7 @@ test('@mask/src/action/button', init => {
 
   test('renderTabIndex', () => {
     should('render 0 if host is not disabled', () => {
-      const element = _.tester.createElement(BUTTON);
+      const element = _.tester.bootstrapElement(BUTTON);
       element.textContent = 'Button';
 
       assert(element).to.matchSnapshot('button__enabled.html');

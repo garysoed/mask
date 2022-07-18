@@ -23,7 +23,7 @@ test('@mask/src/display/icon', init => {
 
   test('rootSvg$', () => {
     should('set the innerHTML correctly and set the height to auto when fit to height', () => {
-      const element = _.tester.createElement(ICON);
+      const element = _.tester.bootstrapElement(ICON);
       element.setAttribute('fit-to', FitTo.HEIGHT);
       element.setAttribute('icon', SVG_NAME);
 
@@ -31,7 +31,7 @@ test('@mask/src/display/icon', init => {
     });
 
     should('set the innerHTML correctly and set the width to auto when fit to width', () => {
-      const element = _.tester.createElement(ICON);
+      const element = _.tester.bootstrapElement(ICON);
       element.setAttribute('fit-to', FitTo.WIDTH);
       element.setAttribute('icon', SVG_NAME);
 
@@ -39,7 +39,7 @@ test('@mask/src/display/icon', init => {
     });
 
     should('set the innerHTML correctly if there are no SVG names specified', () => {
-      const element = _.tester.createElement(ICON);
+      const element = _.tester.bootstrapElement(ICON);
 
       assert(element).to.matchSnapshot('icon__no-svg.html');
     });

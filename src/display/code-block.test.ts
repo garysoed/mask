@@ -20,7 +20,7 @@ test('@mask/src/display/code-block', init => {
 
   test('render', () => {
     should('render the content correctly', () => {
-      const element = _.tester.createElement(CODE_BLOCK);
+      const element = _.tester.bootstrapElement(CODE_BLOCK);
       element.textContent = `
       import {something} from './something.ts';
 

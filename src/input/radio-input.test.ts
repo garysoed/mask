@@ -31,7 +31,7 @@ test('@mask/src/action/input/radio-input', init => {
 
   test('render', () => {
     should('render default config correctly', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -42,7 +42,7 @@ test('@mask/src/action/input/radio-input', init => {
 
   test('checkMode$', () => {
     should('set the icon to checked if checked', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -53,7 +53,7 @@ test('@mask/src/action/input/radio-input', init => {
     });
 
     should('set the icon to unchecked if unchecked', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -64,7 +64,7 @@ test('@mask/src/action/input/radio-input', init => {
     });
 
     should('set the icon to unchecked if the index doesn\'t match', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', '6');
       element.setAttribute('group', GROUP);
@@ -77,17 +77,17 @@ test('@mask/src/action/input/radio-input', init => {
 
   test('domValue$', () => {
     should('set the state correctly', () => {
-      const element1 = _.tester.createElement(RADIO_INPUT);
+      const element1 = _.tester.bootstrapElement(RADIO_INPUT);
       element1.textContent = 'Label';
       element1.setAttribute('key', '1');
       element1.setAttribute('group', GROUP);
 
-      const element2 = _.tester.createElement(RADIO_INPUT);
+      const element2 = _.tester.bootstrapElement(RADIO_INPUT);
       element2.textContent = 'Label';
       element2.setAttribute('key', '2');
       element2.setAttribute('group', GROUP);
 
-      const element3 = _.tester.createElement(RADIO_INPUT);
+      const element3 = _.tester.bootstrapElement(RADIO_INPUT);
       element3.textContent = 'Label';
       element3.setAttribute('key', '3');
       element3.setAttribute('group', GROUP);
@@ -145,7 +145,7 @@ test('@mask/src/action/input/radio-input', init => {
 
   test('handleOnGlobalRadioInput$', _, () => {
     should('reset the dom value if global radio input emits for other index and the ID match', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -158,7 +158,7 @@ test('@mask/src/action/input/radio-input', init => {
     });
 
     should('do nothing if the global radio input emits for the current index', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -171,7 +171,7 @@ test('@mask/src/action/input/radio-input', init => {
     });
 
     should('do nothing if the global radio input emits and the namespace doesn\'t match', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -186,7 +186,7 @@ test('@mask/src/action/input/radio-input', init => {
 
   test('handleOnRadioInput$', () => {
     should('emit the global radio input', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
@@ -202,7 +202,7 @@ test('@mask/src/action/input/radio-input', init => {
     });
 
     should('do nothing if the value is null', () => {
-      const element = _.tester.createElement(RADIO_INPUT);
+      const element = _.tester.bootstrapElement(RADIO_INPUT);
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);

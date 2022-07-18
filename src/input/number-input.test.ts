@@ -28,7 +28,7 @@ test('@mask/src/input/number-input', init => {
     should('emit the correct value', () => {
       const value = 123;
 
-      const element = _.tester.createElement(NUMBER_INPUT);
+      const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
       element.initValue = 98;
 
@@ -49,7 +49,7 @@ test('@mask/src/input/number-input', init => {
 
   test('hideStepperIcon', () => {
     should('show stepper icon when hovered', () => {
-      const element = _.tester.createElement(NUMBER_INPUT);
+      const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
       element.initValue = 98;
 
@@ -60,7 +60,7 @@ test('@mask/src/input/number-input', init => {
     });
 
     should('hide stepper icon on mouseleave', () => {
-      const element = _.tester.createElement(NUMBER_INPUT);
+      const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
       element.initValue = 98;
 
@@ -76,7 +76,7 @@ test('@mask/src/input/number-input', init => {
     should('set the value correctly', () => {
       const value = 123;
 
-      const element = _.tester.createElement(NUMBER_INPUT);
+      const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
       element.initValue = value;
       element.clearFn(undefined);
@@ -85,7 +85,7 @@ test('@mask/src/input/number-input', init => {
     });
 
     should('set null value correctly', () => {
-      const element = _.tester.createElement(NUMBER_INPUT);
+      const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
       element.initValue = null;
       element.clearFn(undefined);

@@ -52,7 +52,7 @@ test('@mask/src/display/annotated-text', init => {
         );
       };
 
-      const element = _.tester.createElement(ANNOTATED_TEXT);
+      const element = _.tester.bootstrapElement(ANNOTATED_TEXT);
       element.annotations = [atob, btoc];
       element.textContent = 'banana';
       triggerFakeMutation(element, {});

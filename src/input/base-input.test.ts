@@ -73,7 +73,7 @@ test('@mask/src/input/base-input', init => {
   test('handleOnClear$', () => {
     should('set the DOM value and the output values to the init value', () => {
       const initValue = 'initValue';
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
       element.initValue = initValue;
       element.clearFn(undefined);
 
@@ -82,7 +82,7 @@ test('@mask/src/input/base-input', init => {
     });
 
     should('set the DOM value and output values to the init value at the start', () => {
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
 
       assert(element).to.matchSnapshot('base-input__init.html');
       assert(element.value).to.equal('');
@@ -92,7 +92,7 @@ test('@mask/src/input/base-input', init => {
   test('onChange$', () => {
     should('emit the old value if dom value changes', () => {
       const newValue = 'newValue';
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
       const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
 
       getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
@@ -103,7 +103,7 @@ test('@mask/src/input/base-input', init => {
 
     should('not emit if the dom value does not change', () => {
       const newValue = 'newValue';
-      const element = _.tester.createElement(TEST);
+      const element = _.tester.bootstrapElement(TEST);
 
       getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
       const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));

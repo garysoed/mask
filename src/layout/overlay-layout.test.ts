@@ -15,7 +15,7 @@ test('@mask/src/layout/overlay-layout', init => {
 
   test('handleOnShow$', () => {
     should('show the content with the correct options', () => {
-      const element = _.tester.createElement(OVERLAY_LAYOUT);
+      const element = _.tester.bootstrapElement(OVERLAY_LAYOUT);
       document.body.appendChild(element);
 
       const targetEl = document.createElement('div');

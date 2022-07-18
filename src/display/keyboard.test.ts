@@ -21,7 +21,7 @@ test('@mask/src/display/keyboard', init => {
 
   test('render', () => {
     should('render the nodes correctly', () => {
-      const element = _.tester.createElement(KEYBOARD);
+      const element = _.tester.bootstrapElement(KEYBOARD);
       element.setAttribute('text', 'meta alt enter 3');
       triggerFakeMutation(element, {});
 

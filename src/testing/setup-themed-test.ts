@@ -6,7 +6,7 @@ import {setupTest, Tester, TestSpec} from 'persona/export/testing';
 import {THEME_LOADER_TEST_OVERRIDE} from './theme-loader-test-override';
 
 
-class ThemedTester implements Omit<Tester, 'createElement'> {
+class ThemedTester implements Omit<Tester, 'bootstrapElement'> {
   constructor(private readonly baseTester: Tester) { }
 
   get fakeTime(): FakeTime {
@@ -21,11 +21,15 @@ class ThemedTester implements Omit<Tester, 'createElement'> {
     this.baseTester.setMedia(query, value);
   }
 
-  createElement<E extends HTMLElement, S extends ElementSpec>(
+  teardown(): void {
+    this.baseTester.teardown();
+  }
+
+  bootstrapElement<E extends HTMLElement, S extends ElementSpec>(
       spec: CustomElementRegistration<E, S>,
       darkMode = false,
   ): E {
-    const el = this.baseTester.createElement(spec);
+    const el = this.baseTester.bootstrapElement(spec);
     el.setAttribute('mk-theme', darkMode ? 'dark' : 'light');
 
     return el;

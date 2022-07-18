@@ -18,7 +18,7 @@ test('@mask/src/core/overlay', init => {
     runEnvironment(new BrowserSnapshotsEnv('src/core/goldens', goldens));
 
     const tester = setupThemedTest({roots: [OVERLAY]});
-    const element = tester.createElement(OVERLAY);
+    const element = tester.bootstrapElement(OVERLAY);
     document.body.appendChild(element);
 
     return {element, tester};
