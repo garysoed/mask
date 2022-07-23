@@ -22,7 +22,7 @@ const $keyboard = {
       theme: ocase<ThemeLoader>('#theme'),
     }),
     description: query('#description', KBD, {
-      content: oforeach<string>('#content'),
+      content: oforeach<readonly [string, number]>('#content', ([v]) => v),
     }),
   },
 };
@@ -50,8 +50,8 @@ export class Keyboard implements Ctrl {
     return [
       renderTheme(this.$, this.$.shadow.root.theme),
       this.$.host.text.pipe(
-          map(keyStr => (keyStr ?? '').split(' ')),
-          this.$.shadow.description.content((value, index) => this.renderSegment(value, index))),
+          map(keyStr => (keyStr ?? '').split(' ').map((value, index) => [value, index] as const)),
+          this.$.shadow.description.content(map(([value, index]) => this.renderSegment(value, index)))),
     ];
   }
 

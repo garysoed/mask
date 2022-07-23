@@ -65,24 +65,24 @@ export class OverlayLayoutDemo implements Ctrl {
     return [
       renderTheme(this.$),
       of([...this.overlayHorizontalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(pairs => {
+          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.overlayHorizontalObsMap.group, pairs);
-          }),
+          })),
       ),
       of([...this.overlayVerticalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(pairs => {
+          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.overlayVerticalObsMap.group, pairs);
-          }),
+          })),
       ),
       of([...this.targetHorizontalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(pairs => {
+          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.targetHorizontalObsMap.group, pairs);
-          }),
+          })),
       ),
       of([...this.targetVerticalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(pairs => {
+          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.targetVerticalObsMap.group, pairs);
-          }),
+          })),
       ),
 
       this.bindRadioToState('overlayHorizontalIndex', this.overlayHorizontalObsMap),

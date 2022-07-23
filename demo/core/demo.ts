@@ -82,8 +82,8 @@ class DemoCtrl implements Ctrl {
       this.onBasePaletteClick$,
       this.onDrawerRootClick$,
       this.setupOnRootLayoutAction(),
-      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content(value => this.renderPaletteData(value))),
-      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(value => this.renderPaletteData(value))),
+      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content(this.renderPaletteData())),
+      this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(this.renderPaletteData())),
       this.$.shadow.darkMode.value.pipe(
           map(value => value === true),
           $demoState.get(this.$.vine).$('isDarkMode').set(),
@@ -92,10 +92,10 @@ class DemoCtrl implements Ctrl {
           map(location => getPageSpec(location.type)),
           this.$.shadow.content.content(this.renderMainContent()),
       ),
-      of(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents(value => this.renderPageButtons(value))),
-      of(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents(value => this.renderPageButtons(value))),
-      of(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents(value => this.renderPageButtons(value))),
-      of(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents(value => this.renderPageButtons(value))),
+      of(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents(this.renderPageButtons())),
+      of(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents(this.renderPageButtons())),
+      of(GENERAL_SPECS).pipe(this.$.shadow.drawerRoot.generalContents(this.renderPageButtons())),
+      of(LAYOUT_SPECS).pipe(this.$.shadow.drawerRoot.layoutContents(this.renderPageButtons())),
       this.isDrawerExpanded$.pipe(this.$.shadow.settingsDrawer.expanded()),
     ];
   }
@@ -160,49 +160,52 @@ class DemoCtrl implements Ctrl {
     });
   }
 
-  private renderPageButtons({path, name}: PageSpec): RenderSpec {
-    return renderTemplate({
-      // TODO: Do not cast
-      template$: this.$.shadow._pageButton.target,
-      spec: {
-        button: query('mk-button', BUTTON, {
-          path: oattr(COMPONENT_PATH_ATTR),
-        }),
-        div: query('span', SPAN, {
-          text: otext(),
-        }),
-      },
-      runs: $ => [
-        of(path).pipe($.button.path()),
-        of(name).pipe($.div.text()),
-      ],
+  private renderPageButtons(): OperatorFunction<PageSpec, RenderSpec> {
+    return map(({path, name}) => {
+      return renderTemplate({
+        template$: this.$.shadow._pageButton.target,
+        spec: {
+          button: query('mk-button', BUTTON, {
+            path: oattr(COMPONENT_PATH_ATTR),
+          }),
+          div: query('span', SPAN, {
+            text: otext(),
+          }),
+        },
+        runs: $ => [
+          of(path).pipe($.button.path()),
+          of(name).pipe($.div.text()),
+        ],
+      });
     });
   }
 
-  renderPaletteData({color, colorName, isSelected$}: PaletteEntry): RenderSpec {
-    const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
+  renderPaletteData(): OperatorFunction<PaletteEntry, RenderSpec> {
+    return map(({color, colorName, isSelected$}) => {
+      const colorCss = `rgb(${color.red}, ${color.green}, ${color.blue})`;
 
-    const classes$ = isSelected$.pipe(
-        map(selected => {
-          return selected ? ['palette', 'selected'] : ['palette'];
-        }),
-        map(classes => classes.join(' ')),
-    );
+      const classes$ = isSelected$.pipe(
+          map(selected => {
+            return selected ? ['palette', 'selected'] : ['palette'];
+          }),
+          map(classes => classes.join(' ')),
+      );
 
-    return renderTemplate({
-      template$: this.$.shadow._paletteCell.target,
-      spec: {
-        div: query('div', DIV, {
-          backgroundColor: ostyle('backgroundColor'),
-          class: oattr('class'),
-          color: oattr('color'),
-        }),
-      },
-      runs: $ => [
-        classes$.pipe($.div.class()),
-        of(colorName).pipe($.div.color()),
-        of(colorCss).pipe($.div.backgroundColor()),
-      ],
+      return renderTemplate({
+        template$: this.$.shadow._paletteCell.target,
+        spec: {
+          div: query('div', DIV, {
+            backgroundColor: ostyle('backgroundColor'),
+            class: oattr('class'),
+            color: oattr('color'),
+          }),
+        },
+        runs: $ => [
+          classes$.pipe($.div.class()),
+          of(colorName).pipe($.div.color()),
+          of(colorCss).pipe($.div.backgroundColor()),
+        ],
+      });
     });
   }
 
