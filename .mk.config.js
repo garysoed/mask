@@ -24,6 +24,7 @@ declare({
       'gs-types',
       'grapevine',
       'dev',
+      'devbase',
       'persona',
       'moirai',
       'nabu',
