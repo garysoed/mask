@@ -3,7 +3,7 @@ import {cache} from 'gs-tools/export/data';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, ostyle, otext, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
-import {merge, Observable, of} from 'rxjs';
+import {merge, Observable, of, OperatorFunction} from 'rxjs';
 import {distinctUntilChanged, map, mapTo, tap} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
@@ -90,7 +90,7 @@ class DemoCtrl implements Ctrl {
       ),
       $locationService.get(this.$.vine).location$.pipe(
           map(location => getPageSpec(location.type)),
-          this.$.shadow.content.content(value => this.renderMainContent(value)),
+          this.$.shadow.content.content(this.renderMainContent()),
       ),
       of(ACTION_SPECS).pipe(this.$.shadow.drawerRoot.actionContents(value => this.renderPageButtons(value))),
       of(DISPLAY_SPECS).pipe(this.$.shadow.drawerRoot.displayContents(value => this.renderPageButtons(value))),
@@ -150,12 +150,14 @@ class DemoCtrl implements Ctrl {
     );
   }
 
-  private renderMainContent(spec: PageSpec|null): RenderSpec|null {
-    if (!spec) {
-      return null;
-    }
+  private renderMainContent(): OperatorFunction<PageSpec|null, RenderSpec|null> {
+    return map(spec => {
+      if (!spec) {
+        return null;
+      }
 
-    return renderElement({spec: {}, registration: spec.registration});
+      return renderElement({spec: {}, registration: spec.registration});
+    });
   }
 
   private renderPageButtons({path, name}: PageSpec): RenderSpec {

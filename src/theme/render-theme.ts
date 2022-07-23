@@ -1,6 +1,7 @@
 import {Context, ElementSpec, ocase, renderNode, RenderSpec, root} from 'persona';
 import {RenderValueFn} from 'persona/export/internal';
 import {Observable, OperatorFunction} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {$themeLoader} from '../app/app';
 
@@ -22,19 +23,17 @@ export function renderTheme(
 
   if (themeSelector) {
     return $themeLoader.get(context.vine).pipe(
-        themeSelector(themeLoader => renderThemeLoader(themeLoader, context)),
+        themeSelector(renderThemeLoader(context)),
     );
   }
 
   return $themeLoader.get(context.vine).pipe(
-      SELECTOR.styleEl(context.shadowRoot, renderContext)(
-          themeLoader => renderThemeLoader(themeLoader, context),
-      ),
+      SELECTOR.styleEl(context.shadowRoot, renderContext)(renderThemeLoader(context)),
   );
 }
 
-function renderThemeLoader(themeLoader: ThemeLoader, context: Context<ElementSpec>): RenderSpec {
-  return renderNode({
+function renderThemeLoader(context: Context<ElementSpec>): OperatorFunction<ThemeLoader, RenderSpec> {
+  return map(themeLoader => renderNode({
     node: themeLoader.createElement(context.shadowRoot.ownerDocument),
-  });
+  }));
 }

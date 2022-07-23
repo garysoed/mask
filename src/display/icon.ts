@@ -9,7 +9,7 @@
 import {filterByType} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, iattr, oattr, ocase, ParseType, query, registerCustomElement, RenderSpec, renderString, SPAN, SVG} from 'persona';
-import {Observable, of} from 'rxjs';
+import {Observable, of, OperatorFunction} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 import {$svgService} from '../core/svg-service';
@@ -49,35 +49,37 @@ class Icon implements Ctrl {
             }
             return $svgService.get(this.$.vine).getSvg(svgName);
           }),
-          this.$.shadow.root.content(svgContent => this.renderSvg(svgContent))),
+          this.$.shadow.root.content(this.renderSvg())),
     ];
   }
 
-  private renderSvg(svgContent: string|null): RenderSpec|null {
-    if (!svgContent) {
-      return null;
-    }
+  private renderSvg(): OperatorFunction<string|null, RenderSpec|null> {
+    return map(svgContent => {
+      if (!svgContent) {
+        return null;
+      }
 
-    return renderString({
-      raw: of(svgContent),
-      parseType: ParseType.SVG,
-      spec: {
-        root: query(null, SVG, {
-          height: oattr('height'),
-          width: oattr('width'),
-        }),
-      },
-      runs: $ => {
-        const fitTo$ = this.$.host.fitTo.pipe(
-            filterByType(enumType<FitTo>(FitTo)),
-        );
-        const width$ = fitTo$.pipe(map(fitTo => fitTo === FitTo.HEIGHT ? null : '100%'));
-        const height$ = fitTo$.pipe(map(fitTo => fitTo === FitTo.HEIGHT ? '100%' : null));
-        return [
-          width$.pipe($.root.width()),
-          height$.pipe($.root.height()),
-        ];
-      },
+      return renderString({
+        raw: of(svgContent),
+        parseType: ParseType.SVG,
+        spec: {
+          root: query(null, SVG, {
+            height: oattr('height'),
+            width: oattr('width'),
+          }),
+        },
+        runs: $ => {
+          const fitTo$ = this.$.host.fitTo.pipe(
+              filterByType(enumType<FitTo>(FitTo)),
+          );
+          const width$ = fitTo$.pipe(map(fitTo => fitTo === FitTo.HEIGHT ? null : '100%'));
+          const height$ = fitTo$.pipe(map(fitTo => fitTo === FitTo.HEIGHT ? '100%' : null));
+          return [
+            width$.pipe($.root.width()),
+            height$.pipe($.root.height()),
+          ];
+        },
+      });
     });
   }
 }
