@@ -1,7 +1,7 @@
-import {$asArray, $map, $pipe, $take, countableIterable} from 'gs-tools/export/collect';
+import {$asArray, $map, $take, countableIterable} from 'gs-tools/export/collect';
 import {Color, getContrast, RgbColor} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
-import {getAllValues} from 'gs-tools/export/typescript';
+import {getAllValues, $pipe} from 'gs-tools/export/typescript';
 import {CODE, Context, Ctrl, DIV, itarget, oattr, oclass, oflag, oforeach, ostyle, otext, query, registerCustomElement, RenderSpec, renderTemplate, TABLE, TD, TEMPLATE, TR} from 'persona';
 import {Observable, of, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';

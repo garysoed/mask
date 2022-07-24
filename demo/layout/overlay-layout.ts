@@ -1,6 +1,7 @@
-import {$asArray, $asMap, $map, $pipe} from 'gs-tools/export/collect';
+import {$asArray, $asMap, $map} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
+import {$pipe} from 'gs-tools/export/typescript';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, oforeach, query, registerCustomElement, renderElement, RenderSpec} from 'persona';
 import {Observable, of, pipe, Subject} from 'rxjs';
