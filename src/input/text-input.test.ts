@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness} from 'persona/export/testing';
 
@@ -9,8 +9,8 @@ import {TextInputHarness} from './testing/text-input-harness';
 import {TEXT_INPUT} from './text-input';
 
 
-test('@mask/src/input/text-input', init => {
-  const _ = init(() => {
+test('@mask/src/input/text-input', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
     const tester = setupThemedTest({
       roots: [TEXT_INPUT],

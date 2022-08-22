@@ -1,5 +1,5 @@
 import {$stateService, source} from 'grapevine';
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
@@ -93,8 +93,8 @@ const PARENT = registerCustomElement({
 });
 
 
-test('@mask/src/util/bind-input-to-state', init => {
-  const _ = init(() => {
+test('@mask/src/util/bind-input-to-state', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/util/goldens', goldens));
     const tester = setupThemedTest({roots: [PARENT]});
     return {tester};

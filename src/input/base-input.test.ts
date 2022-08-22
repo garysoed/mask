@@ -1,4 +1,4 @@
-import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
@@ -63,8 +63,8 @@ const TEST = registerCustomElement({
 });
 
 
-test('@mask/src/input/base-input', init => {
-  const _ = init(() => {
+test('@mask/src/input/base-input', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
     const tester = setupThemedTest({roots: [TEST]});
     return {tester};

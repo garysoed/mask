@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -7,8 +7,8 @@ import {DrawerMode, DRAWER_LAYOUT} from './drawer-layout';
 import goldens from './goldens/goldens.json';
 
 
-test('@mask/src/layout/drawer-layout', init => {
-  const _ = init(() => {
+test('@mask/src/layout/drawer-layout', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/layout/goldens', goldens));
     const tester = setupThemedTest({
       roots: [DRAWER_LAYOUT],

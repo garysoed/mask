@@ -1,4 +1,4 @@
-import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
@@ -12,8 +12,8 @@ import goldens from './goldens/goldens.json';
 import {CheckboxHarness} from './testing/checkbox-harness';
 
 
-test('@mask/src/input/checkbox', init => {
-  const _ = init(() => {
+test('@mask/src/input/checkbox', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
 
     const tester = setupThemedTest({roots: [CHECKBOX]});

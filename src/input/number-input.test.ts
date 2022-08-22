@@ -1,4 +1,4 @@
-import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
@@ -13,8 +13,8 @@ import {NUMBER_INPUT} from './number-input';
 import {NumberInputHarness} from './testing/number-input-harness';
 
 
-test('@mask/src/input/number-input', init => {
-  const _ = init(() => {
+test('@mask/src/input/number-input', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
     const tester = setupThemedTest({
       roots: [NUMBER_INPUT],

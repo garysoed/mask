@@ -1,5 +1,5 @@
 import {source} from 'grapevine';
-import {assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {Context, DIV, query, oflag, registerCustomElement} from 'persona';
 import {fromEvent, Observable, Subject} from 'rxjs';
@@ -41,8 +41,8 @@ const TEST = registerCustomElement({
   spec: $test,
 });
 
-test('@mask/src/action/base-action', init => {
-  const _ = init(() => {
+test('@mask/src/action/base-action', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/action/goldens', goldens));
     const tester = setupThemedTest({roots: [TEST]});
     return {tester};

@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
 
@@ -8,8 +8,8 @@ import {CODE_BLOCK} from './code-block';
 import goldens from './goldens/goldens.json';
 
 
-test('@mask/src/display/code-block', init => {
-  const _ = init(() => {
+test('@mask/src/display/code-block', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = setupThemedTest({roots: [CODE_BLOCK]});
     (window as any).hljs = {

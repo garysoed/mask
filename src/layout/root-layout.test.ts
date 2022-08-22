@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {ElementHarness, getHarness} from 'persona/export/testing';
 
@@ -11,8 +11,8 @@ import goldens from './goldens/goldens.json';
 import {ROOT_LAYOUT} from './root-layout';
 
 
-test('@mask/src/layout/root-layout', init => {
-  const _ = init(() => {
+test('@mask/src/layout/root-layout', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/layout/goldens', goldens));
     const tester = setupThemedTest({
       roots: [ROOT_LAYOUT],

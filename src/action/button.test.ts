@@ -1,4 +1,4 @@
-import {anyThat, assert, createSpySubject, runEnvironment, should, test} from 'gs-testing';
+import {anyThat, assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
@@ -11,8 +11,8 @@ import goldens from './goldens/goldens.json';
 import {ButtonHarness} from './testing/button-harness';
 
 
-test('@mask/src/action/button', init => {
-  const _ = init(() => {
+test('@mask/src/action/button', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/action/goldens', goldens));
     const tester = setupThemedTest({roots: [BUTTON]});
 
@@ -27,8 +27,8 @@ test('@mask/src/action/button', init => {
     assert(element).to.matchSnapshot('button__disabled.html');
   });
 
-  test('onAction$', _, init => {
-    const _ = init(_ => {
+  test('onAction$', () => {
+    setup(_, () => {
       const element = _.tester.bootstrapElement(BUTTON);
       const harness = getHarness(element, ButtonHarness);
       const onAction$ = createSpySubject(fromEvent(element, 'mk-action'));

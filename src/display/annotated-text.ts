@@ -39,7 +39,10 @@ class AnnotatedText implements Ctrl {
       ])
           .pipe(
               switchMap(([textContent, annotations]) => {
-                return this.applyAnnotations(renderTextNode({textContent: of(textContent)}), annotations);
+                return this.applyAnnotations(
+                    renderTextNode({textContent: of(textContent ?? '')}),
+                    annotations,
+                );
               }),
               this.$.shadow.root.content(map(spec => spec)),
           ),

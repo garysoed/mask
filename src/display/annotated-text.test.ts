@@ -12,12 +12,9 @@ import {ANNOTATED_TEXT, AnnotationSpec} from './annotated-text';
 import goldens from './goldens/goldens.json';
 
 
-test('@mask/src/display/annotated-text', init => {
-  setup(() => {
+test('@mask/src/display/annotated-text', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
-  });
-
-  const _ = init(() => {
     const tester = setupThemedTest({
       roots: [ANNOTATED_TEXT],
       overrides: [THEME_LOADER_TEST_OVERRIDE],

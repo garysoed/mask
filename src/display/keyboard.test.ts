@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
 
@@ -9,8 +9,8 @@ import goldens from './goldens/goldens.json';
 import {KEYBOARD} from './keyboard';
 
 
-test('@mask/src/display/keyboard', init => {
-  const _ = init(() => {
+test('@mask/src/display/keyboard', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = setupThemedTest({
       roots: [KEYBOARD],

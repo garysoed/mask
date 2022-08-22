@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {ElementHarness, getHarness} from 'persona/export/testing';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
@@ -13,8 +13,8 @@ import {$overlayService, Anchor} from './overlay-service';
 const dest = new WebConsoleDestination({installTrigger: true});
 ON_LOG_$.subscribe(event => dest.log(event));
 
-test('@mask/src/core/overlay', init => {
-  const _ = init(() => {
+test('@mask/src/core/overlay', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/core/goldens', goldens));
 
     const tester = setupThemedTest({roots: [OVERLAY]});
@@ -24,8 +24,8 @@ test('@mask/src/core/overlay', init => {
     return {element, tester};
   });
 
-  test('contentRect$', _, init => {
-    const _ = init(_ => {
+  test('contentRect$', () => {
+    setup(_, () => {
       const targetEl = document.createElement('div');
       targetEl.style.position = 'fixed';
       targetEl.style.height = '20px';
@@ -35,7 +35,7 @@ test('@mask/src/core/overlay', init => {
       document.body.appendChild(targetEl);
 
       const contentEl = document.createElement('div');
-      return {..._, targetEl, contentEl};
+      return {targetEl, contentEl};
     });
 
     function dispatchResize(): void {

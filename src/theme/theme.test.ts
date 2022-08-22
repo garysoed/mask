@@ -13,8 +13,8 @@ test('@mask/src/theme/theme', () => {
     runEnvironment(new BrowserSnapshotsEnv('src/theme/goldens', goldens));
   });
 
-  test('generateCss', init => {
-    const _ = init(() => {
+  test('generateCss', () => {
+    const _ = setup(() => {
       const styleEl = document.createElement('style');
 
       const rootEl = document.createElement('div');

@@ -1,4 +1,4 @@
-import {assert, runEnvironment, should, test} from 'gs-testing';
+import {assert, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 
 import maskSvg from '../asset/mask.svg';
@@ -12,8 +12,8 @@ import {FitTo, ICON} from './icon';
 const SVG_NAME = 'svgName';
 
 
-test('@mask/src/display/icon', init => {
-  const _ = init(() => {
+test('@mask/src/display/icon', () => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/display/goldens', goldens));
     const tester = setupThemedTest({roots: [ICON]});
     registerSvg(tester.vine, SVG_NAME, {type: 'embed', content: maskSvg});

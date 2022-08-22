@@ -1,4 +1,4 @@
-import {assert, createSpySubject, objectThat, runEnvironment, should, test} from 'gs-testing';
+import {assert, createSpySubject, objectThat, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';
@@ -14,11 +14,11 @@ import {RADIO_INPUT} from './radio-input';
 import {RadioInputHarness} from './testing/radio-input-harness';
 
 
-test('@mask/src/action/input/radio-input', init => {
+test('@mask/src/action/input/radio-input', () => {
   const KEY = 'key-3';
   const GROUP = 'test-group';
 
-  const _ = init(() => {
+  const _ = setup(() => {
     runEnvironment(new BrowserSnapshotsEnv('src/input/goldens', goldens));
 
     const tester = setupThemedTest({

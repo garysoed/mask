@@ -1,4 +1,4 @@
-import {anyThat, assert, createSpySubject, objectThat, should, test} from 'gs-testing';
+import {anyThat, assert, createSpySubject, objectThat, should, test, setup} from 'gs-testing';
 import {getHarness, SlotHarness} from 'persona/export/testing';
 
 import {$overlayService, Anchor, NodeSpec, ShowEvent} from '../core/overlay-service';
@@ -7,8 +7,8 @@ import {setupThemedTest} from '../testing/setup-themed-test';
 import {OVERLAY_LAYOUT} from './overlay-layout';
 
 
-test('@mask/src/layout/overlay-layout', init => {
-  const _ = init(() => {
+test('@mask/src/layout/overlay-layout', () => {
+  const _ = setup(() => {
     const tester = setupThemedTest({roots: [OVERLAY_LAYOUT]});
     return {tester};
   });

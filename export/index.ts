@@ -19,7 +19,7 @@ export {RadioInput, RADIO_INPUT} from '../src/input/radio-input';
 export {TextInput, TEXT_INPUT} from '../src/input/text-input';
 
 // display
-export {ANNOTATED_TEXT} from '../src/display/annotated-text';
+export {ANNOTATED_TEXT, AnnotationSpec} from '../src/display/annotated-text';
 export {CODE_BLOCK} from '../src/display/code-block';
 export {ICON} from '../src/display/icon';
 export {KEYBOARD, SpecialKeys} from '../src/display/keyboard';

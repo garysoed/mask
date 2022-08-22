@@ -1,11 +1,11 @@
 import {Vine} from 'grapevine';
-import {assert, createSpySubject, should, test} from 'gs-testing';
+import {assert, createSpySubject, should, test, setup} from 'gs-testing';
 
 import {$svgService, registerSvg} from './svg-service';
 
 
-test('@mask/src/core/svg-service', init => {
-  const _ = init(() => {
+test('@mask/src/core/svg-service', () => {
+  const _ = setup(() => {
     const vine = new Vine({appName: 'test'});
     return {vine};
   });
