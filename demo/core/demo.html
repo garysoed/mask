@@ -2,6 +2,8 @@
   #accentPalette,
   #basePalette {
     height: 0;
+    display: flex;
+    flex-wrap: wrap;
     overflow: hidden;
     transition: height var(--mkAnimationTime);
   }
@@ -45,7 +47,6 @@
 
   .palette {
     cursor: pointer;
-    display: inline-block;
     height: 4rem;
     width: 4rem;
   }
