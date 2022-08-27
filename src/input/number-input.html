@@ -12,7 +12,7 @@
   }
 
   #iconContainer {
-    width: 2rem;
+    width: 1rem;
   }
 
   #input {
@@ -59,14 +59,14 @@ input::-webkit-inner-spin-button {
 }
 </style>
 <label id="root" layout="row">
-  <mk-line-layout id="label" mk-theme-highlight mk-body-2>
+  <mk-line-layout id="label" mk-theme-context="highlight" mk-body-2>
     <slot></slot>
   </mk-line-layout>
   <mk-line-layout flex>
-    <div id="inputContainer" layout="row">
+    <div id="inputContainer" layout="row" flex-align="center">
       <input flex id="input" mk-body-1 type="number">
       <div id="iconContainer">
-        <mk-icon id="icon" icon="mk.numberinput_stepper"></mk-icon>
+        <mk-icon id="icon" icon="mk.numberinput_stepper" fit-to="width"></mk-icon>
       </div>
     </div>
   </mk-line-layout>

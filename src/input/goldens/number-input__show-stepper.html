@@ -12,7 +12,7 @@
   }
 
   #iconContainer {
-    width: 2rem;
+    width: 1rem;
   }
 
   #input {
@@ -59,7 +59,7 @@ input::-webkit-inner-spin-button {
 }
 </style>
 <label id="root" layout="row" aria-disabled="false" mk-action-1="">
-  <mk-line-layout id="label" mk-theme-highlight="" mk-body-2="">
+  <mk-line-layout id="label" mk-theme-context="highlight" mk-body-2="">
     <slot></slot>
   <gst-fake-shadow><style>
   #root {
@@ -73,10 +73,10 @@ input::-webkit-inner-spin-button {
 </div>
 </gst-fake-shadow></mk-line-layout>
   <mk-line-layout flex="">
-    <div id="inputContainer" layout="row">
+    <div id="inputContainer" layout="row" flex-align="center">
       <input flex="" id="input" mk-body-1="" type="number" gst-input-value="">
       <div id="iconContainer">
-        <mk-icon id="icon" icon="mk.numberinput_stepper" class=""><gst-fake-shadow><style>
+        <mk-icon id="icon" icon="mk.numberinput_stepper" fit-to="width" class=""><gst-fake-shadow><style>
   :host {
     pointer-events: none;
     user-select: none;
@@ -86,7 +86,7 @@ input::-webkit-inner-spin-button {
     fill: var(--mkThemeFG) !important;
   }
 </style>
-<span aria-hidden="true" role="presentation" id="root"><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="stepper.svg" inkscape:version="1.0 (4035a4f, 2020-05-01)" id="svg2" viewBox="0 0 24 24" height="24" width="24" version="1.1">
+<span aria-hidden="true" role="presentation" id="root"><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="stepper.svg" inkscape:version="1.0 (4035a4f, 2020-05-01)" id="svg2" viewBox="0 0 24 24" width="100%" version="1.1">
   <metadata id="metadata10">
     <rdf:RDF>
       <cc:Work rdf:about="">
