@@ -34,7 +34,7 @@ const $textInput = {
   },
 };
 
-export class TextInput extends BaseInput<string, string> {
+class TextInput extends BaseInput<string, string> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $textInput>) {

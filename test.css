@@ -1,5 +1,5 @@
 :root { --mkThemeMainPassiveFG1: rgba(8,12,11,1);
---mkThemeMainPassiveBG1: rgba(255,255,255,1);
+--mkThemeMainPassiveBG1: rgba(246,248,248,1);
 --mkThemeMainActionFG1: rgba(8,12,11,1);
 --mkThemeMainActionBG1: rgba(0,192,148,1);
 --mkThemeMainHoverFG1: rgba(255,255,255,1);
@@ -7,19 +7,19 @@
 --mkThemeMainFocusFG1: rgba(64,0,112,1);
 --mkThemeMainFocusBG1: rgba(223,191,247,1);
 --mkThemeMainDisabledFG1: rgba(8,12,11,0.35);
---mkThemeMainDisabledBG1: rgba(255,255,255,1);
+--mkThemeMainDisabledBG1: rgba(246,248,248,1);
 --mkThemeMainPassiveFG2: rgba(8,12,11,0.65);
---mkThemeMainPassiveBG2: rgba(255,255,255,1);
+--mkThemeMainPassiveBG2: rgba(246,248,248,1);
 --mkThemeMainActionFG2: rgba(0,96,74,1);
---mkThemeMainActionBG2: rgba(255,255,255,1);
+--mkThemeMainActionBG2: rgba(246,248,248,1);
 --mkThemeMainHoverFG2: rgba(255,255,255,0.75);
 --mkThemeMainHoverBG2: rgba(127,0,224,1);
 --mkThemeMainFocusFG2: rgba(64,0,112,0.65);
 --mkThemeMainFocusBG2: rgba(223,191,247,1);
 --mkThemeMainDisabledFG2: rgba(8,12,11,0.35);
---mkThemeMainDisabledBG2: rgba(255,255,255,1);
+--mkThemeMainDisabledBG2: rgba(246,248,248,1);
 --mkThemeSidePassiveFG1: rgba(8,12,11,1);
---mkThemeSidePassiveBG1: rgba(228,234,233,1);
+--mkThemeSidePassiveBG1: rgba(219,227,225,1);
 --mkThemeSideActionFG1: rgba(8,12,11,1);
 --mkThemeSideActionBG1: rgba(0,192,148,1);
 --mkThemeSideHoverFG1: rgba(255,255,255,1);
@@ -27,17 +27,17 @@
 --mkThemeSideFocusFG1: rgba(64,0,112,1);
 --mkThemeSideFocusBG1: rgba(223,191,247,1);
 --mkThemeSideDisabledFG1: rgba(8,12,11,0.35);
---mkThemeSideDisabledBG1: rgba(228,234,233,1);
+--mkThemeSideDisabledBG1: rgba(219,227,225,1);
 --mkThemeSidePassiveFG2: rgba(8,12,11,0.65);
---mkThemeSidePassiveBG2: rgba(228,234,233,1);
+--mkThemeSidePassiveBG2: rgba(219,227,225,1);
 --mkThemeSideActionFG2: rgba(0,96,74,1);
---mkThemeSideActionBG2: rgba(228,234,233,1);
+--mkThemeSideActionBG2: rgba(219,227,225,1);
 --mkThemeSideHoverFG2: rgba(255,255,255,0.75);
 --mkThemeSideHoverBG2: rgba(127,0,224,1);
 --mkThemeSideFocusFG2: rgba(64,0,112,0.65);
 --mkThemeSideFocusBG2: rgba(223,191,247,1);
 --mkThemeSideDisabledFG2: rgba(8,12,11,0.35);
---mkThemeSideDisabledBG2: rgba(228,234,233,1);
+--mkThemeSideDisabledBG2: rgba(219,227,225,1);
 --mkThemeHighlightPassiveFG1: rgba(8,12,11,1);
 --mkThemeHighlightPassiveBG1: rgba(191,239,228,1);
 --mkThemeHighlightActionFG1: rgba(8,12,11,1);
@@ -218,6 +218,7 @@ a:hover {
 [mk-passive-1], [mk-passive-2],
 [mk-body-1], [mk-body-2],
 [mk-theme-context],
+[mk-theme],
 a {
   background: var(--mkThemeBG);
   color: var(--mkThemeFG);
@@ -331,9 +332,18 @@ hr {
   border-right: none;
 }
 
-code, pre, kbd {
+caption, code, figcaption, pre, kbd {
   color: var(--mkThemeFG);
   font-family: var(--mkFontFamilyMono);
+}
+
+caption, figcaption {
+  font-size: 1rem;
+}
+
+figure {
+  margin-inline-start: 4rem;
+  margin-inline-end: 4rem;
 }
 
 pre {

@@ -95,6 +95,7 @@ a:hover {
 [mk-passive-1], [mk-passive-2],
 [mk-body-1], [mk-body-2],
 [mk-theme-context],
+[mk-theme],
 a {
   background: var(--mkThemeBG);
   color: var(--mkThemeFG);
