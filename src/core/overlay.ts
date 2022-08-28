@@ -1,9 +1,8 @@
-import {arrayFrom} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, DIV, query, ievent, irect, itarget, ostyle, registerCustomElement} from 'persona';
+import {Context, Ctrl, DIV, ievent, irect, itarget, ocase, ostyle, query, registerCustomElement, renderNode} from 'persona';
 import {oclass} from 'persona/src/output/class';
 import {combineLatest, merge, Observable} from 'rxjs';
-import {filter, map, mapTo, shareReplay, startWith, tap, withLatestFrom} from 'rxjs/operators';
+import {filter, map, mapTo, shareReplay, startWith, withLatestFrom} from 'rxjs/operators';
 
 import {renderTheme} from '../theme/render-theme';
 
@@ -20,6 +19,7 @@ interface Position {
 const $overlay = {
   shadow: {
     content: query('#content', DIV, {
+      content: ocase<ShowEvent|null>(),
       rect: irect(),
       styleTop: ostyle('top'),
       styleLeft: ostyle('left'),
@@ -41,7 +41,7 @@ class Overlay implements Ctrl {
     return [
       renderTheme(this.$),
       this.isRootHidden$.pipe(this.$.shadow.root.hidden()),
-      this.overlayContent$,
+      this.renderContent(),
       this.contentLeft$.pipe(this.$.shadow.content.styleLeft()),
       this.contentTop$.pipe(this.$.shadow.content.styleTop()),
     ];
@@ -107,19 +107,18 @@ class Overlay implements Ctrl {
     return this.showStatus$.pipe(map(showStatus => !showStatus));
   }
 
-  @cache()
-  private get overlayContent$(): Observable<unknown> {
+  private renderContent(): Observable<unknown> {
     return this.showStatus$.pipe(
-        tap(status => {
+        this.$.shadow.content.content(map(status => {
           if (!status) {
-            for (const node of arrayFrom(this.$.element.childNodes)) {
-              this.$.element.removeChild(node);
-            }
-            return;
+            return null;
           }
 
-          this.$.element.appendChild(status.content.node.cloneNode(true));
-        }));
+          return renderNode({
+            node: status.content.node.cloneNode(true),
+          });
+        })),
+    );
   }
 
   @cache()
