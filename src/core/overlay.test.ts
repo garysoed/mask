@@ -34,8 +34,10 @@ test('@mask/src/core/overlay', () => {
       targetEl.style.top = '30px';
       document.body.appendChild(targetEl);
 
+      const templateEl = document.createElement('template');
       const contentEl = document.createElement('div');
-      return {targetEl, contentEl};
+      templateEl.content.appendChild(contentEl);
+      return {targetEl, templateEl};
     });
 
     function dispatchResize(): void {
@@ -46,7 +48,7 @@ test('@mask/src/core/overlay', () => {
     should('set the left and top correctly if content and target anchors are START - START', () => {
       $overlayService.get(_.tester.vine).show({
         target: {node: _.targetEl, horizontal: Anchor.START, vertical: Anchor.START},
-        content: {node: _.contentEl, horizontal: Anchor.START, vertical: Anchor.START},
+        content: {node: _.templateEl, horizontal: Anchor.START, vertical: Anchor.START},
       });
 
       dispatchResize();
@@ -57,7 +59,7 @@ test('@mask/src/core/overlay', () => {
     should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
       $overlayService.get(_.tester.vine).show({
         target: {node: _.targetEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
-        content: {node: _.contentEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
+        content: {node: _.templateEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
       });
 
       dispatchResize();
@@ -68,7 +70,7 @@ test('@mask/src/core/overlay', () => {
     should('set the left and top correctly if content and target anchors are END - END', () => {
       $overlayService.get(_.tester.vine).show({
         target: {node: _.targetEl, horizontal: Anchor.END, vertical: Anchor.END},
-        content: {node: _.contentEl, horizontal: Anchor.END, vertical: Anchor.END},
+        content: {node: _.templateEl, horizontal: Anchor.END, vertical: Anchor.END},
       });
 
       dispatchResize();
@@ -82,6 +84,8 @@ test('@mask/src/core/overlay', () => {
       const contentEl = document.createElement('div');
       contentEl.id = 'testContent';
       contentEl.innerText = 'test content';
+      const templateEl = document.createElement('template');
+      templateEl.content.appendChild(contentEl);
       const event = {
         target: {
           node: document.createElement('div'),
@@ -89,7 +93,7 @@ test('@mask/src/core/overlay', () => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: contentEl,
+          node: templateEl,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -106,6 +110,9 @@ test('@mask/src/core/overlay', () => {
       content.appendChild(document.createElement('div'));
       content.appendChild(document.createElement('span'));
 
+      const templateEl = document.createElement('template');
+      templateEl.content.appendChild(content);
+
       const event = {
         target: {
           node: document.createElement('div'),
@@ -113,7 +120,7 @@ test('@mask/src/core/overlay', () => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: content,
+          node: templateEl,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -128,6 +135,8 @@ test('@mask/src/core/overlay', () => {
       content.appendChild(document.createElement('div'));
       content.appendChild(document.createElement('span'));
 
+      const templateEl = document.createElement('template');
+      templateEl.content.appendChild(content);
       const event = {
         target: {
           node: document.createElement('div'),
@@ -135,7 +144,7 @@ test('@mask/src/core/overlay', () => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: content,
+          node: templateEl,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -151,6 +160,8 @@ test('@mask/src/core/overlay', () => {
       content.appendChild(document.createElement('div'));
       content.appendChild(document.createElement('span'));
 
+      const templateEl = document.createElement('template');
+      templateEl.content.appendChild(content);
       const event = {
         target: {
           node: document.createElement('div'),
@@ -158,7 +169,7 @@ test('@mask/src/core/overlay', () => {
           vertical: Anchor.MIDDLE,
         },
         content: {
-          node: content,
+          node: templateEl,
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },

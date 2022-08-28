@@ -15,7 +15,7 @@ export interface NodeSpec<E> {
 
 export interface ShowEvent {
   readonly target: NodeSpec<Element>;
-  readonly content: NodeSpec<Node>;
+  readonly content: NodeSpec<HTMLTemplateElement>;
 }
 
 export class OverlayService {

@@ -29,8 +29,10 @@ test('@mask/src/layout/overlay-layout', () => {
 
       const contentNode = document.createElement('div');
       contentNode.id = 'content';
+      const templateEl = document.createElement('template');
+      templateEl.content.appendChild(contentNode);
       getHarness(element, '#slot', SlotHarness).simulateSlotChange(rootEl => {
-        rootEl.appendChild(contentNode);
+        rootEl.appendChild(templateEl);
       });
       const contentHorizontal = Anchor.MIDDLE;
       element.setAttribute('content-horizontal', contentHorizontal);
@@ -46,9 +48,9 @@ test('@mask/src/layout/overlay-layout', () => {
           horizontal: targetHorizontal,
           vertical: targetVertical,
         }),
-        content: objectThat<NodeSpec<Node>>().haveProperties({
-          node: anyThat<Node>().passPredicate(
-              node => (node.childNodes[0] as HTMLElement).id === 'content',
+        content: objectThat<NodeSpec<HTMLTemplateElement>>().haveProperties({
+          node: anyThat<HTMLTemplateElement>().passPredicate(
+              node => (node.content.childNodes[0] as HTMLElement).id === 'content',
               'match content node',
           ),
           horizontal: contentHorizontal,

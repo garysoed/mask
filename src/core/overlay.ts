@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, DIV, ievent, irect, itarget, ocase, ostyle, query, registerCustomElement, renderNode} from 'persona';
+import {Context, Ctrl, DIV, ievent, irect, itarget, ocase, ostyle, query, registerCustomElement, renderTemplate} from 'persona';
 import {oclass} from 'persona/src/output/class';
-import {combineLatest, merge, Observable} from 'rxjs';
+import {combineLatest, merge, Observable, of} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, withLatestFrom} from 'rxjs/operators';
 
 import {renderTheme} from '../theme/render-theme';
@@ -114,8 +114,10 @@ class Overlay implements Ctrl {
             return null;
           }
 
-          return renderNode({
-            node: status.content.node.cloneNode(true),
+          return renderTemplate({
+            template$: of(status.content.node),
+            spec: {},
+            runs: () => [],
           });
         })),
     );
