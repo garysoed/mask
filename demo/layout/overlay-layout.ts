@@ -74,17 +74,17 @@ export class OverlayLayoutDemo implements Ctrl {
           })),
       ),
       of([...this.overlayVerticalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
+          this.$.shadow.overlayVertical.overlayVerticalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.overlayVerticalObsMap.group, pairs);
           })),
       ),
       of([...this.targetHorizontalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
+          this.$.shadow.targetHorizontal.targetHorizontalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.targetHorizontalObsMap.group, pairs);
           })),
       ),
       of([...this.targetVerticalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
+          this.$.shadow.targetVertical.targetVerticalAnchors(map(pairs => {
             return this.renderAnchorNodes(this.targetVerticalObsMap.group, pairs);
           })),
       ),
