@@ -1,11 +1,11 @@
-import {assert, createSpySubject, runEnvironment, setup, should, test} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import goldens from './goldens/goldens.json';
-import {$selectOptionsSelected$, $selectOptionsSpecs$, SELECT_OPTIONS} from './select-options';
+import {SELECT_OPTIONS} from './select-options';
 import {SelectOptionHarness} from './testing/select-options-harness';
 
 test('@mask/src/input/select-options', () => {
@@ -20,15 +20,15 @@ test('@mask/src/input/select-options', () => {
   test('render', () => {
     should('render the options correctly', () => {
       const element = _.tester.bootstrapElement(SELECT_OPTIONS);
-      $selectOptionsSpecs$.get(_.tester.vine).next({
+      element.specs = {
         options: [
           {text: 'Option A', key: '1'},
           {text: 'Option B', key: '2'},
           {text: 'Option C', key: '3'},
         ],
-      });
+      };
 
-      $selectOptionsSelected$.get(_.tester.vine).next('2');
+      element.setSelected('2');
 
       assert(element).to.matchSnapshot('select-options__render.html');
     });
@@ -37,38 +37,37 @@ test('@mask/src/input/select-options', () => {
   test('select', () => {
     should('emit events on selected', () => {
       const element = _.tester.bootstrapElement(SELECT_OPTIONS);
-      $selectOptionsSpecs$.get(_.tester.vine).next({
+      element.specs = {
         options: [
           {text: 'Option A', key: '1'},
           {text: 'Option B', key: '2'},
           {text: 'Option C', key: '3'},
         ],
-      });
+      };
 
       const harness = getHarness(element, SelectOptionHarness);
       harness.simulateClickOption('Option B');
 
       assert(element).to.matchSnapshot('select-options__select.html');
-      assert($selectOptionsSelected$.get(_.tester.vine)).to.emitWith('2');
+      assert(element.selected).to.equal('2');
     });
 
     should('change the selection on multiple clicks', () => {
       const element = _.tester.bootstrapElement(SELECT_OPTIONS);
-      $selectOptionsSpecs$.get(_.tester.vine).next({
+      element.specs = {
         options: [
           {text: 'Option A', key: '1'},
           {text: 'Option B', key: '2'},
           {text: 'Option C', key: '3'},
         ],
-      });
-
-      const selected$ = createSpySubject($selectOptionsSelected$.get(_.tester.vine));
+      };
 
       const harness = getHarness(element, SelectOptionHarness);
+      assert(element.selected).to.beNull();
       harness.simulateClickOption('Option B');
+      assert(element.selected).to.equal('2');
       harness.simulateClickOption('Option C');
-
-      assert(selected$).to.emitSequence([null, '2', '3']);
+      assert(element.selected).to.equal('3');
     });
   });
 });

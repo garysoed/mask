@@ -1,6 +1,6 @@
-import {source} from 'grapevine';
 import {forwardTo} from 'gs-tools/export/rxjs';
-import {Context, Ctrl, DIV, ievent, itarget, oattr, oforeach, otext, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
+import {arrayOfType, hasPropertiesType, nullableType, stringType} from 'gs-types';
+import {Context, Ctrl, DIV, icall, ievent, itarget, ivalue, oattr, oforeach, otext, ovalue, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -17,11 +17,19 @@ interface Option {
 interface OptionSpecs {
   readonly options: readonly Option[];
 }
-
-export const $selectOptionsSpecs$ = source(() => new BehaviorSubject<OptionSpecs|null>(null));
-export const $selectOptionsSelected$ = source(() => new BehaviorSubject<string|null>(null));
+const OPTION_SPECS_TYPE = hasPropertiesType<OptionSpecs>({
+  options: arrayOfType(hasPropertiesType<Option>({
+    text: stringType,
+    key: stringType,
+  })),
+});
 
 const selectOptions$ = {
+  host: {
+    specs: ivalue('specs', OPTION_SPECS_TYPE),
+    selected: ovalue('selected', nullableType(stringType)),
+    setSelectedFn: icall('setSelected', [nullableType(stringType)]),
+  },
   shadow: {
     container: query('#container', DIV, {
       contents: oforeach<Option>(),
@@ -33,18 +41,28 @@ const selectOptions$ = {
 };
 
 class SelectOptions implements Ctrl {
+  private readonly selected$ = new BehaviorSubject<string|null>(null);
+
   constructor(private readonly $: Context<typeof selectOptions$>) {}
 
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
+      this.handleSetSelected(),
       this.renderOptions(),
+      this.selected$.pipe(this.$.host.selected()),
     ];
   }
 
+  private handleSetSelected(): Observable<unknown> {
+    return this.$.host.setSelectedFn.pipe(
+        map(([selected]) => selected),
+        forwardTo(this.selected$),
+    );
+  }
+
   private renderOptions(): Observable<unknown> {
-    const selected$ = $selectOptionsSelected$.get(this.$.vine);
-    return $selectOptionsSpecs$.get(this.$.vine).pipe(
+    return this.$.host.specs.pipe(
         map(value => value?.options ?? []),
         this.$.shadow.container.contents(map(({text, key}) => renderTemplate({
           template$: this.$.shadow.optionTemplate.target,
@@ -57,13 +75,13 @@ class SelectOptions implements Ctrl {
           },
           runs: $ => [
             of(text).pipe($.layout.text()),
-            selected$.pipe(
+            this.selected$.pipe(
                 map(selected => selected === key ? 'highlight' : ''),
                 $.layout.themeContext(),
             ),
             $.layout.onClick.pipe(
                 map(() => key),
-                forwardTo(selected$),
+                forwardTo(this.selected$),
             ),
           ],
         }))),
