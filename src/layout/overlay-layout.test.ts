@@ -1,7 +1,9 @@
-import {anyThat, assert, createSpySubject, objectThat, should, test, setup} from 'gs-testing';
+import {anyThat, assert, createSpySubject, objectThat, setup, should, test} from 'gs-testing';
+import {RenderTemplateSpec} from 'persona';
 import {getHarness, SlotHarness} from 'persona/export/testing';
+import {switchMap} from 'rxjs/operators';
 
-import {$overlayService, Anchor, NodeSpec, ShowEvent} from '../core/overlay-service';
+import {$overlayService, Anchor, AnchorSpec, ShowEvent} from '../core/overlay-service';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import {OVERLAY_LAYOUT} from './overlay-layout';
@@ -43,20 +45,26 @@ test('@mask/src/layout/overlay-layout', () => {
       element.showFn(undefined);
 
       assert(showEvent$).to.emitWith(objectThat<ShowEvent>().haveProperties({
-        target: objectThat<NodeSpec<Element>>().haveProperties({
-          node: targetEl,
+        target: targetEl,
+        targetAnchor: objectThat<AnchorSpec>().haveProperties({
           horizontal: targetHorizontal,
           vertical: targetVertical,
         }),
-        content: objectThat<NodeSpec<HTMLTemplateElement>>().haveProperties({
-          node: anyThat<HTMLTemplateElement>().passPredicate(
-              node => (node.content.childNodes[0] as HTMLElement).id === 'content',
-              'match content node',
-          ),
+        contentAnchor: objectThat<AnchorSpec>().haveProperties({
           horizontal: contentHorizontal,
           vertical: contentVertical,
         }),
       }));
+
+      const templateSpec$ = showEvent$.pipe(
+          switchMap(event => (event.contentRenderSpec as RenderTemplateSpec<any>).template$),
+      );
+      assert(templateSpec$).to.emitWith(
+          anyThat<HTMLTemplateElement>().passPredicate(
+              node => (node.content.childNodes[0] as HTMLElement).id === 'content',
+              'match content node',
+          ),
+      );
     });
   });
 });

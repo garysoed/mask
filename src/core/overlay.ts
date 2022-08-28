@@ -1,12 +1,12 @@
 import {cache} from 'gs-tools/export/data';
-import {Context, Ctrl, DIV, ievent, irect, itarget, ocase, ostyle, query, registerCustomElement, renderTemplate} from 'persona';
+import {Context, Ctrl, DIV, ievent, irect, itarget, ocase, ostyle, query, registerCustomElement} from 'persona';
 import {oclass} from 'persona/src/output/class';
-import {combineLatest, merge, Observable, of} from 'rxjs';
+import {combineLatest, merge, Observable} from 'rxjs';
 import {filter, map, mapTo, shareReplay, startWith, withLatestFrom} from 'rxjs/operators';
 
 import {renderTheme} from '../theme/render-theme';
 
-import {$overlayService, Anchor, NodeSpec, ShowEvent} from './overlay-service';
+import {$overlayService, Anchor, AnchorSpec, ShowEvent} from './overlay-service';
 import template from './overlay.html';
 
 
@@ -71,14 +71,14 @@ class Overlay implements Ctrl {
                 return null;
               }
 
-              const targetRect = showStatus.target.node.getBoundingClientRect();
+              const targetRect = showStatus.target.getBoundingClientRect();
               const targetPosition = {
-                left: computeAnchorLeft(targetRect, showStatus.target),
-                top: computeAnchorTop(targetRect, showStatus.target),
+                left: computeAnchorLeft(targetRect, showStatus.targetAnchor),
+                top: computeAnchorTop(targetRect, showStatus.targetAnchor),
               };
               const contentPosition = {
-                left: computeAnchorLeft(contentRect, showStatus.content),
-                top: computeAnchorTop(contentRect, showStatus.content),
+                left: computeAnchorLeft(contentRect, showStatus.contentAnchor),
+                top: computeAnchorTop(contentRect, showStatus.contentAnchor),
               };
 
               return {
@@ -114,11 +114,7 @@ class Overlay implements Ctrl {
             return null;
           }
 
-          return renderTemplate({
-            template$: of(status.content.node),
-            spec: {},
-            runs: () => [],
-          });
+          return status.contentRenderSpec;
         })),
     );
   }
@@ -140,7 +136,7 @@ class Overlay implements Ctrl {
   }
 }
 
-function computeAnchorLeft(elRect: DOMRect, nodeSpec: NodeSpec<any>): number {
+function computeAnchorLeft(elRect: DOMRect, nodeSpec: AnchorSpec): number {
   switch (nodeSpec.horizontal) {
     case Anchor.START:
       return elRect.left;
@@ -151,7 +147,7 @@ function computeAnchorLeft(elRect: DOMRect, nodeSpec: NodeSpec<any>): number {
   }
 }
 
-function computeAnchorTop(elRect: DOMRect, nodeSpec: NodeSpec<any>): number {
+function computeAnchorTop(elRect: DOMRect, nodeSpec: AnchorSpec): number {
   switch (nodeSpec.vertical) {
     case Anchor.START:
       return elRect.top;

@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {enumType, instanceofType, nullType, Type, unionType} from 'gs-types';
-import {Context, Ctrl, iattr, icall, ivalue, query, registerCustomElement, SLOT} from 'persona';
-import {combineLatest, Observable, OperatorFunction} from 'rxjs';
+import {Context, Ctrl, iattr, icall, ivalue, query, registerCustomElement, renderTemplate, SLOT} from 'persona';
+import {combineLatest, Observable, of, OperatorFunction} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$overlayService, Anchor} from '../core/overlay-service';
@@ -66,13 +66,16 @@ export class OverlayLayout implements Ctrl {
           TEMPLATE_ELEMENT_TYPE.assert(rootContent);
 
           overlayService.show({
-            content: {
-              node: rootContent,
+            contentRenderSpec: renderTemplate({
+              template$: of(rootContent),
+              spec: {},
+            }),
+            contentAnchor: {
               horizontal: anchors.contentHorizontal ?? Anchor.START,
               vertical: anchors.contentVertical ?? Anchor.START,
             },
-            target: {
-              node: targetEl ?? document.body,
+            target: targetEl ?? document.body,
+            targetAnchor: {
               horizontal: anchors.targetHorizontal,
               vertical: anchors.targetVertical,
             },

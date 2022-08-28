@@ -1,6 +1,8 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {DIV, ParseType, renderElement, renderString, renderTemplate} from 'persona';
 import {ElementHarness, getHarness} from 'persona/export/testing';
+import {of} from 'rxjs';
 import {ON_LOG_$, WebConsoleDestination} from 'santa';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -34,10 +36,7 @@ test('@mask/src/core/overlay', () => {
       targetEl.style.top = '30px';
       document.body.appendChild(targetEl);
 
-      const templateEl = document.createElement('template');
-      const contentEl = document.createElement('div');
-      templateEl.content.appendChild(contentEl);
-      return {targetEl, templateEl};
+      return {targetEl};
     });
 
     function dispatchResize(): void {
@@ -47,8 +46,10 @@ test('@mask/src/core/overlay', () => {
 
     should('set the left and top correctly if content and target anchors are START - START', () => {
       $overlayService.get(_.tester.vine).show({
-        target: {node: _.targetEl, horizontal: Anchor.START, vertical: Anchor.START},
-        content: {node: _.templateEl, horizontal: Anchor.START, vertical: Anchor.START},
+        contentRenderSpec: renderElement({registration: DIV, spec: {}}),
+        contentAnchor: {horizontal: Anchor.START, vertical: Anchor.START},
+        target: _.targetEl,
+        targetAnchor: {horizontal: Anchor.START, vertical: Anchor.START},
       });
 
       dispatchResize();
@@ -58,8 +59,10 @@ test('@mask/src/core/overlay', () => {
 
     should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
       $overlayService.get(_.tester.vine).show({
-        target: {node: _.targetEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
-        content: {node: _.templateEl, horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
+        contentRenderSpec: renderElement({registration: DIV, spec: {}}),
+        target: _.targetEl,
+        targetAnchor: {horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
+        contentAnchor: {horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
       });
 
       dispatchResize();
@@ -69,8 +72,10 @@ test('@mask/src/core/overlay', () => {
 
     should('set the left and top correctly if content and target anchors are END - END', () => {
       $overlayService.get(_.tester.vine).show({
-        target: {node: _.targetEl, horizontal: Anchor.END, vertical: Anchor.END},
-        content: {node: _.templateEl, horizontal: Anchor.END, vertical: Anchor.END},
+        contentRenderSpec: renderElement({registration: DIV, spec: {}}),
+        target: _.targetEl,
+        contentAnchor: {horizontal: Anchor.END, vertical: Anchor.END},
+        targetAnchor: {horizontal: Anchor.END, vertical: Anchor.END},
       });
 
       dispatchResize();
@@ -81,19 +86,18 @@ test('@mask/src/core/overlay', () => {
 
   test('overlayContent$', () => {
     should('display the content el when shown', () => {
-      const contentEl = document.createElement('div');
-      contentEl.id = 'testContent';
-      contentEl.innerText = 'test content';
-      const templateEl = document.createElement('template');
-      templateEl.content.appendChild(contentEl);
       const event = {
-        target: {
-          node: document.createElement('div'),
+        contentRenderSpec: renderString({
+          raw: of('<div id="testContent">test content</div>'),
+          parseType: ParseType.HTML,
+          spec: {},
+        }),
+        contentAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
-        content: {
-          node: templateEl,
+        target: document.createElement('div'),
+        targetAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -112,15 +116,17 @@ test('@mask/src/core/overlay', () => {
 
       const templateEl = document.createElement('template');
       templateEl.content.appendChild(content);
-
       const event = {
-        target: {
-          node: document.createElement('div'),
+        contentRenderSpec: renderTemplate({
+          template$: of(templateEl),
+          spec: {},
+        }),
+        contentAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
-        content: {
-          node: templateEl,
+        target: document.createElement('div'),
+        targetAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -138,13 +144,16 @@ test('@mask/src/core/overlay', () => {
       const templateEl = document.createElement('template');
       templateEl.content.appendChild(content);
       const event = {
-        target: {
-          node: document.createElement('div'),
+        contentRenderSpec: renderTemplate({
+          template$: of(templateEl),
+          spec: {},
+        }),
+        contentAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
-        content: {
-          node: templateEl,
+        target: document.createElement('div'),
+        targetAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
@@ -163,13 +172,16 @@ test('@mask/src/core/overlay', () => {
       const templateEl = document.createElement('template');
       templateEl.content.appendChild(content);
       const event = {
-        target: {
-          node: document.createElement('div'),
+        contentRenderSpec: renderTemplate({
+          template$: of(templateEl),
+          spec: {},
+        }),
+        contentAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },
-        content: {
-          node: templateEl,
+        target: document.createElement('div'),
+        targetAnchor: {
           horizontal: Anchor.MIDDLE,
           vertical: Anchor.MIDDLE,
         },

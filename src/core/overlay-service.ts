@@ -1,4 +1,5 @@
 import {source} from 'grapevine';
+import {RenderSpec} from 'persona';
 import {Observable, Subject} from 'rxjs';
 
 export enum Anchor {
@@ -7,15 +8,16 @@ export enum Anchor {
   END = 'e',
 }
 
-export interface NodeSpec<E> {
-  readonly node: E;
+export interface AnchorSpec {
   readonly horizontal: Anchor;
   readonly vertical: Anchor;
 }
 
 export interface ShowEvent {
-  readonly target: NodeSpec<Element>;
-  readonly content: NodeSpec<HTMLTemplateElement>;
+  readonly contentRenderSpec: RenderSpec;
+  readonly contentAnchor: AnchorSpec;
+  readonly target: Element;
+  readonly targetAnchor: AnchorSpec;
 }
 
 export class OverlayService {
