@@ -16,7 +16,7 @@ export {BUTTON} from '../src/action/button';
 export {Checkbox, CHECKBOX, CheckedValue} from '../src/input/checkbox';
 export {NumberInput, NUMBER_INPUT} from '../src/input/number-input';
 export {RadioInput, RADIO_INPUT} from '../src/input/radio-input';
-export {TextInput, TEXT_INPUT} from '../src/input/text-input';
+export {TEXT_INPUT} from '../src/input/text-input';
 
 // display
 export {ANNOTATED_TEXT, AnnotationSpec} from '../src/display/annotated-text';

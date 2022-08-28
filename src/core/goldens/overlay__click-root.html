@@ -1,5 +1,6 @@
 <mk-overlay mk-theme="light"><gst-fake-shadow><style>
   #root {
+    background: transparent;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -15,7 +16,7 @@
     position: fixed;
   }
 </style>
-<div id="root" class="hidden">
+<div id="root" mk-theme-context="main" class="hidden">
   <div id="content" shadow="up" style=""></div>
 </div>
 <link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-overlay>

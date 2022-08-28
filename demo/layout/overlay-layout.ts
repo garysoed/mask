@@ -3,14 +3,13 @@ import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
 import {$pipe} from 'gs-tools/export/typescript';
 import {enumType} from 'gs-types';
-import {Context, Ctrl, DIV, oforeach, query, registerCustomElement, renderElement, RenderSpec} from 'persona';
-import {Observable, of, pipe, Subject} from 'rxjs';
-import {map, mapTo} from 'rxjs/operators';
+import {Context, Ctrl, DIV, itarget, oforeach, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, TEMPLATE} from 'persona';
+import {combineLatest, Observable, of, pipe, Subject} from 'rxjs';
+import {map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
-import {Anchor} from '../../src/core/overlay-service';
+import {$overlayService, Anchor, ShowEvent} from '../../src/core/overlay-service';
 import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
-import {OVERLAY_LAYOUT} from '../../src/layout/overlay-layout';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
@@ -34,19 +33,23 @@ interface AnchorObsSpec {
 
 const $overlayLayoutDemo = {
   shadow: {
-    overlay: query('#overlay', OVERLAY_LAYOUT),
     overlayHorizontal: query('#overlayHorizontal', DIV, {
       overlayHorizontalAnchors: oforeach<[Anchor, AnchorSubjects]>('#overlayHorizontalAnchors'),
     }),
     overlayVertical: query('#overlayVertical', DIV, {
       overlayVerticalAnchors: oforeach<[Anchor, AnchorSubjects]>('#overlayVerticalAnchors'),
     }),
-    showButton: query('#target', BUTTON),
+    showButton: query('#target', BUTTON, {
+      target: itarget(),
+    }),
     targetHorizontal: query('#targetHorizontal', DIV, {
       targetHorizontalAnchors: oforeach<[Anchor, AnchorSubjects]>('#targetHorizontalAnchors'),
     }),
     targetVertical: query('#targetVertical', DIV, {
       targetVerticalAnchors: oforeach<[Anchor, AnchorSubjects]>('#targetVerticalAnchors'),
+    }),
+    template: query('#template', TEMPLATE, {
+      target: itarget(),
     }),
   },
 };
@@ -90,13 +93,44 @@ export class OverlayLayoutDemo implements Ctrl {
       this.bindRadioToState('overlayVerticalIndex', this.overlayVerticalObsMap),
       this.bindRadioToState('targetHorizontalIndex', this.targetHorizontalObsMap),
       this.bindRadioToState('targetVerticalIndex', this.targetVerticalObsMap),
-
-      this.getAnchor('overlayHorizontalIndex').pipe(this.$.shadow.overlay.contentHorizontal()),
-      this.getAnchor('overlayVerticalIndex').pipe(this.$.shadow.overlay.contentVertical()),
-      this.getAnchor('targetHorizontalIndex').pipe(this.$.shadow.overlay.targetHorizontal()),
-      this.getAnchor('targetVerticalIndex').pipe(this.$.shadow.overlay.targetVertical()),
-      this.$.shadow.showButton.actionEvent.pipe(mapTo([]), this.$.shadow.overlay.showFn()),
+      this.handleClick(),
     ];
+  }
+
+  private handleClick(): Observable<unknown> {
+    return this.$.shadow.showButton.actionEvent.pipe(
+        withLatestFrom(this.overlayEvent$),
+        tap(([, showEvent]) => {
+          $overlayService.get(this.$.vine).show(showEvent);
+        }),
+    );
+  }
+
+  private get overlayEvent$(): Observable<ShowEvent> {
+    return combineLatest([
+      this.$.shadow.showButton.target,
+      this.getAnchor('overlayHorizontalIndex'),
+      this.getAnchor('overlayVerticalIndex'),
+      this.getAnchor('targetHorizontalIndex'),
+      this.getAnchor('targetVerticalIndex'),
+    ])
+        .pipe(
+            map(([target, contentH, contentV, targetH, targetV]) => ({
+              contentAnchor: {
+                horizontal: contentH,
+                vertical: contentV,
+              },
+              contentRenderSpec: renderTemplate({
+                template$: this.$.shadow.template.target,
+                spec: {},
+              }),
+              target,
+              targetAnchor: {
+                horizontal: targetH,
+                vertical: targetV,
+              },
+            })),
+        );
   }
 
   private bindRadioToState(
@@ -175,7 +209,6 @@ export const OVERLAY_LAYOUT_DEMO = registerCustomElement({
   deps: [
     BUTTON,
     DEMO_LAYOUT,
-    OVERLAY_LAYOUT,
     RADIO_INPUT,
   ],
   spec: $overlayLayoutDemo,
