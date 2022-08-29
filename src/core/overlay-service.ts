@@ -1,6 +1,6 @@
 import {source} from 'grapevine';
 import {RenderSpec} from 'persona';
-import {Observable, Subject} from 'rxjs';
+import {Observable, BehaviorSubject} from 'rxjs';
 
 export enum Anchor {
   START = 's',
@@ -13,7 +13,7 @@ export interface AnchorSpec {
   readonly vertical: Anchor;
 }
 
-export interface ShowEvent {
+export interface ShowSpec {
   readonly contentRenderSpec: RenderSpec;
   readonly contentAnchor: AnchorSpec;
   readonly target: Element;
@@ -21,14 +21,14 @@ export interface ShowEvent {
 }
 
 export class OverlayService {
-  readonly #onShow$ = new Subject<ShowEvent>();
+  readonly #shownSpec$ = new BehaviorSubject<ShowSpec|null>(null);
 
-  get onShow$(): Observable<ShowEvent> {
-    return this.#onShow$;
+  get shownSpec$(): Observable<ShowSpec|null> {
+    return this.#shownSpec$;
   }
 
-  show(event: ShowEvent): void {
-    this.#onShow$.next(event);
+  show(event: ShowSpec): void {
+    this.#shownSpec$.next(event);
   }
 }
 

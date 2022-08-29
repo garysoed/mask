@@ -6,7 +6,7 @@ import {filter, map, mapTo, shareReplay, startWith, withLatestFrom} from 'rxjs/o
 
 import {renderTheme} from '../theme/render-theme';
 
-import {$overlayService, Anchor, AnchorSpec, ShowEvent} from './overlay-service';
+import {$overlayService, Anchor, AnchorSpec, ShowSpec} from './overlay-service';
 import template from './overlay.html';
 
 
@@ -19,7 +19,7 @@ interface Position {
 const $overlay = {
   shadow: {
     content: query('#content', DIV, {
-      content: ocase<ShowEvent|null>(),
+      content: ocase<ShowSpec|null>(),
       rect: irect(),
       styleTop: ostyle('top'),
       styleLeft: ostyle('left'),
@@ -120,8 +120,8 @@ class Overlay implements Ctrl {
   }
 
   @cache()
-  private get showStatus$(): Observable<ShowEvent|null> {
-    const onShow$ = $overlayService.get(this.$.vine).onShow$;
+  private get showStatus$(): Observable<ShowSpec|null> {
+    const shownSpec$ = $overlayService.get(this.$.vine).shownSpec$;
 
     const onClick$ = this.$.shadow.root.onClick.pipe(
         withLatestFrom(this.$.shadow.root.element),
@@ -129,7 +129,7 @@ class Overlay implements Ctrl {
         mapTo(null),
     );
 
-    return merge(onShow$, onClick$).pipe(
+    return merge(shownSpec$, onClick$).pipe(
         startWith(null),
         shareReplay({bufferSize: 1, refCount: true}),
     );

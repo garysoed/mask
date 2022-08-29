@@ -8,7 +8,7 @@ import {combineLatest, Observable, of, pipe, Subject} from 'rxjs';
 import {map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
-import {$overlayService, Anchor, ShowEvent} from '../../src/core/overlay-service';
+import {$overlayService, Anchor, ShowSpec} from '../../src/core/overlay-service';
 import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
@@ -106,7 +106,7 @@ export class OverlayLayoutDemo implements Ctrl {
     );
   }
 
-  private get overlayEvent$(): Observable<ShowEvent> {
+  private get overlayEvent$(): Observable<ShowSpec> {
     return combineLatest([
       this.$.shadow.showButton.target,
       this.getAnchor('overlayHorizontalIndex'),
