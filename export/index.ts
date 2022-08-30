@@ -16,6 +16,7 @@ export {BUTTON} from '../src/action/button';
 export {Checkbox, CHECKBOX, CheckedValue} from '../src/input/checkbox';
 export {NumberInput, NUMBER_INPUT} from '../src/input/number-input';
 export {RadioInput, RADIO_INPUT} from '../src/input/radio-input';
+export {SELECT_INPUT} from '../src/input/select-input';
 export {TEXT_INPUT} from '../src/input/text-input';
 
 // display

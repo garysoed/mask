@@ -6,7 +6,7 @@ import {setupThemedTest} from '../testing/setup-themed-test';
 
 import goldens from './goldens/goldens.json';
 import {SELECT_OPTIONS} from './select-options';
-import {SelectOptionHarness} from './testing/select-options-harness';
+import {SelectOptionHarness} from './testing/select-option-harness';
 
 test('@mask/src/input/select-options', () => {
   const _ = setup(() => {

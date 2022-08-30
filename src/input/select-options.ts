@@ -9,19 +9,20 @@ import {renderTheme} from '../theme/render-theme';
 
 import template from './select-options.html';
 
-interface Option {
+export interface Option {
   readonly text: string;
   readonly key: string;
 }
+export const OPTION_TYPE = hasPropertiesType<Option>({
+  text: stringType,
+  key: stringType,
+});
 
-interface OptionSpecs {
+export interface OptionSpecs {
   readonly options: readonly Option[];
 }
-const OPTION_SPECS_TYPE = hasPropertiesType<OptionSpecs>({
-  options: arrayOfType(hasPropertiesType<Option>({
-    text: stringType,
-    key: stringType,
-  })),
+export const OPTION_SPECS_TYPE = hasPropertiesType<OptionSpecs>({
+  options: arrayOfType(OPTION_TYPE),
 });
 
 const selectOptions$ = {

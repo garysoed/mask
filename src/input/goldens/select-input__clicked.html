@@ -1,0 +1,62 @@
+<mk-overlay mk-theme="light"><gst-fake-shadow><style>
+  #root {
+    background: transparent;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #root.hidden {
+    display: none;
+  }
+
+  #content {
+    position: fixed;
+  }
+</style>
+<div id="root" mk-theme-context="main" class="">
+  <div id="content" shadow="up" style="left: 0px; top: 38.5px;">
+  <mk-select-options id="options"><gst-fake-shadow><div id="container">
+  <mk-line-layout mk-action-2="" mk-theme-context="">Option 1<gst-fake-shadow><style>
+  #root {
+    padding: 1rem;
+    text-align: start;
+  }
+</style>
+
+<div id="root" mk-theme="">
+  <slot></slot>
+</div>
+<link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-line-layout>
+
+  <mk-line-layout mk-action-2="" mk-theme-context="">Option 2<gst-fake-shadow><style>
+  #root {
+    padding: 1rem;
+    text-align: start;
+  }
+</style>
+
+<div id="root" mk-theme="">
+  <slot></slot>
+</div>
+<link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-line-layout>
+
+  <mk-line-layout mk-action-2="" mk-theme-context="highlight">Option 3<gst-fake-shadow><style>
+  #root {
+    padding: 1rem;
+    text-align: start;
+  }
+</style>
+
+<div id="root" mk-theme="">
+  <slot></slot>
+</div>
+<link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-line-layout>
+</div>
+
+<template id="optionTemplate"></template><link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-select-options>
+</div>
+</div>
+<link rel="stylesheet" href="base/test.css"></gst-fake-shadow></mk-overlay>
