@@ -17,6 +17,7 @@ export {Checkbox, CHECKBOX, CheckedValue} from '../src/input/checkbox';
 export {NumberInput, NUMBER_INPUT} from '../src/input/number-input';
 export {RadioInput, RADIO_INPUT} from '../src/input/radio-input';
 export {SELECT_INPUT} from '../src/input/select-input';
+export {Option} from '../src/input/select-options';
 export {TEXT_INPUT} from '../src/input/text-input';
 
 // display
