@@ -1,0 +1,25 @@
+<style>
+  mk-select-input > div {
+    width: 12rem;
+  }
+</style>
+<mkd-demo-layout label="Text Input">
+  <div slot="play">
+    <mk-select-input id="enabledInput">
+      <div>
+        Your favourite fruit:
+      </div>
+    </mk-select-input>
+    <mk-select-input id="disabledInput" mk-disabled>
+      <div>
+        Disabled selection
+      </div>
+    </mk-select-input>
+  </div>
+  <div slot="docs">
+    <p mk-body-1>
+      Mask's text input allows you to specify a label and a mapping of key to text options.
+    </p>
+  </div>
+</mkd-demo-layout>
+

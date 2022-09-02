@@ -26,12 +26,12 @@ const $selectInput = {
       ...$baseRootOutputs,
       disabled: oflag('disabled'),
       onClick: ievent('click', Event),
-      target: itarget(),
     }),
     template: query('#template', TEMPLATE, {
       target: itarget(),
     }),
     value: query('#value', LINE_LAYOUT, {
+      target: itarget(),
       text: otext(),
     }),
   },
@@ -58,10 +58,11 @@ class SelectInput extends BaseInput<string|null, string|null> {
   }
 
   private handleClick(): Observable<unknown> {
+    const overlayService = $overlayService.get(this.$.vine);
     return this.$.shadow.root.onClick.pipe(
-        withLatestFrom(this.$.shadow.root.target),
+        withLatestFrom(this.$.shadow.value.target),
         tap(([, target]) => {
-          $overlayService.get(this.$.vine).show({
+          overlayService.show({
             contentRenderSpec: renderTemplate({
               template$: this.$.shadow.template.target,
               spec: {
@@ -92,7 +93,7 @@ class SelectInput extends BaseInput<string|null, string|null> {
             target,
             targetAnchor: {
               horizontal: Anchor.START,
-              vertical: Anchor.MIDDLE,
+              vertical: Anchor.START,
             },
           });
         }),

@@ -27,7 +27,7 @@ export class OverlayService {
     return this.#shownSpec$;
   }
 
-  show(event: ShowSpec): void {
+  show(event: ShowSpec|null): void {
     this.#shownSpec$.next(event);
   }
 }

@@ -2,8 +2,9 @@ import {forwardTo} from 'gs-tools/export/rxjs';
 import {arrayOfType, hasPropertiesType, nullableType, stringType} from 'gs-types';
 import {Context, Ctrl, DIV, icall, ievent, itarget, ivalue, oattr, oforeach, otext, ovalue, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 
+import {$overlayService} from '../core/overlay-service';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
@@ -83,6 +84,9 @@ class SelectOptions implements Ctrl {
             $.layout.onClick.pipe(
                 map(() => key),
                 forwardTo(this.selected$),
+                tap(() => {
+                  $overlayService.get(this.$.vine).show(null);
+                }),
             ),
           ],
         }))),

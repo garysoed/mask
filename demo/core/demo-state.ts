@@ -38,6 +38,11 @@ export interface RadioInputDemoState {
   readonly selectedKey: MutableState<string|null>;
 }
 
+export interface SelectInputDemoState {
+  readonly enabledSelectInputState: MutableState<string|null>;
+  readonly disabledSelectInputState: MutableState<string|null>;
+}
+
 export interface TextInputDemoState {
   readonly enabledTextInputState: MutableState<string>;
   readonly disabledTextInputState: MutableState<string>;
@@ -63,6 +68,7 @@ export interface DemoState {
   readonly numberInputDemo: NumberInputDemoState;
   readonly overlayLayoutDemo: OverlayLayoutDemoState;
   readonly radioInputDemo: RadioInputDemoState;
+  readonly selectInputDemo: SelectInputDemoState;
   readonly textInputDemo: TextInputDemoState;
 }
 
@@ -101,6 +107,10 @@ export const $demoState: Source<ImmutableResolver<DemoState>> = source(
       },
       radioInputDemo: {
         selectedKey: mutableState(null),
+      },
+      selectInputDemo: {
+        enabledSelectInputState: mutableState(null),
+        disabledSelectInputState: mutableState('1'),
       },
       textInputDemo: {
         disabledTextInputState: mutableState('Disabled text input value'),

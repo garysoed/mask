@@ -5,6 +5,7 @@ import {BUTTON_DEMO} from '../action/button';
 import {CHECKBOX_DEMO} from '../action/checkbox';
 import {NUMBER_INPUT_DEMO} from '../action/number-input';
 import {RADIO_INPUT_DEMO} from '../action/radio-input';
+import {SELECT_INPUT_DEMO} from '../action/select-input';
 import {TEXT_INPUT_DEMO} from '../action/text-input';
 import {ANNOTATED_TEXT_DEMO} from '../display/annotated-text';
 import {CODE_BLOCK_DEMO} from '../display/code-block';
@@ -35,6 +36,7 @@ export const ACTION_SPECS: readonly PageSpec[] = [
   {registration: CHECKBOX_DEMO, name: 'Checkbox', path: Views.CHECKBOX},
   {registration: NUMBER_INPUT_DEMO, name: 'Number input', path: Views.NUMBER_INPUT},
   {registration: RADIO_INPUT_DEMO, name: 'Radio input', path: Views.RADIO_INPUT},
+  {registration: SELECT_INPUT_DEMO, name: 'Select input', path: Views.SELECT_INPUT},
   {registration: TEXT_INPUT_DEMO, name: 'Text input', path: Views.TEXT_INPUT},
 ];
 
