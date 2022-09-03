@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
 import {arrayOfType, nullableType, stringType} from 'gs-types';
-import {Context, ievent, itarget, ivalue, LABEL, oflag, otext, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
+import {Context, ievent, irect, itarget, ivalue, LABEL, oflag, otext, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
 import {BehaviorSubject, combineLatest, Observable, OperatorFunction} from 'rxjs';
 import {distinctUntilChanged, map, skip, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -31,6 +31,7 @@ const $selectInput = {
       target: itarget(),
     }),
     value: query('#value', LINE_LAYOUT, {
+      rect: irect(),
       target: itarget(),
       text: otext(),
     }),
@@ -69,6 +70,10 @@ class SelectInput extends BaseInput<string|null, string|null> {
                 options: query('mk-select-options', SELECT_OPTIONS),
               },
               runs: $ => [
+                this.$.shadow.value.rect.pipe(
+                    map(rect => rect.width),
+                    $.options.width(),
+                ),
                 $.options.selected.pipe(
                     // Ignore the initial emission.
                     skip(1),

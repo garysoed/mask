@@ -22,6 +22,10 @@ test('@mask/src/input/select-input', () => {
 
   test('render', () => {
     should('render the value correctly', () => {
+      const div = document.createElement('div');
+      div.style.width = '800px';
+      _.tester.addToBody(div);
+
       const element = _.tester.bootstrapElement(SELECT_INPUT);
       element.textContent = 'Label';
       element.options = [
@@ -29,6 +33,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 2', key: '2'},
         {text: 'Option 3', key: '3'},
       ];
+      div.appendChild(element);
       element.initValue = '2';
       element.clearFn(undefined);
 
@@ -43,6 +48,9 @@ test('@mask/src/input/select-input', () => {
     });
 
     should('render null value correctly', () => {
+      const div = document.createElement('div');
+      div.style.width = '800px';
+      _.tester.addToBody(div);
       const element = _.tester.bootstrapElement(SELECT_INPUT);
       element.textContent = 'Label';
       element.options = [
@@ -50,6 +58,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 2', key: '2'},
         {text: 'Option 3', key: '3'},
       ];
+      div.appendChild(element);
       element.initValue = null;
       element.clearFn(undefined);
 

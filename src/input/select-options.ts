@@ -1,6 +1,6 @@
 import {forwardTo} from 'gs-tools/export/rxjs';
-import {arrayOfType, hasPropertiesType, nullableType, stringType} from 'gs-types';
-import {Context, Ctrl, DIV, icall, ievent, itarget, ivalue, oattr, oforeach, otext, ovalue, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
+import {arrayOfType, hasPropertiesType, nullableType, numberType, stringType} from 'gs-types';
+import {Context, Ctrl, DIV, icall, ievent, itarget, ivalue, oattr, oforeach, ostyle, otext, ovalue, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
@@ -31,10 +31,12 @@ const selectOptions$ = {
     specs: ivalue('specs', OPTION_SPECS_TYPE),
     selected: ovalue('selected', nullableType(stringType)),
     setSelectedFn: icall('setSelected', [nullableType(stringType)]),
+    width: ivalue('width', numberType),
   },
   shadow: {
     container: query('#container', DIV, {
       contents: oforeach<Option>(),
+      width: ostyle('width'),
     }),
     optionTemplate: query('#optionTemplate', TEMPLATE, {
       target: itarget(),
@@ -53,6 +55,10 @@ class SelectOptions implements Ctrl {
       this.handleSetSelected(),
       this.renderOptions(),
       this.selected$.pipe(this.$.host.selected()),
+      this.$.host.width.pipe(
+          map(width => width === undefined ? '' : `${width}px`),
+          this.$.shadow.container.width(),
+      ),
     ];
   }
 

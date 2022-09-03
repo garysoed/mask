@@ -9,6 +9,10 @@ import {THEME_LOADER_TEST_OVERRIDE} from './theme-loader-test-override';
 class ThemedTester implements Omit<Tester, 'bootstrapElement'> {
   constructor(private readonly baseTester: Tester) { }
 
+  addToBody(node: Node): void {
+    this.baseTester.addToBody(node);
+  }
+
   get fakeTime(): FakeTime {
     return this.baseTester.fakeTime;
   }
