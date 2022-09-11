@@ -30,7 +30,7 @@ export {DRAWER_LAYOUT, DrawerMode} from '../src/layout/drawer-layout';
 export {LINE_LAYOUT} from '../src/layout/line-layout';
 export {LIST_ITEM_LAYOUT} from '../src/layout/list-item-layout';
 export {OVERLAY} from '../src/core/overlay';
-export {OverlayService} from '../src/core/overlay-service';
+export {OverlayService, Anchor, AnchorSpec} from '../src/core/overlay-service';
 export {ThemeLoader, THEME_LOADER_TYPE} from '../src/theme/loader/theme-loader';
 export {ThemeSeed, THEME_SEEDS} from '../src/theme/theme-seed';
 export {ROOT_LAYOUT} from '../src/layout/root-layout';
