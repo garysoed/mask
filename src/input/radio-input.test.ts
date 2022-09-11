@@ -46,8 +46,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
-      element.initValue = KEY;
-      element.clearFn(undefined);
+      element.setValue(KEY);
 
       assert(element).to.matchSnapshot('radio-input__checked.html');
     });
@@ -57,8 +56,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
-      element.initValue = null;
-      element.clearFn(undefined);
+      element.setValue(null);
 
       assert(element).to.matchSnapshot('radio-input__unchecked.html');
     });
@@ -68,8 +66,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.textContent = 'Label';
       element.setAttribute('key', '6');
       element.setAttribute('group', GROUP);
-      element.initValue = null;
-      element.clearFn(undefined);
+      element.setValue(null);
 
       assert(element).to.matchSnapshot('radio-input__unmatched.html');
     });
@@ -149,8 +146,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
-      element.initValue = KEY;
-      element.clearFn(undefined);
+      element.setValue(KEY);
 
       $onRadioInput$.get(_.tester.vine).next({key: '1', group: GROUP});
 
@@ -162,8 +158,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
-      element.initValue = KEY;
-      element.clearFn(undefined);
+      element.setValue(KEY);
 
       $onRadioInput$.get(_.tester.vine).next({key: KEY, group: GROUP});
 
@@ -175,8 +170,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.textContent = 'Label';
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
-      element.initValue = KEY;
-      element.clearFn(undefined);
+      element.setValue(KEY);
 
       $onRadioInput$.get(_.tester.vine).next({key: '1', group: 'other'});
 

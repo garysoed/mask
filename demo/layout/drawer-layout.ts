@@ -6,9 +6,9 @@ import {map} from 'rxjs/operators';
 import {CHECKBOX} from '../../src/input/checkbox';
 import {DrawerMode, DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
 import {renderTheme} from '../../src/theme/render-theme';
-import {bindInputToState} from '../../src/util/bind-input-to-state';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
+import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './drawer-layout.html';
 

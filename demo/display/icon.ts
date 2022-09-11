@@ -8,10 +8,10 @@ import {registerSvg} from '../../src/core/svg-service';
 import {FitTo, ICON} from '../../src/display/icon';
 import {CHECKBOX} from '../../src/input/checkbox';
 import {renderTheme} from '../../src/theme/render-theme';
-import {bindInputToState} from '../../src/util/bind-input-to-state';
 import fitToHeightSvg from '../asset/fit_to_height.svg';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
+import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './icon.html';
 

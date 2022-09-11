@@ -1,15 +1,15 @@
 import {cache} from 'gs-tools/export/data';
 import {mapUndefinedTo} from 'gs-tools/export/rxjs';
-import {Context, Ctrl, query, otext, registerCustomElement} from 'persona';
+import {Context, Ctrl, otext, query, registerCustomElement} from 'persona';
 import {Observable} from 'rxjs';
-import {map, mapTo} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
 import {CHECKBOX, CheckedValue} from '../../src/input/checkbox';
 import {LINE_LAYOUT} from '../../src/layout/line-layout';
-import {bindInputToState} from '../../src/util/bind-input-to-state';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
+import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './checkbox.html';
 
@@ -52,10 +52,8 @@ export class CheckboxDemo implements Ctrl {
       ),
       this.unknownCheckboxLabel$.pipe(this.$.shadow.unknownCheckboxContent.text()),
       this.$.shadow.resetButton.actionEvent.pipe(
-          mapTo<unknown, CheckedValue>(null),
-          this.$.shadow.unknownCheckbox.initValue(),
-          mapTo([]),
-          this.$.shadow.unknownCheckbox.clearFn(),
+          map(() => [null] as const),
+          this.$.shadow.unknownCheckbox.setValue(),
       ),
     ];
   }

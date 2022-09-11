@@ -32,8 +32,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 3', key: '3'},
       ];
       div.appendChild(element);
-      element.initValue = '2';
-      element.clearFn(undefined);
+      element.setValue('2');
 
       assert(element).to.matchSnapshot('select-input__init_value.html');
 
@@ -57,8 +56,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 3', key: '3'},
       ];
       div.appendChild(element);
-      element.initValue = null;
-      element.clearFn(undefined);
+      element.setValue(null);
 
       assert(element).to.matchSnapshot('select-input__null_value.html');
 
@@ -80,8 +78,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 2', key: '2'},
         {text: 'Option 3', key: '3'},
       ];
-      element.initValue = '2';
-      element.clearFn(undefined);
+      element.setValue('2');
 
       const overlay = _.tester.bootstrapElement(OVERLAY);
       // Check the overlay.

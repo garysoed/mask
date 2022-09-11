@@ -2,9 +2,9 @@ import {MutableResolver} from 'gs-tools/export/state';
 import {Bindings} from 'persona';
 import {ReversedSpec} from 'persona/export/internal';
 import {concat, Observable} from 'rxjs';
-import {mapTo, take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 
-import {BaseInputSpecType} from '../input/base-input';
+import {BaseInputSpecType} from '../../src/input/base-input';
 
 
 type InputBindings<T> = Bindings<ReversedSpec<BaseInputSpecType<T, any>['host']>, any>;
@@ -29,8 +29,7 @@ function bindOutput<T>(
 ): Observable<unknown> {
   return resolver.pipe(
       take(1),
-      bindings.initValue(),
-      mapTo([]),
-      bindings.clearFn(),
+      map(value => [value] as const),
+      bindings.setValue(),
   );
 }

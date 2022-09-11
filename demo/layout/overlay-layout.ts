@@ -4,15 +4,16 @@ import {forwardTo} from 'gs-tools/export/rxjs';
 import {$pipe} from 'gs-tools/export/typescript';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, itarget, oforeach, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, TEMPLATE} from 'persona';
-import {combineLatest, Observable, of, pipe, Subject} from 'rxjs';
-import {map, mapTo, tap, withLatestFrom} from 'rxjs/operators';
+import {combineLatest, Observable, of, Subject} from 'rxjs';
+import {map, tap, withLatestFrom} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
 import {$overlayService, Anchor, ShowSpec} from '../../src/core/overlay-service';
-import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
+import {RADIO_INPUT} from '../../src/input/radio-input';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
+import {bindRadioInputToState} from '../util/bind-radio-input-to-state';
 
 import template from './overlay-layout.html';
 
@@ -21,8 +22,7 @@ const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
 const ANCHOR_TYPE = enumType<Anchor>(Anchor);
 
 interface AnchorSubjects {
-  readonly onInitValue$: Subject<string|null>;
-  readonly onClear$: Subject<unknown>;
+  readonly onSetValue$: Subject<readonly [string|null]>;
   readonly onValue$: Subject<string|null>;
 }
 
@@ -140,8 +140,7 @@ export class OverlayLayoutDemo implements Ctrl {
     const bindings = $pipe(
         spec.anchorSubjects,
         $map(([, subjects]) => ({
-          clearFn: () => pipe(forwardTo(subjects.onClear$), mapTo([])),
-          initValue: () => forwardTo(subjects.onInitValue$),
+          setValue: () => forwardTo(subjects.onSetValue$),
           value: subjects.onValue$,
         })),
         $asArray(),
@@ -166,8 +165,7 @@ export class OverlayLayoutDemo implements Ctrl {
         of(anchor).pipe($.key()),
         of(getAnchorLabel(anchor)).pipe($.label()),
         of(group).pipe($.group()),
-        subjects.onInitValue$.pipe($.initValue()),
-        subjects.onClear$.pipe(mapTo([]), $.clearFn()),
+        subjects.onSetValue$.pipe($.setValue()),
         of(true).pipe($.isSecondary()),
         $.value.pipe(forwardTo(subjects.onValue$)),
       ],
@@ -182,8 +180,7 @@ function createObsMap(group: string): AnchorObsSpec {
         return [
           anchor,
           {
-            onInitValue$: new Subject<string|null>(),
-            onClear$: new Subject<unknown>(),
+            onSetValue$: new Subject<readonly [string|null]>(),
             onValue$: new Subject<string|null>(),
           },
         ] as const;

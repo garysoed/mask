@@ -70,22 +70,14 @@ test('@mask/src/input/base-input', () => {
     return {tester};
   });
 
-  test('handleOnClear$', () => {
+  test('handleSetValue$', () => {
     should('set the DOM value and the output values to the init value', () => {
       const initValue = 'initValue';
       const element = _.tester.bootstrapElement(TEST);
-      element.initValue = initValue;
-      element.clearFn(undefined);
+      element.setValue(initValue);
 
       assert(element).to.matchSnapshot('base-input__clear.html');
       assert(element.value).to.equal(initValue);
-    });
-
-    should('set the DOM value and output values to the init value at the start', () => {
-      const element = _.tester.bootstrapElement(TEST);
-
-      assert(element).to.matchSnapshot('base-input__init.html');
-      assert(element.value).to.equal('');
     });
   });
 

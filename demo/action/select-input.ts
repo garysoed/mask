@@ -5,9 +5,9 @@ import {Observable, of} from 'rxjs';
 import {SELECT_INPUT} from '../../src/input/select-input';
 import {Option} from '../../src/input/select-options';
 import {renderTheme} from '../../src/theme/render-theme';
-import {bindInputToState} from '../../src/util/bind-input-to-state';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
+import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './select-input.html';
 

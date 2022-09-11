@@ -1,13 +1,14 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, query, registerCustomElement} from 'persona';
 import {merge, Observable, of, OperatorFunction, pipe} from 'rxjs';
-import {mapTo, switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
-import {bindRadioInputToState, RADIO_INPUT} from '../../src/input/radio-input';
+import {RADIO_INPUT} from '../../src/input/radio-input';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
+import {bindRadioInputToState} from '../util/bind-radio-input-to-state';
 
 import template from './radio-input.html';
 
@@ -55,10 +56,8 @@ export class RadioInputDemo implements Ctrl {
             this.$.shadow.optionD,
           ];
 
-          const obs$List = bindings.map(binding => of(null).pipe(
-              binding.initValue(),
-              mapTo([]),
-              binding.clearFn(),
+          const obs$List = bindings.map(binding => of([null] as const).pipe(
+              binding.setValue(),
           ));
           return merge(...obs$List);
         }),

@@ -30,7 +30,6 @@ test('@mask/src/input/number-input', () => {
 
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.initValue = 98;
 
       const event$ = createSpySubject(
           fromEvent<ActionEvent<number|null>>(element, ACTION_EVENT).pipe(
@@ -51,7 +50,6 @@ test('@mask/src/input/number-input', () => {
     should('show stepper icon when hovered', () => {
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.initValue = 98;
 
       const harness = getHarness(element, NumberInputHarness);
       harness.simulateMouseOver();
@@ -62,7 +60,6 @@ test('@mask/src/input/number-input', () => {
     should('hide stepper icon on mouseleave', () => {
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.initValue = 98;
 
       const harness = getHarness(element, NumberInputHarness);
       harness.simulateMouseOver();
@@ -78,8 +75,7 @@ test('@mask/src/input/number-input', () => {
 
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.initValue = value;
-      element.clearFn(undefined);
+      element.setValue(value);
 
       assert(element).to.matchSnapshot('number-input__update.html');
     });
@@ -87,8 +83,7 @@ test('@mask/src/input/number-input', () => {
     should('set null value correctly', () => {
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.initValue = null;
-      element.clearFn(undefined);
+      element.setValue(null);
 
       assert(element).to.matchSnapshot('number-input__update-null.html');
     });

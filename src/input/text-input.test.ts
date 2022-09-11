@@ -22,8 +22,7 @@ test('@mask/src/input/text-input', () => {
     should('render the value correctly', () => {
       const element = _.tester.bootstrapElement(TEXT_INPUT);
       element.textContent = 'Label';
-      element.initValue = 'initValue';
-      element.clearFn(undefined);
+      element.setValue('initValue');
 
       assert(element).to.matchSnapshot('text-input__init_value.html');
     });
@@ -35,7 +34,6 @@ test('@mask/src/input/text-input', () => {
 
       const element = _.tester.bootstrapElement(TEXT_INPUT);
       element.textContent = 'Label';
-      element.initValue = 'initValue';
 
       const harness = getHarness(element, TextInputHarness);
       harness.simulateTextInput(value);
@@ -51,8 +49,7 @@ test('@mask/src/input/text-input', () => {
 
       const element = _.tester.bootstrapElement(TEXT_INPUT);
       element.textContent = 'Label';
-      element.initValue = value;
-      element.clearFn(undefined);
+      element.setValue(value);
 
       assert(element).to.matchSnapshot('text-input__update.html');
     });

@@ -1,3 +1,0 @@
-{
-  "bind-input-to-state__init.html": "<mk-test-parent mk-theme=\"light\"><gst-fake-shadow><mk-test-base-input id=\"test\"><gst-fake-shadow><div id=\"div\" aria-disabled=\"false\" mk-action-1=\"\" value=\"default\"></div></gst-fake-shadow></mk-test-base-input></gst-fake-shadow></mk-test-parent>"
-}

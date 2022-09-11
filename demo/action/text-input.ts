@@ -4,9 +4,9 @@ import {Observable} from 'rxjs';
 
 import {TEXT_INPUT} from '../../src/input/text-input';
 import {renderTheme} from '../../src/theme/render-theme';
-import {bindInputToState} from '../../src/util/bind-input-to-state';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
+import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './text-input.html';
 

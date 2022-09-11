@@ -42,8 +42,7 @@ test('@mask/src/input/checkbox', () => {
     should('set the classlist to display_checked if checked', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = true;
-      element.clearFn(undefined);
+      element.setValue(true);
 
       assert(element).to.matchSnapshot('checkbox__checked.html');
     });
@@ -51,8 +50,7 @@ test('@mask/src/input/checkbox', () => {
     should('set the classlist to display_unchecked if unchecked', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = false;
-      element.clearFn(undefined);
+      element.setValue(false);
 
       assert(element).to.matchSnapshot('checkbox__unchecked.html');
     });
@@ -60,8 +58,7 @@ test('@mask/src/input/checkbox', () => {
     should('set the classlist to display_unknown if unknown', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = null;
-      element.clearFn(undefined);
+      element.setValue(null);
 
       assert(element).to.matchSnapshot('checkbox__unknown.html');
     });
@@ -124,8 +121,7 @@ test('@mask/src/input/checkbox', () => {
     should('react to clear function', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = true;
-      element.clearFn(undefined);
+      element.setValue(true);
 
       assert(element).to.matchSnapshot('checkbox__clear-to-checked.html');
       assert(element.value).to.equal(true);
@@ -136,8 +132,7 @@ test('@mask/src/input/checkbox', () => {
     should('set update the DOM value correctly when checked', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = true;
-      element.clearFn(undefined);
+      element.setValue(true);
 
       const inputEl = getHarness(element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beFalse();
@@ -147,8 +142,7 @@ test('@mask/src/input/checkbox', () => {
     should('set update the DOM value correctly when unchecked', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = false;
-      element.clearFn(undefined);
+      element.setValue(false);
 
       const inputEl = getHarness(element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beFalse();
@@ -158,8 +152,7 @@ test('@mask/src/input/checkbox', () => {
     should('set unknown value correctly', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.initValue = null;
-      element.clearFn(undefined);
+      element.setValue(null);
 
       const inputEl = getHarness(element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beTrue();

@@ -1,10 +1,8 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
-import {MutableResolver} from 'gs-tools/export/state';
 import {nullType, stringType, unionType} from 'gs-types';
-import {Bindings, Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, query, registerCustomElement} from 'persona';
-import {ReversedSpec} from 'persona/export/internal';
+import {Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
@@ -24,7 +22,7 @@ import {$onRadioInput$, OnRadioInput} from './on-radio-input';
 import template from './radio-input.html';
 
 
-const $radioInput = {
+export const $radioInput = {
   host: {
     ...create$baseInput<string|null, OnRadioInput>(unionType([stringType, nullType]), null).host,
     key: iattr('key'),
@@ -219,42 +217,3 @@ export const RADIO_INPUT = registerCustomElement({
   tag: 'mk-radio-input',
   template,
 });
-
-export type RadioBindingLike = Pick<
-    Bindings<ReversedSpec<(typeof $radioInput)['host']>, any>,
-    'clearFn'|'initValue'|'value'
->;
-
-export function bindRadioInputToState(
-    resolver: MutableResolver<string|null>,
-    bindings: readonly RadioBindingLike[],
-): Observable<unknown> {
-  return concat(
-      bindOutput(resolver, bindings),
-      bindInput(resolver, bindings),
-  );
-}
-
-function bindInput(
-    resolver: MutableResolver<string|null>,
-    bindings: readonly RadioBindingLike[],
-): Observable<unknown> {
-  const obs$List = bindings.map(binding => binding.value.pipe(
-      filterNonNullable(),
-      resolver.set(),
-  ));
-  return merge(...obs$List);
-}
-
-function bindOutput(
-    resolver: MutableResolver<string|null>,
-    bindings: readonly RadioBindingLike[],
-): Observable<unknown> {
-  const obs$List = bindings.map(binding => resolver.pipe(
-      take(1),
-      binding.initValue(),
-      mapTo([]),
-      binding.clearFn(),
-  ));
-  return merge(...obs$List);
-}

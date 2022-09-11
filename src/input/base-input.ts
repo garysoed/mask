@@ -1,9 +1,9 @@
 import {cache} from 'gs-tools/export/data';
 import {Type} from 'gs-types';
-import {Bindings, Context, Ctrl, icall, ivalue, oevent, ovalue} from 'persona';
-import {ICall, IValue, OEvent, OValue} from 'persona/export/internal';
+import {Bindings, Context, Ctrl, icall, oevent, ovalue} from 'persona';
+import {ICall, OEvent, OValue} from 'persona/export/internal';
 import {Observable, OperatorFunction} from 'rxjs';
-import {filter, map, pairwise, startWith, withLatestFrom} from 'rxjs/operators';
+import {filter, map, pairwise} from 'rxjs/operators';
 
 import {$baseRootOutputs, BaseAction, BaseActionSpecType, create$baseAction} from '../action/base-action';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
@@ -11,21 +11,18 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 export interface BaseInputSpecType<T, A> extends BaseActionSpecType<A> {
   host: BaseActionSpecType<A>['host'] & {
-    readonly clearFn: ICall<readonly unknown[], 'clearFn'>;
-    readonly initValue: IValue<T, 'initValue'>;
     readonly onChange: OEvent<ChangeEvent<T>>;
+    readonly setValue: ICall<readonly [T], 'setValue'>;
     readonly value: OValue<T, 'value'>;
   }
 }
-
 
 export function create$baseInput<T, A>(valueType: Type<T>, defaultValue: T): BaseInputSpecType<T, A> {
   return {
     host: {
       ...create$baseAction<A>().host,
-      clearFn: icall('clearFn', []),
-      initValue: ivalue('initValue', valueType, defaultValue),
       onChange: oevent(CHANGE_EVENT, ChangeEvent),
+      setValue: icall('setValue', [valueType] as const),
       value: ovalue('value', valueType, defaultValue),
     },
   };
@@ -44,7 +41,7 @@ export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
-      this.handleOnClear$,
+      this.handleSetValue$,
       this.onChange$.pipe(this.inputContext.host.onChange()),
       this.domValue$.pipe(this.inputContext.host.value()),
     ];
@@ -55,11 +52,9 @@ export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
   protected abstract updateDomValue(): OperatorFunction<T, unknown>;
 
   @cache()
-  private get handleOnClear$(): Observable<unknown> {
-    return this.inputContext.host.clearFn.pipe(
-        startWith({}),
-        withLatestFrom(this.inputContext.host.initValue),
-        map(([, value]) => value),
+  private get handleSetValue$(): Observable<unknown> {
+    return this.inputContext.host.setValue.pipe(
+        map(([value]) => value),
         this.updateDomValue(),
     );
   }

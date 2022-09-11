@@ -7,7 +7,6 @@ set_vars({
       'src/input/goldens',
       'src/layout/goldens',
       'src/theme/goldens',
-      'src/util/goldens',
     ],
   },
 });
