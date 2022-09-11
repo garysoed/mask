@@ -1,3 +1,4 @@
+export {ButtonHarness} from '../src/action/testing/button-harness';
 export {CheckboxHarness} from '../src/input/testing/checkbox-harness';
 export {NumberInputHarness} from '../src/input/testing/number-input-harness';
 export {OverlayHarness} from '../src/input/testing/overlay-harness';

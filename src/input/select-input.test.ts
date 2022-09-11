@@ -7,9 +7,7 @@ import {setupThemedTest} from '../testing/setup-themed-test';
 
 import goldens from './goldens/goldens.json';
 import {SELECT_INPUT} from './select-input';
-import {OverlayHarness} from './testing/overlay-harness';
 import {SelectInputHarness} from './testing/select-input-harness';
-import {SelectOptionHarness} from './testing/select-option-harness';
 
 test('@mask/src/input/select-input', () => {
   const _ = setup(() => {
@@ -85,12 +83,10 @@ test('@mask/src/input/select-input', () => {
       element.initValue = '2';
       element.clearFn(undefined);
 
+      const overlay = _.tester.bootstrapElement(OVERLAY);
       // Check the overlay.
       const harness = getHarness(element, SelectInputHarness);
-      harness.simulateOpenOptions();
-      const overlay = _.tester.bootstrapElement(OVERLAY);
-      getHarness(overlay, OverlayHarness).getContent(SelectOptionHarness)!
-          .simulateClickOption('Option 3');
+      harness.simulateSelectOption('Option 3', overlay);
 
       assert(element.value).to.equal('3');
       assert(overlay).to.matchSnapshot('select-input__clicked.html');
