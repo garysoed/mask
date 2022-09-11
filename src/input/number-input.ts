@@ -1,7 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {nullType, numberType, unionType} from 'gs-types';
-import {Context, DIV, iattr, query, ievent, INPUT, itarget, oclass, oevent, oflag, registerCustomElement} from 'persona';
+import {Context, DIV, iattr, query, ievent, INPUT, itarget, oclass, oevent, oflag, registerCustomElement, numberParser} from 'persona';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, mapTo, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -21,10 +21,10 @@ import template from './number-input.html';
 const $numberInput = {
   host: {
     ...create$baseInput<number|null, number|null>(unionType([numberType, nullType]), null).host,
-    max: iattr('max'),
-    min: iattr('min'),
+    max: iattr('max', numberParser()),
+    min: iattr('min', numberParser()),
     onChange: oevent(CHANGE_EVENT, ChangeEvent),
-    step: iattr('step'),
+    step: iattr('step', numberParser()),
   },
   shadow: {
     icon: query('#icon', ICON, {
