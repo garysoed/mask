@@ -1,7 +1,6 @@
-import {$stateService, Source, source} from 'grapevine';
+import {Source, source} from 'grapevine';
 import {filterNonNullable} from 'gs-tools/export/rxjs';
-import {ImmutableResolver, mutableState, MutableState} from 'gs-tools/export/state';
-import {combineLatest} from 'rxjs';
+import {BehaviorSubject, combineLatest, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 import {Anchor} from '../../src/core/overlay-service';
@@ -12,56 +11,56 @@ import {ThemeSeed, THEME_SEEDS} from '../../src/theme/theme-seed';
 
 
 export interface CheckboxDemoState {
-  readonly unknownCheckboxState: MutableState<CheckedValue>;
-  readonly disabledCheckboxState: MutableState<CheckedValue>;
-  readonly labelCheckboxState: MutableState<CheckedValue>;
+  readonly unknownCheckboxState: Subject<CheckedValue>;
+  readonly disabledCheckboxState: Subject<CheckedValue>;
+  readonly labelCheckboxState: Subject<CheckedValue>;
 }
 
 export interface DrawerLayoutDemoState {
-  readonly isExpanded: MutableState<CheckedValue>;
-  readonly isHorizontalMode: MutableState<CheckedValue>;
+  readonly isExpanded: Subject<CheckedValue>;
+  readonly isHorizontalMode: Subject<CheckedValue>;
 }
 
 export interface IconDemoState {
-  readonly isAction: MutableState<CheckedValue>;
-  readonly fitToWidth: MutableState<CheckedValue>;
+  readonly isAction: Subject<CheckedValue>;
+  readonly fitToWidth: Subject<CheckedValue>;
 }
 
 export interface OverlayLayoutDemoState {
-  readonly targetHorizontalIndex: MutableState<string|null>;
-  readonly targetVerticalIndex: MutableState<string|null>;
-  readonly overlayHorizontalIndex: MutableState<string|null>;
-  readonly overlayVerticalIndex: MutableState<string|null>;
+  readonly targetHorizontalIndex: Subject<string|null>;
+  readonly targetVerticalIndex: Subject<string|null>;
+  readonly overlayHorizontalIndex: Subject<string|null>;
+  readonly overlayVerticalIndex: Subject<string|null>;
 }
 
 export interface RadioInputDemoState {
-  readonly selectedKey: MutableState<string|null>;
+  readonly selectedKey: Subject<string|null>;
 }
 
 export interface SelectInputDemoState {
-  readonly enabledSelectInputState: MutableState<string|null>;
-  readonly disabledSelectInputState: MutableState<string|null>;
+  readonly enabledSelectInputState: Subject<string|null>;
+  readonly disabledSelectInputState: Subject<string|null>;
 }
 
 export interface TextInputDemoState {
-  readonly enabledTextInputState: MutableState<string>;
-  readonly disabledTextInputState: MutableState<string>;
-  readonly emailTextInputState: MutableState<string>;
-  readonly telTextInputState: MutableState<string>;
-  readonly urlTextInputState: MutableState<string>;
+  readonly enabledTextInputState: Subject<string>;
+  readonly disabledTextInputState: Subject<string>;
+  readonly emailTextInputState: Subject<string>;
+  readonly telTextInputState: Subject<string>;
+  readonly urlTextInputState: Subject<string>;
 }
 
 export interface NumberInputDemoState {
-  readonly enabledNumberInputState: MutableState<number|null>;
-  readonly disabledNumberInputState: MutableState<number|null>;
-  readonly rangedNumberInputState: MutableState<number|null>;
-  readonly steppedNumberInputState: MutableState<number|null>;
+  readonly enabledNumberInputState: Subject<number|null>;
+  readonly disabledNumberInputState: Subject<number|null>;
+  readonly rangedNumberInputState: Subject<number|null>;
+  readonly steppedNumberInputState: Subject<number|null>;
 }
 
 export interface DemoState {
-  readonly accentColorName: MutableState<keyof ThemeSeed>;
-  readonly baseColorName: MutableState<keyof ThemeSeed>;
-  readonly isDarkMode: MutableState<boolean>;
+  readonly accentColorName: Subject<keyof ThemeSeed>;
+  readonly baseColorName: Subject<keyof ThemeSeed>;
+  readonly isDarkMode: Subject<boolean>;
   readonly checkboxDemo: CheckboxDemoState;
   readonly drawerLayoutDemo: DrawerLayoutDemoState;
   readonly iconDemo: IconDemoState;
@@ -75,64 +74,64 @@ export interface DemoState {
 export const BASE_COLOR_NAME: keyof ThemeSeed = 'TEAL';
 export const ACCENT_COLOR_NAME: keyof ThemeSeed = 'PURPLE';
 
-export const $demoState: Source<ImmutableResolver<DemoState>> = source(
-    vine => $stateService.get(vine).addRoot({
-      accentColorName: mutableState(ACCENT_COLOR_NAME),
-      baseColorName: mutableState(BASE_COLOR_NAME),
-      isDarkMode: mutableState(true),
+export const $demoState: Source<DemoState> = source(
+    () => ({
+      accentColorName: new BehaviorSubject<keyof ThemeSeed>(ACCENT_COLOR_NAME),
+      baseColorName: new BehaviorSubject<keyof ThemeSeed>(BASE_COLOR_NAME),
+      isDarkMode: new BehaviorSubject<boolean>(true),
       checkboxDemo: {
-        unknownCheckboxState: mutableState(null),
-        disabledCheckboxState: mutableState(true),
-        labelCheckboxState: mutableState(false),
+        unknownCheckboxState: new BehaviorSubject<CheckedValue>(null),
+        disabledCheckboxState: new BehaviorSubject<CheckedValue>(true),
+        labelCheckboxState: new BehaviorSubject<CheckedValue>(false),
       },
       drawerLayoutDemo: {
-        isExpanded: mutableState(false),
-        isHorizontalMode: mutableState(true),
+        isExpanded: new BehaviorSubject<CheckedValue>(false),
+        isHorizontalMode: new BehaviorSubject<CheckedValue>(true),
       },
       iconDemo: {
-        isAction: mutableState(false),
-        fitToWidth: mutableState(false),
+        isAction: new BehaviorSubject<CheckedValue>(false),
+        fitToWidth: new BehaviorSubject<CheckedValue>(false),
       },
       numberInputDemo: {
-        disabledNumberInputState: mutableState(123),
-        enabledNumberInputState: mutableState(-10),
-        rangedNumberInputState: mutableState(0),
-        steppedNumberInputState: mutableState(2),
+        disabledNumberInputState: new BehaviorSubject<number|null>(123),
+        enabledNumberInputState: new BehaviorSubject<number|null>(-10),
+        rangedNumberInputState: new BehaviorSubject<number|null>(0),
+        steppedNumberInputState: new BehaviorSubject<number|null>(2),
       },
       overlayLayoutDemo: {
-        targetHorizontalIndex: mutableState(Anchor.START),
-        targetVerticalIndex: mutableState(Anchor.START),
-        overlayHorizontalIndex: mutableState(Anchor.START),
-        overlayVerticalIndex: mutableState(Anchor.START),
+        targetHorizontalIndex: new BehaviorSubject<string|null>(Anchor.START),
+        targetVerticalIndex: new BehaviorSubject<string|null>(Anchor.START),
+        overlayHorizontalIndex: new BehaviorSubject<string|null>(Anchor.START),
+        overlayVerticalIndex: new BehaviorSubject<string|null>(Anchor.START),
       },
       radioInputDemo: {
-        selectedKey: mutableState(null),
+        selectedKey: new BehaviorSubject<string|null>(null),
       },
       selectInputDemo: {
-        enabledSelectInputState: mutableState(null),
-        disabledSelectInputState: mutableState('1'),
+        enabledSelectInputState: new BehaviorSubject<string|null>(null),
+        disabledSelectInputState: new BehaviorSubject<string|null>('1'),
       },
       textInputDemo: {
-        disabledTextInputState: mutableState('Disabled text input value'),
-        enabledTextInputState: mutableState('Init value'),
-        emailTextInputState: mutableState('email@host.com'),
-        telTextInputState: mutableState('1 (845) 949 1234'),
-        urlTextInputState: mutableState('www.url.com'),
+        disabledTextInputState: new BehaviorSubject('Disabled text input value'),
+        enabledTextInputState: new BehaviorSubject('Init value'),
+        emailTextInputState: new BehaviorSubject('email@host.com'),
+        telTextInputState: new BehaviorSubject('1 (845) 949 1234'),
+        urlTextInputState: new BehaviorSubject('www.url.com'),
       },
-    })._(),
+    }),
 );
 
 export const $theme$ = source(vine => {
   return combineLatest([
-    $demoState.get(vine).$('baseColorName').pipe(
+    $demoState.get(vine).baseColorName.pipe(
         filterNonNullable(),
         startWith<keyof ThemeSeed>(BASE_COLOR_NAME),
     ),
-    $demoState.get(vine).$('accentColorName').pipe(
+    $demoState.get(vine).accentColorName.pipe(
         filterNonNullable(),
         startWith<keyof ThemeSeed>(ACCENT_COLOR_NAME),
     ),
-    $demoState.get(vine).$('isDarkMode').pipe(
+    $demoState.get(vine).isDarkMode.pipe(
         filterNonNullable(),
         startWith(false),
     ),

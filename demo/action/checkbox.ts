@@ -30,7 +30,7 @@ const $checkboxDemo = {
 };
 
 export class CheckboxDemo implements Ctrl {
-  private readonly $demoState = $demoState.get(this.$.vine)._('checkboxDemo');
+  private readonly $demoState = $demoState.get(this.$.vine).checkboxDemo;
 
   constructor(private readonly $: Context<typeof $checkboxDemo>) { }
 
@@ -38,16 +38,16 @@ export class CheckboxDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       bindInputToState(
-          this.$demoState.$('disabledCheckboxState'),
+          this.$demoState.disabledCheckboxState,
           this.$.shadow.disabledCheckbox,
       ),
       bindInputToState(
-          this.$demoState.$('labelCheckboxState'),
+          this.$demoState.labelCheckboxState,
           this.$.shadow.labelCheckbox,
       ),
       this.labelCheckboxLabel$.pipe(this.$.shadow.labelCheckboxContent.text()),
       bindInputToState(
-          this.$demoState.$('unknownCheckboxState'),
+          this.$demoState.unknownCheckboxState,
           this.$.shadow.unknownCheckbox,
       ),
       this.unknownCheckboxLabel$.pipe(this.$.shadow.unknownCheckboxContent.text()),
@@ -60,7 +60,7 @@ export class CheckboxDemo implements Ctrl {
 
   @cache()
   private get unknownCheckboxLabel$(): Observable<string> {
-    return this.$demoState.$('unknownCheckboxState').pipe(
+    return this.$demoState.unknownCheckboxState.pipe(
         mapUndefinedTo<CheckedValue>(null),
         map(value => {
           switch (value) {
@@ -77,7 +77,7 @@ export class CheckboxDemo implements Ctrl {
 
   @cache()
   private get labelCheckboxLabel$(): Observable<string> {
-    return this.$demoState.$('labelCheckboxState').pipe(
+    return this.$demoState.labelCheckboxState.pipe(
         mapUndefinedTo<CheckedValue>(null),
         map(value => {
           switch (value) {

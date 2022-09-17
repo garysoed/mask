@@ -1,6 +1,6 @@
 import {Color} from 'gs-tools/export/color';
 import {cache} from 'gs-tools/export/data';
-import {filterNonNullable} from 'gs-tools/export/rxjs';
+import {filterNonNullable, forwardTo} from 'gs-tools/export/rxjs';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, ievent, itarget, oattr, ocase, oforeach, ostyle, otext, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, SPAN, TEMPLATE} from 'persona';
 import {merge, Observable, of, OperatorFunction} from 'rxjs';
@@ -86,7 +86,7 @@ class DemoCtrl implements Ctrl {
       this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(this.renderPaletteData())),
       this.$.shadow.darkMode.value.pipe(
           map(value => value === true),
-          $demoState.get(this.$.vine).$('isDarkMode').set(),
+          forwardTo($demoState.get(this.$.vine).isDarkMode),
       ),
       $locationService.get(this.$.vine).location$.pipe(
           map(location => getPageSpec(location.type)),
@@ -107,7 +107,7 @@ class DemoCtrl implements Ctrl {
           return {
             colorName,
             color,
-            isSelected$: $demoState.get(this.$.vine).$('accentColorName')
+            isSelected$: $demoState.get(this.$.vine).accentColorName
                 .pipe(map(selectedName => selectedName === colorName)),
           };
         });
@@ -122,7 +122,7 @@ class DemoCtrl implements Ctrl {
           return {
             colorName,
             color,
-            isSelected$: $demoState.get(this.$.vine).$('baseColorName')
+            isSelected$: $demoState.get(this.$.vine).baseColorName
                 .pipe(map(selectedName => selectedName === colorName)),
           };
         });
@@ -226,7 +226,7 @@ class DemoCtrl implements Ctrl {
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            $demoState.get(this.$.vine).$('accentColorName').set(),
+            forwardTo($demoState.get(this.$.vine).accentColorName),
         );
   }
 
@@ -236,7 +236,7 @@ class DemoCtrl implements Ctrl {
         .pipe(
             map(event => getColor(event)),
             filterNonNullable(),
-            $demoState.get(this.$.vine).$('baseColorName').set(),
+            forwardTo($demoState.get(this.$.vine).baseColorName),
         );
   }
 

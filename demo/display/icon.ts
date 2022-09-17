@@ -28,7 +28,7 @@ const $iconDemo = {
 };
 
 export class IconDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine)._('iconDemo');
+  private readonly state = $demoState.get(this.$.vine).iconDemo;
 
   constructor(private readonly $: Context<typeof $iconDemo>) { }
 
@@ -38,21 +38,21 @@ export class IconDemo implements Ctrl {
       renderTheme(this.$),
       this.isAction$.pipe(this.$.shadow.iconContainer.action()),
       this.fitTo$.pipe(this.$.shadow.icon.fitTo()),
-      bindInputToState(this.$state.$('fitToWidth'), this.$.shadow.fitToWidthCheckbox),
-      bindInputToState(this.$state.$('isAction'), this.$.shadow.isActionCheckbox),
+      bindInputToState(this.state.fitToWidth, this.$.shadow.fitToWidthCheckbox),
+      bindInputToState(this.state.isAction, this.$.shadow.isActionCheckbox),
     ];
   }
 
   @cache()
   private get isAction$(): Observable<boolean> {
-    return $demoState.get(this.$.vine)._('iconDemo').$('isAction').pipe(
+    return this.state.isAction.pipe(
         map(isAction => !!isAction && isAction !== null),
     );
   }
 
   @cache()
   private get fitTo$(): Observable<FitTo> {
-    return $demoState.get(this.$.vine)._('iconDemo').$('fitToWidth').pipe(
+    return this.state.fitToWidth.pipe(
         map(fitToWidth => {
           if (!fitToWidth) {
             return FitTo.HEIGHT;

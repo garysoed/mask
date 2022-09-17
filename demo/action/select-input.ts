@@ -20,7 +20,7 @@ const $selectInputDemo = {
 };
 
 class SelectInputDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine)._('selectInputDemo');
+  private readonly $state = $demoState.get(this.$.vine).selectInputDemo;
 
   constructor(private readonly $: Context<typeof $selectInputDemo>) { }
 
@@ -28,8 +28,8 @@ class SelectInputDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.$state.$('disabledSelectInputState'), this.$.shadow.disabledInput),
-      bindInputToState(this.$state.$('enabledSelectInputState'), this.$.shadow.enabledInput),
+      bindInputToState(this.$state.disabledSelectInputState, this.$.shadow.disabledInput),
+      bindInputToState(this.$state.enabledSelectInputState, this.$.shadow.enabledInput),
       this.options$.pipe(this.$.shadow.disabledInput.options()),
       this.options$.pipe(this.$.shadow.enabledInput.options()),
     ];

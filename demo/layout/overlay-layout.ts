@@ -56,7 +56,7 @@ const $overlayLayoutDemo = {
 
 
 export class OverlayLayoutDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine)._('overlayLayoutDemo');
+  private readonly $state = $demoState.get(this.$.vine).overlayLayoutDemo;
   private readonly overlayHorizontalObsMap = createObsMap('overlayHorizontal');
   private readonly overlayVerticalObsMap = createObsMap('overlayVertical');
   private readonly targetHorizontalObsMap = createObsMap('targetHorizontal');
@@ -145,12 +145,11 @@ export class OverlayLayoutDemo implements Ctrl {
         })),
         $asArray(),
     );
-    return bindRadioInputToState(this.$state.$(anchorIdKey), bindings);
+    return bindRadioInputToState(this.$state[anchorIdKey], bindings);
   }
 
   private getAnchor(anchorIdKey: keyof OverlayLayoutDemoState): Observable<Anchor> {
-    return this.$state
-        .$(anchorIdKey)
+    return this.$state[anchorIdKey]
         .pipe(map(anchor => ANCHOR_TYPE.check(anchor) ? anchor : Anchor.START));
   }
 

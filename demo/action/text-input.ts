@@ -22,7 +22,7 @@ const $textInputDemo = {
 };
 
 export class TextInputDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine)._('textInputDemo');
+  private readonly $state = $demoState.get(this.$.vine).textInputDemo;
 
   constructor(private readonly $: Context<typeof $textInputDemo>) { }
 
@@ -30,11 +30,11 @@ export class TextInputDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.$state.$('disabledTextInputState'), this.$.shadow.disabledInput),
-      bindInputToState(this.$state.$('emailTextInputState'), this.$.shadow.emailInput),
-      bindInputToState(this.$state.$('enabledTextInputState'), this.$.shadow.enabledInput),
-      bindInputToState(this.$state.$('telTextInputState'), this.$.shadow.telInput),
-      bindInputToState(this.$state.$('urlTextInputState'), this.$.shadow.urlInput),
+      bindInputToState(this.$state.disabledTextInputState, this.$.shadow.disabledInput),
+      bindInputToState(this.$state.emailTextInputState, this.$.shadow.emailInput),
+      bindInputToState(this.$state.enabledTextInputState, this.$.shadow.enabledInput),
+      bindInputToState(this.$state.telTextInputState, this.$.shadow.telInput),
+      bindInputToState(this.$state.urlTextInputState, this.$.shadow.urlInput),
     ];
   }
 }

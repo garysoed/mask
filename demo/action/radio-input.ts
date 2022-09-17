@@ -25,7 +25,7 @@ const $radioInputDemo = {
 
 
 export class RadioInputDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine)._('radioInputDemo');
+  private readonly $state = $demoState.get(this.$.vine).radioInputDemo;
 
   constructor(private readonly $: Context<typeof $radioInputDemo>) { }
 
@@ -34,7 +34,7 @@ export class RadioInputDemo implements Ctrl {
     return [
       renderTheme(this.$),
       bindRadioInputToState(
-          this.$state.$('selectedKey'),
+          this.$state.selectedKey,
           [
             this.$.shadow.optionA,
             this.$.shadow.optionB,

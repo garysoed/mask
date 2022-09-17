@@ -26,7 +26,7 @@ const $drawerLayoutDemo = {
 
 
 export class DrawerLayoutDemo implements Ctrl {
-  private readonly state = $demoState.get(this.$.vine)._('drawerLayoutDemo');
+  private readonly state = $demoState.get(this.$.vine).drawerLayoutDemo;
 
   constructor(private readonly $: Context<typeof $drawerLayoutDemo>) { }
 
@@ -34,8 +34,8 @@ export class DrawerLayoutDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.state.$('isExpanded'), this.$.shadow.expandCheckbox),
-      bindInputToState(this.state.$('isHorizontalMode'), this.$.shadow.horizontalModeCheckbox),
+      bindInputToState(this.state.isExpanded, this.$.shadow.expandCheckbox),
+      bindInputToState(this.state.isHorizontalMode, this.$.shadow.horizontalModeCheckbox),
       this.rootPlayLayout$.pipe(this.$.shadow.rootPlay.layout()),
       this.expanded$.pipe(this.$.shadow.drawer.expanded()),
       this.drawerMode$.pipe(this.$.shadow.drawer.mode()),
@@ -44,19 +44,19 @@ export class DrawerLayoutDemo implements Ctrl {
 
   @cache()
   private get expanded$(): Observable<boolean> {
-    return this.state.$('isExpanded').pipe(map(checkedValue => !!checkedValue));
+    return this.state.isExpanded.pipe(map(checkedValue => !!checkedValue));
   }
 
   @cache()
   private get drawerMode$(): Observable<DrawerMode> {
-    return this.state.$('isHorizontalMode').pipe(
+    return this.state.isHorizontalMode.pipe(
         map(checkedValue => checkedValue ? DrawerMode.HORIZONTAL : DrawerMode.VERTICAL),
     );
   }
 
   @cache()
   private get rootPlayLayout$(): Observable<string> {
-    return this.state.$('isHorizontalMode').pipe(
+    return this.state.isHorizontalMode.pipe(
         map(checkedValue => checkedValue ? 'column' : 'row'),
     );
   }

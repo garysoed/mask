@@ -244,7 +244,7 @@ class ColorsDemo implements Ctrl {
           formatColor(),
           this.$.shadow.accentSeed.backgroundColor(),
       ),
-      $demoState.get(this.$.vine).$('isDarkMode').pipe(
+      $demoState.get(this.$.vine).isDarkMode.pipe(
           map(isDark => !!isDark),
           this.$.shadow.table.darkClass(),
       ),

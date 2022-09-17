@@ -21,7 +21,7 @@ export const $numberInputDemo = {
 };
 
 export class NumberInputDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine)._('numberInputDemo');
+  private readonly $state = $demoState.get(this.$.vine).numberInputDemo;
 
   constructor(private readonly $: Context<typeof $numberInputDemo>) {
   }
@@ -30,10 +30,10 @@ export class NumberInputDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.$state.$('disabledNumberInputState'), this.$.shadow.disabledInput),
-      bindInputToState(this.$state.$('enabledNumberInputState'), this.$.shadow.enabledInput),
-      bindInputToState(this.$state.$('rangedNumberInputState'), this.$.shadow.rangedInput),
-      bindInputToState(this.$state.$('steppedNumberInputState'), this.$.shadow.steppedInput),
+      bindInputToState(this.$state.disabledNumberInputState, this.$.shadow.disabledInput),
+      bindInputToState(this.$state.enabledNumberInputState, this.$.shadow.enabledInput),
+      bindInputToState(this.$state.rangedNumberInputState, this.$.shadow.rangedInput),
+      bindInputToState(this.$state.steppedNumberInputState, this.$.shadow.steppedInput),
     ];
   }
 }
