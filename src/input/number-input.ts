@@ -1,7 +1,7 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {nullType, numberType, unionType} from 'gs-types';
-import {Context, DIV, iattr, query, ievent, INPUT, itarget, oclass, oevent, oflag, registerCustomElement, numberParser} from 'persona';
+import {Context, DIV, iattr, ievent, INPUT, itarget, numberParser, oclass, oevent, oflag, query, registerCustomElement} from 'persona';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, mapTo, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -9,7 +9,6 @@ import {$baseRootOutputs} from '../action/base-action';
 import stepper from '../asset/stepper.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
-import {ActionEvent} from '../event/action-event';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
@@ -20,7 +19,7 @@ import template from './number-input.html';
 
 const $numberInput = {
   host: {
-    ...create$baseInput<number|null, number|null>(unionType([numberType, nullType]), null).host,
+    ...create$baseInput<number|null>(unionType([numberType, nullType]), null).host,
     max: iattr('max', numberParser()),
     min: iattr('min', numberParser()),
     onChange: oevent(CHANGE_EVENT, ChangeEvent),
@@ -44,16 +43,11 @@ const $numberInput = {
 };
 
 
-export class NumberInput extends BaseInput<number|null, number|null> {
+export class NumberInput extends BaseInput<number|null> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $numberInput>) {
     super($, $.shadow.input.disabled, $.shadow.root);
-  }
-
-  @cache()
-  get onAction$(): Observable<ActionEvent<number|null>> {
-    return this.domValue$.pipe(map(value => new ActionEvent(value)));
   }
 
   @cache()

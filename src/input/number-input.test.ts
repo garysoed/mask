@@ -1,10 +1,7 @@
-import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness} from 'persona/export/testing';
-import {fromEvent} from 'rxjs';
-import {map} from 'rxjs/operators';
 
-import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
@@ -31,18 +28,11 @@ test('@mask/src/input/number-input', () => {
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
 
-      const event$ = createSpySubject(
-          fromEvent<ActionEvent<number|null>>(element, ACTION_EVENT).pipe(
-              map(event => event.payload),
-          ),
-      );
-
       const harness = getHarness(element, NumberInputHarness);
       harness.simulateNumberInput(value);
 
       assert(element.value).to.equal(value);
       assert(element).to.matchSnapshot('number-input__value.html');
-      assert(event$).to.emitSequence([value]);
     });
   });
 

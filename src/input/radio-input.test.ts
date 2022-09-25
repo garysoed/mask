@@ -1,10 +1,7 @@
 import {assert, createSpySubject, objectThat, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness, InputHarness} from 'persona/export/testing';
-import {fromEvent} from 'rxjs';
-import {map} from 'rxjs/operators';
 
-import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
 
@@ -93,11 +90,6 @@ test('@mask/src/action/input/radio-input', () => {
       rootEl.appendChild(element1);
       rootEl.appendChild(element2);
       rootEl.appendChild(element3);
-      const event$ = createSpySubject(
-          fromEvent<ActionEvent<OnRadioInput>>(rootEl, ACTION_EVENT).pipe(
-              map(event => event.payload),
-          ),
-      );
 
       // Change the third element.
       getHarness(element3, 'input', InputHarness).simulateChange(el => {
@@ -107,9 +99,6 @@ test('@mask/src/action/input/radio-input', () => {
       assert(element1.value).to.beNull();
       assert(element2.value).to.beNull();
       assert(element3.value).to.equal('3');
-      assert(event$).to.emitSequence([
-        objectThat<OnRadioInput>().haveProperties({group: GROUP, key: '3'}),
-      ]);
 
       // Then the second one.
       getHarness(element2, 'input', InputHarness).simulateChange(el => {
@@ -119,10 +108,6 @@ test('@mask/src/action/input/radio-input', () => {
       assert(element1.value).to.beNull();
       assert(element2.value).to.equal('2');
       assert(element3.value).to.beNull();
-      assert(event$).to.emitSequence([
-        objectThat<OnRadioInput>().haveProperties({group: GROUP, key: '3'}),
-        objectThat<OnRadioInput>().haveProperties({group: GROUP, key: '2'}),
-      ]);
 
       // Click on the third one again.
       getHarness(element3, 'input', InputHarness).simulateChange(el => {
@@ -132,11 +117,6 @@ test('@mask/src/action/input/radio-input', () => {
       assert(element1.value).to.beNull();
       assert(element2.value).to.beNull();
       assert(element3.value).to.equal('3');
-      assert(event$).to.emitSequence([
-        objectThat<OnRadioInput>().haveProperties({group: GROUP, key: '3'}),
-        objectThat<OnRadioInput>().haveProperties({group: GROUP, key: '2'}),
-        objectThat<OnRadioInput>().haveProperties({group: GROUP, key: '3'}),
-      ]);
     });
   });
 

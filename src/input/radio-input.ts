@@ -2,7 +2,7 @@ import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
 import {nullType, stringType, unionType} from 'gs-types';
-import {Context, iattr, ievent, INPUT, oflag, itarget, LABEL, oattr, oevent, otext, P, query, registerCustomElement} from 'persona';
+import {Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, oflag, otext, P, query, registerCustomElement} from 'persona';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 
@@ -11,19 +11,18 @@ import radioUnchecked from '../asset/checkbox_empty.svg';
 import radioChecked from '../asset/radio_checked.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
-import {ActionEvent} from '../event/action-event';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {BaseInput, create$baseInput} from '../input/base-input';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {$onRadioInput$, OnRadioInput} from './on-radio-input';
+import {$onRadioInput$} from './on-radio-input';
 import template from './radio-input.html';
 
 
 export const $radioInput = {
   host: {
-    ...create$baseInput<string|null, OnRadioInput>(unionType([stringType, nullType]), null).host,
+    ...create$baseInput<string|null>(unionType([stringType, nullType]), null).host,
     key: iattr('key'),
     label: iattr('label'),
     group: iattr('group'),
@@ -46,34 +45,11 @@ export const $radioInput = {
   },
 };
 
-export class RadioInput extends BaseInput<string|null, OnRadioInput> {
+export class RadioInput extends BaseInput<string|null> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $radioInput>) {
     super($, $.shadow.input.disabled, $.shadow.container);
-  }
-
-  @cache()
-  get onAction$(): Observable<ActionEvent<OnRadioInput>> {
-    return combineLatest([
-      this.$.host.key,
-      this.$.host.group,
-      this.domValue$,
-    ])
-        .pipe(
-            map(([key, group, value]) => {
-              if (key !== value) {
-                return null;
-              }
-
-              if (!group || !key) {
-                return null;
-              }
-
-              return new ActionEvent({group, key});
-            }),
-            filterNonNullable(),
-        );
   }
 
   @cache()

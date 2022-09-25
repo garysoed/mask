@@ -18,7 +18,7 @@ import {OPTION_TYPE, SELECT_OPTIONS} from './select-options';
 
 const $selectInput = {
   host: {
-    ...create$baseInput<string|null, string|null>(nullableType(stringType), null).host,
+    ...create$baseInput<string|null>(nullableType(stringType), null).host,
     options: ivalue('options', arrayOfType(OPTION_TYPE)),
   },
   shadow: {
@@ -38,7 +38,7 @@ const $selectInput = {
   },
 };
 
-class SelectInput extends BaseInput<string|null, string|null> {
+class SelectInput extends BaseInput<string|null> {
   private readonly selected$ = new BehaviorSubject<string|null>(null);
 
   constructor(private readonly $: Context<typeof $selectInput>) {

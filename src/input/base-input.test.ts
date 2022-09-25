@@ -19,7 +19,7 @@ import goldens from './goldens/goldens.json';
 
 const $test = {
   host: {
-    ...create$baseInput<string, string>(stringType, '').host,
+    ...create$baseInput<string>(stringType, '').host,
   },
   shadow: {
     div: query('#div', DIV, {
@@ -32,7 +32,7 @@ const $test = {
   },
 };
 
-class TestInput extends BaseInput<string, string> {
+class TestInput extends BaseInput<string> {
   constructor(private readonly $: Context<typeof $test>) {
     super(
         $,

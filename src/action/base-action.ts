@@ -1,26 +1,22 @@
 import {cache} from 'gs-tools/export/data';
-import {Bindings, Context, Ctrl, iflag, oattr, oevent, oflag} from 'persona';
-import {IFlag, OEvent, Spec} from 'persona/export/internal';
+import {Bindings, Context, Ctrl, iflag, oattr, oflag} from 'persona';
+import {IFlag, Spec} from 'persona/export/internal';
 import {merge, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 
-
-export interface BaseActionSpecType<T> extends Spec {
+export interface BaseActionSpecType extends Spec {
   host: {
     readonly disabled: IFlag;
     readonly isSecondary: IFlag;
-    readonly actionEvent: OEvent<ActionEvent<T>>;
   };
 }
 
-export function create$baseAction<T>(): BaseActionSpecType<T> {
+export function create$baseAction(): BaseActionSpecType {
   return {
     host: {
       disabled: iflag('mk-disabled'),
       isSecondary: iflag('is-secondary'),
-      actionEvent: oevent(ACTION_EVENT, ActionEvent),
     },
   };
 }
@@ -33,15 +29,13 @@ export const $baseRootOutputs = {
 };
 
 
-export abstract class BaseAction<T> implements Ctrl {
+export abstract class BaseAction implements Ctrl {
   constructor(
-      protected readonly actionContext: Context<BaseActionSpecType<T>>,
+      protected readonly actionContext: Context<BaseActionSpecType>,
       protected readonly renderDomDisabled: () => OperatorFunction<boolean, unknown>,
       protected readonly rootBindings: Bindings<typeof $baseRootOutputs, any>,
   ) {
   }
-
-  abstract get onAction$(): Observable<ActionEvent<T>>;
 
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
@@ -50,7 +44,6 @@ export abstract class BaseAction<T> implements Ctrl {
           map(isSecondary => !isSecondary),
           this.rootBindings.action1(),
       ),
-      this.onAction$.pipe(this.actionContext.host.actionEvent()),
       this.actionContext.host.isSecondary.pipe(this.rootBindings.action2()),
       this.renderDisabledDomOutput$,
     ];

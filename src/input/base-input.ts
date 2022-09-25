@@ -9,18 +9,18 @@ import {$baseRootOutputs, BaseAction, BaseActionSpecType, create$baseAction} fro
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 
 
-export interface BaseInputSpecType<T, A> extends BaseActionSpecType<A> {
-  host: BaseActionSpecType<A>['host'] & {
+export interface BaseInputSpecType<T> extends BaseActionSpecType {
+  host: BaseActionSpecType['host'] & {
     readonly onChange: OEvent<ChangeEvent<T>>;
     readonly setValue: ICall<readonly [T], 'setValue'>;
     readonly value: OValue<T, 'value'>;
   }
 }
 
-export function create$baseInput<T, A>(valueType: Type<T>, defaultValue: T): BaseInputSpecType<T, A> {
+export function create$baseInput<T>(valueType: Type<T>, defaultValue: T): BaseInputSpecType<T> {
   return {
     host: {
-      ...create$baseAction<A>().host,
+      ...create$baseAction().host,
       onChange: oevent(CHANGE_EVENT, ChangeEvent),
       setValue: icall('setValue', [valueType] as const),
       value: ovalue('value', valueType, () => defaultValue),
@@ -29,9 +29,9 @@ export function create$baseInput<T, A>(valueType: Type<T>, defaultValue: T): Bas
 }
 
 
-export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
+export abstract class BaseInput<T> extends BaseAction implements Ctrl {
   constructor(
-      protected readonly inputContext: Context<BaseInputSpecType<T, A>>,
+      protected readonly inputContext: Context<BaseInputSpecType<T>>,
       renderDisabled: () => OperatorFunction<boolean, unknown>,
       rootBindings: Bindings<typeof $baseRootOutputs, any>,
   ) {

@@ -8,25 +8,25 @@ import {distinctUntilChanged, skip, switchMap} from 'rxjs/operators';
 import {$baseRootOutputs, BaseAction, BaseActionSpecType, create$baseAction} from '../action/base-action';
 
 
-export interface BaseInputSpecType<Type, Action> extends BaseActionSpecType<Action> {
-  host: BaseActionSpecType<Action>['host'] & {
+export interface BaseInputSpecType<Type> extends BaseActionSpecType {
+  host: BaseActionSpecType['host'] & {
     readonly value: IValue<Subject<Type>, 'value'>;
   }
 }
 
-export function create$baseInput<Action, Type = never>(defaultValue: Type): BaseInputSpecType<Type, Action> {
+export function create$baseInput<Type = never>(defaultValue: Type): BaseInputSpecType<Type> {
   return {
     host: {
-      ...create$baseAction<Action>().host,
+      ...create$baseAction().host,
       value: ivalue('value', instanceofType<Subject<Type>>(Subject), () => new BehaviorSubject(defaultValue)),
     },
   };
 }
 
 
-export abstract class BaseInput<T, A> extends BaseAction<A> implements Ctrl {
+export abstract class BaseInput<T> extends BaseAction implements Ctrl {
   constructor(
-      protected readonly inputContext: Context<BaseInputSpecType<T, A>>,
+      protected readonly inputContext: Context<BaseInputSpecType<T>>,
       renderDisabled: () => OperatorFunction<boolean, unknown>,
       rootBindings: Bindings<typeof $baseRootOutputs, any>,
   ) {

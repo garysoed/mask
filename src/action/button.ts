@@ -1,9 +1,9 @@
 import {cache} from 'gs-tools/export/data';
-import {BUTTON as HTML_BUTTON, Context, query, ievent, ikeydown, oattr, oflag, registerCustomElement} from 'persona';
+import {BUTTON as HTML_BUTTON, Context, query, ievent, ikeydown, oattr, oflag, registerCustomElement, oevent} from 'persona';
 import {merge, Observable} from 'rxjs';
 import {filter, map, throttleTime, withLatestFrom} from 'rxjs/operators';
 
-import {ActionEvent} from '../event/action-event';
+import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {renderTheme} from '../theme/render-theme';
 
 import {$baseRootOutputs, BaseAction, create$baseAction} from './base-action';
@@ -14,7 +14,8 @@ const THROTTLE_MS = 500;
 
 const $button = {
   host: {
-    ...create$baseAction<undefined>().host,
+    ...create$baseAction().host,
+    actionEvent: oevent(ACTION_EVENT, ActionEvent),
   },
   shadow: {
     rootEl: query('#root', HTML_BUTTON, {
@@ -30,7 +31,7 @@ const $button = {
 };
 
 
-class Button extends BaseAction<undefined> {
+class Button extends BaseAction {
   constructor(protected readonly actionContext: Context<typeof $button>) {
     super(
         actionContext,
@@ -43,6 +44,7 @@ class Button extends BaseAction<undefined> {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
+      this.onAction$.pipe(this.actionContext.host.actionEvent()),
       renderTheme(this.actionContext),
       this.tabIndex$.pipe(
           map(index => `${index}`),

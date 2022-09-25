@@ -1,10 +1,8 @@
-import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness, InputHarness} from 'persona/export/testing';
-import {BehaviorSubject, fromEvent, ReplaySubject} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject, ReplaySubject} from 'rxjs';
 
-import {ActionEvent, ACTION_EVENT} from '../event/action-event';
 import {CHECKBOX, CheckedValue} from '../input/checkbox';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
@@ -64,58 +62,16 @@ test('@mask/src/input/checkbox', () => {
     });
   });
 
-  test('onAction$', () => {
-    should('emit the action on value change', () => {
-      const element = _.tester.bootstrapElement(CHECKBOX);
-      element.textContent = 'Label';
-
-      const event$ = createSpySubject(
-          fromEvent<ActionEvent<CheckedValue>>(element, ACTION_EVENT).pipe(
-              map(event => event.payload),
-          ),
-      );
-
-      const harness = getHarness(element, CheckboxHarness);
-      harness.simulateCheck();
-
-      assert(event$).to.emitSequence([true]);
-    });
-
-    should('not emit if the value does not change', () => {
-      const element = _.tester.bootstrapElement(CHECKBOX);
-      element.textContent = 'Label';
-
-      const event$ = createSpySubject(
-          fromEvent<ActionEvent<CheckedValue>>(element, ACTION_EVENT).pipe(
-              map(event => event.payload),
-          ),
-      );
-
-      const harness = getHarness(element, CheckboxHarness);
-      harness.simulateCheck();
-      harness.simulateCheck();
-
-      assert(event$).to.emitSequence([true]);
-    });
-  });
-
   test('domValue$', () => {
     should('react to change events', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-
-      const event$ = createSpySubject(
-          fromEvent<ActionEvent<CheckedValue>>(element, ACTION_EVENT).pipe(
-              map(event => event.payload),
-          ),
-      );
 
       const harness = getHarness(element, CheckboxHarness);
       harness.simulateCheck();
 
       assert(element).to.matchSnapshot('checkbox__change-to-checked.html');
       assert(element.value).to.emitWith(true);
-      assert(event$).to.emitSequence([true]);
     });
   });
 

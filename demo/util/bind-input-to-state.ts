@@ -7,7 +7,7 @@ import {map, take} from 'rxjs/operators';
 import {BaseInputSpecType} from '../../src/input/base-input';
 
 
-type InputBindings<T> = Bindings<ReversedSpec<BaseInputSpecType<T, any>['host']>, any>;
+type InputBindings<T> = Bindings<ReversedSpec<BaseInputSpecType<T>['host']>, any>;
 
 export function bindInputToState<T>(
     resolver: Subject<T>,

@@ -7,7 +7,7 @@ import {map, take} from 'rxjs/operators';
 import {BaseInputSpecType} from '../../src/input/base-input';
 
 type RadioBindingLike = Pick<
-Bindings<ReversedSpec<BaseInputSpecType<string|null, any>['host']>, any>,
+Bindings<ReversedSpec<BaseInputSpecType<string|null>['host']>, any>,
 'setValue'|'value'
 >;
 

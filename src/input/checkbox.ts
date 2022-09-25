@@ -3,7 +3,7 @@ import {cache} from 'gs-tools/export/data';
 import {Context, ievent, INPUT, itarget, LABEL, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
-import {distinctUntilChanged, map, skip, startWith, tap, withLatestFrom} from 'rxjs/operators';
+import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
 import checkboxChecked from '../asset/checkbox_checked.svg';
@@ -11,7 +11,6 @@ import checkboxEmpty from '../asset/checkbox_empty.svg';
 import checkboxUnknown from '../asset/checkbox_unknown.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
-import {ActionEvent} from '../event/action-event';
 import {BaseInput, create$baseInput} from '../input/base-input-2';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
@@ -23,7 +22,7 @@ export type CheckedValue = boolean | null;
 
 const $checkbox = {
   host: {
-    ...create$baseInput<CheckedValue, CheckedValue>(false).host,
+    ...create$baseInput<CheckedValue>(false).host,
   },
   shadow: {
     container: query('#container', LABEL, {
@@ -38,7 +37,7 @@ const $checkbox = {
   },
 };
 
-export class Checkbox extends BaseInput<CheckedValue, CheckedValue> {
+export class Checkbox extends BaseInput<CheckedValue> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $checkbox>) {
@@ -46,15 +45,6 @@ export class Checkbox extends BaseInput<CheckedValue, CheckedValue> {
         $,
         $.shadow.input.disabled,
         $.shadow.container,
-    );
-  }
-
-  @cache()
-  get onAction$(): Observable<ActionEvent<CheckedValue>> {
-    return this.domValue$.pipe(
-        distinctUntilChanged(),
-        skip(1),
-        map(value => new ActionEvent(value)),
     );
   }
 
