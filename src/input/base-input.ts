@@ -23,7 +23,7 @@ export function create$baseInput<T, A>(valueType: Type<T>, defaultValue: T): Bas
       ...create$baseAction<A>().host,
       onChange: oevent(CHANGE_EVENT, ChangeEvent),
       setValue: icall('setValue', [valueType] as const),
-      value: ovalue('value', valueType, defaultValue),
+      value: ovalue('value', valueType, () => defaultValue),
     },
   };
 }

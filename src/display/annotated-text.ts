@@ -15,7 +15,7 @@ const ANNOTATION_SPEC_TYPE: Type<AnnotationSpec> = instanceofType(Function);
 
 const $annotatedText = {
   host: {
-    annotations: ivalue('annotations', arrayOfType(ANNOTATION_SPEC_TYPE), []),
+    annotations: ivalue('annotations', arrayOfType(ANNOTATION_SPEC_TYPE), () => []),
     text: itext(),
   },
   shadow: {

@@ -18,7 +18,7 @@ export function create$baseInput<Action, Type = never>(defaultValue: Type): Base
   return {
     host: {
       ...create$baseAction<Action>().host,
-      value: ivalue('value', instanceofType<Subject<Type>>(Subject), new BehaviorSubject(defaultValue)),
+      value: ivalue('value', instanceofType<Subject<Type>>(Subject), () => new BehaviorSubject(defaultValue)),
     },
   };
 }
