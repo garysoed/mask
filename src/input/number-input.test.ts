@@ -31,7 +31,7 @@ test('@mask/src/input/number-input', () => {
       const harness = getHarness(element, NumberInputHarness);
       harness.simulateNumberInput(value);
 
-      assert(element.value).to.equal(value);
+      assert(element.value).to.emitWith(value);
       assert(element).to.matchSnapshot('number-input__value.html');
     });
   });
@@ -65,7 +65,7 @@ test('@mask/src/input/number-input', () => {
 
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.setValue(value);
+      element.value.next(value);
 
       assert(element).to.matchSnapshot('number-input__update.html');
     });
@@ -73,7 +73,7 @@ test('@mask/src/input/number-input', () => {
     should('set null value correctly', () => {
       const element = _.tester.bootstrapElement(NUMBER_INPUT);
       element.textContent = 'Label';
-      element.setValue(null);
+      element.value.next(null);
 
       assert(element).to.matchSnapshot('number-input__update-null.html');
     });

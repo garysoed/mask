@@ -32,7 +32,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 3', key: '3'},
       ];
       div.appendChild(element);
-      element.setValue('2');
+      element.value.next('2');
 
       assert(element).to.matchSnapshot('select-input__init_value.html');
 
@@ -56,7 +56,7 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 3', key: '3'},
       ];
       div.appendChild(element);
-      element.setValue(null);
+      element.value.next(null);
 
       assert(element).to.matchSnapshot('select-input__null_value.html');
 
@@ -78,14 +78,14 @@ test('@mask/src/input/select-input', () => {
         {text: 'Option 2', key: '2'},
         {text: 'Option 3', key: '3'},
       ];
-      element.setValue('2');
+      element.value.next('2');
 
       const overlay = _.tester.bootstrapElement(OVERLAY);
       // Check the overlay.
       const harness = getHarness(element, SelectInputHarness);
       harness.simulateSelectOption('Option 3', overlay);
 
-      assert(element.value).to.equal('3');
+      assert(element.value).to.emitWith('3');
       assert(overlay).to.matchSnapshot('select-input__clicked.html');
     });
   });

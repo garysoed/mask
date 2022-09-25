@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {forwardTo} from 'gs-tools/export/rxjs';
-import {arrayOfType, nullableType, stringType} from 'gs-types';
+import {arrayOfType} from 'gs-types';
 import {Context, ievent, irect, itarget, ivalue, LABEL, oflag, otext, query, registerCustomElement, renderTemplate, TEMPLATE} from 'persona';
 import {BehaviorSubject, combineLatest, Observable, OperatorFunction} from 'rxjs';
 import {distinctUntilChanged, map, skip, tap, withLatestFrom} from 'rxjs/operators';
@@ -12,13 +12,13 @@ import {ActionEvent} from '../event/action-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {BaseInput, create$baseInput} from './base-input';
+import {BaseInput, create$baseInput} from './base-input-2';
 import template from './select-input.html';
 import {OPTION_TYPE, SELECT_OPTIONS} from './select-options';
 
 const $selectInput = {
   host: {
-    ...create$baseInput<string|null>(nullableType(stringType), null).host,
+    ...create$baseInput<string|null>(null).host,
     options: ivalue('options', arrayOfType(OPTION_TYPE)),
   },
   shadow: {

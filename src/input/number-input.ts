@@ -1,6 +1,5 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {nullType, numberType, unionType} from 'gs-types';
 import {Context, DIV, iattr, ievent, INPUT, itarget, numberParser, oclass, oevent, oflag, query, registerCustomElement} from 'persona';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, mapTo, startWith, tap, withLatestFrom} from 'rxjs/operators';
@@ -13,13 +12,13 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {BaseInput, create$baseInput} from './base-input';
+import {BaseInput, create$baseInput} from './base-input-2';
 import template from './number-input.html';
 
 
 const $numberInput = {
   host: {
-    ...create$baseInput<number|null>(unionType([numberType, nullType]), null).host,
+    ...create$baseInput<number|null>(null).host,
     max: iattr('max', numberParser()),
     min: iattr('min', numberParser()),
     onChange: oevent(CHANGE_EVENT, ChangeEvent),
@@ -63,7 +62,7 @@ export class NumberInput extends BaseInput<number|null> {
   }
 
   @cache()
-  protected get domValue$(): Observable<number> {
+  protected get domValue$(): Observable<number|null> {
     return merge(
         this.$.shadow.input.onChange,
         this.onDomValueUpdated$,
@@ -77,7 +76,14 @@ export class NumberInput extends BaseInput<number|null> {
               }
               return el.value;
             }),
-            map(value => Number.parseInt(value, 10)),
+            map(value => {
+              const parsed = Number.parseInt(value, 10);
+              if (isNaN(parsed)) {
+                return null;
+              }
+
+              return parsed;
+            }),
         );
   }
 

@@ -7,7 +7,6 @@ import {Option} from '../../src/input/select-options';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
-import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './select-input.html';
 
@@ -28,8 +27,8 @@ class SelectInputDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.$state.disabledSelectInputState, this.$.shadow.disabledInput),
-      bindInputToState(this.$state.enabledSelectInputState, this.$.shadow.enabledInput),
+      of(this.$state.disabledSelectInputState).pipe(this.$.shadow.disabledInput.value()),
+      of(this.$state.enabledSelectInputState).pipe(this.$.shadow.enabledInput.value()),
       this.options$.pipe(this.$.shadow.disabledInput.options()),
       this.options$.pipe(this.$.shadow.enabledInput.options()),
     ];
