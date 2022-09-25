@@ -12,7 +12,7 @@ import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {BaseInput, create$baseInput} from './base-input-2';
+import {BaseInput, create$baseInput} from './base-input';
 import template from './number-input.html';
 
 

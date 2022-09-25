@@ -11,10 +11,10 @@ import radioChecked from '../asset/radio_checked.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
-import {BaseInput, create$baseInput} from '../input/base-input-2';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
 
+import {BaseInput, create$baseInput} from './base-input';
 import {$onRadioInput$} from './on-radio-input';
 import template from './radio-input.html';
 

@@ -11,10 +11,10 @@ import checkboxEmpty from '../asset/checkbox_empty.svg';
 import checkboxUnknown from '../asset/checkbox_unknown.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
-import {BaseInput, create$baseInput} from '../input/base-input-2';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
 
+import {BaseInput, create$baseInput} from './base-input';
 import template from './checkbox.html';
 
 

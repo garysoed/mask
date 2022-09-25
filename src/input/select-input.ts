@@ -12,7 +12,7 @@ import {ActionEvent} from '../event/action-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {BaseInput, create$baseInput} from './base-input-2';
+import {BaseInput, create$baseInput} from './base-input';
 import template from './select-input.html';
 import {OPTION_TYPE, SELECT_OPTIONS} from './select-options';
 

@@ -10,7 +10,7 @@ import {$baseRootOutputs} from '../action/base-action';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {BaseInput, create$baseInput} from './base-input-2';
+import {BaseInput, create$baseInput} from './base-input';
 import template from './text-input.html';
 
 

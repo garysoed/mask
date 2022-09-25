@@ -1,16 +1,14 @@
-import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
+import {assert, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
-import {stringType} from 'gs-types';
-import {Context, DIV, iattr, query, oattr, oflag, registerCustomElement} from 'persona';
+import {Context, DIV, iattr, oattr, oflag, query, registerCustomElement} from 'persona';
 import {ElementHarness, getHarness} from 'persona/export/testing';
-import {fromEvent, Observable, OperatorFunction} from 'rxjs';
+import {BehaviorSubject, Observable, OperatorFunction} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {$baseRootOutputs} from '../action/base-action';
 import {ActionEvent} from '../event/action-event';
-import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
 import {setupThemedTest} from '../testing/setup-themed-test';
 
 import {BaseInput, create$baseInput} from './base-input';
@@ -19,7 +17,7 @@ import goldens from './goldens/goldens.json';
 
 const $test = {
   host: {
-    ...create$baseInput<string>(stringType, '').host,
+    ...create$baseInput<string>('').host,
   },
   shadow: {
     div: query('#div', DIV, {
@@ -70,39 +68,48 @@ test('@mask/src/input/base-input', () => {
     return {tester};
   });
 
-  test('handleSetValue$', () => {
-    should('set the DOM value and the output values to the init value', () => {
-      const initValue = 'initValue';
+  test('bindFromHost', () => {
+    should('set the init value', () => {
+      const value$ = new BehaviorSubject('a');
       const element = _.tester.bootstrapElement(TEST);
-      element.setValue(initValue);
+      element.value = value$;
 
-      assert(element).to.matchSnapshot('base-input__clear.html');
-      assert(element.value).to.equal(initValue);
+      assert(element).to.matchSnapshot('base-input__init_from_host.html');
+    });
+
+    should('reflect the value from the host', () => {
+      const value$ = new BehaviorSubject('a');
+      const element = _.tester.bootstrapElement(TEST);
+      element.value = value$;
+
+      value$.next('b');
+
+      assert(element).to.matchSnapshot('base-input__from_host.html');
     });
   });
 
-  test('onChange$', () => {
-    should('emit the old value if dom value changes', () => {
-      const newValue = 'newValue';
+  test('bindFromDom', () => {
+    should('skip the init value', () => {
+      const value$ = new BehaviorSubject('a');
       const element = _.tester.bootstrapElement(TEST);
-      const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
+      getHarness(element, '#div', ElementHarness).target.setAttribute('value', 'init');
 
-      getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
+      element.value = value$;
 
-      assert(element.value).to.equal(newValue);
-      assert(event$.pipe(map(event => event.oldValue))).to.emitSequence(['']);
+      assert(value$).to.emitWith('a');
     });
 
-    should('not emit if the dom value does not change', () => {
-      const newValue = 'newValue';
+    should('reflect the value from the dom', () => {
+      const value$ = new BehaviorSubject('a');
       const element = _.tester.bootstrapElement(TEST);
+      getHarness(element, '#div', ElementHarness).target.setAttribute('value', 'init');
 
-      getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
-      const event$ = createSpySubject(fromEvent<ChangeEvent<string>>(element, CHANGE_EVENT));
+      element.value = value$;
+
+      const newValue = 'newValue';
       getHarness(element, '#div', ElementHarness).target.setAttribute('value', newValue);
 
-      assert(element.value).to.equal(newValue);
-      assert(event$.pipe(map(event => event.oldValue))).to.emitSequence([]);
+      assert(value$).to.emitWith(newValue);
     });
   });
 });
