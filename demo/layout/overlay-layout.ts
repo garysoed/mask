@@ -1,6 +1,5 @@
-import {$asArray, $asMap, $map} from 'gs-tools/export/collect';
+import {$asMap, $map} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {forwardTo} from 'gs-tools/export/rxjs';
 import {$pipe} from 'gs-tools/export/typescript';
 import {enumType} from 'gs-types';
 import {Context, Ctrl, DIV, itarget, oforeach, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, TEMPLATE} from 'persona';
@@ -13,7 +12,6 @@ import {RADIO_INPUT} from '../../src/input/radio-input';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState, OverlayLayoutDemoState} from '../core/demo-state';
-import {bindRadioInputToState} from '../util/bind-radio-input-to-state';
 
 import template from './overlay-layout.html';
 
@@ -22,8 +20,7 @@ const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
 const ANCHOR_TYPE = enumType<Anchor>(Anchor);
 
 interface AnchorSubjects {
-  readonly onSetValue$: Subject<readonly [string|null]>;
-  readonly onValue$: Subject<string|null>;
+  readonly value$: Subject<string|null>;
 }
 
 interface AnchorObsSpec {
@@ -34,19 +31,19 @@ interface AnchorObsSpec {
 const $overlayLayoutDemo = {
   shadow: {
     overlayHorizontal: query('#overlayHorizontal', DIV, {
-      overlayHorizontalAnchors: oforeach<[Anchor, AnchorSubjects]>('#overlayHorizontalAnchors'),
+      overlayHorizontalAnchors: oforeach<Anchor>('#overlayHorizontalAnchors'),
     }),
     overlayVertical: query('#overlayVertical', DIV, {
-      overlayVerticalAnchors: oforeach<[Anchor, AnchorSubjects]>('#overlayVerticalAnchors'),
+      overlayVerticalAnchors: oforeach<Anchor>('#overlayVerticalAnchors'),
     }),
     showButton: query('#target', BUTTON, {
       target: itarget(),
     }),
     targetHorizontal: query('#targetHorizontal', DIV, {
-      targetHorizontalAnchors: oforeach<[Anchor, AnchorSubjects]>('#targetHorizontalAnchors'),
+      targetHorizontalAnchors: oforeach<Anchor>('#targetHorizontalAnchors'),
     }),
     targetVertical: query('#targetVertical', DIV, {
-      targetVerticalAnchors: oforeach<[Anchor, AnchorSubjects]>('#targetVerticalAnchors'),
+      targetVerticalAnchors: oforeach<Anchor>('#targetVerticalAnchors'),
     }),
     template: query('#template', TEMPLATE, {
       target: itarget(),
@@ -56,7 +53,7 @@ const $overlayLayoutDemo = {
 
 
 export class OverlayLayoutDemo implements Ctrl {
-  private readonly $state = $demoState.get(this.$.vine).overlayLayoutDemo;
+  private readonly state = $demoState.get(this.$.vine).overlayLayoutDemo;
   private readonly overlayHorizontalObsMap = createObsMap('overlayHorizontal');
   private readonly overlayVerticalObsMap = createObsMap('overlayVertical');
   private readonly targetHorizontalObsMap = createObsMap('targetHorizontal');
@@ -68,31 +65,26 @@ export class OverlayLayoutDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      of([...this.overlayHorizontalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(pairs => {
-            return this.renderAnchorNodes(this.overlayHorizontalObsMap.group, pairs);
+      of(ANCHORS).pipe(
+          this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(anchorType => {
+            return this.renderAnchorNode(anchorType, 'overlayHorizontal', this.state.overlayHorizontalIndex);
           })),
       ),
-      of([...this.overlayVerticalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.overlayVertical.overlayVerticalAnchors(map(pairs => {
-            return this.renderAnchorNodes(this.overlayVerticalObsMap.group, pairs);
+      of(ANCHORS).pipe(
+          this.$.shadow.overlayVertical.overlayVerticalAnchors(map(anchorType => {
+            return this.renderAnchorNode(anchorType, 'overlayVertical', this.state.overlayVerticalIndex);
           })),
       ),
-      of([...this.targetHorizontalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.targetHorizontal.targetHorizontalAnchors(map(pairs => {
-            return this.renderAnchorNodes(this.targetHorizontalObsMap.group, pairs);
+      of(ANCHORS).pipe(
+          this.$.shadow.targetHorizontal.targetHorizontalAnchors(map(anchorType => {
+            return this.renderAnchorNode(anchorType, 'targetHorizontal', this.state.targetHorizontalIndex);
           })),
       ),
-      of([...this.targetVerticalObsMap.anchorSubjects]).pipe(
-          this.$.shadow.targetVertical.targetVerticalAnchors(map(pairs => {
-            return this.renderAnchorNodes(this.targetVerticalObsMap.group, pairs);
+      of(ANCHORS).pipe(
+          this.$.shadow.targetVertical.targetVerticalAnchors(map(anchorType => {
+            return this.renderAnchorNode(anchorType, 'targetVertical', this.state.targetVerticalIndex);
           })),
       ),
-
-      this.bindRadioToState('overlayHorizontalIndex', this.overlayHorizontalObsMap),
-      this.bindRadioToState('overlayVerticalIndex', this.overlayVerticalObsMap),
-      this.bindRadioToState('targetHorizontalIndex', this.targetHorizontalObsMap),
-      this.bindRadioToState('targetVerticalIndex', this.targetVerticalObsMap),
       this.handleClick(),
     ];
   }
@@ -133,40 +125,25 @@ export class OverlayLayoutDemo implements Ctrl {
         );
   }
 
-  private bindRadioToState(
-      anchorIdKey: keyof OverlayLayoutDemoState,
-      spec: AnchorObsSpec,
-  ): Observable<unknown> {
-    const bindings = $pipe(
-        spec.anchorSubjects,
-        $map(([, subjects]) => ({
-          setValue: () => forwardTo(subjects.onSetValue$),
-          value: subjects.onValue$,
-        })),
-        $asArray(),
-    );
-    return bindRadioInputToState(this.$state[anchorIdKey], bindings);
-  }
-
   private getAnchor(anchorIdKey: keyof OverlayLayoutDemoState): Observable<Anchor> {
-    return this.$state[anchorIdKey]
+    return this.state[anchorIdKey]
         .pipe(map(anchor => ANCHOR_TYPE.check(anchor) ? anchor : Anchor.START));
   }
 
-  private renderAnchorNodes(
+  private renderAnchorNode(
+      anchorType: Anchor,
       group: string,
-      [anchor, subjects]: [Anchor, AnchorSubjects],
+      subject: Subject<string|null>,
   ): RenderSpec {
     return renderElement({
       registration: RADIO_INPUT,
       spec: {},
       runs: $ => [
-        of(anchor).pipe($.key()),
-        of(getAnchorLabel(anchor)).pipe($.label()),
+        of(anchorType).pipe($.key()),
+        of(getAnchorLabel(anchorType)).pipe($.label()),
         of(group).pipe($.group()),
-        subjects.onSetValue$.pipe($.setValue()),
+        of(subject).pipe($.value()),
         of(true).pipe($.isSecondary()),
-        $.value.pipe(forwardTo(subjects.onValue$)),
       ],
     });
   }
@@ -176,13 +153,7 @@ function createObsMap(group: string): AnchorObsSpec {
   const anchorSubjects = $pipe(
       ANCHORS,
       $map(anchor => {
-        return [
-          anchor,
-          {
-            onSetValue$: new Subject<readonly [string|null]>(),
-            onValue$: new Subject<string|null>(),
-          },
-        ] as const;
+        return [anchor, {value$: new Subject<string|null>()}] as const;
       }),
       $asMap(),
   );

@@ -1,7 +1,6 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
-import {nullType, stringType, unionType} from 'gs-types';
 import {Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, oflag, otext, P, query, registerCustomElement} from 'persona';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
@@ -12,7 +11,7 @@ import radioChecked from '../asset/radio_checked.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
 import {ChangeEvent, CHANGE_EVENT} from '../event/change-event';
-import {BaseInput, create$baseInput} from '../input/base-input';
+import {BaseInput, create$baseInput} from '../input/base-input-2';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
 
@@ -22,7 +21,7 @@ import template from './radio-input.html';
 
 export const $radioInput = {
   host: {
-    ...create$baseInput<string|null>(unionType([stringType, nullType]), null).host,
+    ...create$baseInput<string|null>(null).host,
     key: iattr('key'),
     label: iattr('label'),
     group: iattr('group'),
