@@ -1,7 +1,7 @@
 import {assert, createSpySubject, runEnvironment, should, test, setup} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness, InputHarness} from 'persona/export/testing';
-import {fromEvent} from 'rxjs';
+import {BehaviorSubject, fromEvent, ReplaySubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {ActionEvent, ACTION_EVENT} from '../event/action-event';
@@ -42,7 +42,7 @@ test('@mask/src/input/checkbox', () => {
     should('set the classlist to display_checked if checked', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.setValue(true);
+      element.value = new BehaviorSubject<CheckedValue>(true);
 
       assert(element).to.matchSnapshot('checkbox__checked.html');
     });
@@ -50,7 +50,7 @@ test('@mask/src/input/checkbox', () => {
     should('set the classlist to display_unchecked if unchecked', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.setValue(false);
+      element.value = new BehaviorSubject<CheckedValue>(false);
 
       assert(element).to.matchSnapshot('checkbox__unchecked.html');
     });
@@ -58,7 +58,7 @@ test('@mask/src/input/checkbox', () => {
     should('set the classlist to display_unknown if unknown', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.setValue(null);
+      element.value = new BehaviorSubject<CheckedValue>(null);
 
       assert(element).to.matchSnapshot('checkbox__unknown.html');
     });
@@ -114,47 +114,41 @@ test('@mask/src/input/checkbox', () => {
       harness.simulateCheck();
 
       assert(element).to.matchSnapshot('checkbox__change-to-checked.html');
-      assert(element.value).to.equal(true);
+      assert(element.value).to.emitWith(true);
       assert(event$).to.emitSequence([true]);
-    });
-
-    should('react to clear function', () => {
-      const element = _.tester.bootstrapElement(CHECKBOX);
-      element.textContent = 'Label';
-      element.setValue(true);
-
-      assert(element).to.matchSnapshot('checkbox__clear-to-checked.html');
-      assert(element.value).to.equal(true);
     });
   });
 
   test('updateDomValue', () => {
-    should('set update the DOM value correctly when checked', () => {
+    setup(_, () => {
+      const value$ = new ReplaySubject<CheckedValue>(1);
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
-      element.setValue(true);
+      element.value = value$;
 
-      const inputEl = getHarness(element, '#input', InputHarness).target;
+      return {element, value$};
+    });
+
+    should('set update the DOM value correctly when checked', () => {
+      _.value$.next(true);
+
+      const inputEl = getHarness(_.element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beFalse();
       assert(inputEl.checked).to.beTrue();
     });
 
     should('set update the DOM value correctly when unchecked', () => {
-      const element = _.tester.bootstrapElement(CHECKBOX);
-      element.textContent = 'Label';
-      element.setValue(false);
+      _.value$.next(false);
 
-      const inputEl = getHarness(element, '#input', InputHarness).target;
+      const inputEl = getHarness(_.element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beFalse();
       assert(inputEl.checked).to.beFalse();
     });
 
     should('set unknown value correctly', () => {
-      const element = _.tester.bootstrapElement(CHECKBOX);
-      element.textContent = 'Label';
-      element.setValue(null);
+      _.value$.next(null);
 
-      const inputEl = getHarness(element, '#input', InputHarness).target;
+      const inputEl = getHarness(_.element, '#input', InputHarness).target;
       assert(inputEl.indeterminate).to.beTrue();
       assert(inputEl.checked).to.beFalse();
     });

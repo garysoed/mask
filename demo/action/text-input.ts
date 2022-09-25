@@ -1,12 +1,11 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, query, registerCustomElement} from 'persona';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {TEXT_INPUT} from '../../src/input/text-input';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
-import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './text-input.html';
 
@@ -30,11 +29,11 @@ export class TextInputDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.$state.disabledTextInputState, this.$.shadow.disabledInput),
-      bindInputToState(this.$state.emailTextInputState, this.$.shadow.emailInput),
-      bindInputToState(this.$state.enabledTextInputState, this.$.shadow.enabledInput),
-      bindInputToState(this.$state.telTextInputState, this.$.shadow.telInput),
-      bindInputToState(this.$state.urlTextInputState, this.$.shadow.urlInput),
+      of(this.$state.disabledTextInputState).pipe(this.$.shadow.disabledInput.value()),
+      of(this.$state.emailTextInputState).pipe(this.$.shadow.emailInput.value()),
+      of(this.$state.enabledTextInputState).pipe(this.$.shadow.enabledInput.value()),
+      of(this.$state.telTextInputState).pipe(this.$.shadow.telInput.value()),
+      of(this.$state.urlTextInputState).pipe(this.$.shadow.urlInput.value()),
     ];
   }
 }

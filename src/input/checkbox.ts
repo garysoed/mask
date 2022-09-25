@@ -1,7 +1,6 @@
 import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
-import {booleanType, nullType, Type, unionType} from 'gs-types';
-import {Context, query, ievent, INPUT, itarget, LABEL, registerCustomElement} from 'persona';
+import {Context, ievent, INPUT, itarget, LABEL, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {distinctUntilChanged, map, skip, startWith, tap, withLatestFrom} from 'rxjs/operators';
@@ -13,7 +12,7 @@ import checkboxUnknown from '../asset/checkbox_unknown.svg';
 import {registerSvg} from '../core/svg-service';
 import {ICON} from '../display/icon';
 import {ActionEvent} from '../event/action-event';
-import {BaseInput, create$baseInput} from '../input/base-input';
+import {BaseInput, create$baseInput} from '../input/base-input-2';
 import {LIST_ITEM_LAYOUT} from '../layout/list-item-layout';
 import {renderTheme} from '../theme/render-theme';
 
@@ -21,14 +20,10 @@ import template from './checkbox.html';
 
 
 export type CheckedValue = boolean | null;
-const CHECKED_VALUE_TYPE: Type<CheckedValue> = unionType([
-  booleanType,
-  nullType,
-]);
 
 const $checkbox = {
   host: {
-    ...create$baseInput<CheckedValue, CheckedValue>(CHECKED_VALUE_TYPE, false).host,
+    ...create$baseInput<CheckedValue, CheckedValue>(false).host,
   },
   shadow: {
     container: query('#container', LABEL, {
@@ -56,7 +51,11 @@ export class Checkbox extends BaseInput<CheckedValue, CheckedValue> {
 
   @cache()
   get onAction$(): Observable<ActionEvent<CheckedValue>> {
-    return this.domValue$.pipe(distinctUntilChanged(), skip(1), map(value => new ActionEvent(value)));
+    return this.domValue$.pipe(
+        distinctUntilChanged(),
+        skip(1),
+        map(value => new ActionEvent(value)),
+    );
   }
 
   @cache()

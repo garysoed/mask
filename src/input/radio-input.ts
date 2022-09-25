@@ -2,8 +2,7 @@ import {Vine} from 'grapevine';
 import {cache} from 'gs-tools/export/data';
 import {filterNonNullable, mapNullableTo} from 'gs-tools/export/rxjs';
 import {nullType, stringType, unionType} from 'gs-types';
-import {Context, iattr, ievent, INPUT, itarget, LABEL, oattr, oevent, otext, P, query, registerCustomElement} from 'persona';
-import {oflag} from 'persona/src/output/flag';
+import {Context, iattr, ievent, INPUT, oflag, itarget, LABEL, oattr, oevent, otext, P, query, registerCustomElement} from 'persona';
 import {combineLatest, concat, merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {filter, map, mapTo, pairwise, shareReplay, skip, startWith, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
 

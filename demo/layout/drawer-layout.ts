@@ -1,6 +1,6 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, oattr, query, registerCustomElement, SECTION} from 'persona';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {CHECKBOX} from '../../src/input/checkbox';
@@ -8,7 +8,6 @@ import {DrawerMode, DRAWER_LAYOUT} from '../../src/layout/drawer-layout';
 import {renderTheme} from '../../src/theme/render-theme';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
-import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './drawer-layout.html';
 
@@ -34,8 +33,8 @@ export class DrawerLayoutDemo implements Ctrl {
   get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       renderTheme(this.$),
-      bindInputToState(this.state.isExpanded, this.$.shadow.expandCheckbox),
-      bindInputToState(this.state.isHorizontalMode, this.$.shadow.horizontalModeCheckbox),
+      of(this.state.isExpanded).pipe(this.$.shadow.expandCheckbox.value()),
+      of(this.state.isHorizontalMode).pipe(this.$.shadow.horizontalModeCheckbox.value()),
       this.rootPlayLayout$.pipe(this.$.shadow.rootPlay.layout()),
       this.expanded$.pipe(this.$.shadow.drawer.expanded()),
       this.drawerMode$.pipe(this.$.shadow.drawer.mode()),

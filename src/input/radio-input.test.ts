@@ -1,4 +1,4 @@
-import {assert, createSpySubject, objectThat, runEnvironment, should, test, setup} from 'gs-testing';
+import {assert, createSpySubject, objectThat, runEnvironment, setup, should, test} from 'gs-testing';
 import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
 import {getHarness, InputHarness} from 'persona/export/testing';
 import {fromEvent} from 'rxjs';

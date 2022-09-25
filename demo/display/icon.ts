@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {Context, Ctrl, DIV, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import {registerSvg} from '../../src/core/svg-service';
@@ -11,7 +11,6 @@ import {renderTheme} from '../../src/theme/render-theme';
 import fitToHeightSvg from '../asset/fit_to_height.svg';
 import {DEMO_LAYOUT} from '../core/demo-layout';
 import {$demoState} from '../core/demo-state';
-import {bindInputToState} from '../util/bind-input-to-state';
 
 import template from './icon.html';
 
@@ -38,8 +37,8 @@ export class IconDemo implements Ctrl {
       renderTheme(this.$),
       this.isAction$.pipe(this.$.shadow.iconContainer.action()),
       this.fitTo$.pipe(this.$.shadow.icon.fitTo()),
-      bindInputToState(this.state.fitToWidth, this.$.shadow.fitToWidthCheckbox),
-      bindInputToState(this.state.isAction, this.$.shadow.isActionCheckbox),
+      of(this.state.fitToWidth).pipe(this.$.shadow.fitToWidthCheckbox.value()),
+      of(this.state.isAction).pipe(this.$.shadow.isActionCheckbox.value()),
     ];
   }
 

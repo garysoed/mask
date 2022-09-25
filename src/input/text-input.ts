@@ -1,7 +1,7 @@
 import {cache} from 'gs-tools/export/data';
 import {filterByType} from 'gs-tools/export/rxjs';
-import {enumType, stringType} from 'gs-types';
-import {AutocompleteType, Context, iattr, query, ievent, INPUT, InputType, itarget, LABEL, oattr, registerCustomElement} from 'persona';
+import {enumType} from 'gs-types';
+import {AutocompleteType, Context, iattr, ievent, INPUT, InputType, itarget, LABEL, oattr, query, registerCustomElement} from 'persona';
 import {oflag} from 'persona/src/output/flag';
 import {merge, Observable, OperatorFunction, pipe, Subject} from 'rxjs';
 import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
@@ -11,13 +11,13 @@ import {ActionEvent} from '../event/action-event';
 import {LINE_LAYOUT} from '../layout/line-layout';
 import {renderTheme} from '../theme/render-theme';
 
-import {BaseInput, create$baseInput} from './base-input';
+import {BaseInput, create$baseInput} from './base-input-2';
 import template from './text-input.html';
 
 
 const $textInput = {
   host: {
-    ...create$baseInput<string, string>(stringType, '').host,
+    ...create$baseInput<string, string>('').host,
     autocomplete: iattr('autocomplete'),
     type: iattr('type'),
   },

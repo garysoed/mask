@@ -60,7 +60,7 @@ export interface NumberInputDemoState {
 export interface DemoState {
   readonly accentColorName: Subject<keyof ThemeSeed>;
   readonly baseColorName: Subject<keyof ThemeSeed>;
-  readonly isDarkMode: Subject<boolean>;
+  readonly isDarkMode: Subject<CheckedValue>;
   readonly checkboxDemo: CheckboxDemoState;
   readonly drawerLayoutDemo: DrawerLayoutDemoState;
   readonly iconDemo: IconDemoState;
@@ -78,7 +78,7 @@ export const $demoState: Source<DemoState> = source(
     () => ({
       accentColorName: new BehaviorSubject<keyof ThemeSeed>(ACCENT_COLOR_NAME),
       baseColorName: new BehaviorSubject<keyof ThemeSeed>(BASE_COLOR_NAME),
-      isDarkMode: new BehaviorSubject<boolean>(true),
+      isDarkMode: new BehaviorSubject<CheckedValue>(true),
       checkboxDemo: {
         unknownCheckboxState: new BehaviorSubject<CheckedValue>(null),
         disabledCheckboxState: new BehaviorSubject<CheckedValue>(true),
