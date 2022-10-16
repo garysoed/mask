@@ -15,7 +15,6 @@ import paletteSvg from './asset/palette.svg';
 import settingsSvg from './asset/settings.svg';
 import {DEMO} from './core/demo';
 import {$theme$, ACCENT_COLOR_NAME, BASE_COLOR_NAME} from './core/demo-state';
-import {$locationService} from './core/location-service';
 
 
 const theme = new Theme({
@@ -49,8 +48,6 @@ window.addEventListener('load', () => {
   for (const [key, content] of ICONS) {
     registerSvg(vine, key, {type: 'embed', content});
   }
-
-  $locationService.get(vine).run().subscribe();
 
   const themeLoader$ = $themeLoader.get(vine);
 
