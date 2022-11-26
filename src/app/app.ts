@@ -1,4 +1,5 @@
 import {source, Vine} from 'grapevine';
+import {WindowLike} from 'gs-testing/export/fake';
 import {CustomElementRegistration, installCustomElements} from 'persona';
 import {BehaviorSubject} from 'rxjs';
 import {map, pairwise, startWith} from 'rxjs/operators';
@@ -19,7 +20,7 @@ export const $themeLoader = source(
         })),
     ),
 );
-export const $window = source(() => window);
+export const $window = source<WindowLike>(() => window);
 
 export function start(
     appName: string,
