@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {DIV, ParseType, renderElement, renderString, renderTemplate} from 'persona';
 import {ElementHarness, getHarness} from 'persona/export/testing';
 import {of} from 'rxjs';
@@ -54,7 +54,7 @@ test('@mask/src/core/overlay', () => {
 
       dispatchResize();
 
-      assert(_.element).to.matchSnapshot('overlay__start-start.html');
+      assert(snapshotElement(_.element)).to.match('overlay__start-start.golden');
     });
 
     should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
@@ -67,7 +67,7 @@ test('@mask/src/core/overlay', () => {
 
       dispatchResize();
 
-      assert(_.element).to.matchSnapshot('overlay__middle-middle.html');
+      assert(snapshotElement(_.element)).to.match('overlay__middle-middle.golden');
     });
 
     should('set the left and top correctly if content and target anchors are END - END', () => {
@@ -80,7 +80,7 @@ test('@mask/src/core/overlay', () => {
 
       dispatchResize();
 
-      assert(_.element).to.matchSnapshot('overlay__end-end.html');
+      assert(snapshotElement(_.element)).to.match('overlay__end-end.golden');
     });
   });
 
@@ -104,7 +104,7 @@ test('@mask/src/core/overlay', () => {
       };
       $overlayService.get(_.tester.vine).show(event);
 
-      assert(_.element).to.matchSnapshot('overlay__content.html');
+      assert(snapshotElement(_.element)).to.match('overlay__content.golden');
     });
   });
 
@@ -133,7 +133,7 @@ test('@mask/src/core/overlay', () => {
       };
       $overlayService.get(_.tester.vine).show(event);
 
-      assert(_.element).to.matchSnapshot('overlay__show.html');
+      assert(snapshotElement(_.element)).to.match('overlay__show.golden');
     });
 
     should('hide the overlay on clicking root element', () => {
@@ -161,7 +161,7 @@ test('@mask/src/core/overlay', () => {
       $overlayService.get(_.tester.vine).show(event);
       getHarness(_.element, '#root', ElementHarness).simulateClick();
 
-      assert(_.element).to.matchSnapshot('overlay__click-root.html');
+      assert(snapshotElement(_.element)).to.match('overlay__click-root.golden');
     });
 
     should('not hide the overlay when clicking the content element', () => {
@@ -189,7 +189,7 @@ test('@mask/src/core/overlay', () => {
       $overlayService.get(_.tester.vine).show(event);
       getHarness(_.element, '#content', ElementHarness).simulateClick();
 
-      assert(_.element).to.matchSnapshot('overlay__click-content.html');
+      assert(snapshotElement(_.element)).to.match('overlay__click-content.golden');
     });
   });
 });

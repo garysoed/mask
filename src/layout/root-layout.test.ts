@@ -1,5 +1,5 @@
 import {assert, runEnvironment, should, test, setup} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {ElementHarness, getHarness} from 'persona/export/testing';
 
 import maskSvg from '../asset/mask.svg';
@@ -41,7 +41,7 @@ test('@mask/src/layout/root-layout', () => {
       const harness = getHarness(_.element, '#drawer', ElementHarness);
       harness.simulateMouseOver();
 
-      assert(_.element).to.matchSnapshot('root-layout__mouseover.html');
+      assert(snapshotElement(_.element)).to.match('root-layout__mouseover.golden');
     });
 
     should('collapse the drawer if not hovered and is not desktop', () => {
@@ -49,13 +49,13 @@ test('@mask/src/layout/root-layout', () => {
       harness.simulateMouseOver();
       harness.simulateMouseOut();
 
-      assert(_.element).to.matchSnapshot('root-layout__mouseout.html');
+      assert(snapshotElement(_.element)).to.match('root-layout__mouseout.golden');
     });
 
     should('open the drawer if desktop sized', () => {
       _.tester.setMedia(`(min-width: ${MEDIA_QUERY.MIN_WIDTH.DESKTOP})`, true);
 
-      assert(_.element).to.matchSnapshot('root-layout__desktop.html');
+      assert(snapshotElement(_.element)).to.match('root-layout__desktop.golden');
     });
   });
 });

@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {getHarness} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -32,7 +32,7 @@ test('@mask/src/input/number-input', () => {
       harness.simulateNumberInput(value);
 
       assert(element.value).to.emitWith(value);
-      assert(element).to.matchSnapshot('number-input__value.html');
+      assert(snapshotElement(element)).to.match('number-input__value.golden');
     });
   });
 
@@ -44,7 +44,7 @@ test('@mask/src/input/number-input', () => {
       const harness = getHarness(element, NumberInputHarness);
       harness.simulateMouseOver();
 
-      assert(element).to.matchSnapshot('number-input__show-stepper.html');
+      assert(snapshotElement(element)).to.match('number-input__show-stepper.golden');
     });
 
     should('hide stepper icon on mouseleave', () => {
@@ -55,7 +55,7 @@ test('@mask/src/input/number-input', () => {
       harness.simulateMouseOver();
       harness.simulateMouseOut();
 
-      assert(element).to.matchSnapshot('number-input__hide-stepper.html');
+      assert(snapshotElement(element)).to.match('number-input__hide-stepper.golden');
     });
   });
 
@@ -67,7 +67,7 @@ test('@mask/src/input/number-input', () => {
       element.textContent = 'Label';
       element.value.next(value);
 
-      assert(element).to.matchSnapshot('number-input__update.html');
+      assert(snapshotElement(element)).to.match('number-input__update.golden');
     });
 
     should('set null value correctly', () => {
@@ -75,7 +75,7 @@ test('@mask/src/input/number-input', () => {
       element.textContent = 'Label';
       element.value.next(null);
 
-      assert(element).to.matchSnapshot('number-input__update-null.html');
+      assert(snapshotElement(element)).to.match('number-input__update-null.golden');
     });
   });
 });

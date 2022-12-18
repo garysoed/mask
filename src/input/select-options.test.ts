@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {getHarness} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -30,7 +30,7 @@ test('@mask/src/input/select-options', () => {
 
       element.setSelected('2');
 
-      assert(element).to.matchSnapshot('select-options__render.html');
+      assert(snapshotElement(element)).to.match('select-options__render.golden');
     });
   });
 
@@ -48,7 +48,7 @@ test('@mask/src/input/select-options', () => {
       const harness = getHarness(element, SelectOptionHarness);
       harness.simulateClickOption('Option B');
 
-      assert(element).to.matchSnapshot('select-options__select.html');
+      assert(snapshotElement(element)).to.match('select-options__select.golden');
       assert(element.selected).to.equal('2');
     });
 

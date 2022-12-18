@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-drawer-layout mk-theme=\"light\" mode=\"horizontal\" max-size=\"123px\" expanded=\"\">content<gst-fake-shadow><style>\n  #root {\n    background-color: var(--mkThemeBG);\n    overflow: hidden;\n    position: relative;\n    transition: width var(--mkAnimationTime), height var(--mkAnimationTime);\n  }\n</style>\n\n<div id=\"root\" style=\"height: 123px; width: 100%;\">\n  <slot></slot>\n</div>\n<link rel=\"stylesheet\" href=\"base/test.css\"></gst-fake-shadow></mk-drawer-layout>",
+  "name": "drawer-layout__horizontal_expanded"
+}

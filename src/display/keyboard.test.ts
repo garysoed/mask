@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test, setup} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
+import {triggerFakeMutation} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 import {THEME_LOADER_TEST_OVERRIDE} from '../testing/theme-loader-test-override';
@@ -25,7 +25,7 @@ test('@mask/src/display/keyboard', () => {
       element.setAttribute('text', 'meta alt enter 3');
       triggerFakeMutation(element, {});
 
-      assert(element).to.matchSnapshot('keyboard.html');
+      assert(snapshotElement(element)).to.match('keyboard.golden');
     });
   });
 });

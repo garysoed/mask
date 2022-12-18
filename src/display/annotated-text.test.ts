@@ -1,7 +1,7 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {RenderSpecType} from 'persona';
-import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
+import {triggerFakeMutation} from 'persona/export/testing';
 import {EMPTY, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -54,7 +54,7 @@ test('@mask/src/display/annotated-text', () => {
       element.textContent = 'banana';
       triggerFakeMutation(element, {});
 
-      assert(element).to.matchSnapshot('annotated-text.html');
+      assert(snapshotElement(element)).to.match('annotated-text.golden');
     });
   });
 });

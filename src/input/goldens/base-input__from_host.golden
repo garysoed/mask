@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-test-base-input mk-theme=\"light\"><gst-fake-shadow><div id=\"div\" aria-disabled=\"false\" mk-action-1=\"\" value=\"b\"></div></gst-fake-shadow></mk-test-base-input>",
+  "name": "base-input__from_host"
+}

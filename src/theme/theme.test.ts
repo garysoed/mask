@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 
 import {ThemeMode} from './const';
 import goldens from './goldens/goldens.json';
@@ -36,7 +36,7 @@ test('@mask/src/theme/theme', () => {
       }).generateCss();
 
       _.styleEl.innerHTML = cssString;
-      assert(_.rootEl).to.matchSnapshot('theme__light.html');
+      assert(snapshotElement(_.rootEl)).to.match('theme__light.golden');
     });
 
     should('generate dark CSS correctly', () => {
@@ -49,7 +49,7 @@ test('@mask/src/theme/theme', () => {
       _.styleEl.innerHTML = cssString;
       _.tableEl.classList.add('dark');
 
-      assert(_.rootEl).to.matchSnapshot('theme__dark.html');
+      assert(snapshotElement(_.rootEl)).to.match('theme__dark.golden');
     });
   });
 });

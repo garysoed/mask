@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {getHarness} from 'persona/export/testing';
 
 import {OVERLAY} from '../core/overlay';
@@ -34,14 +34,14 @@ test('@mask/src/input/select-input', () => {
       div.appendChild(element);
       element.value.next('2');
 
-      assert(element).to.matchSnapshot('select-input__init_value.html');
+      assert(snapshotElement(element)).to.match('select-input__init_value.golden');
 
       // Check the overlay.
       const harness = getHarness(element, SelectInputHarness);
       harness.simulateOpenOptions();
       const overlay = _.tester.bootstrapElement(OVERLAY);
 
-      assert(overlay).to.matchSnapshot('select-input__init_value_overlay.html');
+      assert(snapshotElement(overlay)).to.match('select-input__init_value_overlay.golden');
     });
 
     should('render null value correctly', () => {
@@ -58,14 +58,14 @@ test('@mask/src/input/select-input', () => {
       div.appendChild(element);
       element.value.next(null);
 
-      assert(element).to.matchSnapshot('select-input__null_value.html');
+      assert(snapshotElement(element)).to.match('select-input__null_value.golden');
 
       // Check the overlay.
       const harness = getHarness(element, SelectInputHarness);
       harness.simulateOpenOptions();
       const overlay = _.tester.bootstrapElement(OVERLAY);
 
-      assert(overlay).to.matchSnapshot('select-input__null_value_overlay.html');
+      assert(snapshotElement(overlay)).to.match('select-input__null_value_overlay.golden');
     });
   });
 
@@ -86,7 +86,7 @@ test('@mask/src/input/select-input', () => {
       harness.simulateSelectOption('Option 3', overlay);
 
       assert(element.value).to.emitWith('3');
-      assert(overlay).to.matchSnapshot('select-input__clicked.html');
+      assert(snapshotElement(overlay)).to.match('select-input__clicked.golden');
     });
   });
 });

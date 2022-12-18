@@ -1,5 +1,5 @@
 import {assert, runEnvironment, should, test, setup} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 
 import maskSvg from '../asset/mask.svg';
 import {registerSvg} from '../core/svg-service';
@@ -27,7 +27,7 @@ test('@mask/src/display/icon', () => {
       element.setAttribute('fit-to', FitTo.HEIGHT);
       element.setAttribute('icon', SVG_NAME);
 
-      assert(element).to.matchSnapshot('icon__fit-to-height.html');
+      assert(snapshotElement(element)).to.match('icon__fit-to-height.golden');
     });
 
     should('set the innerHTML correctly and set the width to auto when fit to width', () => {
@@ -35,13 +35,13 @@ test('@mask/src/display/icon', () => {
       element.setAttribute('fit-to', FitTo.WIDTH);
       element.setAttribute('icon', SVG_NAME);
 
-      assert(element).to.matchSnapshot('icon__fit-to-width.html');
+      assert(snapshotElement(element)).to.match('icon__fit-to-width.golden');
     });
 
     should('set the innerHTML correctly if there are no SVG names specified', () => {
       const element = _.tester.bootstrapElement(ICON);
 
-      assert(element).to.matchSnapshot('icon__no-svg.html');
+      assert(snapshotElement(element)).to.match('icon__no-svg.golden');
     });
   });
 });

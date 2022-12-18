@@ -1,6 +1,6 @@
 import {assert, runEnvironment, should, test, setup} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
-import {triggerFakeMutation} from 'persona/src/testing/fake-mutation-observer';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
+import {triggerFakeMutation} from 'persona/export/testing';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 
@@ -28,7 +28,7 @@ test('@mask/src/display/code-block', () => {
       `;
       triggerFakeMutation(element, {});
 
-      assert(element).to.matchSnapshot('code-block.html');
+      assert(snapshotElement(element)).to.match('code-block.golden');
     });
   });
 });

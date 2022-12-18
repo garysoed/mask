@@ -1,5 +1,5 @@
 import {assert, runEnvironment, should, test, setup} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {getHarness} from 'persona/export/testing';
 import {BehaviorSubject, ReplaySubject} from 'rxjs';
 
@@ -26,7 +26,7 @@ test('@mask/src/input/text-input', () => {
       element.textContent = 'Label';
       element.value = value$;
 
-      assert(element).to.matchSnapshot('text-input__init_value.html');
+      assert(snapshotElement(element)).to.match('text-input__init_value.golden');
     });
   });
 
@@ -43,7 +43,7 @@ test('@mask/src/input/text-input', () => {
       harness.simulateTextInput(value);
 
       assert(value$).to.emitWith(value);
-      assert(element).to.matchSnapshot('text-input__value.html');
+      assert(snapshotElement(element)).to.match('text-input__value.golden');
     });
   });
 
@@ -57,7 +57,7 @@ test('@mask/src/input/text-input', () => {
       element.value = value$;
       value$.next(value);
 
-      assert(element).to.matchSnapshot('text-input__update.html');
+      assert(snapshotElement(element)).to.match('text-input__update.golden');
     });
   });
 });

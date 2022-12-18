@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {getHarness, InputHarness} from 'persona/export/testing';
 import {BehaviorSubject, ReplaySubject} from 'rxjs';
 
@@ -24,7 +24,7 @@ test('@mask/src/input/checkbox', () => {
       const element = _.tester.bootstrapElement(CHECKBOX);
       element.textContent = 'Label';
 
-      assert(element).to.matchSnapshot('checkbox__default.html');
+      assert(snapshotElement(element)).to.match('checkbox__default.golden');
     });
 
     should('render disabled checkbox correctly', () => {
@@ -32,7 +32,7 @@ test('@mask/src/input/checkbox', () => {
       element.textContent = 'Label';
       element.setAttribute('mk-disabled', '');
 
-      assert(element).to.matchSnapshot('checkbox__disabled.html');
+      assert(snapshotElement(element)).to.match('checkbox__disabled.golden');
     });
   });
 
@@ -42,7 +42,7 @@ test('@mask/src/input/checkbox', () => {
       element.textContent = 'Label';
       element.value = new BehaviorSubject<CheckedValue>(true);
 
-      assert(element).to.matchSnapshot('checkbox__checked.html');
+      assert(snapshotElement(element)).to.match('checkbox__checked.golden');
     });
 
     should('set the classlist to display_unchecked if unchecked', () => {
@@ -50,7 +50,7 @@ test('@mask/src/input/checkbox', () => {
       element.textContent = 'Label';
       element.value = new BehaviorSubject<CheckedValue>(false);
 
-      assert(element).to.matchSnapshot('checkbox__unchecked.html');
+      assert(snapshotElement(element)).to.match('checkbox__unchecked.golden');
     });
 
     should('set the classlist to display_unknown if unknown', () => {
@@ -58,7 +58,7 @@ test('@mask/src/input/checkbox', () => {
       element.textContent = 'Label';
       element.value = new BehaviorSubject<CheckedValue>(null);
 
-      assert(element).to.matchSnapshot('checkbox__unknown.html');
+      assert(snapshotElement(element)).to.match('checkbox__unknown.golden');
     });
   });
 
@@ -70,7 +70,7 @@ test('@mask/src/input/checkbox', () => {
       const harness = getHarness(element, CheckboxHarness);
       harness.simulateCheck();
 
-      assert(element).to.matchSnapshot('checkbox__change-to-checked.html');
+      assert(snapshotElement(element)).to.match('checkbox__change-to-checked.golden');
       assert(element.value).to.emitWith(true);
     });
   });

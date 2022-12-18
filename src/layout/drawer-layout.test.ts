@@ -1,5 +1,5 @@
 import {assert, runEnvironment, should, test, setup} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
 
@@ -25,14 +25,14 @@ test('@mask/src/layout/drawer-layout', () => {
       _.element.setAttribute('max-size', '123px');
       _.element.setAttribute('expanded', '');
 
-      assert(_.element).to.matchSnapshot('drawer-layout__horizontal_expanded.html');
+      assert(snapshotElement(_.element)).to.match('drawer-layout__horizontal_expanded.golden');
     });
 
     should('render the min size if horizontal and collapsed', () => {
       _.element.setAttribute('mode', DrawerMode.HORIZONTAL);
       _.element.setAttribute('max-size', '123px');
 
-      assert(_.element).to.matchSnapshot('drawer-layout__horizontal_collapsed.html');
+      assert(snapshotElement(_.element)).to.match('drawer-layout__horizontal_collapsed.golden');
     });
 
     should('render \'100%\' if vertical', () => {
@@ -40,7 +40,7 @@ test('@mask/src/layout/drawer-layout', () => {
       _.element.setAttribute('max-size', '123px');
       _.element.setAttribute('expanded', '');
 
-      assert(_.element).to.matchSnapshot('drawer-layout__vertical_full.html');
+      assert(snapshotElement(_.element)).to.match('drawer-layout__vertical_full.golden');
     });
   });
 
@@ -50,14 +50,14 @@ test('@mask/src/layout/drawer-layout', () => {
       _.element.setAttribute('max-size', '123px');
       _.element.setAttribute('expanded', '');
 
-      assert(_.element).to.matchSnapshot('drawer-layout__vertical_expanded.html');
+      assert(snapshotElement(_.element)).to.match('drawer-layout__vertical_expanded.golden');
     });
 
     should('render the min size if vertical and collapsed', () => {
       _.element.setAttribute('mode', DrawerMode.VERTICAL);
       _.element.setAttribute('max-size', '123px');
 
-      assert(_.element).to.matchSnapshot('drawer-layout__vertical_collapsed.html');
+      assert(snapshotElement(_.element)).to.match('drawer-layout__vertical_collapsed.golden');
     });
 
     should('render \'100%\' if horizontal', () => {
@@ -65,7 +65,7 @@ test('@mask/src/layout/drawer-layout', () => {
       _.element.setAttribute('max-size', '123px');
       _.element.setAttribute('expanded', '');
 
-      assert(_.element).to.matchSnapshot('drawer-layout__horizontal_full.html');
+      assert(snapshotElement(_.element)).to.match('drawer-layout__horizontal_full.golden');
     });
   });
 });

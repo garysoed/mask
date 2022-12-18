@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-overlay mk-theme=\"light\"><gst-fake-shadow><style>\n  #root {\n    background: transparent;\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n  }\n\n  #root.hidden {\n    display: none;\n  }\n\n  #content {\n    position: fixed;\n  }\n</style>\n<div id=\"root\" mk-theme-context=\"main\" class=\"hidden\">\n  <div id=\"content\" mk-body-2=\"\" shadow=\"up\" style=\"\"></div>\n</div>\n<link rel=\"stylesheet\" href=\"base/test.css\"></gst-fake-shadow></mk-overlay>",
+  "name": "overlay__click-root"
+}

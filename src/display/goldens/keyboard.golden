@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-keyboard mk-theme=\"light\" text=\"meta alt enter 3\"><gst-fake-shadow><style>\n   kbd {\n    padding: .1rem .4rem;\n    margin: 0 .2rem;\n  }\n</style>\n\n<kbd id=\"description\">\n  <!-- #content -->\n  <kbd mk-theme-context=\"highlight\">⌘</kbd>\n+\n  <kbd mk-theme-context=\"highlight\">⎇ Alt</kbd>\n+\n  <kbd mk-theme-context=\"highlight\">↵ Enter</kbd>\n+\n  <kbd mk-theme-context=\"highlight\">3</kbd>\n\n</kbd>\n<!-- #theme --><link rel=\"stylesheet\" href=\"base/test.css\">\n\n<template id=\"_key\"></template></gst-fake-shadow></mk-keyboard>",
+  "name": "keyboard"
+}

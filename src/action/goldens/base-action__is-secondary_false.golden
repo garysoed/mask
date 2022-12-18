@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-test-base-action mk-theme=\"light\"><gst-fake-shadow><div id=\"el\" aria-disabled=\"false\" mk-action-1=\"\"></div></gst-fake-shadow></mk-test-base-action>",
+  "name": "base-action__is-secondary_false"
+}

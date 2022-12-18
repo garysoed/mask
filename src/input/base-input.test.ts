@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {cache} from 'gs-tools/export/data';
 import {mapNullableTo} from 'gs-tools/export/rxjs';
 import {Context, DIV, iattr, oattr, oflag, query, registerCustomElement} from 'persona';
@@ -74,7 +74,7 @@ test('@mask/src/input/base-input', () => {
       const element = _.tester.bootstrapElement(TEST);
       element.value = value$;
 
-      assert(element).to.matchSnapshot('base-input__init_from_host.html');
+      assert(snapshotElement(element)).to.match('base-input__init_from_host.golden');
     });
 
     should('reflect the value from the host', () => {
@@ -84,7 +84,7 @@ test('@mask/src/input/base-input', () => {
 
       value$.next('b');
 
-      assert(element).to.matchSnapshot('base-input__from_host.html');
+      assert(snapshotElement(element)).to.match('base-input__from_host.golden');
     });
   });
 

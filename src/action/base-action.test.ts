@@ -1,5 +1,5 @@
 import {assert, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {Context, DIV, oflag, query, registerCustomElement} from 'persona';
 
 import {setupThemedTest} from '../testing/setup-themed-test';
@@ -43,25 +43,25 @@ test('@mask/src/action/base-action', () => {
     const element = _.tester.bootstrapElement(TEST);
     element.setAttribute('mk-disabled', '');
 
-    assert(element).to.matchSnapshot('base-action__aria_disabled_true.html');
+    assert(snapshotElement(element)).to.match('base-action__aria_disabled_true.golden');
 
     element.removeAttribute('mk-disabled');
 
-    assert(element).to.matchSnapshot('base-action__aria_disabled_false.html');
+    assert(snapshotElement(element)).to.match('base-action__aria_disabled_false.golden');
   });
 
   test('isSecondary', () => {
     should('render mk-action-1 if primary', () => {
       const element = _.tester.bootstrapElement(TEST);
 
-      assert(element).to.matchSnapshot('base-action__is-secondary_false.html');
+      assert(snapshotElement(element)).to.match('base-action__is-secondary_false.golden');
     });
 
     should('render mk-action-2 if secondary', () => {
       const element = _.tester.bootstrapElement(TEST);
 
       element.setAttribute('is-secondary', '');
-      assert(element).to.matchSnapshot('base-action__is-secondary_true.html');
+      assert(snapshotElement(element)).to.match('base-action__is-secondary_true.golden');
     });
   });
 });

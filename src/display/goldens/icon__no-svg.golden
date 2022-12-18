@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-icon mk-theme=\"light\"><gst-fake-shadow><style>\n  :host {\n    pointer-events: none;\n    user-select: none;\n  }\n\n  #root > svg #foreground {\n    fill: var(--mkThemeFG) !important;\n  }\n</style>\n<span aria-hidden=\"true\" role=\"presentation\" id=\"root\"></span>\n<link rel=\"stylesheet\" href=\"base/test.css\"></gst-fake-shadow></mk-icon>",
+  "name": "icon__no-svg"
+}

@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-annotated-text mk-theme=\"light\">banana<gst-fake-shadow><!-- #contents -->ccncnc\n<!-- #theme --><link rel=\"stylesheet\" href=\"base/test.css\"></gst-fake-shadow></mk-annotated-text>",
+  "name": "annotated-text"
+}

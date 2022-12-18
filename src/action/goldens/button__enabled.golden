@@ -1,0 +1,5 @@
+{
+  "type": "element",
+  "raw": "<mk-button mk-theme=\"light\">Button<gst-fake-shadow><style>\n  #root {\n    border: none;\n    cursor: pointer;\n    padding: 0;\n    user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    -webkit-user-select: none;\n    width: 100%;\n  }\n\n  :host {\n    cursor: pointer;\n  }\n\n  #root[disabled],\n  #root[disabled]:focus {\n    cursor: default;\n  }\n\n  #root:hover,\n  #root:focus {\n    outline: none;\n  }\n</style>\n<button id=\"root\" aria-disabled=\"false\" mk-action-1=\"\" tabindex=\"0\">\n  <slot></slot>\n</button>\n<link rel=\"stylesheet\" href=\"base/test.css\"></gst-fake-shadow></mk-button>",
+  "name": "button__enabled"
+}

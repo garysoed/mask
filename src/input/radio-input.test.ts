@@ -1,5 +1,5 @@
 import {assert, createSpySubject, objectThat, runEnvironment, setup, should, test} from 'gs-testing';
-import {BrowserSnapshotsEnv} from 'gs-testing/export/browser';
+import {BrowserSnapshotsEnv, snapshotElement} from 'gs-testing/export/snapshot';
 import {getHarness, InputHarness} from 'persona/export/testing';
 import {BehaviorSubject} from 'rxjs';
 
@@ -34,7 +34,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.setAttribute('key', KEY);
       element.setAttribute('group', GROUP);
 
-      assert(element).to.matchSnapshot('radio-input__default.html');
+      assert(snapshotElement(element)).to.match('radio-input__default.golden');
     });
   });
 
@@ -46,7 +46,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.setAttribute('group', GROUP);
       element.value.next(KEY);
 
-      assert(element).to.matchSnapshot('radio-input__checked.html');
+      assert(snapshotElement(element)).to.match('radio-input__checked.golden');
     });
 
     should('set the icon to unchecked if unchecked', () => {
@@ -56,7 +56,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.setAttribute('group', GROUP);
       element.value.next(null);
 
-      assert(element).to.matchSnapshot('radio-input__unchecked.html');
+      assert(snapshotElement(element)).to.match('radio-input__unchecked.golden');
     });
 
     should('set the icon to unchecked if the index doesn\'t match', () => {
@@ -66,7 +66,7 @@ test('@mask/src/action/input/radio-input', () => {
       element.setAttribute('group', GROUP);
       element.value.next(null);
 
-      assert(element).to.matchSnapshot('radio-input__unmatched.html');
+      assert(snapshotElement(element)).to.match('radio-input__unmatched.golden');
     });
   });
 
@@ -129,7 +129,7 @@ test('@mask/src/action/input/radio-input', () => {
 
       $onRadioInput$.get(_.tester.vine).next({key: '1', group: GROUP});
 
-      assert(element).to.matchSnapshot('radio-input__global-other-index.html');
+      assert(snapshotElement(element)).to.match('radio-input__global-other-index.golden');
     });
 
     should('do nothing if the global radio input emits for the current index', () => {
@@ -141,7 +141,7 @@ test('@mask/src/action/input/radio-input', () => {
 
       $onRadioInput$.get(_.tester.vine).next({key: KEY, group: GROUP});
 
-      assert(element).to.matchSnapshot('radio-input__global-same-index.html');
+      assert(snapshotElement(element)).to.match('radio-input__global-same-index.golden');
     });
 
     should('do nothing if the global radio input emits and the namespace doesn\'t match', () => {
@@ -153,7 +153,7 @@ test('@mask/src/action/input/radio-input', () => {
 
       $onRadioInput$.get(_.tester.vine).next({key: '1', group: 'other'});
 
-      assert(element).to.matchSnapshot('radio-input__global-unmatch-namespace.html');
+      assert(snapshotElement(element)).to.match('radio-input__global-unmatch-namespace.golden');
     });
   });
 
