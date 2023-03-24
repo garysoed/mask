@@ -40,8 +40,18 @@ export class Theme {
     for (const context of getAllValues<ThemeContext>(ThemeContext)) {
       for (const subtype of getAllValues<ThemeSubtype>(ThemeSubtype)) {
         for (const section of getAllValues<ColorSection>(ColorSection)) {
-          const fgName = getSectionVariableName(subtype, section, ColorLocation.FOREGROUND, context);
-          const bgName = getSectionVariableName(subtype, section, ColorLocation.BACKGROUND, context);
+          const fgName = getSectionVariableName(
+              subtype,
+              section, ColorLocation.
+                  FOREGROUND,
+              context,
+          );
+          const bgName = getSectionVariableName(
+              subtype,
+              section,
+              ColorLocation.BACKGROUND,
+              context,
+          );
           const {foreground, background} = getColors(
               getShade(this.input.mode, subtype, context, section, ColorLocation.FOREGROUND),
               getShade(this.input.mode, subtype, context, section, ColorLocation.BACKGROUND),
@@ -64,9 +74,19 @@ export class Theme {
     for (const subtype of getAllValues<ThemeSubtype>(ThemeSubtype)) {
       for (const section of getAllValues<ColorSection>(ColorSection)) {
         const fgName = getSectionVariableName(subtype, section, ColorLocation.FOREGROUND);
-        const fgNameLevel = getSectionVariableName(subtype, section, ColorLocation.FOREGROUND, context);
+        const fgNameLevel = getSectionVariableName(
+            subtype,
+            section,
+            ColorLocation.FOREGROUND,
+            context,
+        );
         const bgName = getSectionVariableName(subtype, section, ColorLocation.BACKGROUND);
-        const bgNameLevel = getSectionVariableName(subtype, section, ColorLocation.BACKGROUND, context);
+        const bgNameLevel = getSectionVariableName(
+            subtype,
+            section,
+            ColorLocation.BACKGROUND,
+            context,
+        );
 
         variables.push(
             `${fgName}: var(${fgNameLevel});`,

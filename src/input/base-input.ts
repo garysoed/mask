@@ -18,7 +18,11 @@ export function create$baseInput<Type = never>(defaultValue: Type): BaseInputSpe
   return {
     host: {
       ...create$baseAction().host,
-      value: ivalue('value', instanceofType<Subject<Type>>(Subject), () => new BehaviorSubject(defaultValue)),
+      value: ivalue(
+          'value',
+          instanceofType<Subject<Type>>(Subject),
+          () => new BehaviorSubject(defaultValue),
+      ),
     },
   };
 }
@@ -33,7 +37,7 @@ export abstract class BaseInput<T> extends BaseAction implements Ctrl {
     super(inputContext, renderDisabled, rootBindings);
   }
 
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       this.inputContext.host.value.pipe(

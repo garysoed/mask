@@ -82,7 +82,9 @@ class DemoCtrl implements Ctrl {
       this.onBasePaletteClick$,
       this.onDrawerRootClick$,
       this.setupOnRootLayoutAction(),
-      this.accentPaletteContents$.pipe(this.$.shadow.accentPalette.content(this.renderPaletteData())),
+      this.accentPaletteContents$.pipe(
+          this.$.shadow.accentPalette.content(this.renderPaletteData()),
+      ),
       this.basePaletteContents$.pipe(this.$.shadow.basePalette.content(this.renderPaletteData())),
       of($demoState.get(this.$.vine).isDarkMode).pipe(this.$.shadow.darkMode.value()),
       $locationService.get(this.$.vine).location$.pipe(

@@ -41,7 +41,7 @@ export enum SpecialKeys {
 
 const SPECIAL_KEYS_TYPE: Type<SpecialKeys> = enumType(SpecialKeys);
 
-export class Keyboard implements Ctrl {
+class Keyboard implements Ctrl {
   constructor(private readonly $: Context<typeof $keyboard>) {
   }
 
@@ -51,7 +51,10 @@ export class Keyboard implements Ctrl {
       renderTheme(this.$, this.$.shadow.root.theme),
       this.$.host.text.pipe(
           map(keyStr => (keyStr ?? '').split(' ').map((value, index) => [value, index] as const)),
-          this.$.shadow.description.content(map(([value, index]) => this.renderSegment(value, index)))),
+          this.$.shadow.description.content(
+              map(([value, index]) => this.renderSegment(value, index)),
+          ),
+      ),
     ];
   }
 

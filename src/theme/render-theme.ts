@@ -32,7 +32,9 @@ export function renderTheme(
   );
 }
 
-function renderThemeLoader(context: Context<ElementSpec>): OperatorFunction<ThemeLoader, RenderSpec> {
+function renderThemeLoader(
+    context: Context<ElementSpec>,
+): OperatorFunction<ThemeLoader, RenderSpec> {
   return map(themeLoader => renderNode({
     node: themeLoader.createElement(context.shadowRoot.ownerDocument),
   }));

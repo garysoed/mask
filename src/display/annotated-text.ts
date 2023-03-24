@@ -62,7 +62,9 @@ class AnnotatedText implements Ctrl {
     return obs;
   }
 
-  private getOperator(spec: AnnotationSpec): OperatorFunction<readonly RenderSpec[], readonly RenderSpec[]> {
+  private getOperator(
+      spec: AnnotationSpec,
+  ): OperatorFunction<readonly RenderSpec[], readonly RenderSpec[]> {
     return pipe(
         switchMap(renderSpecs => {
           return concat(...renderSpecs.map(renderSpec => spec(renderSpec))).pipe(

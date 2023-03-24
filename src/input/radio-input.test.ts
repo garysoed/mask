@@ -120,17 +120,18 @@ test('@mask/src/action/input/radio-input', () => {
   });
 
   test('handleOnGlobalRadioInput$', _, () => {
-    should('reset the dom value if global radio input emits for other index and the ID match', () => {
-      const element = _.tester.bootstrapElement(RADIO_INPUT);
-      element.textContent = 'Label';
-      element.setAttribute('key', KEY);
-      element.setAttribute('group', GROUP);
-      element.value.next(KEY);
+    should('reset the dom value if global radio input emits for other index and the ID match',
+        () => {
+          const element = _.tester.bootstrapElement(RADIO_INPUT);
+          element.textContent = 'Label';
+          element.setAttribute('key', KEY);
+          element.setAttribute('group', GROUP);
+          element.value.next(KEY);
 
-      $onRadioInput$.get(_.tester.vine).next({key: '1', group: GROUP});
+          $onRadioInput$.get(_.tester.vine).next({key: '1', group: GROUP});
 
-      assert(snapshotElement(element)).to.match('radio-input__global-other-index.golden');
-    });
+          assert(snapshotElement(element)).to.match('radio-input__global-other-index.golden');
+        });
 
     should('do nothing if the global radio input emits for the current index', () => {
       const element = _.tester.bootstrapElement(RADIO_INPUT);

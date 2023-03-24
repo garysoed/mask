@@ -13,7 +13,8 @@ export class SelectOptionHarness extends CustomElementHarness<typeof SELECT_OPTI
     if (!shadowRoot) {
       throw new Error('No shadow roots found');
     }
-    const target = arrayFrom(shadowRoot.querySelectorAll('mk-line-layout')).find(div => div.textContent === text);
+    const target = arrayFrom(shadowRoot.querySelectorAll('mk-line-layout'))
+        .find(div => div.textContent === text);
     if (!target) {
       throw new Error(`Element with text "${text}" not found`);
     }

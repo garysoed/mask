@@ -40,7 +40,7 @@ const $drawerLayout = {
   },
 };
 
-export class DrawerLayout implements Ctrl {
+class DrawerLayout implements Ctrl {
   private readonly maxSize$ = this.$.host.maxSize.pipe(mapNullableTo(''));
   private readonly minSize$ = this.$.host.minSize.pipe(mapNullableTo('0'));
 

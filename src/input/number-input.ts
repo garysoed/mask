@@ -42,7 +42,7 @@ const $numberInput = {
 };
 
 
-export class NumberInput extends BaseInput<number|null> {
+class NumberInput extends BaseInput<number|null> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $numberInput>) {
@@ -50,7 +50,7 @@ export class NumberInput extends BaseInput<number|null> {
   }
 
   @cache()
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       renderTheme(this.$),

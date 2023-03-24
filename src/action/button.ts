@@ -32,7 +32,7 @@ const $button = {
 
 
 class Button extends BaseAction {
-  constructor(protected readonly actionContext: Context<typeof $button>) {
+  constructor(protected override readonly actionContext: Context<typeof $button>) {
     super(
         actionContext,
         actionContext.shadow.rootEl.disabled,
@@ -41,7 +41,7 @@ class Button extends BaseAction {
   }
 
   @cache()
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       this.onAction$.pipe(this.actionContext.host.actionEvent()),

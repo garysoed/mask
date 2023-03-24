@@ -92,11 +92,13 @@ function loadSvg(config: SvgConfig): Observable<string> {
 }
 
 const $svgConfigParts$ = source<Subject<[string, SvgConfig]>>(() => new ReplaySubject());
-const $svgConfig$ = source<Observable<ReadonlyMap<string, SvgConfig>>>(vine => $svgConfigParts$.get(vine).pipe(
-    scan((configMap, part) => {
-      return new Map([...configMap, part]);
-    }, new Map()),
-));
+const $svgConfig$ = source<Observable<ReadonlyMap<string, SvgConfig>>>(
+    vine => $svgConfigParts$.get(vine).pipe(
+        scan((configMap, part) => {
+          return new Map([...configMap, part]);
+        }, new Map()),
+    ),
+);
 
 export function registerSvg(vine: Vine, key: string, config: SvgConfig): void {
   $svgConfigParts$.get(vine).next([key, config]);

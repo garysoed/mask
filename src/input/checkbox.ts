@@ -37,7 +37,7 @@ const $checkbox = {
   },
 };
 
-export class Checkbox extends BaseInput<CheckedValue> {
+class Checkbox extends BaseInput<CheckedValue> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $checkbox>) {
@@ -49,7 +49,7 @@ export class Checkbox extends BaseInput<CheckedValue> {
   }
 
   @cache()
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       renderTheme(this.$),

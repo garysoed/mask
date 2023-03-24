@@ -57,18 +57,19 @@ test('@mask/src/core/overlay', () => {
       assert(snapshotElement(_.element)).to.match('overlay__start-start.golden');
     });
 
-    should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE', () => {
-      $overlayService.get(_.tester.vine).show({
-        contentRenderSpec: renderElement({registration: DIV, spec: {}}),
-        target: _.targetEl,
-        targetAnchor: {horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
-        contentAnchor: {horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
-      });
+    should('set the left and top correctly if content and target anchors are MIDDLE - MIDDLE',
+        () => {
+          $overlayService.get(_.tester.vine).show({
+            contentRenderSpec: renderElement({registration: DIV, spec: {}}),
+            target: _.targetEl,
+            targetAnchor: {horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
+            contentAnchor: {horizontal: Anchor.MIDDLE, vertical: Anchor.MIDDLE},
+          });
 
-      dispatchResize();
+          dispatchResize();
 
-      assert(snapshotElement(_.element)).to.match('overlay__middle-middle.golden');
-    });
+          assert(snapshotElement(_.element)).to.match('overlay__middle-middle.golden');
+        });
 
     should('set the left and top correctly if content and target anchors are END - END', () => {
       $overlayService.get(_.tester.vine).show({

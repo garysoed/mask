@@ -45,7 +45,7 @@ class TextInput extends BaseInput<string> {
   }
 
   @cache()
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       renderTheme(this.$),

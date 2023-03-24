@@ -1,9 +1,7 @@
-import {$asMap, $map} from 'gs-tools/export/collect';
 import {cache} from 'gs-tools/export/data';
-import {$pipe} from 'gs-tools/export/typescript';
 import {enumType} from 'gs-types';
-import {Context, Ctrl, DIV, itarget, oforeach, query, registerCustomElement, renderElement, RenderSpec, renderTemplate, TEMPLATE} from 'persona';
-import {combineLatest, Observable, of, Subject} from 'rxjs';
+import {Context, Ctrl, DIV, RenderSpec, TEMPLATE, itarget, oforeach, query, registerCustomElement, renderElement, renderTemplate} from 'persona';
+import {Observable, Subject, combineLatest, of} from 'rxjs';
 import {map, tap, withLatestFrom} from 'rxjs/operators';
 
 import {BUTTON} from '../../src/action/button';
@@ -18,15 +16,6 @@ import template from './overlay-layout.html';
 
 const ANCHORS = [Anchor.START, Anchor.MIDDLE, Anchor.END];
 const ANCHOR_TYPE = enumType<Anchor>(Anchor);
-
-interface AnchorSubjects {
-  readonly value$: Subject<string|null>;
-}
-
-interface AnchorObsSpec {
-  readonly group: string;
-  readonly anchorSubjects: ReadonlyMap<Anchor, AnchorSubjects>;
-}
 
 const $overlayLayoutDemo = {
   shadow: {
@@ -54,10 +43,6 @@ const $overlayLayoutDemo = {
 
 export class OverlayLayoutDemo implements Ctrl {
   private readonly state = $demoState.get(this.$.vine).overlayLayoutDemo;
-  private readonly overlayHorizontalObsMap = createObsMap('overlayHorizontal');
-  private readonly overlayVerticalObsMap = createObsMap('overlayVertical');
-  private readonly targetHorizontalObsMap = createObsMap('targetHorizontal');
-  private readonly targetVerticalObsMap = createObsMap('targetVertical');
 
   constructor(private readonly $: Context<typeof $overlayLayoutDemo>) {}
 
@@ -67,22 +52,38 @@ export class OverlayLayoutDemo implements Ctrl {
       renderTheme(this.$),
       of(ANCHORS).pipe(
           this.$.shadow.overlayHorizontal.overlayHorizontalAnchors(map(anchorType => {
-            return this.renderAnchorNode(anchorType, 'overlayHorizontal', this.state.overlayHorizontalIndex);
+            return this.renderAnchorNode(
+                anchorType,
+                'overlayHorizontal',
+                this.state.overlayHorizontalIndex,
+            );
           })),
       ),
       of(ANCHORS).pipe(
           this.$.shadow.overlayVertical.overlayVerticalAnchors(map(anchorType => {
-            return this.renderAnchorNode(anchorType, 'overlayVertical', this.state.overlayVerticalIndex);
+            return this.renderAnchorNode(
+                anchorType,
+                'overlayVertical',
+                this.state.overlayVerticalIndex,
+            );
           })),
       ),
       of(ANCHORS).pipe(
           this.$.shadow.targetHorizontal.targetHorizontalAnchors(map(anchorType => {
-            return this.renderAnchorNode(anchorType, 'targetHorizontal', this.state.targetHorizontalIndex);
+            return this.renderAnchorNode(
+                anchorType,
+                'targetHorizontal',
+                this.state.targetHorizontalIndex,
+            );
           })),
       ),
       of(ANCHORS).pipe(
           this.$.shadow.targetVertical.targetVerticalAnchors(map(anchorType => {
-            return this.renderAnchorNode(anchorType, 'targetVertical', this.state.targetVerticalIndex);
+            return this.renderAnchorNode(
+                anchorType,
+                'targetVertical',
+                this.state.targetVerticalIndex,
+            );
           })),
       ),
       this.handleClick(),
@@ -147,17 +148,6 @@ export class OverlayLayoutDemo implements Ctrl {
       ],
     });
   }
-}
-
-function createObsMap(group: string): AnchorObsSpec {
-  const anchorSubjects = $pipe(
-      ANCHORS,
-      $map(anchor => {
-        return [anchor, {value$: new Subject<string|null>()}] as const;
-      }),
-      $asMap(),
-  );
-  return {group, anchorSubjects};
 }
 
 function getAnchorLabel(anchor: Anchor): string {

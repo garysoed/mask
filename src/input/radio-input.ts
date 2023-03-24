@@ -44,7 +44,7 @@ export const $radioInput = {
   },
 };
 
-export class RadioInput extends BaseInput<string|null> {
+class RadioInput extends BaseInput<string|null> {
   private readonly onDomValueUpdated$ = new Subject<void>();
 
   constructor(private readonly $: Context<typeof $radioInput>) {
@@ -65,7 +65,7 @@ export class RadioInput extends BaseInput<string|null> {
   }
 
   @cache()
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       renderTheme(this.$),

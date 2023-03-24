@@ -45,7 +45,7 @@ class SelectInput extends BaseInput<string|null> {
     super($, $.shadow.root.disabled, $.shadow.root);
   }
 
-  get runs(): ReadonlyArray<Observable<unknown>> {
+  override get runs(): ReadonlyArray<Observable<unknown>> {
     return [
       ...super.runs,
       renderTheme(this.$),
