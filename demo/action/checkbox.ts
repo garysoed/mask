@@ -28,7 +28,7 @@ const $checkboxDemo = {
   },
 };
 
-export class CheckboxDemo implements Ctrl {
+class CheckboxDemo implements Ctrl {
   private readonly $demoState = $demoState.get(this.$.vine).checkboxDemo;
 
   constructor(private readonly $: Context<typeof $checkboxDemo>) { }

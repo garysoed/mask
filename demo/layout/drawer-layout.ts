@@ -24,7 +24,7 @@ const $drawerLayoutDemo = {
 };
 
 
-export class DrawerLayoutDemo implements Ctrl {
+class DrawerLayoutDemo implements Ctrl {
   private readonly state = $demoState.get(this.$.vine).drawerLayoutDemo;
 
   constructor(private readonly $: Context<typeof $drawerLayoutDemo>) { }

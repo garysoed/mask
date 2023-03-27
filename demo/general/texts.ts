@@ -8,7 +8,7 @@ import template from './texts.html';
 
 const $textsDemo = {};
 
-export class TextsDemo implements Ctrl {
+class TextsDemo implements Ctrl {
   readonly runs = [renderTheme(this.$)];
 
   constructor(private readonly $: Context<typeof $textsDemo>) { }

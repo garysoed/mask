@@ -41,7 +41,7 @@ const $overlayLayoutDemo = {
 };
 
 
-export class OverlayLayoutDemo implements Ctrl {
+class OverlayLayoutDemo implements Ctrl {
   private readonly state = $demoState.get(this.$.vine).overlayLayoutDemo;
 
   constructor(private readonly $: Context<typeof $overlayLayoutDemo>) {}

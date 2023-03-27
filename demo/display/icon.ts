@@ -26,7 +26,7 @@ const $iconDemo = {
   },
 };
 
-export class IconDemo implements Ctrl {
+class IconDemo implements Ctrl {
   private readonly state = $demoState.get(this.$.vine).iconDemo;
 
   constructor(private readonly $: Context<typeof $iconDemo>) { }

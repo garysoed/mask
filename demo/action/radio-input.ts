@@ -23,7 +23,7 @@ const $radioInputDemo = {
 };
 
 
-export class RadioInputDemo implements Ctrl {
+class RadioInputDemo implements Ctrl {
   private readonly $state = $demoState.get(this.$.vine).radioInputDemo;
 
   constructor(private readonly $: Context<typeof $radioInputDemo>) { }

@@ -11,7 +11,7 @@ import template from './code-block.html';
 
 export const $codeBlockDemo = { };
 
-export class CodeBlockDemo implements Ctrl {
+class CodeBlockDemo implements Ctrl {
   constructor(private readonly $: Context<typeof $codeBlockDemo>) { }
 
   @cache()

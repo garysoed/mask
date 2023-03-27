@@ -11,7 +11,7 @@ import template from './button.html';
 
 const $buttonDemo = {};
 
-export class ButtonDemo implements Ctrl {
+class ButtonDemo implements Ctrl {
   readonly runs = [renderTheme(this.$)];
 
   constructor(private readonly $: Context<typeof $buttonDemo>) { }

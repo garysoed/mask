@@ -11,7 +11,7 @@ import template from './keyboard.html';
 
 const $keyboardDemo = { };
 
-export class KeyboardDemo implements Ctrl {
+class KeyboardDemo implements Ctrl {
   constructor(private readonly $: Context<typeof $keyboardDemo>) { }
 
   @cache()

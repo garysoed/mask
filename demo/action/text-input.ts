@@ -20,7 +20,7 @@ const $textInputDemo = {
   },
 };
 
-export class TextInputDemo implements Ctrl {
+class TextInputDemo implements Ctrl {
   private readonly $state = $demoState.get(this.$.vine).textInputDemo;
 
   constructor(private readonly $: Context<typeof $textInputDemo>) { }

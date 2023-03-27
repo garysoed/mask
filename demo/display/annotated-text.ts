@@ -24,7 +24,7 @@ const $annotatedTextDemo = {
 
 const emojiRegex = /:([a-zA-Z]*)/;
 
-export class AnnotatedTextDemo implements Ctrl {
+class AnnotatedTextDemo implements Ctrl {
   constructor(private readonly $: Context<typeof $annotatedTextDemo>) {}
 
   @cache()

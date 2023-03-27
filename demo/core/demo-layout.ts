@@ -27,7 +27,7 @@ const $demoLayout = {
   },
 };
 
-export class DemoLayout implements Ctrl {
+class DemoLayout implements Ctrl {
   constructor(private readonly $: Context<typeof $demoLayout>) { }
 
   @cache()
