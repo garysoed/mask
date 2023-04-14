@@ -39,7 +39,6 @@ const ICONS = new Map([
 
 window.addEventListener('load', () => {
   const {vine} = start(
-      'demo',
       [DEMO],
       document,
       new ClassThemeLoader(theme),

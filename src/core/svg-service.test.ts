@@ -6,7 +6,7 @@ import {$svgService, registerSvg} from './svg-service';
 
 test('@mask/src/core/svg-service', () => {
   const _ = setup(() => {
-    const vine = new Vine({appName: 'test'});
+    const vine = new Vine({});
     return {vine};
   });
 

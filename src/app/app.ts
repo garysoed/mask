@@ -23,13 +23,12 @@ export const $themeLoader = source(
 export const $window = source<WindowLike>(() => window);
 
 export function start(
-    appName: string,
     roots: ReadonlyArray<CustomElementRegistration<HTMLElement, any>>,
     rootDoc: Document,
     themeLoader: ThemeLoader,
     customElementRegistry: CustomElementRegistry = window.customElements,
 ): {vine: Vine} {
-  const vine = new Vine({appName});
+  const vine = new Vine();
   installCustomElements({roots, rootDoc, customElementRegistry, vine});
   const themeLoader$ = $themeLoader.get(vine);
   themeLoader$.next(themeLoader);
